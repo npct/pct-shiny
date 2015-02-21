@@ -82,11 +82,15 @@ shinyServer(function(input, output){
   map <- leaflet() %>%
     addTiles(urlTemplate = "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png")
   output$map = renderLeaflet(map%>%
-                               addPolygons(data = leeds
-                                           , fillOpacity = 0.4
-                                           , opacity = (input$transp_zones)*.4
-                                           , fillColor = leeds$color_pcycle
-                               ) %>%
+                               {
+                                 if (input$transp_zones)
+                                   addPolygons(. , data = leeds
+                                               , fillOpacity = 0.4
+                                               , opacity = 0.4
+                                               , fillColor = leeds$color_pcycle
+                                   )
+                                 else .
+                               } %>%
                                addPolylines(data = lfast, color = "red"
                                             , opacity = input$transp_fast
                                             , popup = sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd>", round(flows$fastest_distance_in_m / 1000, 1), round(flows$p_cycle * 100, 2))
