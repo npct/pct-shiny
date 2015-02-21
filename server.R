@@ -8,7 +8,7 @@ library(httr)
 
 cyclestreet_token <- Sys.getenv('CYCLESTREET')
 
-empty_geojson <- "{'type':'LineString','coordinates':[]}"
+empty_geojson <- '{"type": "Point","coordinates": [-1.5492,53.7997]}'
 
 cycle_street_bbox <- function(bounds){
   paste(bounds$west, bounds$south, bounds$east, bounds$north, sep=",")
@@ -47,7 +47,6 @@ pois <- function(bounds, type){
 from_cycle_streets <- function(bounds, type){
   switch(type
          ,"collisions"=collisions(bounds)
-         ,"none"=empty_geojson
          , pois(bounds, type)
   )
 }
@@ -100,7 +99,11 @@ shinyServer(function(input, output){
                                                 , radius = 2
                                                 , color = "black"
                                                 , popup = sprintf("<b>Journeys by bike: </b>%s%%", round(ldata$pCycle*100,2))) %>%
-                               addGeoJSON(from_cycle_streets(input$map_bounds, input$feature)) %>%
+                               {
+                                 if (input$feature != "none")
+                                   addGeoJSON(., from_cycle_streets(input$map_bounds, input$feature))
+                                 else .
+                               } %>%
                                mapOptions(zoomToLimits = "first")
 
   )
