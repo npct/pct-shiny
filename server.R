@@ -1,10 +1,5 @@
-library(shiny)
-library(leaflet)
-library(ggmap)
-library(rgdal)
-library(RColorBrewer)
-library(dplyr)
-library(httr)
+pkgs <- c("shiny", "leaflet", "ggmap", "RColorBrewer")
+lapply(pkgs, library, character.only = TRUE)
 
 cyclestreet_token <- Sys.getenv('CYCLESTREET')
 
@@ -51,29 +46,17 @@ from_cycle_streets <- function(bounds, type){
   )
 }
 
-# old <- setwd("R/fixMyPath") # go into the directory if running in rstudio
-
 # Load data
 l <- readRDS("al.Rds")
-
-l$color <- "green"
-l$color[grepl("fast", rownames(l@data))] <- "red"
-
 lfast <- l[ l$color == "green", ]
 lquiet <- l[ l$color == "red", ]
 
 flows <- read.csv("al-flow.csv")
-leeds <- readRDS("leeds-msoas-simple.Rds") %>%
-  spTransform(CRS("+init=epsg:4326"))
+leeds <- readRDS("leeds-msoas-simple.Rds")
 
-# Add census data to leeds
-ldata <- read.csv("leeds-msoa-data.csv")
-ldata <- rename(ldata, geo_code = CODE)
-ldata <- inner_join(leeds@data, ldata)
-leeds@data <- ldata
-leeds$color_pcycle <- cut(leeds$pCycle, breaks = quantile(leeds$pCycle), labels = brewer.pal(4, "PiYG") )
-
-
+journeyLabel <- function(distance, percentage){
+  sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd>", distance, percentage)
+}
 shinyServer(function(input, output){
 
   cents <- coordinates(leeds)
@@ -81,6 +64,7 @@ shinyServer(function(input, output){
 
   map <- leaflet() %>%
     addTiles(urlTemplate = "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png")
+
   output$map = renderLeaflet(map%>%
                                {
                                  if (input$transp_zones)
@@ -93,16 +77,16 @@ shinyServer(function(input, output){
                                } %>%
                                addPolylines(data = lfast, color = "red"
                                             , opacity = input$transp_fast
-                                            , popup = sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd>", round(flows$fastest_distance_in_m / 1000, 1), round(flows$p_cycle * 100, 2))
+                                            , popup = journeyLabel(round(flows$fastest_distance_in_m / 1000, 1), round(flows$p_cycle * 100, 2))
                                ) %>%
                                addPolylines(data = lquiet, color = "green",
                                             , opacity = input$transp_fast
-                                            , popup = sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd>", round(flows$quietest_distance_in_m / 1000, 1), round(flows$p_cycle*100,2))
+                                            , popup = journeyLabel(round(flows$quietest_distance_in_m / 1000, 1), round(flows$p_cycle * 100, 2))
                                ) %>%
                                addCircleMarkers(data = cents
                                                 , radius = 2
                                                 , color = "black"
-                                                , popup = sprintf("<b>Journeys by bike: </b>%s%%", round(ldata$pCycle*100,2))) %>%
+                                                , popup = sprintf("<b>Journeys by bike: </b>%s%%", round(leeds$pCycle*100,2))) %>%
                                {
                                  if (input$feature != "none")
                                    addGeoJSON(., from_cycle_streets(input$map_bounds, input$feature))
