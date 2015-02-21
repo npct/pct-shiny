@@ -47,12 +47,12 @@ from_cycle_streets <- function(bounds, type){
 }
 
 # Load data
-l <- readRDS("al.Rds")
+l <- readRDS("../data/al.Rds")
 lfast <- l[ l$color == "green", ]
 lquiet <- l[ l$color == "red", ]
 
-flows <- read.csv("al-flow.csv")
-leeds <- readRDS("leeds-msoas-simple.Rds")
+flows <- read.csv("../data/al-flow.csv")
+leeds <- readRDS("../data/leeds-msoas-simple.Rds")
 
 journeyLabel <- function(distance, percentage){
   sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd>", distance, percentage)
