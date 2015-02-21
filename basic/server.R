@@ -33,7 +33,6 @@ pois <- function(bounds, type){
                            , fields='id,latitude,longitude,name,osmTags'
                 )
     )
-    print(resp)
     if(status_code(resp)==200){ return(content(resp, 'parsed')) }
   }
   empty_geojson
@@ -57,6 +56,7 @@ leeds <- readRDS("../data/leeds-msoas-simple.Rds")
 journeyLabel <- function(distance, percentage){
   sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd>", distance, percentage)
 }
+
 shinyServer(function(input, output){
 
   cents <- coordinates(leeds)
@@ -93,6 +93,5 @@ shinyServer(function(input, output){
                                  else .
                                } %>%
                                mapOptions(zoomToLimits = "first")
-
   )
 })
