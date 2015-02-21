@@ -29,9 +29,15 @@ Sys.setenv(CYCLESTREET = "my_token")
 
 or in Ubuntu can be added as a session wide var
 ```bash
-echo "CYCLESTREET='my_token'" >> ~/.profile
+echo "export CYCLESTREET='my_token'" >> ~/.profile
 ```
 or system wide
 ```bash
-sudo echo "CYCLESTREET='my_token'" > /etc/profile.d/cyclestreet.sh
+sudo echo "export CYCLESTREET='my_token'" > /etc/profile.d/cyclestreet.sh
 ```
+
+### To install shiny-server
+* build from source https://github.com/rstudio/shiny-server/wiki/Building-Shiny-Server-from-Source
+* add cyclestreet token to ENV
+* use default server config `wget https://raw.githubusercontent.com/rstudio/shiny-server/master/config/default.config > /etc/shiny-server/shiny-server.conf`
+* use default upstart `wget  https://raw.github.com/rstudio/shiny-server/master/config/upstart/shiny-server.conf  -O /etc/init/shiny-server.conf`
