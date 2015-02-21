@@ -10,7 +10,7 @@ Running the following code should make the code reproducible on most
 computers:
 
 ```r
-pkgs <- c("shiny", "dplyr", "devtools)
+pkgs <- c("shiny", "dplyr", "devtools")
 install.packages(pkgs)
 lapply(pkgs, library, character.only = T)
 # Install leaflet package from github
