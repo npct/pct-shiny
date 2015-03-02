@@ -65,7 +65,7 @@ shinyServer(function(input, output){
   map <- leaflet() %>%
     addTiles(urlTemplate = "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png")
 
-  output$map = renderLeaflet(map%>%
+  output$map = renderLeaflet(map %>%
                                {
                                  if (input$transp_zones)
                                    addPolygons(. , data = leeds
