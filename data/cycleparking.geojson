@@ -1,0 +1,396 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "517297",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=517297&lat=53.794853&lon=-1.553317&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.553317,
+                    53.794853
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "525908",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=525908&lat=53.791195&lon=-1.533624&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.533624,
+                    53.791195
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "563423",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=563423&lat=53.797302&lon=-1.533212&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.533212,
+                    53.797302
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "578207",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=578207&lat=53.829048&lon=-1.567241&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.567241,
+                    53.829048
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "663327",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=663327&lat=53.784412&lon=-1.549964&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.549964,
+                    53.784412
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "1203126",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=1203126&lat=53.795815&lon=-1.545097&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.545097,
+                    53.795815
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "1496505",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=1496505&lat=53.790237&lon=-1.553058&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.553058,
+                    53.790237
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "1691868",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=1691868&lat=53.817883&lon=-1.594630&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.59463,
+                    53.817883
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "1693146",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=1693146&lat=53.814720&lon=-1.602612&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.602612,
+                    53.81472
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "1743392",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=1743392&lat=53.808674&lon=-1.656373&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.656373,
+                    53.808674
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "1847383",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=1847383&lat=53.810402&lon=-1.556809&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.556809,
+                    53.810402
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "1848531",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=1848531&lat=53.809784&lon=-1.555126&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.555126,
+                    53.809784
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "1873700",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=1873700&lat=53.821056&lon=-1.578279&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.578279,
+                    53.821056
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "1884862",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=1884862&lat=53.846703&lon=-1.632694&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.632694,
+                    53.846703
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "1884866",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=1884866&lat=53.845779&lon=-1.633789&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.633789,
+                    53.845779
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "1927557",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=1927557&lat=53.833370&lon=-1.647713&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.647713,
+                    53.83337
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "1927558",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=1927558&lat=53.832031&lon=-1.641190&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.64119,
+                    53.832031
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "1931309",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=1931309&lat=53.832687&lon=-1.538060&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.53806,
+                    53.832687
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2070224",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=2070224&lat=53.819897&lon=-1.581181&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.581181,
+                    53.819897
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2137950",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=2137950&lat=53.837860&lon=-1.640568&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.640568,
+                    53.83786
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2152225",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=2152225&lat=53.827133&lon=-1.591247&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.591247,
+                    53.827133
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2222090",
+                "name": "(Name not known)",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=2222090&lat=53.828419&lon=-1.566978&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.566978,
+                    53.828419
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2487407",
+                "name": "Bicycle Parking",
+                "notes": null,
+                "website": "",
+                "editlink": "http://www.cyclestreets.net/edit/editor/?node=2487407&lat=53.806549&lon=-1.554355&zoom=21"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.554355,
+                    53.806549
+                ]
+            }
+        }
+    ]
+}

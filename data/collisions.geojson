@@ -1,0 +1,345 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2011130451275",
+                "datetime": "3:55pm, 1st October 2011",
+                "severity": "fatal",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "1",
+                "url": "http://www.cyclestreets.net/collisions/reports/2011130451275/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2011130451275"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.578215,
+                    53.766861
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130491051",
+                "datetime": "7:55am, 29th November 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "2",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130491051/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130491051"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.602417,
+                    53.8178
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130331946",
+                "datetime": "7:25pm, 11th August 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "2",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130331946/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130331946"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.538478,
+                    53.753512
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130415662",
+                "datetime": "9:30pm, 8th October 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "1",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130415662/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130415662"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.557996,
+                    53.796918
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130495698",
+                "datetime": "2:56pm, 29th November 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "1",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130495698/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130495698"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.577114,
+                    53.853756
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130489581",
+                "datetime": "8:20am, 28th November 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "2",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130489581/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130489581"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.548815,
+                    53.738496
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130349718",
+                "datetime": "10:00am, 23rd August 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "2",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130349718/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130349718"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.52324,
+                    53.79593
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130256461",
+                "datetime": "7:50pm, 21st June 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "2",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130256461/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130256461"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.618942,
+                    53.811283
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130195631",
+                "datetime": "9:50am, 11th May 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "2",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130195631/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130195631"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.581298,
+                    53.801621
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130366577",
+                "datetime": "8:06pm, 4th September 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "2",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130366577/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130366577"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.451302,
+                    53.803533
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130485086",
+                "datetime": "10:05am, 25th November 2013",
+                "severity": "serious",
+                "casualties": "Cyclist,Motorcycle rider/passenger",
+                "Number_of_Casualties": "2",
+                "Number_of_Vehicles": "2",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130485086/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130485086"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.519815,
+                    53.77812
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130366586",
+                "datetime": "12:40pm, 4th September 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "2",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130366586/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130366586"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.56571,
+                    53.793764
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130183330",
+                "datetime": "5:15pm, 29th April 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "2",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130183330/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130183330"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.621023,
+                    53.796028
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130368682",
+                "datetime": "8:05am, 6th September 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "2",
+                "Number_of_Vehicles": "3",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130368682/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130368682"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.612629,
+                    53.833769
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130329438",
+                "datetime": "4:48pm, 9th August 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "2",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130329438/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130329438"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.638272,
+                    53.804503
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2013130235303",
+                "datetime": "2:25pm, 7th June 2013",
+                "severity": "serious",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "2",
+                "url": "http://www.cyclestreets.net/collisions/reports/2013130235303/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2013130235303"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.570247,
+                    53.741981
+                ]
+            }
+        },
+        {
+            "type": "Feature",
+            "properties": {
+                "id": "2005131088605",
+                "datetime": "7:30am, 25th November 2005",
+                "severity": "slight",
+                "casualties": "Cyclist",
+                "Number_of_Casualties": "1",
+                "Number_of_Vehicles": "2",
+                "url": "http://www.cyclestreets.net/collisions/reports/2005131088605/",
+                "apiUrl": "https://api.cyclestreets.net/v2/collisions.location?id=2005131088605"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -1.425475,
+                    53.764519
+                ]
+            }
+        }
+    ]
+}
