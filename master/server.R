@@ -67,11 +67,11 @@ shinyServer(function(input, output){
 
   output$map = renderLeaflet(map%>%
                                {
-                                 ## Add polygones (of MSOA boundaries) ONLY when the checkbox transp_zones is CHECKED
-                                if (input$transp_zones)
+                                 ## Add polygones (of MSOA boundaries)
+                                if (input$zone_type == 'msoa')
                                    addPolygons(. , data = leeds
                                                , fillOpacity = 0.4
-                                               , opacity = (input$transp_zones)*.4
+                                               , opacity = 0.4
                                                , fillColor = leeds$color_pcycle
                                    )
                                  else .
@@ -81,7 +81,7 @@ shinyServer(function(input, output){
                                             , popup = journeyLabel(round(flows$fastest_distance_in_m / 1000, 1), round(flows$p_cycle * 100, 2))
                                ) %>%
                                addPolylines(data = lquiet, color = "green",
-                                            , opacity = input$transp_fast
+                                            , opacity = input$line_transp
                                             , popup = journeyLabel(round(flows$quietest_distance_in_m / 1000, 1), round(flows$p_cycle * 100, 2))
                                ) %>%
                                addCircleMarkers(data = cents

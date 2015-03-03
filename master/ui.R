@@ -3,14 +3,46 @@ library(leaflet)
 fluidPage(
   titlePanel("FixMyPath"),
   sidebarLayout(
-    sidebarPanel("User input", width = 3
-                 # ,checkboxGroupInput("display", label = "Display", choices = c("zones", "centroids", "some-lines", "all-lines"), selected = "zones"),
-                 ,checkboxInput("transp_zones", label = "Transparency of zone boundaries", value = FALSE)
-                 # ,sliderInput("transp_cents", label = "Transparency of centroids", min = 0, max = 1, value = 0.3)
-                 ,sliderInput("transp_fast", label = "Transparency of paths", min = 0, max = 1, value = 0.7)
-                 # , selectInput("colour", "Colour of paths", choices = c("red", "blue", "black"))
-                 , selectInput("feature", "Features", choices = c("none", "cycleparking", "collisions", "bikeshops"))
-
+    sidebarPanel("Controls", width = 3
+                 ,selectInput("line_type", "Type of lines:",
+                              c("None" = "none"
+                                ,"Stright Lines" = "straight"
+                                ,"Fastest & Quietest Routes" = "routes")
+                              , selected = "none")
+                 ,conditionalPanel(
+                   condition = "input.line_type != 'none'"
+                   ,selectInput("line_scenarios", "Scenario of line:",
+                                c("Current Flow" = "current"
+                                  ,"Extra Cycling Potential (Baseline)" = "ecp_base"
+                                  ,"Potential Level of Cycling (Baseline)" = "plc_base"
+                                  ,"Extra Cycling Potential (Dutch)" = "plc_dutch"
+                                  ,"Potential Level of Cycling (Dutch)" = "plc_dutch")
+                                , selected = "current")
+                   ,sliderInput("nos_lines"
+                                , label = "Number of lines (n) negative to show the bottom n, postive the top"
+                                , min = -10, max = 10, value = 10)
+                   ,sliderInput("line_transp", label = "Transparency of lines", min = 0, max = 1, value = 0.7)
+                 )
+                 ,selectInput("zone_type", "Type of zones:",
+                              c("None" = "none"
+                                ,"Medium Super Output Area (MSOA)" = "msoa"
+                                ,"Super Output Area (SOA)" = "routes")
+                              , selected = "msoa")
+                 ,conditionalPanel(
+                   condition = "input.zone_type != 'none'"
+                   ,selectInput("zone_scenarios", "Scenario of zones:",
+                                c("Current Rate" = "current"
+                                  ,"Extra Cycling Potential (Baseline)" = "ecp_base"
+                                  ,"Potential Level of Cycling (Baseline)" = "plc_base"
+                                  ,"Distance to work" = "plc_dutch")
+                                , selected = "current")
+                 )
+                 ,selectInput("feature", "Additional Features"
+                              , choices =  c("None" = "none"
+                                             ,"Cycle Parking" = "cycleparking"
+                                             ,"Collisions involving cyclists" = "collisions"
+                                             ,"Bike Shops" = "bikeshops")
+                 )
     ),
     mainPanel("Welcome to",
               a(href = "https://robinlovelace.shinyapps.io/fixMyPath/", "fixMyPath"),
