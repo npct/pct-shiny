@@ -33,7 +33,7 @@ shinyServer(function(input, output, session){
                        , radius = 2
                        , color = "black"
                        , popup = sprintf("<b>Journeys by bike: </b>%s%%", round(leeds$pCycle * 100, 2))) %>%
-      addGeoJSON(RJSONIO::fromJSON(sprintf("%s.geojson", input$feature))) %>%
+      addGeoJSON(RJSONIO::fromJSON(sprintf("../data/%s.geojson", input$feature))) %>%
       mapOptions(zoomToLimits = "first")
     ## Add polygones (of MSOA boundaries) ONLY when the checkbox transp_zones is CHECKED
     if (input$transp_zones == TRUE){
