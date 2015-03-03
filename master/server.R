@@ -9,6 +9,30 @@ cycle_street_bbox <- function(bounds){
   paste(bounds$west, bounds$south, bounds$east, bounds$north, sep=",")
 }
 
+ascending_descending <- function(sort_by){
+  if(sort_by$nos>0) paste(sort_by$attr, '+A') else paste(sort_by$attr, '+D')
+}
+
+get_lines <- function(bounds, sort_by){
+  if(is.null(bounds)){ return(empty_geojson) }
+  query_list <- list(service='WFS'
+                     ,version='1.0.0'
+                     ,request='GetFeature'
+                     ,typeName='shiny:leeds-msoas'
+                     ,bbox=cycle_street_bbox(bounds)
+                     ,maxFeatures='20'
+                     ,outputFormat='application/json'
+  )
+  if(!is.null(sort_by)){
+    query_list <- list(query_list
+                       ,list(sortBy=ascending_descending(sort_by))
+    )
+  }
+  resp <- GET('http://geo8.webarch.net:8080/geoserver/shiny/ows', query = query_list )
+  if(status_code(resp)==200){ return(content(resp, 'parsed')) }
+  empty_geojson
+}
+
 collisions <- function(bounds){
   if(!is.null(bounds)){
     resp <- GET('https://api.cyclestreets.net/v2/collisions.locations',
