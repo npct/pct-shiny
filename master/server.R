@@ -67,10 +67,11 @@ shinyServer(function(input, output){
 
   output$map = renderLeaflet(map%>%
                                {
-                                 if (input$transp_zones)
+                                 ## Add polygones (of MSOA boundaries) ONLY when the checkbox transp_zones is CHECKED
+                                if (input$transp_zones)
                                    addPolygons(. , data = leeds
                                                , fillOpacity = 0.4
-                                               , opacity = 0.4
+                                               , opacity = (input$transp_zones)*.4
                                                , fillColor = leeds$color_pcycle
                                    )
                                  else .
