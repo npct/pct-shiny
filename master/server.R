@@ -101,7 +101,7 @@ shinyServer(function(input, output){
                                  else .
                                } %>%
                                addPolylines(data = lfast, color = "red"
-                                            , opacity = input$transp_fast
+                                            , opacity = input$line_transp
                                             , popup = journeyLabel(round(flows$fastest_distance_in_m / 1000, 1), round(flows$p_cycle * 100, 2))
                                ) %>%
                                addPolylines(data = lquiet, color = "green",
