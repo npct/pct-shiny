@@ -10,18 +10,10 @@ leeds <- readRDS("../data/leeds-msoas-simple.Rds")
 function(input, output, session) {
 
   observe({
-    # Select which lines are to be shown - when user selects the scenario
-    choice <- ""
-    if (input$scenario == 1){
-      choice <- "clc"
-    }else if (input$scenario == 2){
-      choice <- "plc"
-    }else if (input$scenario == 3){
-      choice <- "ecp"
-    }
 
-    ## Tail of Head of sorting (if it is TOP then it is sorted by head, otherwise by tail)
+    ## Initialize how many lines to be sorted by zero
     torh <- 0
+    ## Tail or Head for sorting (if it is TOP then it is sorted by head, otherwise by tail)
     func <- head
 
     if (input$lines == "Top 10"){
@@ -39,11 +31,14 @@ function(input, output, session) {
     }
 
     # Calculate the filtered data based on order function (head or tail) and how many lines are shown
-    filter_data <- l[ func(order(l[[choice]]), (torh)), ]
+    filter_data <- l[ func(order(l[[input$scenario]]), (torh)), ]
 
     map <- leaflet() %>%
       addTiles(urlTemplate = "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png") %>%
-      addPolylines(data = filter_data, opacity = 1, color = "red") %>%
+      addPolylines(data = filter_data,
+                   # Add opacity to the lines - ranging from 0 to 0.5 in descending order
+                   opacity = sort(runif(torh, min = 0, max = 0.5), decreasing = TRUE),
+                   color = "red") %>%
       mapOptions(zoomToLimits = "first")
     output$map = renderLeaflet(map
                                %>%
