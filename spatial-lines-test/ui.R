@@ -6,9 +6,9 @@ fluidPage(
   sidebarLayout(
     sidebarPanel("User input", width = 3
                  , selectInput("lines", "Select Lines", choices = c("Top 10", "Top 50", "Bottom 10", "Bottom 50"))
-                 , radioButtons("scenario", label = "Scenario", choices = list("Current level of cycling (clc)" = 1,
-                                                                               "Potential level of cycling (plc)" = 2,
-                                                                               "Extra cycling potential (ecp)" = 3), selected = 1)
+                 , radioButtons("scenario", label = "Scenario", choices = list("Current level of cycling (clc)" = "clc",
+                                                                               "Potential level of cycling (plc)" = "plc",
+                                                                               "Extra cycling potential (ecp)" = "ecp"), selected = "clc")
                  , checkboxInput("show_zones", label = "Show zone boundaries", value = FALSE)
                  , sliderInput("transp", label = "Transparency of boundaries", min = 0, max = 1, value = 0.7)
 
