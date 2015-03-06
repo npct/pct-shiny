@@ -70,15 +70,22 @@ from_cycle_streets <- function(bounds, type){
 }
 
 # Load data
-l <- readRDS("../data/al.Rds")
-lfast <- l[ l$color == "green", ]
-lquiet <- l[ l$color == "red", ]
-
+l <- readRDS("../data/l.Rds")
+routes <- readRDS("../data/al.Rds")
+rfast <- routes[ routes$color == "green", ]
+rquiet <- routes[ routes$color == "red", ]
 flows <- read.csv("../data/al-flow.csv")
 leeds <- readRDS("../data/leeds-msoas-simple.Rds")
 
 journeyLabel <- function(distance, percentage){
   sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd>", distance, percentage)
+}
+
+sort_lines <- function(lines, scenario, nos){
+  if(nos > 0)
+    lines[ head(order(lines[[scenario]]), (nos)), ]
+  else
+    lines[ tail(order(lines[[scenario]]), (nos*-1)), ]
 }
 
 shinyServer(function(input, output){
@@ -100,14 +107,27 @@ shinyServer(function(input, output){
                                    )
                                  else .
                                } %>%
-                               addPolylines(data = lfast, color = "red"
-                                            , opacity = input$line_transp
-                                            , popup = journeyLabel(round(flows$fastest_distance_in_m / 1000, 1), round(flows$p_cycle * 100, 2))
-                               ) %>%
-                               addPolylines(data = lquiet, color = "green",
-                                            , opacity = input$line_transp
-                                            , popup = journeyLabel(round(flows$quietest_distance_in_m / 1000, 1), round(flows$p_cycle * 100, 2))
-                               ) %>%
+                               {
+                                 if (input$line_type == 'straight' && input$nos_lines != 0)
+                                   addPolylines(., data = sort_lines(l, input$line_scenarios, input$nos_lines)
+                                                , opacity = sort(runif(abs(input$nos_lines), min = 0.4, max = 0.8), decreasing = TRUE),
+                                                , popup = journeyLabel(round(flows$fastest_distance_in_m / 1000, 1), round(flows$p_cycle * 100, 2)))
+                                 else
+                                   .
+                               }%>%
+                               {
+                                 if (input$line_type == 'route' && input$nos_lines != 0)
+                                   addPolylines(., data = rfast, color = "red"
+                                                , opacity = input$line_transp
+                                                , popup = journeyLabel(round(flows$fastest_distance_in_m / 1000, 1), round(flows$p_cycle * 100, 2))
+                                   ) %>%
+                                   addPolylines(data = rquiet, color = "green",
+                                                , opacity = input$line_transp
+                                                , popup = journeyLabel(round(flows$quietest_distance_in_m / 1000, 1), round(flows$p_cycle * 100, 2))
+                                   )
+                                 else
+                                   .
+                               }%>%
                                addCircleMarkers(data = cents
                                                 , radius = 2
                                                 , color = "black"

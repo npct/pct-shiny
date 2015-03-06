@@ -7,21 +7,20 @@ fluidPage(
                  ,selectInput("line_type", "Type of lines:",
                               c("None" = "none"
                                 ,"Stright Lines" = "straight"
-                                ,"Fastest & Quietest Routes" = "routes")
+                                ,"Fastest & Quietest Routes" = "route")
                               , selected = "none")
                  ,conditionalPanel(
                    condition = "input.line_type != 'none'"
                    ,selectInput("line_scenarios", "Scenario of line:",
-                                c("Current Flow" = "current"
-                                  ,"Extra Cycling Potential (Baseline)" = "ecp_base"
-                                  ,"Potential Level of Cycling (Baseline)" = "plc_base"
+                                c("Current Flow" = "clc"
+                                  ,"Extra Cycling Potential (Baseline)" = "ecp"
+                                  ,"Potential Level of Cycling (Baseline)" = "plc"
                                   ,"Extra Cycling Potential (Dutch)" = "plc_dutch"
                                   ,"Potential Level of Cycling (Dutch)" = "plc_dutch")
                                 , selected = "current")
                    ,sliderInput("nos_lines"
                                 , label = "Number of lines (n) negative to show the bottom n, postive the top"
                                 , min = -10, max = 10, value = 10)
-                   ,sliderInput("line_transp", label = "Transparency of lines", min = 0, max = 1, value = 0.7)
                  )
                  ,selectInput("zone_type", "Type of zones:",
                               c("None" = "none"
