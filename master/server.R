@@ -109,7 +109,7 @@ shinyServer(function(input, output){
                                } %>%
                                {
                                  if (input$line_type == 'straight' && input$nos_lines != 0)
-                                   addPolylines(., data = sort_lines(l, input$line_scenarios, input$nos_lines)
+                                   addPolylines(., data = sort_lines(l, input$line_attr, input$nos_lines)
                                                 , opacity = sort(runif(abs(input$nos_lines), min = 0.4, max = 0.8), decreasing = T),
                                                 , popup = journeyLabel(round(flows$fastest_distance_in_m / 1000, 1), round(flows$p_cycle * 10, 2)))
                                  else
@@ -117,11 +117,11 @@ shinyServer(function(input, output){
                                }%>%
                                {
                                  if (input$line_type == 'route' && input$nos_lines != 0)
-                                   addPolylines(., data = sort_lines(rfast, input$line_scenarios, input$nos_lines), color = "red"
+                                   addPolylines(., data = sort_lines(rfast, input$line_attr, input$nos_lines), color = "red"
                                                 , opacity = sort(runif(abs(input$nos_lines), min = 0.2, max = 0.8), decreasing = T)
                                                 , popup = journeyLabel(round(rfast$d / 1000, 1), round(rfast$clc * 10, 2))
                                    ) %>%
-                                   addPolylines(data = sort_lines(rquiet, input$line_scenarios, input$nos_lines), color = "green",
+                                   addPolylines(data = sort_lines(rquiet, input$line_attr, input$nos_lines), color = "green",
                                                 , opacity = sort(runif(abs(input$nos_lines), min = 0.2, max = 0.8), decreasing = T)
                                                 , popup = journeyLabel(round(rquiet$d / 1000, 1), round(rquiet$clc * 10, 2))
                                    )
