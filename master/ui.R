@@ -50,6 +50,6 @@ fluidPage(
     mainPanel("Welcome to",
               a(href = "http://geo8.webarch.net:3838/pct-shiny/master/", "fixMyPath"),
               p("fixMyPath is a shiny app written to facilitate better bicycle path planning in Leeds, the UK and eventually the world. If you'd like to get involved, please check-out, test and contribute-to the fully reproducible code..."),
-              a(href = "https://github.com/nikolai-b/hackMyRoute/tree/master/R/fixMyPath", strong("HERE!"), target="_blank"),
+              a(href = "https://github.com/npct/pct-shiny/tree/master/master", strong("HERE!"), target="_blank"),
               leafletOutput('map', height = 600)),
   ))
