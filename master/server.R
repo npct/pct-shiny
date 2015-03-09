@@ -1,6 +1,7 @@
 pkgs <- c("shiny", "leaflet", "ggmap", "RColorBrewer", "httr")
 lapply(pkgs, library, character.only = TRUE)
 
+# after Sys.setenv(CYCLESTREET = "my_token") # see http://www.cyclestreets.net/api/
 cyclestreet_token <- Sys.getenv('CYCLESTREET')
 
 empty_geojson <- '{"type": "Point","coordinates": [-1.5492,53.7997]}'
@@ -69,13 +70,8 @@ from_cycle_streets <- function(bounds, type){
   )
 }
 
-# Load data
-l <- readRDS("../data/l.Rds")
-routes <- readRDS("../data/al.Rds")
-rfast <- routes[ routes$route == "fast", ]
-rquiet <- routes[ routes$route == "quiet", ]
-flows <- read.csv("../data/al-flow.csv")
-leeds <- readRDS("../data/leeds-msoas-simple.Rds")
+rfast <- readRDS("../data/rfast.Rds")
+rquiet <- readRDS("../data/rquiet.Rds")
 
 journeyLabel <- function(distance, percentage, route){
   sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd><dt>Type of Route</dt><dd>%s</dd>", distance, percentage, route)
@@ -85,7 +81,7 @@ sort_lines <- function(lines, scenario, nos){
   if(nos > 0)
     lines[ head(order(lines[[scenario]]), nos), ]
   else
-    lines[ tail(order(lines[[scenario]]), (nos*-1)), ]
+    lines[ tail(order(lines[[scenario]]), -nos), ]
 }
 
 shinyServer(function(input, output){
