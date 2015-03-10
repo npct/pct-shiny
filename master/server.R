@@ -1,4 +1,4 @@
-pkgs <- c("shiny", "leaflet", "ggmap", "RColorBrewer", "httr")
+pkgs <- c("shiny", "leaflet", "ggmap", "sp", "RColorBrewer", "httr")
 lapply(pkgs, library, character.only = TRUE)
 
 # after Sys.setenv(CYCLESTREET = "my_token") # see http://www.cyclestreets.net/api/
