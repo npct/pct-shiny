@@ -75,6 +75,7 @@ rfast <- readRDS("../data/rfast.Rds")
 rquiet <- readRDS("../data/rquiet.Rds")
 flows <- read.csv("../data/al-flow.csv")
 leeds <- readRDS("../data/leeds-msoas-simple.Rds")
+l <- readRDS("../data/l.Rds")
 
 journeyLabel <- function(distance, percentage, route){
   sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd><dt>Type of Route</dt><dd>%s</dd>", distance, percentage, route)
