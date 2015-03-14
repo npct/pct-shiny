@@ -23,15 +23,11 @@ get_lines <- function(bounds, nos, sort_by_attr){
                      ,bbox=cycle_street_bbox(bounds)
                      ,maxFeatures=nos
                      ,outputFormat='application/json'
+                     ,sortBy=ascending_descending(nos, sort_by_attr)
   )
-  if(!is.null(sort_by_attr)){
-    query_list <- c(query_list
-                       ,sortBy=ascending_descending(nos, sort_by_attr)
-    )
-  }
-  print(query_list)
   resp <- GET('http://geo8.webarch.net:8080/geoserver/topp/ows', query = query_list )
   if(status_code(resp)==200){ return(content(resp, 'parsed')) }
+  empty_geojson
 }
 
 collisions <- function(bounds){
@@ -75,7 +71,6 @@ rfast <- readRDS("../data/rfast.Rds")
 rquiet <- readRDS("../data/rquiet.Rds")
 flows <- read.csv("../data/al-flow.csv")
 leeds <- readRDS("../data/leeds-msoas-simple.Rds")
-l <- readRDS("../data/l.Rds")
 
 journeyLabel <- function(distance, percentage, route){
   sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd><dt>Type of Route</dt><dd>%s</dd>", distance, percentage, route)
