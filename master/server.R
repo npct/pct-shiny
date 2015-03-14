@@ -10,28 +10,28 @@ cycle_street_bbox <- function(bounds){
   paste(bounds$west, bounds$south, bounds$east, bounds$north, sep=",")
 }
 
-ascending_descending <- function(sort_by){
-  if(sort_by$nos>0) paste(sort_by$attr, '+A') else paste(sort_by$attr, '+D')
+ascending_descending <- function(nos, sort_by){
+  if(nos>0) paste(sort_by, 'D') else paste(sort_by, 'A')
 }
 
-get_lines <- function(bounds, sort_by){
+get_lines <- function(bounds, nos, sort_by_attr){
   if(is.null(bounds)){ return(empty_geojson) }
   query_list <- list(service='WFS'
                      ,version='1.0.0'
                      ,request='GetFeature'
-                     ,typeName='shiny:leeds-msoas'
+                     ,typeName='topp:lines-manchester'
                      ,bbox=cycle_street_bbox(bounds)
-                     ,maxFeatures='20'
+                     ,maxFeatures=nos
                      ,outputFormat='application/json'
   )
-  if(!is.null(sort_by)){
-    query_list <- list(query_list
-                       ,list(sortBy=ascending_descending(sort_by))
+  if(!is.null(sort_by_attr)){
+    query_list <- c(query_list
+                       ,sortBy=ascending_descending(nos, sort_by_attr)
     )
   }
-  resp <- GET('http://geo8.webarch.net:8080/geoserver/shiny/ows', query = query_list )
+  print(query_list)
+  resp <- GET('http://geo8.webarch.net:8080/geoserver/topp/ows', query = query_list )
   if(status_code(resp)==200){ return(content(resp, 'parsed')) }
-  empty_geojson
 }
 
 collisions <- function(bounds){
@@ -109,10 +109,7 @@ shinyServer(function(input, output){
                                } %>%
                                {
                                  if (input$line_type == 'straight' && input$nos_lines != 0)
-                                   addPolylines(., data = sort_lines(l, input$line_attr, input$nos_lines)
-                                                # Sequence in descending order
-                                                , opacity = seq(0.8, 0.4, length = abs(input$nos_lines))
-                                                , popup = journeyLabel(round(flows$fastest_distance_in_m / 1000, 1), round(flows$p_cycle * 10, 2), "Line"))
+                                   addGeoJSON(., get_lines(input$map_bounds, input$nos_lines, input$line_attr))
                                  else
                                    .
                                }%>%
