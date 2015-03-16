@@ -2,7 +2,7 @@
 
 Interactive map for prioritising funding for cycling.
 
-# Setup
+### Setup
 
 To run the code in this repository you will need a few things, primarily
 a working version of R. Using RStudio will make your life easier.
@@ -37,7 +37,16 @@ sudo echo "export CYCLESTREET='my_token'" > /etc/profile.d/cyclestreet.sh
 ```
 
 ### To install shiny-server
+
 * build from source https://github.com/rstudio/shiny-server/wiki/Building-Shiny-Server-from-Source
 * add cyclestreet token to ENV
 * use default server config `wget https://raw.githubusercontent.com/rstudio/shiny-server/master/config/default.config > /etc/shiny-server/shiny-server.conf`
 * use default upstart `wget  https://raw.github.com/rstudio/shiny-server/master/config/upstart/shiny-server.conf  -O /etc/init/shiny-server.conf`
+
+### Deploying
+
+We use a branch called 'production' for the deployed version:
+
+```bash
+git push production master
+```
