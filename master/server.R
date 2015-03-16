@@ -12,26 +12,6 @@ cycle_street_bbox <- function(bounds){
   paste(bounds$west, bounds$south, bounds$east, bounds$north, sep=",")
 }
 
-ascending_descending <- function(nos, sort_by){
-  if(nos>0) paste(sort_by, 'D') else paste(sort_by, 'A')
-}
-
-get_lines <- function(bounds, nos, sort_by_attr){
-  if(is.null(bounds)){ return(empty_geojson) }
-  query_list <- list(service='WFS'
-                     ,version='1.0.0'
-                     ,request='GetFeature'
-                     ,typeName='topp:lines-manchester'
-                     ,bbox=cycle_street_bbox(bounds)
-                     ,maxFeatures=nos
-                     ,outputFormat='application/json'
-                     ,sortBy=ascending_descending(nos, sort_by_attr)
-  )
-  resp <- GET('http://geo8.webarch.net:8080/geoserver/topp/ows', query = query_list )
-  if(status_code(resp)==200){ return(content(resp, 'parsed')) }
-  empty_geojson
-}
-
 collisions <- function(bounds){
   if(!is.null(bounds)){
     resp <- GET('https://api.cyclestreets.net/v2/collisions.locations',
