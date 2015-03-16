@@ -1,66 +1,20 @@
-pkgs <- c("shiny", "leaflet", "ggmap", "sp", "RColorBrewer", "httr", "rgeos", "raster")
+pkgs <- c("shiny", "leaflet", "ggmap", "sp", "RColorBrewer", "httr", "rgeos", "raster", "rgdal")
 lapply(pkgs, library, character.only = TRUE)
 
-# cckey <- readLines("~/Dropbox/dotfiles/cyclestreets-api-key-rl")
-# after Sys.setenv(CYCLESTREET = cckey) # see http://www.cyclestreets.net/api/
-
-cckey <- Sys.getenv('CYCLESTREET')
-
-empty_geojson <- '{"type": "Point","coordinates": [-1.5492,53.7997]}'
-
-cycle_street_bbox <- function(bounds){
-  paste(bounds$west, bounds$south, bounds$east, bounds$north, sep=",")
-}
+sapply('./cyclestreet.R', FUN=source)
 
 create_bb <- function(bounds){
   lat <- c(bounds$west , bounds$east)
   lng <- c(bounds$north, bounds$south)
-  P4S.latlon <- CRS("+proj=longlat +datum=WGS84")
-  c1 <- SpatialPoints(cbind(lat, lng), proj4string = P4S.latlon)
+  c1 <- SpatialPoints(cbind(lat, lng))
   bbox(c1)
 }
 
-collisions <- function(bounds){
-  if(!is.null(bounds)){
-    resp <- GET('https://api.cyclestreets.net/v2/collisions.locations',
-                query=list(bbox=cycle_street_bbox(bounds)
-                           , casualtiesinclude='cyclist'
-                           , key=cckey
-                           , limit=20
-                )
-    )
-    if(status_code(resp)==200){ return(content(resp, 'parsed')) }
-  }
-  empty_geojson
-}
-
-pois <- function(bounds, type){
-  if(!is.null(bounds)){
-    resp <- GET('https://api.cyclestreets.net/v2/pois.locations',
-                query=list(bbox=cycle_street_bbox(bounds)
-                           , type=type
-                           , key=cckey
-                           , limit=20
-                           , fields='id,latitude,longitude,name,osmTags'
-                )
-    )
-    if(status_code(resp)==200){ return(content(resp, 'parsed')) }
-  }
-  empty_geojson
-}
-
-from_cycle_streets <- function(bounds, type){
-  switch(type
-         ,"collisions"=collisions(bounds)
-         , pois(bounds, type)
-  )
-}
-
 # Load data
-rfast <- readRDS("../manchester-shiny/rf.Rds")
-rquiet <- readRDS("../manchester-shiny/rq.Rds")
-l <- readRDS("../manchester-shiny/l.Rds")
-zones <- readRDS("../manchester-shiny/z.Rds")
+rfast <- readRDS("../data/manchester/rf.Rds")
+rquiet <- readRDS("../data/manchester/rq.Rds")
+l <- readRDS("../data/manchester/l.Rds")
+zones <- readRDS("../data/manchester/z.Rds")
 flow <- l@data
 
 journeyLabel <- function(distance, percentage, route){
@@ -69,12 +23,15 @@ journeyLabel <- function(distance, percentage, route){
 
 sort_lines <- function(lines, scenario, nos, bounds){
   bb <- create_bb(bounds)
-  pl <- as(extent(as.vector(t(bb))), "SpatialPolygons")
-  l_in_bb <- lines[pl, ]
+  poly <- as(extent(as.vector(t(bb))), "SpatialPolygons")
+  proj4string(poly)=CRS("+init=epsg:4326 +proj=longlat")
+  poly <- spTransform(poly, CRS(proj4string(lines)))
+
+  l_in_bb <- lines[poly, ]
   if(nos > 0)
-    lines[ head(order(l_in_bb[[scenario]]), nos), ]
+    l_in_bb[ head(order(l_in_bb[[scenario]]), nos), ]
   else
-    lines[ tail(order(l_in_bb[[scenario]]), -nos), ]
+    l_in_bb[ tail(order(l_in_bb[[scenario]]), -nos), ]
 }
 
 shinyServer(function(input, output){
