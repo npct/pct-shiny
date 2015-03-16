@@ -76,7 +76,7 @@ zones <- readRDS("../manchester-shiny/z.Rds")
 flow <- l@data
 
 journeyLabel <- function(distance, percentage, route){
-  sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd><dt>Type of Route</dt><dd>%s</dd>", distance, percentage, route)
+  sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd><dt>Type of Route</dt><dd>%s</dd></dl>", distance, percentage, route)
 }
 
 sort_lines <- function(lines, scenario, nos){
@@ -107,18 +107,21 @@ shinyServer(function(input, output){
                                } %>%
                                {
                                  if (input$line_type == 'straight' && input$nos_lines != 0)
-                                   addGeoJSON(., get_lines(input$map_bounds, input$nos_lines, input$line_attr))
+                                   addPolylines(., data = sort_lines(l, input$line_attr, input$nos_lines), color = 'blue'
+                                                # Sequence in descending order
+                                                , opacity = seq(0.8, 0.0, length = abs(input$nos_lines))
+                                                , popup = sprintf("<dl><dt>Distance </dt><dd>%s km</dd></dl>", round(l$dist ,1)))
                                  else
                                    .
                                }%>%
                                {
                                  if (input$line_type == 'route' && input$nos_lines != 0)
                                    addPolylines(., data = sort_lines(rfast, input$line_attr, input$nos_lines), color = "red"
-                                                , opacity = seq(0.8, 0.2, length = abs(input$nos_lines))
+                                                , opacity = seq(0.8, 0.1, length = abs(input$nos_lines))
                                                 , popup = journeyLabel(round(rfast$d / 1000, 1), round(rfast$clc * 10, 2), "Fast")
                                    ) %>%
                                    addPolylines(data = sort_lines(rquiet, input$line_attr, input$nos_lines), color = "green",
-                                                , opacity = seq(0.8, 0.2, length = abs(input$nos_lines))
+                                                , opacity = seq(0.8, 0.1, length = abs(input$nos_lines))
                                                 , popup = journeyLabel(round(rquiet$d / 1000, 1), round(rquiet$clc * 10, 2), "Quiet")
                                    )
                                  else
