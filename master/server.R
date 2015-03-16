@@ -12,6 +12,12 @@ cycle_street_bbox <- function(bounds){
   paste(bounds$west, bounds$south, bounds$east, bounds$north, sep=",")
 }
 
+create_bb <- function(bounds){
+  lat <- c(bounds$west, bounds$east)
+  lng <- c(bounds$north, bounds$south)
+  c1 <- cbind(lat, lng)
+  Polygons(list(Polygon(rbind(c1, c1[1, ]) )), "bb")
+}
 collisions <- function(bounds){
   if(!is.null(bounds)){
     resp <- GET('https://api.cyclestreets.net/v2/collisions.locations',
