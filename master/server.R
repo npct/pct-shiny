@@ -1,13 +1,14 @@
-pkgs <- c("shiny", "leaflet", "ggmap", "sp", "RColorBrewer", "httr", "rgeos", "raster", "rgdal")
+pkgs <- c("shiny", "leaflet", "ggmap", "sp", "RColorBrewer", "httr", "rgeos", "rgdal")
 lapply(pkgs, library, character.only = TRUE)
 
 sapply('./cyclestreet.R', FUN=source)
 
 create_bb <- function(bounds){
-  lat <- c(bounds$west , bounds$east)
-  lng <- c(bounds$north, bounds$south)
-  c1 <- SpatialPoints(cbind(lat, lng))
-  bbox(c1)
+  lat <- c(bounds$west , bounds$east, bounds$east, bounds$west )
+  lng <- c(bounds$north, bounds$north, bounds$south, bounds$south)
+  c1 <- cbind(lat, lng)
+  r1 <- rbind(c1, c1[1, ])
+  SpatialPolygons(list(Polygons(list(Polygon(r1)), 'bb')), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
 }
 
 # Load data
@@ -22,8 +23,7 @@ journeyLabel <- function(distance, percentage, route){
 }
 
 sort_lines <- function(lines, scenario, nos, bounds){
-  bb <- create_bb(bounds)
-  poly <- as(extent(as.vector(t(bb))), "SpatialPolygons")
+  poly <- create_bb(bounds)
   proj4string(poly)=CRS("+init=epsg:4326 +proj=longlat")
   poly <- spTransform(poly, CRS(proj4string(lines)))
 
