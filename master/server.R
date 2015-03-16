@@ -1,8 +1,10 @@
 pkgs <- c("shiny", "leaflet", "ggmap", "sp", "RColorBrewer", "httr")
 lapply(pkgs, library, character.only = TRUE)
 
-# after Sys.setenv(CYCLESTREET = "my_token") # see http://www.cyclestreets.net/api/
-cyclestreet_token <- Sys.getenv('CYCLESTREET')
+# cckey <- readLines("~/Dropbox/dotfiles/cyclestreets-api-key-rl")
+# after Sys.setenv(CYCLESTREET = cckey) # see http://www.cyclestreets.net/api/
+
+cckey <- Sys.getenv('CYCLESTREET')
 
 empty_geojson <- '{"type": "Point","coordinates": [-1.5492,53.7997]}'
 
@@ -35,7 +37,7 @@ collisions <- function(bounds){
     resp <- GET('https://api.cyclestreets.net/v2/collisions.locations',
                 query=list(bbox=cycle_street_bbox(bounds)
                            , casualtiesinclude='cyclist'
-                           , key=cyclestreet_token
+                           , key=cckey
                            , limit=20
                 )
     )
@@ -49,7 +51,7 @@ pois <- function(bounds, type){
     resp <- GET('https://api.cyclestreets.net/v2/pois.locations',
                 query=list(bbox=cycle_street_bbox(bounds)
                            , type=type
-                           , key=cyclestreet_token
+                           , key=cckey
                            , limit=20
                            , fields='id,latitude,longitude,name,osmTags'
                 )
@@ -67,10 +69,11 @@ from_cycle_streets <- function(bounds, type){
 }
 
 # Load data
-rfast <- readRDS("../data/rfast.Rds")
-rquiet <- readRDS("../data/rquiet.Rds")
-flows <- read.csv("../data/al-flow.csv")
-leeds <- readRDS("../data/leeds-msoas-simple.Rds")
+rfast <- readRDS("../manchester-shiny/rf.Rds")
+rquiet <- readRDS("../manchester-shiny/rq.Rds")
+l <- readRDS("../manchester-shiny/l.Rds")
+zones <- readRDS("../manchester-shiny/z.Rds")
+flow <- l@data
 
 journeyLabel <- function(distance, percentage, route){
   sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd><dt>Type of Route</dt><dd>%s</dd>", distance, percentage, route)
@@ -85,8 +88,8 @@ sort_lines <- function(lines, scenario, nos){
 
 shinyServer(function(input, output){
 
-  cents <- coordinates(leeds)
-  cents <- SpatialPointsDataFrame(cents, data = leeds@data, match.ID = F)
+  cents <- coordinates(zones)
+  cents <- SpatialPointsDataFrame(cents, data = zones@data, match.ID = F)
 
   map <- leaflet() %>%
     addTiles(urlTemplate = "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png")
@@ -95,10 +98,10 @@ shinyServer(function(input, output){
                                {
                                  ## Add polygones (of MSOA boundaries)
                                 if (input$zone_type == 'msoa')
-                                   addPolygons(. , data = leeds
+                                   addPolygons(. , data = zones
                                                , fillOpacity = 0.4
                                                , opacity = 0.1
-                                               , fillColor = leeds$color_pcycle
+                                               , fillColor = zones$color_pcycle
                                    )
                                  else .
                                } %>%
@@ -124,7 +127,7 @@ shinyServer(function(input, output){
                                addCircleMarkers(data = cents
                                                 , radius = 2
                                                 , color = "black"
-                                                , popup = sprintf("<b>Journeys by bike: </b>%s%%", round(leeds$pCycle*100,2))) %>%
+                                                , popup = sprintf("<b>Journeys by bike: </b>%s%%", round(zones$pCycle*100,2))) %>%
                                {
                                  if (input$feature != "none")
                                    addGeoJSON(., from_cycle_streets(input$map_bounds, input$feature))
