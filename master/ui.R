@@ -1,7 +1,7 @@
 library(shiny)
 library(leaflet)
 
-scenarios <- c("Baseline" =           "ba"
+scenarios <- c("Baseline" =          "ba"
               ,"Gender equality" =   "ge"
               ,"Go Dutch" =          "gd"
               ,"Electric bicycles" = "eb")
@@ -23,26 +23,24 @@ features <- c("None" = "none"
               ,"Collisions involving cyclists" = "collisions"
               ,"Bike Shops" = "bikeshops")
 
-fluidPage(
-  titlePanel("FixMyPath"),
-  sidebarLayout(
-    sidebarPanel("Controls", width = 3
-                 ,selectInput("scenario", "Scenario:", scenarios)
-                 ,selectInput("line_type", "Representation of cycling desire lines", line_types, selected = "none")
-                 ,conditionalPanel(condition = "input.line_type != 'none'"
-                   ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
-                   ,sliderInput("nos_lines", label = "Number of lines (n) negative to show the bottom n, postive the top"
-                                , min = -10, max = 10, value = 10)
-                 )
-                 ,selectInput("zone_type", "Type of zones:", zone_types, selected = "msoa")
-                 ,conditionalPanel(condition = "input.zone_type != 'none'"
-                   ,selectInput("zone_attr", "Zone attribute:", attrs, selected = "current")
-                 )
-                 ,selectInput("feature", "Additional Features", features)
-    ),
-    mainPanel("Welcome to",
-              a(href = "http://geo8.webarch.net:3838/pct-shiny/master/", "fixMyPath"),
-              p("This is a shiny app written to facilitate better bicycle path planning. If you'd like to get involved, please check-out, test and contribute-to the fully reproducible code..."),
-              a(href = "https://github.com/npct/pct-shiny/tree/master/master", strong("HERE!"), target="_blank"),
-              leafletOutput('map', height = 600)),
-  ))
+shinyUI(navbarPage("Infrastructure planning tool", id="nav"
+                   ,tabPanel("Interactive map"
+                            ,leafletOutput("map", width="auto", height="1000")
+                            ,absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
+                                           draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
+                                           width = 330, height = "auto"
+                                           ,selectInput("scenario", "Scenario:", scenarios)
+                                           ,selectInput("line_type", "Representation of cycling desire lines", line_types, selected = "none")
+                                           ,conditionalPanel(condition = "input.line_type != 'none'"
+                                                             ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
+                                                             ,sliderInput("nos_lines", label = "Number of lines (n) negative to show the bottom n, postive the top"
+                                                                          , min = -10, max = 10, value = 10)
+                                           )
+                                           ,selectInput("zone_type", "Type of zones:", zone_types, selected = "msoa")
+                                           ,conditionalPanel(condition = "input.zone_type != 'none'"
+                                                             ,selectInput("zone_attr", "Zone attribute:", attrs, selected = "current")
+                                           )
+                                           ,selectInput("feature", "Additional Features", features)
+                            )
+                   )
+))
