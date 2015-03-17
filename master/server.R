@@ -58,7 +58,8 @@ shinyServer(function(input, output){
                                  if (input$line_type == 'straight' && input$nos_lines != 0)
                                    addPolylines(., data = sort_lines(l, input$line_attr, input$nos_lines, input$map_bounds), color = 'blue'
                                                 # Sequence in descending order
-                                                , opacity = seq(0.8, 0.0, length = abs(input$nos_lines))
+                                                , weight = seq(4, 0.1, length = abs(input$nos_lines))
+                                                , opacity = seq(0.8, 0.01, length = abs(input$nos_lines))
                                                 , popup = sprintf("<dl><dt>Distance </dt><dd>%s km</dd></dl>", round(l$dist ,1)))
                                  else
                                    .
@@ -66,12 +67,14 @@ shinyServer(function(input, output){
                                {
                                  if (input$line_type == 'route' && input$nos_lines != 0)
                                    addPolylines(., data = sort_lines(rfast, input$line_attr, input$nos_lines, input$map_bounds), color = "red"
-                                                , opacity = seq(0.8, 0.1, length = abs(input$nos_lines))
-                                                , popup = journeyLabel(round(rfast$d / 1000, 1), round(rfast$clc * 10, 2), "Fast")
+                                                , weight = seq(4, 0.1, length = abs(input$nos_lines))
+                                                , opacity = seq(0.8, 0.01, length = abs(input$nos_lines))
+                                                , popup = journeyLabel(round(rfast$distance, 1), round(rfast$clc * 10, 2), "Fast")
                                    ) %>%
                                    addPolylines(data = sort_lines(rquiet, input$line_attr, input$nos_lines, input$map_bounds), color = "green",
-                                                , opacity = seq(0.8, 0.1, length = abs(input$nos_lines))
-                                                , popup = journeyLabel(round(rquiet$d / 1000, 1), round(rquiet$clc * 10, 2), "Quiet")
+                                                , weight = seq(4, 0.1, length = abs(input$nos_lines))
+                                                , opacity = seq(0.8, 0.01, length = abs(input$nos_lines))
+                                                , popup = journeyLabel(round(rquiet$distance, 1), round(rquiet$clc * 10, 2), "Quiet")
                                    )
                                  else
                                    .
