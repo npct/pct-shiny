@@ -3,7 +3,7 @@ lapply(pkgs, library, character.only = TRUE)
 
 sapply('./cyclestreet.R', FUN=source)
 
-create_bb <- function(bounds){
+bb_poly <- function(bounds){
   lat <- c(bounds$west , bounds$east, bounds$east, bounds$west )
   lng <- c(bounds$north, bounds$north, bounds$south, bounds$south)
   c1 <- cbind(lat, lng)
@@ -23,11 +23,12 @@ journeyLabel <- function(distance, percentage, route){
 }
 
 sort_lines <- function(lines, scenario, nos, bounds){
-  poly <- create_bb(bounds)
+  poly <- bb_poly(bounds)
   proj4string(poly)=CRS("+init=epsg:4326 +proj=longlat")
   poly <- spTransform(poly, CRS(proj4string(lines)))
+  keep <- gContains( poly, lines,byid=TRUE ) | gOverlaps( poly, lines,byid=TRUE )
+  l_in_bb <- lines[drop(keep), ]
 
-  l_in_bb <- lines[poly, ]
   if(nos > 0)
     l_in_bb[ head(order(l_in_bb[[scenario]]), nos), ]
   else
