@@ -82,7 +82,7 @@ shinyServer(function(input, output){
                                                  <td style="text-align:left;"> %s </td>
                                                  </tr>
                                                  <tr>
-                                                 <td style="text-align:left;"> ECP (N.) </td>
+                                                 <td style="text-align:left;"> ECP (%%) </td>
                                                  <td style="text-align:left;"> %s </td>
                                                  </tr>
                                                  <tr>
@@ -90,7 +90,7 @@ shinyServer(function(input, output){
                                                  <td style="text-align:left;"> %s </td>
                                                  </tr>
                                                  </tbody>
-                                                 </table>', sorted_l$All, sorted_l$Bicycle, round(sorted_l$clc * 100, 1), round(sorted_l$plc * 100, 1), round(sorted_l$ecp, 1), round(sorted_l$dist, 1) )
+                                                 </table>', sorted_l$All, sorted_l$Bicycle, round(sorted_l$clc * 100, 1), round(sorted_l$plc * 100, 1), round(sorted_l$plc * 100, 1), round(sorted_l$dist, 1) )
                                      )
                                  }else
                                    .
