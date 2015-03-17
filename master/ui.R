@@ -26,15 +26,21 @@ features <- c("None" = "none"
 shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                    ,tabPanel("Interactive map"
                             ,leafletOutput("map", width="auto", height="1000")
-                            ,absolutePanel(id = "controls", class = "panel panel-default", fixed = TRUE,
-                                           draggable = TRUE, top = 60, left = "auto", right = 20, bottom = "auto",
-                                           width = 330, height = "auto"
-                                           ,selectInput("scenario", "Scenario:", scenarios)
-                                           ,selectInput("line_type", "Representation of cycling desire lines", line_types, selected = "none")
-                                           ,conditionalPanel(condition = "input.line_type != 'none'"
-                                                             ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
-                                                             ,sliderInput("nos_lines", label = "Number of lines (n) negative to show the bottom n, postive the top"
-                                                                          , min = -10, max = 10, value = 10)
+                            ,absolutePanel(
+                              cursor = "move"
+                              ,id = "controls"
+                              ,class = "panel panel-default"
+                              ,fixed = TRUE
+                              ,draggable = TRUE
+                              ,top = 50
+                              ,right = 0
+                              ,width = 180
+                              ,height = "auto"
+                              ,style = "opacity: 0.9"
+                              ,selectInput("scenario", "Scenario:", scenarios)
+                              ,selectInput("line_type", "Representation of cycling desire lines", line_types, selected = "none")
+                              ,conditionalPanel(condition = "input.line_type != 'none'" ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
+                                ,textInput("nos_lines", label = "Number of lines to show (top n)", value = 5)
                                            )
                                            ,selectInput("zone_type", "Type of zones:", zone_types, selected = "msoa")
                                            ,conditionalPanel(condition = "input.zone_type != 'none'"
