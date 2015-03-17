@@ -28,8 +28,7 @@ sort_lines <- function(lines, scenario, nos, bounds){
   poly <- spTransform(poly, CRS(proj4string(lines)))
   keep <- gContains( poly, lines,byid=TRUE ) | gOverlaps( poly, lines,byid=TRUE )
   l_in_bb <- lines[drop(keep), ]
-
-    l_in_bb[ tail(order(l_in_bb[[scenario]]), nos), ]
+  l_in_bb[ tail(order(l_in_bb[[scenario]]), nos), ]
 }
 
 shinyServer(function(input, output){
@@ -53,28 +52,31 @@ shinyServer(function(input, output){
                                  else .
                                } %>%
                                {
-                                 if (input$line_type == 'straight')
-                                   addPolylines(., data = sort_lines(l, input$line_attr, as.numeric(input$nos_lines), input$map_bounds), color = 'blue'
+                                 if (input$line_type == 'straight' && input$nos_lines != 0){
+                                   sorted_l <- sort_lines(l, input$line_attr, input$nos_lines, input$map_bounds)
+                                   addPolylines(., data = sorted_l, color = 'blue'
                                                 # Sequence in descending order
-                                                , weight = seq(4, 0.1, length = abs(as.numeric(input$nos_lines)))
-                                                , opacity = seq(0.8, 0.01, length = abs(as.numeric(input$nos_lines)))
-                                                , popup = sprintf("<dl><dt>Distance </dt><dd>%s km</dd></dl>", round(l$dist ,1)))
-                                 else
+                                                , weight = seq(4, 0.1, length = abs(input$nos_lines))
+                                                , opacity = seq(0.8, 0.01, length = abs(input$nos_lines))
+                                                , popup = sprintf("<dl><dt>Distance </dt><dd>%s km</dd></dl>", round(sorted_l$dist ,1)))
+                                 }else
                                    .
                                }%>%
                                {
-                                 if (input$line_type == 'route')
-                                   addPolylines(., data = sort_lines(rfast, input$line_attr, as.numeric(input$nos_lines), input$map_bounds), color = "red"
-                                                , weight = seq(4, 0.1, length = abs(as.numeric(input$nos_lines)))
-                                                , opacity = seq(0.8, 0.01, length = abs(as.numeric(input$nos_lines)))
-                                                , popup = journeyLabel(round(rfast$distance, 1), round(rfast$clc * 10, 2), "Fast")
+                                 if (input$line_type == 'route' && input$nos_lines != 0){
+                                   sorted_fast  <- sort_lines(rfast, input$line_attr, input$nos_lines, input$map_bounds)
+                                   sorted_quiet <- sort_lines(rquiet, input$line_attr, input$nos_lines, input$map_bounds)
+                                   addPolylines(., data = sorted_fast, color = "red"
+                                                , weight = seq(4, 0.1, length = abs(input$nos_lines))
+                                                , opacity = seq(0.8, 0.01, length = abs(input$nos_lines))
+                                                , popup = journeyLabel(round(sorted_fast$length / 1000, 1), round(sorted_fast$clc * 10, 2), "Fast")
                                    ) %>%
-                                   addPolylines(data = sort_lines(rquiet, input$line_attr, as.numeric(input$nos_lines), input$map_bounds), color = "green",
-                                                , weight = seq(4, 0.1, length = abs(as.numeric(input$nos_lines)))
-                                                , opacity = seq(0.8, 0.01, length = abs(as.numeric(input$nos_lines)))
-                                                , popup = journeyLabel(round(rquiet$distance, 1), round(rquiet$clc * 10, 2), "Quiet")
+                                   addPolylines(data = sort_lines(sorted_quiet, input$line_attr, input$nos_lines, input$map_bounds), color = "green",
+                                                , weight = seq(4, 0.1, length = abs(input$nos_lines))
+                                                , opacity = seq(0.8, 0.01, length = abs(input$nos_lines))
+                                                , popup = journeyLabel(round(sorted_quiet$length / 1000, 1), round(sorted_quiet$clc * 10, 2), "Quiet")
                                    )
-                                 else
+                                 }else
                                    .
                                }%>%
                                addCircleMarkers(data = cents
