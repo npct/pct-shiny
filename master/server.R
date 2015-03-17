@@ -56,9 +56,42 @@ shinyServer(function(input, output){
                                    sorted_l <- sort_lines(l, input$line_attr, as.numeric(input$nos_lines), input$map_bounds)
                                    addPolylines(., data = sorted_l, color = 'blue'
                                                 # Sequence in descending order
-                                                , weight = seq(4, 0.1, length = as.numeric(input$nos_lines))
-                                                , opacity = seq(0.8, 0.01, length = as.numeric(input$nos_lines))
-                                                , popup = sprintf("<dl><dt>Distance </dt><dd>%s km</dd></dl>", round(sorted_l$dist ,1)))
+                                                , weight = seq(from = 6, to = 3, length = as.numeric(input$nos_lines))
+                                               , popup = sprintf('<p><strong>Line statistics</p></strong><table>
+ <thead>
+  <tr>
+                                                 <th style="text-align:left;"> Variable </th>
+                                                 <th style="text-align:left;"> Value </th>
+                                                 </tr>
+                                                 </thead>
+                                                 <tbody>
+                                                 <tr>
+                                                 <td style="text-align:left;"> Total n. commutes </td>
+                                                 <td style="text-align:left;"> %s </td>
+                                                 </tr>
+                                                 <tr>
+                                                 <td style="text-align:left;"> N. Cycle </td>
+                                                 <td style="text-align:left;"> %s </td>
+                                                 </tr>
+                                                 <tr>
+                                                 <td style="text-align:left;"> CLC (%% who cycle) </td>
+                                                 <td style="text-align:left;"> %s </td>
+                                                 </tr>
+                                                 <tr>
+                                                 <td style="text-align:left;"> PLC (%%) </td>
+                                                 <td style="text-align:left;"> %s </td>
+                                                 </tr>
+                                                 <tr>
+                                                 <td style="text-align:left;"> ECP (%%) </td>
+                                                 <td style="text-align:left;"> %s </td>
+                                                 </tr>
+                                                 <tr>
+                                                 <td style="text-align:left;"> Euclidean Distance (km) &nbsp; </td>
+                                                 <td style="text-align:left;"> %s </td>
+                                                 </tr>
+                                                 </tbody>
+                                                 </table>', sorted_l$All, sorted_l$Bicycle, round(sorted_l$clc * 100, 1), round(sorted_l$plc * 100, 1), round(sorted_l$plc * 100, 1), round(sorted_l$dist, 1) )
+                                     )
                                  }else
                                    .
                                }%>%

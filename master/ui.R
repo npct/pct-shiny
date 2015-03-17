@@ -25,7 +25,7 @@ features <- c("None" = "none"
 
 shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                    ,tabPanel("Interactive map"
-                            ,leafletOutput("map", width="auto", height="1000")
+                            ,leafletOutput("map", width="auto", height="600")
                             ,absolutePanel(
                               cursor = "move"
                               ,id = "controls"
