@@ -22,6 +22,38 @@ journeyLabel <- function(distance, percentage, route){
   sprintf("<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd><dt>Type of Route</dt><dd>%s</dd></dl>", distance, percentage, route)
 }
 
+routePopup <- function(data){
+  sprintf('
+  <table>
+    <tbody>
+      <tr>
+        <td> Total n. commutes </td>
+        <td> %s </td>
+      </tr>
+      <tr>
+        <td> N. Cycle </td>
+        <td> %s </td>
+      </tr>
+      <tr>
+        <td> CLC (%% who cycle) </td>
+        <td> %s </td>
+      </tr>
+      <tr>
+        <td> PLC (%%) </td>
+        <td> %s </td>
+      </tr>
+      <tr>
+        <td> ECP (N.) </td>
+        <td> %s </td>
+      </tr>
+      <tr>
+        <td> Euclidean Distance (km) &nbsp; </td>
+        <td> %s </td>
+      </tr>
+    </tbody>
+  </table>', data$All, data$Bicycle, round(data$clc * 100, 1), round(data$plc * 100, 1), round(data$ecp, 1), round(data$dist, 1)
+          )}
+
 sort_lines <- function(lines, scenario, nos, bounds){
   poly <- bb_poly(bounds)
   proj4string(poly)=CRS("+init=epsg:4326 +proj=longlat")
@@ -32,7 +64,6 @@ sort_lines <- function(lines, scenario, nos, bounds){
 }
 
 shinyServer(function(input, output){
-
   cents <- coordinates(zones)
   cents <- SpatialPointsDataFrame(cents, data = zones@data, match.ID = F)
 
@@ -42,7 +73,7 @@ shinyServer(function(input, output){
   output$map = renderLeaflet(map %>%
                                {
                                  ## Add polygones (of MSOA boundaries)
-                                if (input$zone_type == 'msoa')
+                                 if (input$zone_type == 'msoa')
                                    addPolygons(. , data = zones
                                                , fillOpacity = 0.2
                                                , opacity = 0.3
@@ -57,41 +88,7 @@ shinyServer(function(input, output){
                                    addPolylines(., data = sorted_l, color = 'blue'
                                                 # Sequence in descending order
                                                 , weight = seq(from = 6, to = 3, length = as.numeric(input$nos_lines))
-                                               , popup = sprintf('<p><strong>Line statistics</p></strong><table>
- <thead>
-  <tr>
-                                                 <th style="text-align:left;"> Variable </th>
-                                                 <th style="text-align:left;"> Value </th>
-                                                 </tr>
-                                                 </thead>
-                                                 <tbody>
-                                                 <tr>
-                                                 <td style="text-align:left;"> Total n. commutes </td>
-                                                 <td style="text-align:left;"> %s </td>
-                                                 </tr>
-                                                 <tr>
-                                                 <td style="text-align:left;"> N. Cycle </td>
-                                                 <td style="text-align:left;"> %s </td>
-                                                 </tr>
-                                                 <tr>
-                                                 <td style="text-align:left;"> CLC (%% who cycle) </td>
-                                                 <td style="text-align:left;"> %s </td>
-                                                 </tr>
-                                                 <tr>
-                                                 <td style="text-align:left;"> PLC (%%) </td>
-                                                 <td style="text-align:left;"> %s </td>
-                                                 </tr>
-                                                 <tr>
-                                                 <td style="text-align:left;"> ECP (N.) </td>
-                                                 <td style="text-align:left;"> %s </td>
-                                                 </tr>
-                                                 <tr>
-                                                 <td style="text-align:left;"> Euclidean Distance (km) &nbsp; </td>
-                                                 <td style="text-align:left;"> %s </td>
-                                                 </tr>
-                                                 </tbody>
-                                                 </table>', sorted_l$All, sorted_l$Bicycle, round(sorted_l$clc * 100, 1), round(sorted_l$plc * 100, 1), round(sorted_l$ecp, 1), round(sorted_l$dist, 1) )
-                                     )
+                                                , popup = routePopup(sorted_l) )
                                  }else
                                    .
                                }%>%
