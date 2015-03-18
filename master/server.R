@@ -63,13 +63,18 @@ shinyServer(function(input, output){
   }
 
   bbPoly <- reactive({
-    lat <- c(input$map_bounds$west , input$map_bounds$east, input$map_bounds$east, input$map_bounds$west )
-    lng <- c(input$map_bounds$north, input$map_bounds$north, input$map_bounds$south, input$map_bounds$south)
-    c1 <- cbind(lat, lng)
-    r1 <- rbind(c1, c1[1, ])
-    poly <- SpatialPolygons(list(Polygons(list(Polygon(r1)), 'bb')), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
-    proj4string(poly)=CRS("+init=epsg:4326 +proj=longlat")
-    return(poly)
+    if(!input$freeze || !exists("Global.bbPoly")){
+      lat <- c(input$map_bounds$west , input$map_bounds$east, input$map_bounds$east, input$map_bounds$west )
+      lng <- c(input$map_bounds$north, input$map_bounds$north, input$map_bounds$south, input$map_bounds$south)
+
+      c1 <- cbind(lat, lng)
+      r1 <- rbind(c1, c1[1, ])
+      assign("Global.bbPoly",
+             SpatialPolygons(list(Polygons(list(Polygon(r1)), 'bb')), proj4string=CRS("+init=epsg:4326 +proj=longlat")),
+             envir = .GlobalEnv)
+      proj4string(Global.bbPoly)=CRS("+init=epsg:4326 +proj=longlat")
+    }
+    return(Global.bbPoly)
   })
 
   sortAndPlot <- function(m, lines, attr, nos, color, popupFn){

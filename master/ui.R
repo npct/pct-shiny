@@ -39,7 +39,9 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                ,style = "opacity: 0.9"
                                ,selectInput("scenario", "Scenario:", scenarios)
                                ,selectInput("line_type", "Representation of cycling desire lines", line_types, selected = "none")
-                               ,conditionalPanel(condition = "input.line_type != 'none'" ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
+                               ,conditionalPanel(condition = "input.line_type != 'none'"
+                                                 ,checkboxInput("freeze", "Freeze Scope")
+                                                 ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
                                                  ,sliderInput("nos_lines", label = "Number of lines to show (top n)", 1, 15, value = 5)
                                )
                                ,selectInput("zone_type", "Type of zones:", zone_types, selected = "msoa")
