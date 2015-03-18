@@ -47,10 +47,9 @@ rquiet <- readRDS("../data/manchester/rq.Rds")
 l <- readRDS("../data/manchester/l.Rds")
 zones <- readRDS("../data/manchester/z.Rds")
 flow <- l@data
-cents <- coordinates(zones)
-cents <- SpatialPointsDataFrame(cents, data = zones@data, match.ID = F)
 
 shinyServer(function(input, output){
+  cents <- SpatialPointsDataFrame(coordinates(zones), data = zones@data, match.ID = F)
   sortLines <- function(lines, scenario, nos){
     poly <- bbPoly()
     poly <- spTransform(poly, CRS(proj4string(lines)))
