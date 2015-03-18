@@ -59,6 +59,9 @@ sort_lines <- function(lines, scenario, nos, bounds){
   proj4string(poly)=CRS("+init=epsg:4326 +proj=longlat")
   poly <- spTransform(poly, CRS(proj4string(lines)))
   keep <- gContains( poly, lines,byid=TRUE ) | gOverlaps( poly, lines,byid=TRUE )
+  if(all(!keep)){
+    return(NULL)
+  }
   l_in_bb <- lines[drop(keep), ]
   l_in_bb[ tail(order(l_in_bb[[scenario]]), nos), ]
 }
@@ -83,12 +86,15 @@ shinyServer(function(input, output){
                                  else .
                                } %>%
                                {
-                                 if (input$line_type == 'straight' && input$nos_lines != 0){
+                                 if (input$line_type == 'straight'){
                                    sorted_l <- sort_lines(l, input$line_attr, as.numeric(input$nos_lines), input$map_bounds)
-                                   addPolylines(., data = sorted_l, color = 'blue'
-                                                # Sequence in descending order
-                                                , weight = seq(from = 6, to = 3, length = as.numeric(input$nos_lines))
-                                                , popup = routePopup(sorted_l) )
+                                   if(is.null(sorted_l))
+                                     .
+                                   else
+                                     addPolylines(., data = sorted_l, color = 'blue'
+                                                  # Sequence in descending order
+                                                  , weight = seq(from = 6, to = 3, length = as.numeric(input$nos_lines))
+                                                  , popup = routePopup(sorted_l) )
                                  }else
                                    .
                                }%>%
