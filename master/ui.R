@@ -42,7 +42,7 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                ,conditionalPanel(condition = "input.line_type != 'none'"
                                                  ,checkboxInput("freeze", "Freeze Scope")
                                                  ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
-                                                 ,sliderInput("nos_lines", label = "Number of lines to show (top n)", 1, 15, value = 5)
+                                                 ,sliderInput("nos_lines", label = "Number of lines to show (top n)", 1, 50, value = 5)
                                )
                                ,selectInput("zone_type", "Type of zones:", zone_types, selected = "msoa")
                                ,conditionalPanel(condition = "input.zone_type != 'none'"
