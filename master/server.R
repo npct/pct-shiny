@@ -100,7 +100,7 @@ shinyServer(function(input, output){
                                } %>%
                                {
                                  if (input$line_type == 'straight'){
-                                   sortAndPlot(., l, input$line_attr, as.numeric(input$nos_lines),
+                                   sortAndPlot(., l, input$line_attr, input$nos_lines,
                                                "blue", straightPopup)
 
                                  }else
@@ -108,9 +108,9 @@ shinyServer(function(input, output){
                                }%>%
                                {
                                  if (input$line_type == 'route'){
-                                   sortAndPlot(., rfast, input$line_attr, as.numeric(input$nos_lines),
+                                   sortAndPlot(., rfast, input$line_attr, input$nos_lines,
                                                "red", routePopup) %>%
-                                     sortAndPlot(., rquiet, input$line_attr, as.numeric(input$nos_lines),
+                                   sortAndPlot(., rquiet, input$line_attr, input$nos_lines,
                                                  "green", routePopup)
 
                                  }else
