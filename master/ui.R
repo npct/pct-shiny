@@ -31,7 +31,6 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                ,id = "controls"
                                ,class = "panel panel-default"
                                ,fixed = TRUE
-                               ,draggable = TRUE
                                ,top = 50
                                ,right = 0
                                ,width = 180
