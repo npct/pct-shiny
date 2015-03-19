@@ -92,13 +92,14 @@ shinyServer(function(input, output){
 
   output$map = renderLeaflet(map %>%
                                {
-                                 ## Add polygones (of MSOA boundaries)
+                                 ## Add polygons (of MSOA boundaries)
                                  if (input$zone_type == 'msoa')
                                    addPolygons(. , data = zones
                                                , fillOpacity = 0.2
                                                , opacity = 0.3
                                                , fillColor = zones$clc
                                                , color = "grey"
+                                    , popup = sprintf("Zone: %s <br> CLC: %s <br> Hillines %s (degress) ", zones$geo_code, round(zones$clc * 100, ), round(zones$avslope, 2))
                                    )
                                  else .
                                } %>%
@@ -123,7 +124,7 @@ shinyServer(function(input, output){
                                addCircleMarkers(data = cents
                                                 , radius = 2
                                                 , color = "black"
-                                                , popup = sprintf("<b>Journeys by bike: </b>%s%%", round(zones$pCycle*100,2))) %>%
+                                                , popup = sprintf("<b>%% journeys by bike: </b>%s%%", round(zones$clc * 100,2))) %>%
                                {
                                  if (input$feature != "none")
                                    addGeoJSON(., from_cycle_streets(input$map_bounds, input$feature))
