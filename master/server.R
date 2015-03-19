@@ -87,6 +87,15 @@ shinyServer(function(input, output){
                    , popup = popupFn(sorted_l) )
   }
 
+  # Generate a series of colours based on the input range
+  getColourRamp <- function(colors, values) {
+    v <- (values - min(values))/diff(range(values))
+    x <- colorRamp(colors)(v)
+    rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
+  }
+
+
+
   map <- leaflet() %>%
     addTiles(urlTemplate = "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png")
 
@@ -97,8 +106,9 @@ shinyServer(function(input, output){
                                    addPolygons(. , data = zones
                                                , fillOpacity = 0.2
                                                , opacity = 0.3
-                                               , fillColor = zones$clc
-                                               , color = "grey"
+                                               # From red to blue gradient of colours based on the clc variable of zones dataset
+                                               , fillColor = getColourRamp(c("red", "blue"), zones$clc)
+                                               , color = zones$clc
                                     , popup = sprintf("Zone: %s <br> CLC: %s <br> Hillines %s (degress) ", zones$geo_code, round(zones$clc * 100, ), round(zones$avslope, 2))
                                    )
                                  else .
