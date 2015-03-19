@@ -83,7 +83,8 @@ shinyServer(function(input, output){
     else
       addPolylines(m, data = sorted_l, color = color
                    # Sequence in descending order
-                   , weight = seq(from = 1.2, to = 5, length = nos)
+                   , weight = seq(from = 5, to = 15, length = nos)
+                   , opacity = 0.7
                    , popup = popupFn(sorted_l) )
   }
 
@@ -116,7 +117,7 @@ shinyServer(function(input, output){
                                {
                                  if (input$line_type == 'straight'){
                                    sortAndPlot(., l, input$line_attr, input$nos_lines,
-                                               "blue", straightPopup)
+                                               "darkslategray", straightPopup)
 
                                  }else
                                    .
