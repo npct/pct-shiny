@@ -58,7 +58,7 @@ flow <- l@data
 
 shinyServer(function(input, output){
   cents <- SpatialPointsDataFrame(coordinates(zones), data = zones@data, match.ID = F)
-  sortLines <- function(lines, scenario, nos){
+  sortLines <- function(lines, sortBy, nos){
     poly <- bbPoly()
     poly <- spTransform(poly, CRS(proj4string(lines)))
     keep <- gIntersects( poly, lines,byid=TRUE ) | gOverlaps( poly, lines,byid=TRUE )
@@ -66,7 +66,7 @@ shinyServer(function(input, output){
       return(NULL)
     }
     linesInBb <- lines[drop(keep), ]
-    linesInBb[ tail(order(linesInBb[[scenario]]), nos), ]
+    linesInBb[ tail(order(linesInBb[[sortBy]]), nos), ]
   }
 
   bbPoly <- reactive({
@@ -103,6 +103,11 @@ shinyServer(function(input, output){
     rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
   }
 
+  attrWithScenario <- function(attr, scenario){
+    if(scenario == "base") return(attr)
+    paste(attr, scenario, sep = "_")
+  }
+
   map <- leaflet() %>%
     addTiles(urlTemplate = "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png")
 
@@ -114,7 +119,7 @@ shinyServer(function(input, output){
                                                , fillOpacity = 0.2
                                                , opacity = 0.3
                                                # From red to blue gradient of colours based on the clc variable of zones dataset
-                                               , fillColor = getColourRamp(c("red", "blue"), zones@data[[paste(input$zone_attr, input$scenario, sep = "_")]])
+                                               , fillColor = getColourRamp(c("red", "blue"), zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
                                                , color = zones$clc
                                     , popup = sprintf("Zone: %s <br> CLC: %s <br> Hilliness %s (degress) ", zones$geo_code, round(zones$clc * 100, ), round(zones$avslope, 2))
                                    )
@@ -122,7 +127,7 @@ shinyServer(function(input, output){
                                } %>%
                                {
                                  if (input$line_type == 'straight'){
-                                   sortAndPlot(., l, input$line_attr, input$nos_lines,
+                                   sortAndPlot(., l, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
                                                straightPopup, color = "blue")
                                  }else
                                    .
