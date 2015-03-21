@@ -2,7 +2,7 @@ library(shiny)
 library(leaflet)
 
 scenarios <- c("Baseline" =           "base"
-               ,"Gender equality" =   "genereq"
+               ,"Gender equality" =   "gendereq"
                ,"Go Dutch" =          "dutch"
                ,"Electric bicycles" = "ebike")
 
