@@ -123,8 +123,7 @@ shinyServer(function(input, output){
                                {
                                  if (input$line_type == 'straight'){
                                    sortAndPlot(., l, input$line_attr, input$nos_lines,
-                                               straightPopup, color = "blue"
-
+                                               straightPopup, color = "blue")
                                  }else
                                    .
                                }%>%
