@@ -56,18 +56,31 @@ l <- readRDS(paste0(data_dir, "l.Rds"))
 zones <- readRDS(paste0(data_dir, "z.Rds"))
 flow <- l@data
 
-shinyServer(function(input, output){
+shinyServer(function(input, output, session){
   cents <- SpatialPointsDataFrame(coordinates(zones), data = zones@data, match.ID = F)
+
   sortLines <- function(lines, sortBy, nos){
+    if(!(sortBy %in% names(lines))) return(NULL)
     poly <- bbPoly()
     poly <- spTransform(poly, CRS(proj4string(lines)))
     keep <- gIntersects( poly, lines,byid=TRUE ) | gOverlaps( poly, lines,byid=TRUE )
-    if(all(!keep)){
-      return(NULL)
-    }
+    if(all(!keep)) return(NULL)
     linesInBb <- lines[drop(keep), ]
     linesInBb[ tail(order(linesInBb[[sortBy]]), nos), ]
   }
+  attrs <- c("Current Level Cycling (CLC)" =       "clc"
+             ,"Potential Level of Cycling (PLC)" = "plc"
+             ,"Extra Cycling Potential (ECP)" =    "ecp")
+
+  observe({
+    if(input$scenario != "base"){
+      updateSelectInput(session, "zone_attr", choices = attrs[2:3])
+      updateSelectInput(session, "line_attr", choices = attrs[2:3])
+    }else{
+      updateSelectInput(session, "zone_attr", choices = attrs)
+      updateSelectInput(session, "line_attr", choices = attrs)
+    }
+  })
 
   bbPoly <- reactive({
     if(!input$freeze || !exists("Global.bbPoly")){
@@ -114,7 +127,7 @@ shinyServer(function(input, output){
   output$map = renderLeaflet(map %>%
                                {
                                  ## Add polygons (of MSOA boundaries)
-                                 if (input$zone_type == 'msoa')
+                                 if (input$zone_type == 'msoa' && (attrWithScenario(input$zone_attr, input$scenario) %in% names(zones@data)))
                                    addPolygons(. , data = zones
                                                , fillOpacity = 0.2
                                                , opacity = 0.3
@@ -123,8 +136,9 @@ shinyServer(function(input, output){
                                                , color = zones$clc
                                     , popup = sprintf("Zone: %s <br> CLC: %s <br> Hilliness %s (degress) ", zones$geo_code, round(zones$clc * 100, ), round(zones$avslope, 2))
                                    )
-                                 else .
-                               } %>%
+                                 else
+                                   .
+                               }%>%
                                {
                                  if (input$line_type == 'straight'){
                                    sortAndPlot(., l, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
