@@ -103,8 +103,6 @@ shinyServer(function(input, output){
     rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
   }
 
-
-
   map <- leaflet() %>%
     addTiles(urlTemplate = "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png")
 
@@ -116,7 +114,7 @@ shinyServer(function(input, output){
                                                , fillOpacity = 0.2
                                                , opacity = 0.3
                                                # From red to blue gradient of colours based on the clc variable of zones dataset
-                                               , fillColor = getColourRamp(c("red", "blue"), zones$clc)
+                                               , fillColor = getColourRamp(c("red", "blue"), zones@data[[paste(input$zone_attr, input$scenario, sep = "_")]])
                                                , color = zones$clc
                                     , popup = sprintf("Zone: %s <br> CLC: %s <br> Hilliness %s (degress) ", zones$geo_code, round(zones$clc * 100, ), round(zones$avslope, 2))
                                    )
@@ -125,7 +123,7 @@ shinyServer(function(input, output){
                                {
                                  if (input$line_type == 'straight'){
                                    sortAndPlot(., l, input$line_attr, input$nos_lines,
-                                               "blue", straightPopup)
+                                               straightPopup, color = "blue"
 
                                  }else
                                    .
@@ -133,9 +131,9 @@ shinyServer(function(input, output){
                                {
                                  if (input$line_type == 'route'){
                                    sortAndPlot(., rfast, input$line_attr, input$nos_lines,
-                                               "red", routePopup) %>%
+                                               routePopup, "red") %>%
                                    sortAndPlot(., rquiet, input$line_attr, input$nos_lines,
-                                                 "green", routePopup)
+                                               routePopup, "green")
 
                                  }else
                                    .
