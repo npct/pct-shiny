@@ -1,10 +1,10 @@
 library(shiny)
 library(leaflet)
 
-scenarios <- c("Baseline" =          "ba"
-               ,"Gender equality" =   "ge"
-               ,"Go Dutch" =          "gd"
-               ,"Electric bicycles" = "eb")
+scenarios <- c("Baseline" =           "base"
+               ,"Gender equality" =   "genereq"
+               ,"Go Dutch" =          "dutch"
+               ,"Electric bicycles" = "ebike")
 
 line_types <- c("None" = "none"
                 ,"Straight Lines" = "straight"
