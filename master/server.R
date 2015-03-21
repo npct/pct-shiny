@@ -35,6 +35,7 @@ rfast@data <- cbind(rfast@data, l@data)
 rquiet@data <- cbind(rquiet@data, l@data)
 
 shinyServer(function(input, output, session){
+  cents <- SpatialPointsDataFrame(coordinates(zones), data = zones@data, match.ID = F)
 
   sortLines <- function(lines, sortBy, nos){
     if(!(sortBy %in% names(lines))) return(NULL)
@@ -95,11 +96,12 @@ shinyServer(function(input, output, session){
                                  ## Add polygons (of MSOA boundaries)
                                  if (input$zone_type == 'msoa' && (attrWithScenario(input$zone_attr, input$scenario) %in% names(zones@data)))
                                    addPolygons(. , data = zones
+                                               , weight = 2
                                                , fillOpacity = 0.2
                                                , opacity = 0.3
                                                # From red to blue gradient of colours based on the clc variable of zones dataset
                                                , fillColor = getColourRamp(c("red", "blue"), zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
-                                               , color = zones$clc
+                                               , color = "black"
                                     , popup = sprintf("Zone: %s <br> CLC: %s <br> Hilliness %s (degress) ", zones$geo_code, round(zones$clc * 100, ), round(zones$avslope, 2))
                                    )
                                  else
