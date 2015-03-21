@@ -25,10 +25,10 @@ rfast <- readRDS(paste0(data_dir, "rf.Rds" ))
 rquiet <- readRDS(paste0(data_dir, "rq.Rds"))
 l <- readRDS(paste0(data_dir, "l.Rds"))
 zones <- readRDS(paste0(data_dir, "z.Rds"))
+cents <- readRDS(paste0(data_dir, "c.Rds"))
 flow <- l@data
 
 shinyServer(function(input, output, session){
-  cents <- SpatialPointsDataFrame(coordinates(zones), data = zones@data, match.ID = F)
 
   sortLines <- function(lines, sortBy, nos){
     if(!(sortBy %in% names(lines))) return(NULL)
@@ -39,6 +39,7 @@ shinyServer(function(input, output, session){
     linesInBb <- lines[drop(keep), ]
     linesInBb[ tail(order(linesInBb[[sortBy]]), nos), ]
   }
+
   attrs <- c("Current Level Cycling (CLC)" =       "clc"
              ,"Potential Level of Cycling (PLC)" = "plc"
              ,"Extra Cycling Potential (ECP)" =    "ecp")
@@ -74,10 +75,10 @@ shinyServer(function(input, output, session){
       .
     else
       addPolylines(m, data = sorted_l, color = color
-                   # Sequence in descending order
-                   , weight =
+                   # Plot widths proportional to attribute value
+                   , weight = normalise(sorted_l@data[[attrWithScenario(input$line_attr, input$scenario)]], min = 3, max = 6)
                    , opacity = 0.7
-                   , popup = popupFn(sorted_l) )
+                   , popup = popupFn(sorted_l))
   }
 
   map <- leaflet() %>%
