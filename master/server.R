@@ -1,7 +1,7 @@
 url <- "https://github.com/npct/pct-data/archive/master.zip" # data store
 if(sum(grepl("pct-data", list.files("../"))) == 0){
   download.file(url, destfile = "../d.zip", method = "wget")
-  unzip("../d.zip", exdir = )
+  unzip("../d.zip", exdir = "../")
 }
 
 pkgs <- c("shiny", "leaflet", "ggmap", "sp", "RColorBrewer", "httr", "rgeos", "rgdal")
