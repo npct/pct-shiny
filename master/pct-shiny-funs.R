@@ -11,8 +11,8 @@ getColourRamp <- function(colors, values) {
 }
 
 attrWithScenario <- function(attr, scenario){
-  if(scenario == "base") return(attr)
-  paste(attr, scenario, sep = "_")
+  # if(scenario == "base") return(attr)
+  paste(scenario, attr, sep = "_")
 }
 
 # Popup function for straight line data in html table
