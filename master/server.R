@@ -89,6 +89,7 @@ shinyServer(function(input, output, session){
                                  ## Add polygons (of MSOA boundaries)
                                  if (input$zone_type == 'msoa' && (attrWithScenario(input$zone_attr, input$scenario) %in% names(zones@data)))
                                    addPolygons(. , data = zones
+                                               , weight = 2
                                                , fillOpacity = 0.2
                                                , opacity = 0.3
                                                # From red to blue gradient of colours based on the clc variable of zones dataset
