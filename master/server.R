@@ -94,7 +94,7 @@ shinyServer(function(input, output, session){
                                                , opacity = 0.3
                                                # From red to blue gradient of colours based on the clc variable of zones dataset
                                                , fillColor = getColourRamp(c("red", "blue"), zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
-                                               , color = zones$clc
+                                               , color = "black"
                                     , popup = sprintf("Zone: %s <br> CLC: %s <br> Hilliness %s (degress) ", zones$geo_code, round(zones$clc * 100, ), round(zones$avslope, 2))
                                    )
                                  else
