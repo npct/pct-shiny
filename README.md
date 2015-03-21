@@ -33,7 +33,9 @@ echo "export CYCLESTREET='my_token'" >> ~/.profile
 ```
 or system wide
 ```bash
-sudo echo "export CYCLESTREET='my_token'" > /etc/profile.d/cyclestreet.sh
+sudo -i # become root
+echo "export CYCLESTREET='my_token'" > /etc/profile.d/cyclestreet.sh
+exit
 ```
 
 ### To install shiny-server
