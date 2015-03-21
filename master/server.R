@@ -35,7 +35,6 @@ rfast@data <- cbind(rfast@data, l@data)
 rquiet@data <- cbind(rquiet@data, l@data)
 
 shinyServer(function(input, output, session){
-  cents <- SpatialPointsDataFrame(coordinates(zones), data = zones@data, match.ID = F)
 
   sortLines <- function(lines, sortBy, nos){
     if(!(sortBy %in% names(lines))) return(NULL)
@@ -85,7 +84,7 @@ shinyServer(function(input, output, session){
                    # Plot widths proportional to attribute value
                    , weight = normalise(sorted_l@data[[attrWithScenario(input$line_attr, input$scenario)]], min = 3, max = 6)
                    , opacity = 0.7
-                   , popup = popupFn(sorted_l))
+                   , popup = routePopup(sorted_l))
   }
 
   map <- leaflet() %>%
