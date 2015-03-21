@@ -6,7 +6,7 @@ if(sum(grepl("pct-data", list.files("../"))) == 0){
 
 data_dir <- "../pct-data-master/coventry/" # data directory
 
-pkgs <- c("shiny", "leaflet", "ggmap", "sp", "RColorBrewer", "httr", "rgeos", "rgdal")
+pkgs <- c("shiny", "leaflet", "ggmap", "RColorBrewer", "httr", "rgeos", "rgdal")
 lapply(pkgs, library, character.only = TRUE)
 
 source("cyclestreet.R")
