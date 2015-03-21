@@ -76,14 +76,14 @@ shinyServer(function(input, output){
     return(Global.bbPoly)
   })
 
-  sortAndPlot <- function(m, lines, attr, nos, color, popupFn){
+  sortAndPlot <- function(m, lines, attr, nos, popupFn, color = "black"){
     sorted_l <- sortLines(lines, attr, nos)
     if(is.null(sorted_l))
       .
     else
       addPolylines(m, data = sorted_l, color = color
                    # Sequence in descending order
-                   , weight = seq(from = 5, to = 15, length = nos)
+                   , weight = seq(from = 2, to = 6, length = nos)
                    , opacity = 0.7
                    , popup = popupFn(sorted_l) )
   }
@@ -94,8 +94,6 @@ shinyServer(function(input, output){
     x <- colorRamp(colors)(v)
     rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
   }
-
-
 
   map <- leaflet() %>%
     addTiles(urlTemplate = "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png")
@@ -117,7 +115,7 @@ shinyServer(function(input, output){
                                {
                                  if (input$line_type == 'straight'){
                                    sortAndPlot(., l, input$line_attr, input$nos_lines,
-                                               "darkslategray", straightPopup)
+                                               straightPopup, color = "blue")
 
                                  }else
                                    .
@@ -125,9 +123,9 @@ shinyServer(function(input, output){
                                {
                                  if (input$line_type == 'route'){
                                    sortAndPlot(., rfast, input$line_attr, input$nos_lines,
-                                               "red", routePopup) %>%
-                                   sortAndPlot(., rquiet, input$line_attr, input$nos_lines,
-                                                 "green", routePopup)
+                                               routePopup, "red") %>%
+                                  sortAndPlot(., rquiet, input$line_attr, input$nos_lines,
+                                               routePopup, "green")
 
                                  }else
                                    .
