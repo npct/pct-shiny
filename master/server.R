@@ -4,10 +4,12 @@ if(sum(grepl("pct-data", list.files("../"))) == 0){
   unzip("../d.zip", exdir = "../")
 }
 
+data_dir <- "../pct-data-master/coventry/" # data directory
+
 pkgs <- c("shiny", "leaflet", "ggmap", "sp", "RColorBrewer", "httr", "rgeos", "rgdal")
 lapply(pkgs, library, character.only = TRUE)
 
-sapply('./cyclestreet.R', FUN=source)
+source("cyclestreet.R")
 
 routePopup <- function(data){
   sprintf('<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd><dt>Type of Route</dt><dd>%s</dd></dl>',
@@ -48,10 +50,10 @@ straightPopup <- function(data){
 }
 
 # Load data
-rfast <- readRDS("../data/manchester/rf.Rds")
-rquiet <- readRDS("../data/manchester/rq.Rds")
-l <- readRDS("../data/manchester/l.Rds")
-zones <- readRDS("../data/manchester/z.Rds")
+rfast <- readRDS(paste0(data_dir, "rf.Rds" ))
+rquiet <- readRDS(paste0(data_dir, "rq.Rds"))
+l <- readRDS(paste0(data_dir, "l.Rds"))
+zones <- readRDS(paste0(data_dir, "z.Rds"))
 flow <- l@data
 
 shinyServer(function(input, output){
