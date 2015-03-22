@@ -23,7 +23,10 @@ source("pct-shiny-funs.R")
 
 rfast <- readRDS(paste0(data_dir, "rf.Rds" ))
 rquiet <- readRDS(paste0(data_dir, "rq.Rds"))
+
 l <- readRDS(paste0(data_dir, "l.Rds"))
+rfast@data <- cbind(l@data, rfast@data)
+rquiet@data <- cbind(l@data, rquiet@data)
 zones <- readRDS(paste0(data_dir, "z.Rds"))
 
 # RL: remove this bodge when the data is sorted
@@ -115,9 +118,9 @@ shinyServer(function(input, output, session){
                                }%>%
                                {
                                  if (input$line_type == 'route'){
-                                   sortAndPlot(., rfast, input$line_attr, input$nos_lines,
+                                   sortAndPlot(., rfast, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
                                                routePopup, "red") %>%
-                                   sortAndPlot(., rquiet, input$line_attr, input$nos_lines,
+                                   sortAndPlot(., rquiet, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
                                                routePopup, "green")
 
                                  }else
