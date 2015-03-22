@@ -11,7 +11,6 @@ getColourRamp <- function(colors, values) {
 }
 
 attrWithScenario <- function(attr, scenario){
-  # if(scenario == "base") return(attr)
   paste(scenario, attr, sep = "_")
 }
 
@@ -45,7 +44,7 @@ straightPopup <- function(data){
     <td> %s </td>
     </tr>
     </tbody>
-    </table>', data$All, data$Bicycle, round(data$clc * 100, 1), round(data$plc * 100, 1), round(data$ecp, 1), round(data$dist, 1)
+    </table>', data$All.x, data$Bicycle.x, round(data$base_clc * 100, 1), round(data$base_plc * 100, 1), round(data$base_ecp, 1), round(data$dist, 1)
   )
 }
 

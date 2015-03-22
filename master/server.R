@@ -75,7 +75,7 @@ shinyServer(function(input, output, session){
     return(Global.bbPoly)
   })
 
-  sortAndPlot <- function(m, lines, attr, nos, color, popupFn){
+  sortAndPlot <- function(m, lines, attr, nos, popupFn, color){
     sorted_l <- sortLines(lines, attr, nos)
     if(is.null(sorted_l))
       .
@@ -84,7 +84,7 @@ shinyServer(function(input, output, session){
                    # Plot widths proportional to attribute value
                    , weight = normalise(sorted_l@data[[attrWithScenario(input$line_attr, input$scenario)]], min = 3, max = 6)
                    , opacity = 0.7
-                   , popup = routePopup(sorted_l))
+                   , popup = popupFn(sorted_l))
   }
 
   map <- leaflet() %>%
