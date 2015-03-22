@@ -29,9 +29,6 @@ rfast@data <- cbind(l@data, rfast@data)
 rquiet@data <- cbind(l@data, rquiet@data)
 zones <- readRDS(paste0(data_dir, "z.Rds"))
 
-# RL: remove this bodge when the data is sorted
-zones@data <- rename(zones@data, base_clc = clc, base_plc = plc, base_ecp = ecp)
-
 cents <- readRDS(paste0(data_dir, "c.Rds"))
 flow <- l@data
 rfast@data <- cbind(rfast@data, l@data)
