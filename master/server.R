@@ -86,7 +86,7 @@ shinyServer(function(input, output, session){
   sortAndPlot <- function(m, lines, attr, nos, popupFn, color){
     sorted_l <- sortLines(lines, attr, nos)
     if(is.null(sorted_l))
-      .
+      m
     else
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
