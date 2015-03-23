@@ -51,7 +51,7 @@ straightPopup <- function(data){
 # Route popup function
 routePopup <- function(data){
   sprintf('<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd><dt>Type of Route</dt><dd>%s</dd></dl>',
-    round(data$length * 1000000, 1), round(base_clc / All * 100, 2), data$plan[1])
+    round(data$length * 1000000, 1), round(data$base_clc / data$All * 100, 2), data$plan[1])
 }
 
 zonePopup <- function(data){
