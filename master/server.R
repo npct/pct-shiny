@@ -1,15 +1,10 @@
-url <- "http://github.com/npct/pct-data/archive/master.zip" # data store
-data_base_dir <- "../pct-data-master/"
-if(sum(grepl(data_base_dir, list.files("../"))) == 0){
-  if (Sys.info()['sysname'] == "Windows")
-    d_method = "auto"
-  else
-    d_method = "wget"
-  download.file(url, destfile = "../d.zip", method = d_method)
+url <- "https://github.com/npct/pct-data/archive/master.zip" # data store
+if(sum(grepl("pct-data", list.files("../"))) == 0){
+  download.file(url, destfile = "../d.zip", method = "auto")
   unzip("../d.zip", exdir = "..")
 }
-if(exists("Global.bbPoly")) rm("Global.bbPoly", pos = ".GlobalEnv")
-data_dir <-paste0(data_base, "cambridge/") # data directory
+rm("Global.bbPoly", pos = ".GlobalEnv")
+data_dir <- "../pct-data-master/cambridge/" # data directory
 
 pkgs <- c("shiny", "leaflet", "ggmap", "RColorBrewer", "httr", "rgeos", "rgdal", "dplyr")
 lapply(pkgs, library, character.only = TRUE)
