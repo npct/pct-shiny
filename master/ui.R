@@ -43,7 +43,7 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                                  ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
                                                  ,sliderInput("nos_lines", label = "Number of lines to show (top n)", 5, 500, value = 5, step = 5)
                                )
-                               ,selectInput("zone_type", "Type of zones:", zone_types, selected = "msoa")
+                               # ,selectInput("zone_type", "Type of zones:", zone_types, selected = "msoa") # comment out if no other zone types
                                ,conditionalPanel(condition = "input.zone_type != 'none'"
                                                  ,selectInput("zone_attr", "Zone attribute:", attrs, selected = "current")
                                )

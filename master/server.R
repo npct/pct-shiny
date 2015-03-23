@@ -93,7 +93,7 @@ shinyServer(function(input, output, session){
   output$map = renderLeaflet(map %>%
                                {
                                  ## Add polygons (of MSOA boundaries)
-                                 if (input$zone_type == 'msoa' && (attrWithScenario(input$zone_attr, input$scenario) %in% names(zones@data)))
+                                 if ('msoa' == 'msoa' && (attrWithScenario(input$zone_attr, input$scenario) %in% names(zones@data))) # 'msoa' == 'msoa' replaces input$zone_type == 'msoa' temporarilty (we don't have lsoas!)
                                    addPolygons(. , data = zones
                                                , weight = 2
                                                , fillOpacity = 0.2
