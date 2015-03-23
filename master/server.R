@@ -2,6 +2,9 @@
 # Setup #
 # # # # #
 
+# Data directory, e.g. name of Local Authority
+data_dir <- "../pct-data-master/coventry/"
+
 # use install.packages() or devtools::install_github() to install these
 pkgs <- c("shiny", "leaflet", "RColorBrewer", "httr", "rgdal", "downloader")
 lapply(pkgs, library, character.only = TRUE)
