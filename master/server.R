@@ -1,15 +1,7 @@
 url <- "https://github.com/npct/pct-data/archive/master.zip" # data store
 if(sum(grepl("pct-data", list.files("../"))) == 0){
-  # For windows use the auto method
-  if (Sys.info()['sysname'] == "Windows"){
-    download.file(url, destfile = "../d.zip", method = "auto")
-    unzip("../d.zip", exdir = "..")
-  }
-  # for non-windows OS, use the wget method
-  else{
-    download.file(url, destfile = "../d.zip", method = "wget")
-    unzip("../d.zip", exdir = "../")
-  }
+  download.file(url, destfile = "../d.zip", method = "auto")
+  unzip("../d.zip", exdir = "..")
 }
 
 data_dir <- "../pct-data-master/cambridge/" # data directory
