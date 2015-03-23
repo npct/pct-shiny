@@ -11,8 +11,8 @@ line_types <- c("None" = "none"
                 ,"Fastest & Quietest Routes" = "route")
 
 zone_types <- c("None" = "none"
-                ,"Medium Super Output Area (MSOA)" = "msoa"
-                ,"Super Output Area (SOA)" = "routes")
+                ,"Medium Super Output Area (MSOA)" = "msoa")
+                # ,"Super Output Area (SOA)" = "routes") (Commented out SOAs for now, as they are not being used)
 
 attrs <- c("Current Level Cycling (CLC)" =       "clc"
            ,"Potential Level of Cycling (PLC)" = "plc"
@@ -43,7 +43,7 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                                  ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
                                                  ,sliderInput("nos_lines", label = "Number of lines to show (top n)", 5, 500, value = 5, step = 5)
                                )
-                               # ,selectInput("zone_type", "Type of zones:", zone_types, selected = "msoa") # comment out if no other zone types
+                               ,selectInput("zone_type", "Type of zones:", zone_types, selected = "msoa") # comment out if no other zone types
                                ,conditionalPanel(condition = "input.zone_type != 'none'"
                                                  ,selectInput("zone_attr", "Zone attribute:", attrs, selected = "current")
                                )
