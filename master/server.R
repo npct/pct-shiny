@@ -1,20 +1,25 @@
-url <- "https://github.com/npct/pct-data/archive/master.zip" # data store
-if(sum(grepl("pct-data", list.files("../"))) == 0){
-  download.file(url, destfile = "../d.zip", method = "auto")
-  unzip("../d.zip", exdir = "..")
-}
-rm("Global.bbPoly", pos = ".GlobalEnv")
-data_dir <- "../pct-data-master/cambridge/" # data directory
+# # # # #
+# Setup #
+# # # # #
 
-pkgs <- c("shiny", "leaflet", "ggmap", "RColorBrewer", "httr", "rgeos", "rgdal", "dplyr")
+# use install.packages() or devtools::install_github() to install these
+pkgs <- c("shiny", "leaflet", "RColorBrewer", "httr", "rgdal", "downloader")
 lapply(pkgs, library, character.only = TRUE)
 
+# Download files
+if(sum(grepl("data", list.files("../"))) == 0){
+  url <- "https://github.com/npct/pct-data/archive/master.zip" # data store
+  download(url = url, destfile = "../d.zip")
+  unzip("../d.zip", exdir = "..")
+}
+
+# Remove global zoom object
+rm("Global.bbPoly", pos = ".GlobalEnv")
+
+# Code to pull in data from cyclestreet.net
 source("cyclestreet.R")
 
-# # # # # # #
-# Functions #
-# # # # # # #
-
+# Functions
 source("pct-shiny-funs.R")
 
 # # # # # # #
@@ -33,6 +38,10 @@ cents <- readRDS(paste0(data_dir, "c.Rds"))
 flow <- l@data
 rfast@data <- cbind(rfast@data, l@data)
 rquiet@data <- cbind(rquiet@data, l@data)
+
+# # # # # # # #
+# shinyServer #
+# # # # # # # #
 
 shinyServer(function(input, output, session){
 
