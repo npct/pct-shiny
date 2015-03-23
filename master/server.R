@@ -3,7 +3,7 @@ if(sum(grepl("pct-data", list.files("../"))) == 0){
   download.file(url, destfile = "../d.zip", method = "auto")
   unzip("../d.zip", exdir = "..")
 }
-
+rm("Global.bbPoly", pos = ".GlobalEnv")
 data_dir <- "../pct-data-master/cambridge/" # data directory
 
 pkgs <- c("shiny", "leaflet", "ggmap", "RColorBrewer", "httr", "rgeos", "rgdal", "dplyr")
