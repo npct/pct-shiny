@@ -53,3 +53,22 @@ routePopup <- function(data){
   sprintf('<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd><dt>Type of Route</dt><dd>%s</dd></dl>',
     round(data$length * 1000000, 1), round(data$clc * 10, 2), data$plan[1])
 }
+
+zonePopup <- function(data){
+   sprintf("
+<table>
+  <tbody>
+    <tr>
+      <td>Zone: </td>
+      <td>%s</td>
+    </tr><tr>
+      <td>CLC: </td>
+      <td>%s%% </td>
+    </tr><tr>
+      <td>Hilliness:</td>
+      <td>%s&deg;</td>
+    </tr>
+  </tbody>
+</table>", data$geo_code, round(data$base_clc * 100, ), round(data$avslope, 2))
+}
+

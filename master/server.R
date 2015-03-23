@@ -109,7 +109,6 @@ shinyServer(function(input, output, session){
                                                # From red to blue gradient of colours based on the clc variable of zones dataset
                                                , fillColor = getColourRamp(c("red", "blue"), zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
                                                , color = "black"
-                                    , popup = sprintf("Zone: %s <br> CLC: %s <br> Hilliness %s (degress) ", zones$geo_code, round(zones$clc * 100, ), round(zones$avslope, 2))
                                    )
                                  else
                                    .
@@ -134,7 +133,8 @@ shinyServer(function(input, output, session){
                                addCircleMarkers(data = cents
                                                 , radius = 2
                                                 , color = "black"
-                                                , popup = sprintf("<b>%% journeys by bike: </b>%s%%", round(zones$clc * 100,2))) %>%
+                                                , popup = zonePopup(cents)
+                                                  ) %>%
                                {
                                  if (input$feature != "none")
                                    addGeoJSON(., from_cycle_streets(input$map_bounds, input$feature))
