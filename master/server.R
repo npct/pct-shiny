@@ -1,4 +1,4 @@
-url <- "https://github.com/npct/pct-data/archive/master.zip" # data store
+url <- "http://github.com/npct/pct-data/archive/master.zip" # data store
 if(sum(grepl("pct-data", list.files("../"))) == 0){
   download.file(url, destfile = "../d.zip", method = "auto")
   unzip("../d.zip", exdir = "..")
