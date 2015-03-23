@@ -40,7 +40,7 @@ shinyServer(function(input, output, session){
     if(!(sortBy %in% names(lines))) return(NULL)
     poly <- bbPoly()
     poly <- spTransform(poly, CRS(proj4string(lines)))
-    keep <- gIntersects( poly, lines,byid=TRUE ) | gOverlaps( poly, lines,byid=TRUE )
+    keep <- gContains( poly, lines,byid=TRUE )
     if(all(!keep)) return(NULL)
     linesInBb <- lines[drop(keep), ]
     linesInBb[ tail(order(linesInBb[[sortBy]]), nos), ]
