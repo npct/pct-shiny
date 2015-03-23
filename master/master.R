@@ -3,7 +3,7 @@
 # # # # #
 
 # use install.packages() or devtools::install_github() to install these
-pkgs <- c("shiny", "leaflet", "RColorBrewer", "httr", "rgdal", "downloader")
+pkgs <- c("shiny", "leaflet", "RColorBrewer", "httr", "rgdal", "downloader", "rgeos")
 lapply(pkgs, library, character.only = TRUE)
 
 # Download files
