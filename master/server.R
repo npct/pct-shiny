@@ -12,7 +12,7 @@ if(sum(grepl("pct-data", list.files("../"))) == 0){
   }
 }
 
-data_dir <- "../pct-data-master/coventry/" # data directory
+data_dir <- "../pct-data-master/cambridge/" # data directory
 
 pkgs <- c("shiny", "leaflet", "ggmap", "RColorBrewer", "httr", "rgeos", "rgdal", "dplyr")
 lapply(pkgs, library, character.only = TRUE)
@@ -69,7 +69,7 @@ shinyServer(function(input, output, session){
   })
 
   bbPoly <- reactive({
-    if(!input$freeze || !exists("Global.bbPoly")){
+    if(exists("Global.bbPoly")){
       lat <- c(input$map_bounds$west , input$map_bounds$east, input$map_bounds$east, input$map_bounds$west )
       lng <- c(input$map_bounds$north, input$map_bounds$north, input$map_bounds$south, input$map_bounds$south)
 
