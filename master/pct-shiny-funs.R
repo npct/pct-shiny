@@ -70,6 +70,6 @@ zonePopup <- function(data, zone){
       <td>%s&deg;</td>
     </tr>
   </tbody>
-</table>", data$geo_code, zone_filter_name, round(data[[zone_filter]] * 100, 2 ), round(data$avslope, 2))
+</table>", data$geo_code, zone_filter_name, round(data[[zone_filter]], 2 ), round(data$avslope, 2))
 }
 
