@@ -50,7 +50,12 @@ routePopup <- function(data){
     round(data$length, 1), round(data$base_clc / data$All * 100, 2), data$plan[1])
 }
 
-zonePopup <- function(data){
+zonePopup <- function(data, zone){
+  # Create a zone filter variable by concatenating the word 'base' with the zone input variable (for instance base_clc)
+  zone_filter <- paste("base", zone, sep = "_")
+  # Create a new name for the zone variable by making an upper case title out of it
+  zone_filter_name <- toupper(zone)
+
    sprintf("
 <table>
   <tbody>
@@ -58,13 +63,13 @@ zonePopup <- function(data){
       <td>Zone: </td>
       <td>%s</td>
     </tr><tr>
-      <td>CLC: </td>
+      <td>%s: </td>
       <td>%s%% </td>
     </tr><tr>
-      <td>Hilliness: </td>
+      <td>Hilliness:  </td>
       <td>%s&deg;</td>
     </tr>
   </tbody>
-</table>", data$geo_code, round(data$base_clc * 100, ), round(data$avslope, 2))
+</table>", data$geo_code, zone_filter_name, round(data[[zone_filter]] * 100, 2 ), round(data$avslope, 2))
 }
 
