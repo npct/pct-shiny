@@ -24,19 +24,15 @@ straightPopup <- function(data){
     <td> %s </td>
     </tr>
     <tr>
-    <td> N. Cycle </td>
+    <td> N. cycle </td>
     <td> %s </td>
     </tr>
     <tr>
-    <td> CLC (%% who cycle) </td>
+    <td> PLC (model scenario) </td>
     <td> %s </td>
     </tr>
     <tr>
-    <td> PLC (%%) </td>
-    <td> %s </td>
-    </tr>
-    <tr>
-    <td> ECP (N.) </td>
+    <td> ECP (PCL - N. Cycle) </td>
     <td> %s </td>
     </tr>
     <tr>
@@ -44,7 +40,7 @@ straightPopup <- function(data){
     <td> %s </td>
     </tr>
     </tbody>
-    </table>', data$All, data$Bicycle, round(data$base_clc * 100, 1), round(data$base_plc * 100, 1), round(data$base_ecp, 1), round(data$dist, 1)
+    </table>', data$All, data$Bicycle, round(data$base_plc, 1), round(data$base_ecp, 1), round(data$dist, 1)
   )
 }
 
