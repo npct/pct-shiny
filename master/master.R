@@ -13,8 +13,10 @@ if(sum(grepl("data", list.files("../"))) == 0){
   unzip("../d.zip", exdir = "..")
 }
 
-# Remove global zoom object
-rm("Global.bbPoly", pos = ".GlobalEnv")
+# Remove global zoom object if it exists
+if(exists("Global.bbPoly", envir = globalenv())) {
+  rm("Global.bbPoly", pos = ".GlobalEnv")
+}
 
 # Code to pull in data from cyclestreet.net
 source("cyclestreet.R")
