@@ -97,7 +97,7 @@ shinyServer(function(input, output, session){
   }
 
   map <- leaflet() %>%
-    addTiles(urlTemplate = "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png")
+    addTiles(urlTemplate = "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png")
 
   output$map = renderLeaflet(map %>%
                                {
