@@ -100,7 +100,7 @@ shinyServer(function(input, output, session){
                                  if (input$zone_type == 'msoa' && (attrWithScenario(input$zone_attr, input$scenario) %in% names(zones@data))) # 'msoa' == 'msoa' replaces input$zone_type == 'msoa' temporarilty (we don't have lsoas!)
                                    addPolygons(. , data = zones
                                                , weight = 2
-                                               , fillOpacity = 0.2
+                                               , fillOpacity = 0.6
                                                , opacity = 0.3
                                                # From red to blue gradient of colours based on the clc variable of zones dataset
                                                , fillColor = getColourRamp(c("red", "blue"), zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
