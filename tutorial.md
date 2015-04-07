@@ -5,12 +5,12 @@ date: "Tuesday, April 7th, 2015"
 output: html_document
 ---
 
-This is a brief tutorial op how to use the Infrastructure Planning Tool hosted at:
+This is a brief tutorial on how to use the Infrastructure Planning Tool hosted at:
 http://geo8.webarch.net/pct-shiny/master/
 
 There are a few controls which are always visible, which are:
 
-* Scenaio
+* Scenario
       * Base - Baseline Scenario
       * Gender equality
       * Go Dutch - Using the dutch scenario
