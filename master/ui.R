@@ -9,7 +9,7 @@ scenarios <- c("Baseline" =           "base"
 line_types <- c("None" = "none"
                 ,"Straight Lines" = "straight"
                 ,"Direct Route" = "d_route"
-                ,"Direct & Quietest Routes" = "route")
+                ,"Direct & Quieter Routes" = "route")
 
 attrs <- c("Current Level Cycling (CLC)" =       "clc"
            ,"Potential Level of Cycling (PLC)" = "plc"
