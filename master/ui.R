@@ -40,7 +40,7 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                              )
                              ,absolutePanel(
                                cursor = "move"
-                               ,id = "controls"
+                               ,id = "legend"
                                ,class = "panel panel-default"
                                ,fixed = TRUE
                                ,top = 150
