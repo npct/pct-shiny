@@ -13,9 +13,6 @@ if(sum(grepl("data", list.files("../"))) == 0){
   unzip("../d.zip", exdir = "..")
 }
 
-# Code to pull in data from cyclestreet.net
-source("cyclestreet.R")
-
 # Functions
 source("pct-shiny-funs.R")
 
@@ -131,11 +128,6 @@ shinyServer(function(input, output, session){
                                                 , color = "black"
                                                 , popup = zonePopup(cents, input$zone_attr)
                                                   ) %>%
-                               {
-                                 if (input$feature != "none")
-                                   addGeoJSON(., from_cycle_streets(input$map_bounds, input$feature))
-                                 else .
-                               } %>%
                                mapOptions(zoomToLimits = "first")
   )
 })

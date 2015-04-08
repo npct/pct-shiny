@@ -18,11 +18,6 @@ attrs <- c("Current Level Cycling (CLC)" =       "clc"
            ,"Potential Level of Cycling (PLC)" = "plc"
            ,"Extra Cycling Potential (ECP)" =    "ecp")
 
-features <- c("None" = "none"
-              ,"Cycle Parking" = "cycleparking"
-              ,"Collisions involving cyclists" = "collisions"
-              ,"Bike Shops" = "bikeshops")
-
 shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                    ,tabPanel("Interactive map"
                              ,leafletOutput("map", width="auto", height="600")
@@ -47,7 +42,6 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                ,conditionalPanel(condition = "input.zone_type != 'none'"
                                                  ,selectInput("zone_attr", "Zone attribute:", attrs, selected = "current")
                                )
-                               ,selectInput("feature", "Additional Features", features)
                              )
                    )
 ))
