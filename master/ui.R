@@ -36,6 +36,20 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                                  ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
                                                  ,sliderInput("nos_lines", label = "Number of lines to show (top n)", 5, 500, value = 5, step = 5)
                                )
+
                              )
+                             ,absolutePanel(
+                               cursor = "move"
+                               ,id = "controls"
+                               ,class = "panel panel-default"
+                               ,fixed = TRUE
+                               ,top = 150
+                               ,left = 30
+                               ,width = 200
+                               ,height = "auto"
+                               ,style = "opacity: 0.9"
+                               ,plotOutput("legendCyclingPotential", height = 300)
+                               )
+
                    )
 ))

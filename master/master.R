@@ -134,4 +134,25 @@ shinyServer(function(input, output, session){
                                                   ) %>%
                                mapOptions(zoomToLimits = "first")
   )
+
+  output$legendCyclingPotential <- renderPlot({
+      # Read the zone data
+      data_ <- zones@data[[attrWithScenario(input$zone_attr, input$scenario)]]
+      # Sort it and save it as a matrix
+      data_ <- as.matrix(sort(data_))
+      # Divide the data_ matrix into four quartiles
+      quart <- round(length(data_) / 4)
+      # Create a new matrix for each quartile having the mean
+      m <- matrix(nrow=4,ncol=1)
+      m[1, 1] <- mean(data_[1:quart])
+      m[2, 1] <- mean(data_[quart:(quart * 2)])
+      m[3, 1] <- mean(data_[(quart * 2):(quart * 3)])
+      m[4, 1] <- mean(data_[(quart * 3):length(data_)])
+
+      # Create a zone colour based on the absolute value of data (as data can be negative as well)
+      zone_col <- getColourRamp(c("lightgreen", "darkgreen"), abs(m))
+      # Barplot the data in vertical manner
+      barplot(m, names.arg = NA, col = zone_col, horiz=FALSE, xlab = "", ylab = input$zone_attr)
+
+  })
 })
