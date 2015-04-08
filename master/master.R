@@ -99,8 +99,8 @@ shinyServer(function(input, output, session){
                                                , weight = 2
                                                , fillOpacity = 0.6
                                                , opacity = 0.3
-                                               # From red to blue gradient of colours based on the clc variable of zones dataset
-                                               , fillColor = getColourRamp(c("red", "blue"), zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
+                                               # From light green to dark green gradient of colours based on the zone variable
+                                               , fillColor = getColourRamp(c("lightgreen", "darkgreen"), zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
                                                , color = "black"
                                    )
                                  else
