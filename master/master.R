@@ -114,13 +114,17 @@ shinyServer(function(input, output, session){
                                    .
                                }%>%
                                {
-                                 if (input$line_type == 'route'){
+                                 if (input$line_type %in% c('route', 'd_route'))
                                    sortAndPlot(., rfast, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
-                                               routePopup, "red") %>%
+                                               routePopup, "red")
+                                 else
+                                   .
+                               }%>%
+                               {
+                                 if (input$line_type == 'route')
                                    sortAndPlot(., rquiet, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
                                                routePopup, "green")
-
-                                 }else
+                                 else
                                    .
                                }%>%
                                addCircleMarkers(data = cents
