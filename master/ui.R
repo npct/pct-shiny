@@ -31,7 +31,7 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                ,selectInput("zone_attr", "Zone attribute:", attrs, selected = "current")
                                ,selectInput("line_type", "Representation of cycling desire lines", line_types, selected = "none")
                                ,conditionalPanel(condition = "input.line_type != 'none'"
-                                                 ,checkboxInput("freeze", "Freeze Scope", value = TRUE)
+                                                 ,checkboxInput("freeze", "Freeze Lines", value = TRUE)
                                                  ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
                                                  ,sliderInput("nos_lines", label = "Number of lines to show (top n)", 5, 500, value = 5, step = 5)
                                )
