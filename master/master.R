@@ -109,7 +109,7 @@ shinyServer(function(input, output, session){
                                {
                                  if (input$line_type == 'straight'){
                                    sortAndPlot(., l, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
-                                               straightPopup, color = "blue")
+                                               straightPopup, color = "maroon")
                                  }else
                                    .
                                }%>%
@@ -123,7 +123,7 @@ shinyServer(function(input, output, session){
                                {
                                  if (input$line_type == 'route')
                                    sortAndPlot(., rquiet, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
-                                               routePopup, "green")
+                                               routePopup, "darkblue")
                                  else
                                    .
                                }%>%
