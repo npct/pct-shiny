@@ -49,17 +49,21 @@ shinyServer(function(input, output, session){
     linesInBb[ tail(order(linesInBb[[sortBy]]), nos), ]
   }
 
-  attrs <- c("Current Level Cycling (CLC)" =       "clc"
+  attrsLine <- c("Current Level Cycling (CLC)" =      "clc"
              ,"Potential Level of Cycling (PLC)" = "plc"
              ,"Extra Cycling Potential (ECP)" =    "ecp")
 
+  attrsZone <- c("Current Level Cycling (CLC)" =      "clc"
+             ,"None" = "none"
+             ,"Potential Level of Cycling (PLC)" = "plc"
+             ,"Extra Cycling Potential (ECP)" =    "ecp")
   observe({
     if(input$scenario != "base"){
-      updateSelectInput(session, "zone_attr", choices = attrs[2:3])
-      updateSelectInput(session, "line_attr", choices = attrs[2:3])
+      updateSelectInput(session, "zone_attr", choices = attrsZone[2:4])
+      updateSelectInput(session, "line_attr", choices = attrsLine[2:3])
     }else{
-      updateSelectInput(session, "zone_attr", choices = attrs)
-      updateSelectInput(session, "line_attr", choices = attrs)
+      updateSelectInput(session, "zone_attr", choices = attrsZone)
+      updateSelectInput(session, "line_attr", choices = attrsLine)
     }
   })
 
@@ -94,7 +98,7 @@ shinyServer(function(input, output, session){
   output$map = renderLeaflet(map %>%
                                {
                                  ## Add polygons (of MSOA boundaries)
-                                 if (attrWithScenario(input$zone_attr, input$scenario) %in% names(zones@data)) # CLC is only avaliable for baseline
+                                 if (input$zone_attr != 'none' && (attrWithScenario(input$zone_attr, input$scenario) %in% names(zones@data))) # CLC is only avaliable for baseline
                                    addPolygons(. , data = zones
                                                , weight = 2
                                                , fillOpacity = 0.6
@@ -127,17 +131,20 @@ shinyServer(function(input, output, session){
                                  else
                                    .
                                }%>%
-                               addCircleMarkers(data = cents
-                                                , radius = 2
-                                                , color = "black"
-                                                , popup = zonePopup(cents, input$zone_attr)
-                                                  ) %>%
+                               {if (input$zone_attr != 'none')
+                                 addCircleMarkers(., data = cents, radius = 2, color = "black", popup = zonePopup(cents, input$zone_attr))
+                                else
+                                  .
+                               }%>%
                                mapOptions(zoomToLimits = "first")
   )
 
   output$legendCyclingPotential <- renderPlot({
+    zone_attr <- isolate(input$zone_attr)
+    if (zone_attr != 'none'){
+
       # Read the zone data
-      data_ <- zones@data[[attrWithScenario(input$zone_attr, input$scenario)]]
+      data_ <- zones@data[[attrWithScenario(zone_attr, input$scenario)]]
       # Sort it and save it as a matrix
       data_ <- as.matrix(sort(data_))
       # Divide the data_ matrix into four quartiles
@@ -152,7 +159,7 @@ shinyServer(function(input, output, session){
       # Create a zone colour based on the absolute value of data (as data can be negative as well)
       zone_col <- getColourRamp(c("lightgreen", "darkgreen"), abs(m))
       # Barplot the data in vertical manner
-      barplot(m, names.arg = NA, col = zone_col, horiz=FALSE, xlab = "", ylab = input$zone_attr)
-
+      barplot(m, names.arg = NA, col = zone_col, horiz=FALSE, xlab = "", ylab = zone_attr)
+    }
   })
 })
