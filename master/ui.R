@@ -29,8 +29,8 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                ,height = "auto"
                                ,style = "opacity: 0.9"
                                ,selectInput("scenario", "Scenario:", scenarios)
-                               ,selectInput("zone_attr", "Zone attribute:", attrs, selected = "current")
-                               ,selectInput("line_type", "Representation of cycling desire lines", line_types, selected = "none")
+                               ,selectInput("zone_attr", "Zone Attribute:", attrs, selected = "current")
+                               ,selectInput("line_type", "Cycling Flows", line_types, selected = "none")
                                ,conditionalPanel(condition = "input.line_type != 'none'"
                                                  ,checkboxInput("freeze", "Freeze Lines", value = TRUE)
                                                  ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
