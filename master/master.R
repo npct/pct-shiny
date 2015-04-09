@@ -94,7 +94,7 @@ shinyServer(function(input, output, session){
   output$map = renderLeaflet(map %>%
                                {
                                  ## Add polygons (of MSOA boundaries)
-                                 if (attrWithScenario(input$zone_attr, input$scenario) %in% names(zones@data)) # 'msoa' == 'msoa' replaces input$zone_type == 'msoa' temporarilty (we don't have lsoas!)
+                                 if (attrWithScenario(input$zone_attr, input$scenario) %in% names(zones@data)) # CLC is only avaliable for baseline
                                    addPolygons(. , data = zones
                                                , weight = 2
                                                , fillOpacity = 0.6
