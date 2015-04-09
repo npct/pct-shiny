@@ -106,7 +106,7 @@ shinyServer(function(input, output, session){
                                                , fillOpacity = 0.4
                                                , opacity = 0.3
                                                # From light green to dark green gradient of colours based on the zone variable
-                                               , fillColor = getColourRamp(c("lightgreen", "darkgreen"), zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
+                                               , fillColor = getColourRamp(c("red", "darkgreen"), zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
                                                , color = "black"
                                    )
                                  else
@@ -159,7 +159,7 @@ shinyServer(function(input, output, session){
       m[4, 1] <- mean(data_[(quart * 3):length(data_)])
 
       # Create a zone colour based on the absolute value of data (as data can be negative as well)
-      zone_col <- getColourRamp(c("lightgreen", "darkgreen"), abs(m))
+      zone_col <- getColourRamp(c("red", "darkgreen"), abs(m))
       # Barplot the data in vertical manner
       barplot(m, names.arg = NA, col = zone_col, horiz=FALSE, xlab = "", ylab = zone_attr)
     }
