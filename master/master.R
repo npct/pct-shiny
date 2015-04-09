@@ -53,10 +53,8 @@ shinyServer(function(input, output, session){
              ,"Potential Level of Cycling (PLC)" = "plc"
              ,"Extra Cycling Potential (ECP)" =    "ecp")
 
-  attrsZone <- c("Current Level Cycling (CLC)" =      "clc"
-             ,"None" = "none"
-             ,"Potential Level of Cycling (PLC)" = "plc"
-             ,"Extra Cycling Potential (ECP)" =    "ecp")
+  attrsZone <- c(attrsLine, c("None" = "none"))
+
   observe({
     if(input$scenario != "base"){
       updateSelectInput(session, "zone_attr", choices = attrsZone[2:4])
@@ -65,6 +63,10 @@ shinyServer(function(input, output, session){
       updateSelectInput(session, "zone_attr", choices = attrsZone)
       updateSelectInput(session, "line_attr", choices = attrsLine)
     }
+  })
+
+  plotZones <- reactive({ # CLC is only avaliable for baseline
+    (input$zone_attr != 'none') && (attrWithScenario(input$zone_attr, input$scenario) %in% names(zones@data))
   })
 
   bbPoly <- reactive({
@@ -98,7 +100,7 @@ shinyServer(function(input, output, session){
   output$map = renderLeaflet(map %>%
                                {
                                  ## Add polygons (of MSOA boundaries)
-                                 if (input$zone_attr != 'none' && (attrWithScenario(input$zone_attr, input$scenario) %in% names(zones@data))) # CLC is only avaliable for baseline
+                                 if(plotZones())
                                    addPolygons(. , data = zones
                                                , weight = 2
                                                , fillOpacity = 0.6
@@ -141,7 +143,7 @@ shinyServer(function(input, output, session){
 
   output$legendCyclingPotential <- renderPlot({
     zone_attr <- isolate(input$zone_attr)
-    if (zone_attr != 'none'){
+    if (plotZones()){
 
       # Read the zone data
       data_ <- zones@data[[attrWithScenario(zone_attr, input$scenario)]]
