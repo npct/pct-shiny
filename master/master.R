@@ -103,7 +103,7 @@ shinyServer(function(input, output, session){
                                  if(plotZones())
                                    addPolygons(. , data = zones
                                                , weight = 2
-                                               , fillOpacity = 0.6
+                                               , fillOpacity = 0.4
                                                , opacity = 0.3
                                                # From light green to dark green gradient of colours based on the zone variable
                                                , fillColor = getColourRamp(c("lightgreen", "darkgreen"), zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])

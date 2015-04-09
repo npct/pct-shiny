@@ -34,7 +34,7 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                ,conditionalPanel(condition = "input.line_type != 'none'"
                                                  ,checkboxInput("freeze", "Freeze Lines", value = TRUE)
                                                  ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
-                                                 ,sliderInput("nos_lines", label = "Number of lines to show (top n)", 5, 500, value = 5, step = 5)
+                                                 ,sliderInput("nos_lines", label = "Number of lines to show (top n)", 1, 50, value = 5)
                                )
 
                              )
