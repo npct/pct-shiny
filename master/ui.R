@@ -16,7 +16,7 @@ attrs <- c("Observed Level Cycling (OLC)" =       "olc"
            ,"Scenario-based Increase in Cycling (ECP)" =    "sic")
 
 shinyUI(navbarPage("Infrastructure planning tool", id="nav"
-                   ,tags$head(includeScript("google-analytics.js"))
+                   ,header = tags$head(includeScript("google-analytics.js"))
                    ,tabPanel("Interactive map"
                              ,leafletOutput("map", width="auto", height="600")
                              ,absolutePanel(
@@ -40,16 +40,15 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
 
                              )
                              ,absolutePanel(
-                               cursor = "move"
+                               cursor = "default"
                                ,id = "legend"
                                ,class = "panel panel-default"
                                ,fixed = TRUE
                                ,top = 150
                                ,left = 30
-                               ,width = 200
-                               ,height = "auto"
-                               ,style = "opacity: 0.9"
-                               ,plotOutput("legendCyclingPotential", height = 300)
+                               ,width = 100
+                               ,style = "opacity: 0.7"
+                               ,plotOutput("legendCyclingPotential", width = "100%")
                                )
 
                    )
