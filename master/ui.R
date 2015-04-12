@@ -16,7 +16,7 @@ attrs <- c("Current Level Cycling (CLC)" =       "clc"
            ,"Extra Cycling Potential (ECP)" =    "ecp")
 
 shinyUI(navbarPage("Infrastructure planning tool", id="nav"
-                   ,tags$head(includeScript("google-analytics.js"))
+                   ,header = tags$head(includeScript("google-analytics.js"))
                    ,tabPanel("Interactive map"
                              ,leafletOutput("map", width="auto", height="600")
                              ,absolutePanel(
