@@ -92,7 +92,7 @@ shinyServer(function(input, output, session){
     else
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
-                   , weight = normalise(sorted_l@data[[attrWithScenario]], min = 3, max = 6)
+                   , weight = normalise(sorted_l@data[[attrWithScenario(input$line_attr, input$scenario)]], min = 3, max = 6)
                    , opacity = 0.7
                    , popup = popupFn(sorted_l))
   }
@@ -150,7 +150,17 @@ shinyServer(function(input, output, session){
 
       # Read the zone data
       data_ <- zones@data[[attrWithScenario(zone_attr, input$scenario)]]
-      b <- unique(quantile(data_, probs=seq.int(0,1, length.out=4)))
+      # Sort it and save it as a matrix
+      data_ <- as.matrix(sort(data_))
+      # Divide the data_ matrix into four quartiles
+      quart <- round(length(data_) / 4)
+      # Create a new matrix for each quartile having the mean
+      m <- matrix(nrow=4,ncol=1)
+      m[1, 1] <- mean(data_[1:quart])
+      m[2, 1] <- mean(data_[quart:(quart * 2)])
+      m[3, 1] <- mean(data_[(quart * 2):(quart * 3)])
+      m[4, 1] <- mean(data_[(quart * 3):length(data_)])
+
       # Create a zone colour based on the absolute value of data (as data can be negative as well)
       zone_col <- getColourRamp(zcols, abs(m))
       # Barplot the data in vertical manner
