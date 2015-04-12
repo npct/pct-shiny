@@ -11,9 +11,9 @@ line_types <- c("None" = "none"
                 ,"Direct Route" = "d_route"
                 ,"Direct & Quiet Routes" = "route")
 
-attrs <- c("Current Level Cycling (CLC)" =       "clc"
-           ,"Potential Level of Cycling (PLC)" = "plc"
-           ,"Extra Cycling Potential (ECP)" =    "ecp")
+attrs <- c("Observed Level Cycling (OLC)" =       "olc"
+           ,"Scenario-based Level of Cycling (PLC)" = "slc"
+           ,"Scenario-based Increase in Cycling (ECP)" =    "sic")
 
 shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                    ,tags$head(includeScript("google-analytics.js"))

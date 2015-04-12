@@ -24,15 +24,15 @@ straightPopup <- function(data){
     <td> %s </td>
     </tr>
     <tr>
-    <td> N. cycle </td>
+    <td> OLC </td>
     <td> %s </td>
     </tr>
     <tr>
-    <td> PLC (model scenario) </td>
+    <td> SLC </td>
     <td> %s </td>
     </tr>
     <tr>
-    <td> ECP (PCL - N. Cycle) </td>
+    <td> SIC (SLC - CLC) </td>
     <td> %s </td>
     </tr>
     <tr>
@@ -40,7 +40,7 @@ straightPopup <- function(data){
     <td> %s </td>
     </tr>
     </tbody>
-    </table>', data$All, data$Bicycle, round(data$base_plc, 1), round(data$base_ecp, 1), round(data$dist, 1)
+    </table>', data$All, data$Bicycle, round(data$base_slc, 1), round(data$base_sic, 1), round(data$dist, 1)
   )
 }
 
@@ -51,11 +51,11 @@ routeTypeLabel[['quietest']] <- 'Quiet'
 # Route popup function
 routePopup <- function(data){
   sprintf('<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd><dt>Type of Route</dt><dd>%s</dd></dl>',
-    round(data$length, 1), round(data$base_clc / data$All * 100, 2), routeTypeLabel[[data$plan[1]]])
+    round(data$length, 1), round(data$base_olc / data$All * 100, 2), routeTypeLabel[[data$plan[1]]])
 }
 
 zonePopup <- function(data, zone){
-  # Create a zone filter variable by concatenating the word 'base' with the zone input variable (for instance base_clc)
+  # Create a zone filter variable by concatenating the word 'base' with the zone input variable (for instance base_olc)
   zone_filter <- paste("base", zone, sep = "_")
   # Create a new name for the zone variable by making an upper case title out of it
   zone_filter_name <- toupper(zone)
@@ -68,7 +68,7 @@ zonePopup <- function(data, zone){
       <td>%s</td>
     </tr><tr>
       <td>%s: </td>
-      <td>%s%% </td>
+      <td>%s </td>
     </tr><tr>
       <td>Hilliness:  </td>
       <td>%s&deg;</td>

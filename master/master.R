@@ -6,7 +6,10 @@
 pkgs <- c("shiny", "leaflet", "RColorBrewer", "httr", "rgdal", "downloader", "rgeos")
 lapply(pkgs, library, character.only = TRUE)
 
-# Download files
+# Colours
+zcols <- c("MidnightBlue", "Yellow")
+
+# Download files - remove first if needed
 if(sum(grepl("data", list.files("../"))) == 0){
   url <- "https://github.com/npct/pct-data/archive/master.zip" # data store
   download(url = url, destfile = "../d.zip")
@@ -49,9 +52,9 @@ shinyServer(function(input, output, session){
     linesInBb[ tail(order(linesInBb[[sortBy]]), nos), ]
   }
 
-  attrsLine <- c("Current Level Cycling (CLC)" =      "clc"
-             ,"Potential Level of Cycling (PLC)" = "plc"
-             ,"Extra Cycling Potential (ECP)" =    "ecp")
+  attrsLine <- c("Observed Level Cycling (OLC)" = "olc"
+    ,"Scenario-based Level of Cycling (SLC)" =    "slc"
+    ,"Scenario-based Increase in Cycling (SIC)" = "sic")
 
   attrsZone <- c(attrsLine, c("None" = "none"))
 
@@ -103,10 +106,10 @@ shinyServer(function(input, output, session){
                                  if(plotZones())
                                    addPolygons(. , data = zones
                                                , weight = 2
-                                               , fillOpacity = 0.4
+                                               , fillOpacity = 0.5
                                                , opacity = 0.3
-                                               # From light green to dark green gradient of colours based on the zone variable
-                                               , fillColor = getColourRamp(c("red", "darkgreen"), zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
+, fillColor = getColourRamp(zcols,
+  zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
                                                , color = "black"
                                    )
                                  else
@@ -159,7 +162,7 @@ shinyServer(function(input, output, session){
       m[4, 1] <- mean(data_[(quart * 3):length(data_)])
 
       # Create a zone colour based on the absolute value of data (as data can be negative as well)
-      zone_col <- getColourRamp(c("red", "darkgreen"), abs(m))
+      zone_col <- getColourRamp(zcols, abs(m))
       # Barplot the data in vertical manner
       barplot(m, names.arg = NA, col = zone_col, horiz=FALSE, xlab = "", ylab = zone_attr)
     }
