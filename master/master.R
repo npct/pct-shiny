@@ -92,7 +92,7 @@ shinyServer(function(input, output, session){
     else
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
-                   , weight = normalise(sorted_l@data[[attrWithScenario(input$line_attr, input$scenario)]], min = 3, max = 6)
+                   , weight = normalise(sorted_l@data[[attrWithScenario]], min = 3, max = 6)
                    , opacity = 0.7
                    , popup = popupFn(sorted_l))
   }
