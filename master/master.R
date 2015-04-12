@@ -146,7 +146,7 @@ shinyServer(function(input, output, session){
 
   output$legendCyclingPotential <- renderPlot({
     zone_attr <- isolate(input$zone_attr)
-    if (plotZones()){
+    if (zone_attr != 'none'){
 
       # Read the zone data
       data_ <- zones@data[[attrWithScenario(zone_attr, input$scenario)]]
@@ -164,7 +164,7 @@ shinyServer(function(input, output, session){
       # Create a zone colour based on the absolute value of data (as data can be negative as well)
       zone_col <- getColourRamp(zcols, abs(m))
       # Barplot the data in vertical manner
-      barplot(matrix(b, nrow=4,ncol=1), names.arg = NA, col = zone_col, horiz=FALSE, xlab = "", ylab = zone_attr)
+      barplot(m, names.arg = NA, col = zone_col, horiz=FALSE, xlab = "", ylab = zone_attr)
     }
   })
 })
