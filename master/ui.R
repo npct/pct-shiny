@@ -40,16 +40,15 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
 
                              )
                              ,absolutePanel(
-                               cursor = "move"
+                               cursor = "default"
                                ,id = "legend"
                                ,class = "panel panel-default"
                                ,fixed = TRUE
                                ,top = 150
                                ,left = 30
-                               ,width = 200
-                               ,height = "auto"
-                               ,style = "opacity: 0.9"
-                               ,plotOutput("legendCyclingPotential", height = 300)
+                               ,width = 100
+                               ,style = "opacity: 0.7"
+                               ,plotOutput("legendCyclingPotential", width = "100%")
                                )
 
                    )
