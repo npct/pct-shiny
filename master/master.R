@@ -10,7 +10,7 @@ lapply(pkgs, library, character.only = TRUE)
 zcols <- c("MidnightBlue", "Yellow")
 
 # Download files - remove first if needed
-if(sum(grepl("data", list.files("../"))) == 0){
+if(sum(grepl("rf", list.files(data_dir))) == 0){
   url <- "https://github.com/npct/pct-data/archive/master.zip" # data store
   download(url = url, destfile = "../d.zip")
   unzip("../d.zip", exdir = "..")
