@@ -137,7 +137,7 @@ shinyServer(function(input, output, session){
                                    .
                                }%>%
                                {if (input$zone_attr != 'none')
-                                 addCircleMarkers(., data = cents, radius = 2, color = "black", popup = zonePopup(cents, input$zone_attr))
+                                 addCircleMarkers(., data = cents, radius = 2, color = "black", popup = zonePopup(cents, input$scenario, input$zone_attr))
                                 else
                                   .
                                }%>%

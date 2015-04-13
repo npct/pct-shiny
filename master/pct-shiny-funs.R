@@ -54,9 +54,9 @@ routePopup <- function(data){
     round(data$length, 1), round(data$base_olc / data$All * 100, 2), routeTypeLabel[[data$plan[1]]])
 }
 
-zonePopup <- function(data, zone){
+zonePopup <- function(data, scenario, zone){
   # Create a zone filter variable by concatenating the word 'base' with the zone input variable (for instance base_olc)
-  zone_filter <- paste("base", zone, sep = "_")
+  zone_filter <- paste(scenario, zone, sep = "_")
   # Create a new name for the zone variable by making an upper case title out of it
   zone_filter_name <- toupper(zone)
 
