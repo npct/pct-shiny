@@ -31,10 +31,6 @@ rfast@data <- cbind(l@data, rfast@data)
 rquiet@data <- cbind(l@data, rquiet@data)
 zones <- readRDS(paste0(data_dir, "z.Rds"))
 
-names(zones@data) <- gsub("clc", "olc", names(zones@data))
-names(zones@data) <- gsub("plc", "slc", names(zones@data))
-names(zones@data) <- gsub("ecp", "sic", names(zones@data))
-
 cents <- readRDS(paste0(data_dir, "c.Rds"))
 flow <- l@data
 rfast@data <- cbind(rfast@data, l@data)
