@@ -146,10 +146,11 @@ shinyServer(function(input, output, session){
 
   output$legendCyclingPotential <- renderPlot({
     zone_attr <- isolate(input$zone_attr)
+    scenario <- isolate(input$scenario)
     if (zone_attr != 'none'){
 
       # Read the zone data
-      data_ <- zones@data[[attrWithScenario(zone_attr, input$scenario)]]
+      data_ <- zones@data[[attrWithScenario(zone_attr, scenario)]]
       m <- unique(quantile(data_, probs=seq.int(0,1, length.out=4)))
       # Create a zone colour based on the absolute value of data (as data can be negative as well)
       zone_col <- getColourRamp(zcols, abs(m))
