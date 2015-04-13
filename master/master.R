@@ -152,7 +152,7 @@ shinyServer(function(input, output, session){
       # Read the zone data
       data_ <- zones@data[[attrWithScenario(input$zone_attr, input$scenario)]]
       # Create quantiles out of the data
-      m <- as.numeric(quantile(data_, probs=seq.int(0,1, length.out=4)))
+      m <- unique(quantile(data_, probs=seq.int(0,1, length.out=4)))
       # Sort the data
       m <- sort(m)
       # Create a zone colour based on the absolute value of data (as data can be negative as well)
