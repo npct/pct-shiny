@@ -31,6 +31,10 @@ rfast@data <- cbind(l@data, rfast@data)
 rquiet@data <- cbind(l@data, rquiet@data)
 zones <- readRDS(paste0(data_dir, "z.Rds"))
 
+names(zones@data) <- gsub("clc", "olc", names(zones@data))
+names(zones@data) <- gsub("plc", "slc", names(zones@data))
+names(zones@data) <- gsub("ecp", "sic", names(zones@data))
+
 cents <- readRDS(paste0(data_dir, "c.Rds"))
 flow <- l@data
 rfast@data <- cbind(rfast@data, l@data)
@@ -152,13 +156,14 @@ shinyServer(function(input, output, session){
       # Read the zone data
       data_ <- zones@data[[attrWithScenario(input$zone_attr, input$scenario)]]
       # Create quantiles out of the data
-      m <- unique(quantile(data_, probs=seq.int(0,1, length.out=4)))
+      m <- quantile(data_, probs=seq.int(0,1, length.out=4))
       # Sort the data
       m <- sort(m)
       # Create a zone colour based on the absolute value of data (as data can be negative as well)
-      zone_col <- getColourRamp(zcols, abs(m))
+      zone_col <- getColourRamp(zcols, m)
       # Barplot the data in vertical manner
-      barplot(matrix(m, nrow=4,ncol=1), names.arg = NA, col = zone_col, horiz=FALSE, xlab = "", ylab = input$zone_attr)
+      barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)), col = zone_col, horiz=TRUE, xlab = "", ylab = input$zone_attr, space = 0)
+
     }
   })
 })
