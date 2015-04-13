@@ -145,17 +145,20 @@ shinyServer(function(input, output, session){
   )
 
   output$legendCyclingPotential <- renderPlot({
-    zone_attr <- isolate(input$zone_attr)
-    scenario <- isolate(input$scenario)
-    if (zone_attr != 'none'){
-
+    if (is.null(input$zone_attr) || is.null(input$scenario)){
+      return()
+    }
+    if (input$zone_attr != 'none'){
       # Read the zone data
-      data_ <- zones@data[[attrWithScenario(zone_attr, scenario)]]
-      m <- unique(quantile(data_, probs=seq.int(0,1, length.out=4)))
+      data_ <- zones@data[[attrWithScenario(input$zone_attr, input$scenario)]]
+      # Create quantiles out of the data
+      m <- as.numeric(quantile(data_, probs=seq.int(0,1, length.out=4)))
+      # Sort the data
+      m <- sort(m)
       # Create a zone colour based on the absolute value of data (as data can be negative as well)
       zone_col <- getColourRamp(zcols, abs(m))
       # Barplot the data in vertical manner
-      barplot(matrix(m, nrow=4,ncol=1), names.arg = NA, col = zone_col, horiz=FALSE, xlab = "", ylab = zone_attr)
+      barplot(matrix(m, nrow=4,ncol=1), names.arg = NA, col = zone_col, horiz=FALSE, xlab = "", ylab = input$zone_attr)
     }
   })
 })
