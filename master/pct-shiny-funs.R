@@ -40,7 +40,7 @@ straightPopup <- function(data){
     <td> %s </td>
     </tr>
     </tbody>
-    </table>', data$All, data$Bicycle, round(data$base_slc, 1), round(data$base_sic, 1), round(data$dist, 1)
+    </table>', data$All, data$Bicycle, round(data$base_slc), round(data$base_sic), round(data$dist, 1)
   )
 }
 
