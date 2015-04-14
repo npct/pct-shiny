@@ -132,7 +132,7 @@ shinyServer(function(input, output, session){
       else
         .
     }%>%{
-      if (input$zone_attr != 'none')
+      if (plotZones())
         addCircleMarkers(., data = cents, radius = 2, color = "black", popup = zonePopup(cents, input$scenario, input$zone_attr))
       else
         .
@@ -141,21 +141,18 @@ shinyServer(function(input, output, session){
   )
 
   output$legendCyclingPotential <- renderPlot({
-    if (is.null(input$zone_attr) || is.null(input$scenario)){
+    if(!(plotZones()) || is.null(input$zone_attr) || is.null(input$scenario)){
       return()
     }
-    if (input$zone_attr != 'none'){
-      # Read the zone data
-      data_ <- zones@data[[attrWithScenario(input$zone_attr, input$scenario)]]
-      # Create quantiles out of the data
-      m <- quantile(data_, probs=seq.int(0,1, length.out=4))
-      # Sort the data
-      m <- sort(m)
-      # Create a zone colour based on the absolute value of data (as data can be negative as well)
-      zone_col <- getColourRamp(zcols, m)
-      # Barplot the data in vertical manner
-      barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)), col = zone_col, horiz=TRUE, xlab = "", ylab = input$zone_attr, space = 0)
+    # Read the zone data
+    data_ <- zones@data[[attrWithScenario(input$zone_attr, input$scenario)]]
+    # Create quantiles out of the data
+    m <- quantile(data_, probs=seq.int(0,1, length.out=4))
 
-    }
+    # Create a zone colour based on the absolute value of data (as data can be negative as well)
+    zone_col <- getColourRamp(zcols, m)
+    # Barplot the data in vertical manner
+    barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)),
+            col = zone_col, horiz=TRUE, xlab = "", ylab = input$zone_attr, space = 0)
   })
 })

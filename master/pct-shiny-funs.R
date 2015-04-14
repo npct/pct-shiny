@@ -55,10 +55,6 @@ routePopup <- function(data){
 }
 
 zonePopup <- function(data, scenario, zone){
-  # Return when olc is set, while zone attribute list is being updated for non-baseline scenarios (like ebike etc)
-  if (scenario != "base" && zone == "olc"){
-    return()
-  }
   # Create a zone filter variable by concatenating the word 'base' with the zone input variable (for instance base_olc)
   zone_filter <- paste(scenario, zone, sep = "_")
   # Create a new name for the zone variable by making an upper case title out of it
