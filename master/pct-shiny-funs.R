@@ -10,12 +10,12 @@ getColourRamp <- function(colors, values) {
   rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
 }
 
-attrWithScenario <- function(attr, scenario){
+dataFilter <- function(scenario, attr){
   paste(scenario, attr, sep = "_")
 }
 
 # Popup function for straight line data in html table
-straightPopup <- function(data){
+straightPopup <- function(data, scenario){
   sprintf('
     <table>
     <tbody>
@@ -40,7 +40,7 @@ straightPopup <- function(data){
     <td> %s </td>
     </tr>
     </tbody>
-    </table>', data$All, data$Bicycle, round(data$base_slc), round(data$base_sic), round(data$dist, 1)
+    </table>', data$All, data$Bicycle, round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$dist, 1)
   )
 }
 
@@ -49,17 +49,13 @@ routeTypeLabel[['fastest']] <- 'Direct'
 routeTypeLabel[['quietest']] <- 'Quiet'
 
 # Route popup function
-routePopup <- function(data){
+routePopup <- function(data, scenario){
   sprintf('<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd><dt>Type of Route</dt><dd>%s</dd></dl>',
     round(data$length, 1), round(data$base_olc / data$All * 100, 2), routeTypeLabel[[data$plan[1]]])
 }
 
 zonePopup <- function(data, scenario, zone){
-  # Create a zone filter variable by concatenating the word 'base' with the zone input variable (for instance base_olc)
-  zone_filter <- paste(scenario, zone, sep = "_")
-  # Create a new name for the zone variable by making an upper case title out of it
   zone_filter_name <- toupper(zone)
-
    sprintf("
 <table>
   <tbody>
@@ -74,6 +70,6 @@ zonePopup <- function(data, scenario, zone){
       <td>%s&deg;</td>
     </tr>
   </tbody>
-</table>", data$geo_code, zone_filter_name, round(data[[zone_filter]], 2 ), round(data$avslope, 2))
+</table>", data$geo_code, zone_filter_name, round(data[[dataFilter(scenario, zone)]], 2 ), round(data$avslope, 2))
 }
 

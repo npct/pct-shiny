@@ -69,7 +69,7 @@ shinyServer(function(input, output, session){
   })
 
   plotZones <- reactive({ # Some attributes are only avaliable for baseline
-    (input$zone_attr != 'none') && (attrWithScenario(input$zone_attr, input$scenario) %in% names(zones@data))
+    (input$zone_attr != 'none') && (dataFilter(input$scenario, input$zone_attr) %in% names(zones@data))
   })
 
   bbPoly <- reactive({
@@ -92,9 +92,9 @@ shinyServer(function(input, output, session){
     else
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
-                   , weight = normalise(sorted_l@data[[attrWithScenario(input$line_attr, input$scenario)]], min = 3, max = 6)
+                   , weight = normalise(sorted_l@data[[dataFilter(input$scenario, input$line_attr)]], min = 3, max = 6)
                    , opacity = 0.7
-                   , popup = popupFn(sorted_l))
+                   , popup = popupFn(sorted_l, input$scenario))
   }
 
   map <- leaflet() %>%
@@ -108,26 +108,26 @@ shinyServer(function(input, output, session){
                     , weight = 2
                     , fillOpacity = 0.5
                     , opacity = 0.3
-                    , fillColor = getColourRamp(zcols, zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
+                    , fillColor = getColourRamp(zcols, zones@data[[dataFilter(input$scenario, input$zone_attr)]])
                     , color = "black"
         )
       else
         .
     }%>%{
       if (input$line_type == 'straight'){
-        sortAndPlot(., l, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
+        sortAndPlot(., l, dataFilter(input$scenario, input$line_attr), input$nos_lines,
                     straightPopup, color = "maroon")
       }else
         .
     }%>%{
       if (input$line_type %in% c('route', 'd_route'))
-        sortAndPlot(., rfast, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
+        sortAndPlot(., rfast, dataFilter(input$scenario, input$line_attr), input$nos_lines,
                     routePopup, "red")
       else
         .
     }%>%{
       if (input$line_type == 'route')
-        sortAndPlot(., rquiet, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
+        sortAndPlot(., rquiet, dataFilter(input$scenario, input$line_attr), input$nos_lines,
                     routePopup, "darkblue")
       else
         .
@@ -145,7 +145,7 @@ shinyServer(function(input, output, session){
       return()
     }
     # Read the zone data
-    data_ <- zones@data[[attrWithScenario(input$zone_attr, input$scenario)]]
+    data_ <- zones@data[[dataFilter(input$scenario, input$zone_attr)]]
     # Create quantiles out of the data
     m <- quantile(data_, probs=seq.int(0,1, length.out=4))
 
