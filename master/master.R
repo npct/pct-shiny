@@ -100,48 +100,44 @@ shinyServer(function(input, output, session){
   map <- leaflet() %>%
     addTiles(urlTemplate = "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png")
 
-  output$map = renderLeaflet(map %>%
-                               {
-                                 ## Add polygons (of MSOA boundaries)
-                                 if(plotZones())
-                                   addPolygons(. , data = zones
-                                               , weight = 2
-                                               , fillOpacity = 0.5
-                                               , opacity = 0.3
-, fillColor = getColourRamp(zcols,
-  zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
-                                               , color = "black"
-                                   )
-                                 else
-                                   .
-                               }%>%
-                               {
-                                 if (input$line_type == 'straight'){
-                                   sortAndPlot(., l, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
-                                               straightPopup, color = "maroon")
-                                 }else
-                                   .
-                               }%>%
-                               {
-                                 if (input$line_type %in% c('route', 'd_route'))
-                                   sortAndPlot(., rfast, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
-                                               routePopup, "red")
-                                 else
-                                   .
-                               }%>%
-                               {
-                                 if (input$line_type == 'route')
-                                   sortAndPlot(., rquiet, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
-                                               routePopup, "darkblue")
-                                 else
-                                   .
-                               }%>%
-                               {if (input$zone_attr != 'none')
-                                 addCircleMarkers(., data = cents, radius = 2, color = "black", popup = zonePopup(cents, input$scenario, input$zone_attr))
-                                else
-                                  .
-                               }%>%
-                               mapOptions(zoomToLimits = "first")
+  output$map = renderLeaflet(
+    map %>% {
+      ## Add polygons (of MSOA boundaries)
+      if(plotZones())
+        addPolygons(. , data = zones
+                    , weight = 2
+                    , fillOpacity = 0.5
+                    , opacity = 0.3
+                    , fillColor = getColourRamp(zcols, zones@data[[attrWithScenario(input$zone_attr, input$scenario)]])
+                    , color = "black"
+        )
+      else
+        .
+    }%>%{
+      if (input$line_type == 'straight'){
+        sortAndPlot(., l, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
+                    straightPopup, color = "maroon")
+      }else
+        .
+    }%>%{
+      if (input$line_type %in% c('route', 'd_route'))
+        sortAndPlot(., rfast, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
+                    routePopup, "red")
+      else
+        .
+    }%>%{
+      if (input$line_type == 'route')
+        sortAndPlot(., rquiet, attrWithScenario(input$line_attr, input$scenario), input$nos_lines,
+                    routePopup, "darkblue")
+      else
+        .
+    }%>%{
+      if (input$zone_attr != 'none')
+        addCircleMarkers(., data = cents, radius = 2, color = "black", popup = zonePopup(cents, input$scenario, input$zone_attr))
+      else
+        .
+    }%>%
+      mapOptions(zoomToLimits = "first")
   )
 
   output$legendCyclingPotential <- renderPlot({
