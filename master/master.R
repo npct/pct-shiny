@@ -52,6 +52,7 @@ shinyServer(function(input, output, session){
   sortLines <- function(lines, sortBy, nos){
     if(!(sortBy %in% names(lines))) return(NULL)
     poly <- bbPoly()
+    if(is.null(poly)) return(NULL)
     poly <- spTransform(poly, CRS(proj4string(lines)))
     keep <- gContains( poly, lines,byid=TRUE )
     if(all(!keep)) return(NULL)
@@ -80,6 +81,7 @@ shinyServer(function(input, output, session){
   })
 
   bbPoly <- reactive({
+    if(is.null(input$map_bounds)) return(NULL)
     if(!input$freeze || is.null(session$bb)){
       lat <- c(input$map_bounds$west , input$map_bounds$east, input$map_bounds$east, input$map_bounds$west )
       lng <- c(input$map_bounds$north, input$map_bounds$north, input$map_bounds$south, input$map_bounds$south)
