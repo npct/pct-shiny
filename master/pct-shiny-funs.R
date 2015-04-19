@@ -20,23 +20,23 @@ straightPopup <- function(data, scenario){
     <table>
     <tbody>
     <tr>
-    <td> Total n. commutes </td>
+    <td> Total commutes </td>
     <td> %s </td>
     </tr>
     <tr>
-    <td> OLC </td>
+    <td> Observed (OLC) </td>
     <td> %s </td>
     </tr>
     <tr>
-    <td> SLC </td>
+    <td> Scenario (SLC) </td>
     <td> %s </td>
     </tr>
     <tr>
-    <td> SIC (SLC - CLC) </td>
+    <td> Increase (SLC - OLC) &nbsp; </td>
     <td> %s </td>
     </tr>
     <tr>
-    <td> Euclidean Distance (km) &nbsp; </td>
+    <td> Distance (km) </td>
     <td> %s </td>
     </tr>
     </tbody>
