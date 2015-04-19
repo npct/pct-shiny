@@ -13,13 +13,9 @@ getColourRamp <- function(colors, values) {
 dataFilter <- function(scenario, attr){
   paste(scenario, attr, sep = "_")
 }
-
-# Popup function for straight line data in html table
-straightPopup <- function(data, scenario){
-  sprintf('
-    <table>
-    <tbody>
-    <tr>
+tableStart <- '<table><tbody>'
+tableEnd <- '</table></tbody>'
+tableCommon <- '<tr>
     <td> Total commutes </td>
     <td> %s </td>
     </tr>
@@ -35,12 +31,17 @@ straightPopup <- function(data, scenario){
     <td> Increase (SLC - OLC) &nbsp; </td>
     <td> %s </td>
     </tr>
-    <tr>
+    '
+# Popup function for straight line data in html table
+straightPopup <- function(data, scenario){
+  paste(
+    tableStart,
+    sprintf(paste0(tableCommon, '<tr>
     <td> Distance (km) </td>
     <td> %s </td>
-    </tr>
-    </tbody>
-    </table>', data$All, data$Bicycle, round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$dist, 1)
+    </tr>'), data$All, data$Bicycle, round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$dist, 1)
+    ),
+    tableEnd
   )
 }
 
@@ -50,15 +51,25 @@ routeTypeLabel[['quietest']] <- 'Quiet'
 
 # Route popup function
 routePopup <- function(data, scenario){
-  sprintf('<dl><dt>Distance </dt><dd>%s km</dd><dt>Journeys by bike</dt><dd>%s%%</dd><dt>Type of Route</dt><dd>%s</dd></dl>',
-    round(data$length, 1), round(data$base_olc / data$All * 100, 2), routeTypeLabel[[data$plan[1]]])
+  paste(
+    tableStart,
+    sprintf(paste(tableCommon,'<tr>
+                <td>Route Distance</td>
+                <td>%s km</td>
+                </tr><tr>
+                <td>Type of Route</td>
+                <td>%s</td>
+                </tr>'),
+            data$All, data$Bicycle, round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$length, 1), routeTypeLabel[[data$plan[1]]]),
+    tableEnd
+  )
 }
 
 zonePopup <- function(data, scenario, zone){
   zone_filter_name <- toupper(zone)
-   sprintf("
-<table>
-  <tbody>
+  paste(
+    tableStart,
+  sprintf("
     <tr>
       <td>Zone: </td>
       <td>%s</td>
@@ -68,8 +79,7 @@ zonePopup <- function(data, scenario, zone){
     </tr><tr>
       <td>Hilliness:  </td>
       <td>%s&deg;</td>
-    </tr>
-  </tbody>
-</table>", data$geo_code, zone_filter_name, round(data[[dataFilter(scenario, zone)]], 2 ), round(data$avslope, 2))
+    </tr>", data$geo_code, zone_filter_name, round(data[[dataFilter(scenario, zone)]], 2 ), round(data$avslope, 2)),
+  tableEnd)
 }
 
