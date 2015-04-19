@@ -3,17 +3,24 @@
 # # # # #
 
 # use install.packages() or devtools::install_github() to install these
-pkgs <- c("shiny", "leaflet", "RColorBrewer", "httr", "rgdal", "downloader", "rgeos")
+pkgs <- c("shiny", "leaflet", "RColorBrewer", "httr", "rgdal", "downloader", "rgeos", "jsonlite")
 lapply(pkgs, library, character.only = TRUE)
 
 # Colours
 zcols <- c("MidnightBlue", "Yellow")
 
+newDataCommits <- fromJSON(sprintf('https://api.github.com/repos/npct/pct-data/commits?since=%s',
+                         format(file.mtime('../d.zip'), '%FT%R:%SZ')))
+
 # Download files - remove first if needed
-if(sum(grepl("rf", list.files(data_dir))) == 0){
+if(length(newDataCommits) > 0 && !exists('downloading.data')){
+  downloading.data <<- TRUE
+  unlink('../d.zip')
+  unlink('../pct-data-master', recursive = TRUE)
   url <- "https://github.com/npct/pct-data/archive/master.zip" # data store
   download(url = url, destfile = "../d.zip")
   unzip("../d.zip", exdir = "..")
+  rm(downloading.data)
 }
 
 # Functions
