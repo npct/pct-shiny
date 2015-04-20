@@ -10,7 +10,7 @@ lapply(pkgs, library, character.only = TRUE)
 zcols <- c("MidnightBlue", "Yellow")
 
 commurl <- 'https://api.github.com/repos/npct/pct-data/commits?since='
-ftime <- strtrim(file.mtime('../d.zip'), 10)
+ftime <- strtrim(file.info('../d.zip')$mtime, 10)
 newDataCommits <- fromJSON(paste0(commurl, ftime))
 
 # Download files - remove first if needed
@@ -157,10 +157,21 @@ shinyServer(function(input, output, session){
     # Create quantiles out of the data
     m <- quantile(data_, probs=seq.int(0,1, length.out=4))
 
-    # Create a zone colour based on the absolute value of data (as data can be negative as well)
+    # Create a zone colour based on the value of data
     zone_col <- getColourRamp(zcols, m)
+
+    # Set a full form of the scenario as a label
+    ylabel <- "Observed Level Cycling (OLC)"
+    if (input$zone_attr == "slc")
+      ylabel <- "Scenario-based Level of Cycling (SLC)"
+    else if (input$zone_attr == "sic")
+      ylabel <- "Scenario-based Increase in Cycling (SIC)"
+
+    # Set the labelling of Y-axis to bold
+    par(font.lab = 2)
     # Barplot the data in vertical manner
     barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)),
-            col = zone_col, horiz=TRUE, xlab = "", ylab = input$zone_attr, space = 0)
+            col = zone_col, horiz=TRUE, xlab = "", ylab = ylabel, space = 0, axes = FALSE)
+
   })
 })
