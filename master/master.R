@@ -9,17 +9,19 @@ lapply(pkgs, library, character.only = TRUE)
 # Colours
 zcols <- c("MidnightBlue", "Yellow")
 
-commurl <- 'https://api.github.com/repos/npct/pct-data/commits?since='
-ftime <- strtrim(file.info('../d.zip')$mtime, 10)
-newDataCommits <- fromJSON(paste0(commurl, ftime))
+newDataCommits <- fromJSON(sprintf('https://api.github.com/repos/npct/pct-data/commits?since=%s',
+                                   format(file.info('../d.zip')$mtime, '%FT%R:%SZ')))
 
 # Download files - remove first if needed
-if(length(newDataCommits) > 0){
+downloading.file <- '../.downloading'
+if((length(newDataCommits) > 0 || sum(grepl("rf", list.files(data_dir))) == 0) && !file.exists(downloading.file)){
+  file.create(downloading.file)
   unlink('../d.zip')
   unlink('../pct-data-master', recursive = TRUE)
   url <- "https://github.com/npct/pct-data/archive/master.zip" # data store
   download(url = url, destfile = "../d.zip")
   unzip("../d.zip", exdir = "..")
+  unlink(downloading.file)
 }
 
 # Functions
