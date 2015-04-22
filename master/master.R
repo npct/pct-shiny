@@ -46,6 +46,7 @@ cents <- readRDS(paste0(data_dir, "c.Rds"))
 flow <- l@data
 rfast@data <- cbind(rfast@data, l@data)
 rquiet@data <- cbind(rquiet@data, l@data)
+setUpdate <- TRUE
 
 # # # # # # # #
 # shinyServer #
@@ -53,10 +54,12 @@ rquiet@data <- cbind(rquiet@data, l@data)
 
 shinyServer(function(input, output, session){
 
+
+
   sortLines <- function(lines, sortBy, nos){
     if(!(sortBy %in% names(lines))) return(NULL)
+    if(is.null(bbPoly())) return(NULL)
     poly <- bbPoly()
-    if(is.null(poly)) return(NULL)
     poly <- spTransform(poly, CRS(proj4string(lines)))
     keep <- gContains( poly, lines,byid=TRUE )
     if(all(!keep)) return(NULL)
@@ -99,21 +102,27 @@ shinyServer(function(input, output, session){
   })
 
   sortAndPlot <- function(m, lines, attr, nos, popupFn, color){
+    cat(format(Sys.time(), "%a %b %d %X %Y"), " - sortAndPlot", setUpdate, "\n")
     sorted_l <- sortLines(lines, attr, nos)
-    if(is.null(sorted_l))
+    setUpdate <<- FALSE
+    if(is.null(sorted_l)){
       m
-    else
+    }
+    else{
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
                    , weight = normalise(sorted_l@data[[dataFilter(input$scenario, input$line_attr)]], min = 3, max = 6)
                    , opacity = 0.7
                    , popup = popupFn(sorted_l, input$scenario))
+    }
+
+
   }
 
   map <- leaflet() %>%
     addTiles(urlTemplate = "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png")
-
-  output$map = renderLeaflet(
+  cat("main ", setUpdate, "\n")
+  output$map <- renderLeaflet({
     map %>% {
       ## Add polygons (of MSOA boundaries)
       if(plotZones())
@@ -130,53 +139,73 @@ shinyServer(function(input, output, session){
       if (input$line_type == 'straight'){
         sortAndPlot(., l, dataFilter(input$scenario, input$line_attr), input$nos_lines,
                     straightPopup, color = "maroon")
+        #           setUpdate <- FALSE
       }else
         .
     }%>%{
-      if (input$line_type %in% c('route', 'd_route'))
+      if (input$line_type %in% c('route', 'd_route')){
         sortAndPlot(., rfast, dataFilter(input$scenario, input$line_attr), input$nos_lines,
                     routePopup, "red")
+        #           setUpdate <- FALSE
+      }
       else
         .
     }%>%{
-      if (input$line_type == 'route')
+      if (input$line_type == 'route'){
         sortAndPlot(., rquiet, dataFilter(input$scenario, input$line_attr), input$nos_lines,
                     routePopup, "darkblue")
+        #           setUpdate <- FALSE
+      }
       else
         .
     }%>%{
+
       if (plotZones())
         addCircleMarkers(., data = cents, radius = 2, color = "black", popup = zonePopup(cents, input$scenario, input$zone_attr))
       else
         .
     }%>%
       mapOptions(zoomToLimits = "first")
-  )
-
-  output$legendCyclingPotential <- renderPlot({
-    if(!(plotZones()) || is.null(input$zone_attr) || is.null(input$scenario)){
-      return()
-    }
-    # Read the zone data
-    data_ <- zones@data[[dataFilter(input$scenario, input$zone_attr)]]
-    # Create quantiles out of the data
-    m <- quantile(data_, probs=seq.int(0,1, length.out=4))
-
-    # Create a zone colour based on the value of data
-    zone_col <- getColourRamp(zcols, m)
-
-    # Set a full form of the scenario as a label
-    ylabel <- "Observed Level Cycling (OLC)"
-    if (input$zone_attr == "slc")
-      ylabel <- "Scenario-based Level of Cycling (SLC)"
-    else if (input$zone_attr == "sic")
-      ylabel <- "Scenario-based Increase in Cycling (SIC)"
-
-    # Set the labelling of Y-axis to bold
-    par(font.lab = 2)
-    # Barplot the data in vertical manner
-    barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)),
-            col = zone_col, horiz=TRUE, xlab = "", ylab = ylabel, space = 0, axes = FALSE)
-
   })
-})
+
+  observe({
+
+    a <- input$scenario
+    b <- input$zone_attr
+    c <- input$line_type
+    d <- input$freeze
+    e <- input$line_attr
+    f <- input$nos_lines
+
+    setUpdate <<- TRUE
+
+    cat(format(Sys.time(), "%a %b %d %X %Y"), " - before setUpdate",setUpdate, "\n")
+    })
+
+    output$legendCyclingPotential <- renderPlot({
+      if(!(plotZones()) || is.null(input$zone_attr) || is.null(input$scenario)){
+        return()
+      }
+      # Read the zone data
+      data_ <- zones@data[[dataFilter(input$scenario, input$zone_attr)]]
+      # Create quantiles out of the data
+      m <- quantile(data_, probs=seq.int(0,1, length.out=4))
+
+      # Create a zone colour based on the value of data
+      zone_col <- getColourRamp(zcols, m)
+
+      # Set a full form of the scenario as a label
+      ylabel <- "Observed Level Cycling (OLC)"
+      if (input$zone_attr == "slc")
+        ylabel <- "Scenario-based Level of Cycling (SLC)"
+      else if (input$zone_attr == "sic")
+        ylabel <- "Scenario-based Increase in Cycling (SIC)"
+
+      # Set the labelling of Y-axis to bold
+      par(font.lab = 2)
+      # Barplot the data in vertical manner
+      barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)),
+              col = zone_col, horiz=TRUE, xlab = "", ylab = ylabel, space = 0, axes = FALSE)
+
+    })
+  })
