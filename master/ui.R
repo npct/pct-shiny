@@ -8,8 +8,8 @@ scenarios <- c("Baseline" =           "base"
 
 line_types <- c("None" = "none"
                 ,"Straight Lines" = "straight"
-                ,"Direct Route" = "d_route"
-                ,"Direct & Quiet Routes" = "route")
+                ,"Fastest Route" = "d_route"
+                ,"Fastest Route & Quiet Routes" = "route")
 
 attrs <- c("Observed Level Cycling (OLC)" =       "olc"
            ,"Scenario-based Level of Cycling (PLC)" = "slc"
