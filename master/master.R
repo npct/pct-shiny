@@ -92,10 +92,8 @@ shinyServer(function(input, output, session){
 
       c1 <- cbind(lat, lng)
       r1 <- rbind(c1, c1[1, ])
-      bbNew <- SpatialPolygons(list(Polygons(list(Polygon(r1)), 'bb')), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
-      proj4string(bbNew)=CRS("+init=epsg:4326 +proj=longlat")
-      if(bbNew == session$bb){ return(NULL)}
-      session$bb <- bbNew
+      session$bb <- SpatialPolygons(list(Polygons(list(Polygon(r1)), 'bb')), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
+      proj4string(session$bb)=CRS("+init=epsg:4326 +proj=longlat")
     }
     return(session$bb)
   })
