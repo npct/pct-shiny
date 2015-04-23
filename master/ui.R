@@ -18,14 +18,15 @@ attrs <- c("Observed Level Cycling (OLC)" =       "olc"
 shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                    ,header = tags$head(includeScript("google-analytics.js"))
                    ,tabPanel("Interactive map"
+                             , helpText("This tool is ONLY for testing purposes. It doesn't use actual data.")
                              ,leafletOutput("map", width="auto", height="600")
                              ,absolutePanel(
                                cursor = "move"
                                ,id = "controls"
                                ,class = "panel panel-default"
                                ,fixed = TRUE
-                               ,top = 50
-                               ,right = 0
+                               ,top = 110
+                               ,right = 20
                                ,width = 180
                                ,height = "auto"
                                ,style = "opacity: 0.9"
