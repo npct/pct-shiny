@@ -85,7 +85,7 @@ shinyServer(function(input, output, session){
   })
 
   bbPoly <- reactive({
-    if(is.null(input$map_bounds)) return(NULL)
+    if(is.null(input$freeze)) return(NULL)
     if(!input$freeze || is.null(session$bb)){
       lat <- c(input$map_bounds$west , input$map_bounds$east, input$map_bounds$east, input$map_bounds$west )
       lng <- c(input$map_bounds$north, input$map_bounds$north, input$map_bounds$south, input$map_bounds$south)
