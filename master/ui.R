@@ -11,14 +11,15 @@ line_types <- c("None" = "none"
                 ,"Fastest Route" = "d_route"
                 ,"Fastest Route & Quiet Routes" = "route")
 
-attrs <- c("Observed Level Cycling (OLC)" =       "olc"
-           ,"Scenario-based Level of Cycling (PLC)" = "slc"
-           ,"Scenario-based Increase in Cycling (ECP)" =    "sic")
+attrs <- c("Observed Level Cycling (OLC)" = "olc"
+               ,"Scenario-based Level of Cycling (SLC)" =    "slc"
+               ,"Scenario-based Increase in Cycling (SIC)" = "sic")
+
 
 shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                    ,header = tags$head(includeScript("google-analytics.js"))
                    ,tabPanel("Interactive map"
-                             , helpText("This tool is ONLY for testing purposes. Not all the data is intended to be correct.")
+                             ,helpText("This tool is ONLY for testing purposes. Not all the data is intended to be correct.")
                              ,leafletOutput("map", width="auto", height="600")
                              ,absolutePanel(
                                cursor = "move"
