@@ -3,7 +3,7 @@
 # # # # #
 
 # use install.packages() or devtools::install_github() to install these
-pkgs <- c("shiny", "leaflet", "RColorBrewer", "httr", "rgdal", "downloader", "rgeos", "curl", "jsonlite")
+pkgs <- c("shiny", "shinyBS", "leaflet", "RColorBrewer", "httr", "rgdal", "downloader", "rgeos", "curl", "jsonlite")
 lapply(pkgs, library, character.only = TRUE)
 
 # Colours
@@ -52,6 +52,7 @@ rquiet@data <- cbind(rquiet@data, l@data)
 # # # # # # # #
 
 shinyServer(function(input, output, session){
+
 
   sortLines <- function(lines, sortBy, nos){
     if(!(sortBy %in% names(lines))) return(NULL)
