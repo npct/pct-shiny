@@ -10,7 +10,9 @@ lapply(pkgs, library, character.only = TRUE)
 zcols <- c("darkslategrey", "yellow")
 
 # Download files
-system2('git', args=c("submodule", "update", "--remote", "--merge", "--depth", "--", "../pct-data"), wait = FALSE)
+setwd("../pct-data")
+system2('git', args=c("pull"), wait = FALSE)
+setwd("../master")
 # This also works (from Linux command line):
 # wget https://github.com/npct/pct-data/archive/master.zip
 # unzip master
