@@ -7,7 +7,7 @@ pkgs <- c("shiny", "shinyBS", "leaflet", "RColorBrewer", "httr", "rgdal", "downl
 lapply(pkgs, library, character.only = TRUE)
 
 # Colours
-zcols <- c("darkslategrey", "yellow")
+zcols <- c("gainsboro", "gold4")
 
 
 newDataCommits <- fromJSON(sprintf('https://api.github.com/repos/npct/pct-data/commits?since=%s',
