@@ -1,3 +1,3 @@
-data_dir <- "../pct-data-master/coventry/"
+data_dir <- "../pct-data/coventry/"
 source("../master/master.R", local = T, chdir = T)
 
