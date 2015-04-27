@@ -7,8 +7,7 @@ pkgs <- c("shiny", "shinyBS", "leaflet", "RColorBrewer", "httr", "rgdal", "downl
 lapply(pkgs, library, character.only = TRUE)
 
 # Colours
-zcols <- c("gainsboro", "gold4")
-
+zcols <- c("darkslategrey", "yellow")
 
 newDataCommits <- fromJSON(sprintf('https://api.github.com/repos/npct/pct-data/commits?since=%s',
                                    format(file.info('../d.zip')$mtime, '%FT%R:%SZ')))
@@ -121,8 +120,8 @@ shinyServer(function(input, output, session){
       if(plotZones())
         addPolygons(. , data = zones
                     , weight = 2
-                    , fillOpacity = 0.9
-                    , opacity = 0.5
+                    , fillOpacity = 0.6
+                    , opacity = 0.4
                     , fillColor = getColourRamp(zcols, zones@data[[dataFilter(input$scenario, input$zone_attr)]])
                     , color = "black"
         )

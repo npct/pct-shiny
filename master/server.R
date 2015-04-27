@@ -1,2 +1,2 @@
-data_dir <- "~/repos/pct/pct-data/manchester/"
+data_dir <- "../pct-data-master/manchester/"
 source("master.R", local = T, chdir = T)
