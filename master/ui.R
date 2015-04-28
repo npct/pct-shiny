@@ -33,22 +33,28 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                ,height = "auto"
                                ,style = "opacity: 0.9"
                                ,selectInput("scenario", "Scenario:", scenarios)
-                               ,bsTooltip(id = "scenario", title = "Select a Scenario",placement = "left", trigger = "hover")
+                               ,bsTooltip(id = "scenario",
+                                          title = "<strong>Baseline</strong> is the model based on the current cycling levels</br><strong>Gender equality</strong> assumes the number of women and men cycling evens out</br><strong>Go Dutch</strong> assumes a similar cycling rates as Holland</br><strong>Electric Bikes</strong> assumes ...",
+                                          placement = "left", trigger = "hover")
                                ,selectInput("zone_attr", "Zone Attribute:", attrs, selected = "current")
-                               ,bsTooltip(id = "zone_attr", title = "Select the zone level attribute",placement = "left", trigger = "hover")
+                               ,bsTooltip(id = "zone_attr",
+                                          title = "Alters to colours of the zones depending on the cycling level:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
+                                          placement = "left", trigger = "hover")
                                ,selectInput("line_type", "Cycling Flows", line_types, selected = "none")
-                               ,bsTooltip(id = "line_type", title = "Select the Cycling Flow",placement = "left", trigger = "hover")
+                               ,bsTooltip(id = "line_type", title = "Shows the cycling flow between the centres of zones using:<strong></br>Straight lines</br>Fastest cycle routes</br>Fastest and quietest routes</strong>",placement = "left", trigger = "hover")
                                ,conditionalPanel(condition = "input.line_type != 'none'"
                                                  ,checkboxInput("freeze", "Freeze Lines", value = TRUE)
-                                                 ,bsTooltip(id = "freeze", title = "Checked: Fixed lines <br> Unchecked: Dyanamic Lines ",placement = "left", trigger = "hover")
-                                                 ,selectInput("line_attr", "Line attribute to display:", attrs, selected = "current")
-                                                 ,bsTooltip(id = "line_attr", title = "Select the line attribute",placement = "left", trigger = "hover")
-                                                 ,sliderInput("nos_lines", label = "Number of lines to show (top n)", 1, 50, value = 5)
-                                                 ,bsTooltip(id = "nos_lines", title = "Select number of lines to be displayed",placement = "left", trigger = "hover")
+                                                 ,bsTooltip(id = "freeze",
+                                                            title = "<strong>Ticked</strong> the flows are independent of the map boundary (zoom and position)</br><strong>Unticked</strong> the flows update depending on the map boundary",
+                                                            placement = "left", trigger = "hover")
+                                                 ,selectInput("line_attr", "Flow attribute to display:", attrs, selected = "current")
+                                                 ,bsTooltip(id = "line_attr", title = "Filter the routes by:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",placement = "left", trigger = "hover")
+                                                 ,bsTooltip(id = "nos_lines", title = "Display the top n flows based on the selected flow attribute</br>thicker flows means higher attribute level",placement = "left", trigger = "hover")
+                                                 ,sliderInput("nos_lines", label = "Flows to show (top n)", 1, 20, value = 5)
                                )
 
                              )
-                             ,bsTooltip(id = "legend", title = "Scenario-specific quartiles <br> of Cycling Level",
+                             ,bsTooltip(id = "legend", title = "Scenario-specific quartiles</br>of Cycling Level",
                                         placement = "centre", trigger = "hover")
                              ,absolutePanel(
                                cursor = "default"
