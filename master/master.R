@@ -116,6 +116,8 @@ shinyServer(function(input, output, session){
                     , opacity = 0.4
                     , fillColor = getColourRamp(zcols, zones@data[[dataFilter(input$scenario, input$zone_attr)]])
                     , color = "black"
+                    , options = pathOptions(clickable=F)
+
         )
       else
         .
