@@ -57,10 +57,13 @@ routePopup <- function(data, scenario){
                 <td>Route Distance</td>
                 <td>%s km</td>
                 </tr><tr>
-                <td>Type of Route</td>
+                <td>Av. Route Time</td>
+                <td>%s min</td>
+                </tr><tr>
+                <td>Route Type</td>
                 <td>%s</td>
                 </tr>'),
-            data$All, data$Bicycle, round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$length, 1), routeTypeLabel[[data$plan[1]]]),
+            data$All, data$Bicycle, round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$length, 1), round(data$time / 60, 1), routeTypeLabel[[data$plan[1]]]),
     tableEnd
   )
 }
