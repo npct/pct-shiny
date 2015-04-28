@@ -9,13 +9,15 @@ lapply(pkgs, library, character.only = TRUE)
 # Colours
 zcols <- c("darkslategrey", "yellow")
 
+dataDir <- file.path('..', 'pct-data')
+
+# clone the data repo if it do not exist
+ifelse(!dir.exists(dataDir), system2('git', args=c('clone', '--depth=1', 'https://github.com/npct/pct-data.git', dataDir)), FALSE)
+
 # Download files
-setwd("../pct-data")
+setwd(dataDir)
 system2('git', args=c("pull"), wait = FALSE)
-setwd("../master")
-# This also works (from Linux command line):
-# wget https://github.com/npct/pct-data/archive/master.zip
-# unzip master
+setwd(file.path('..', 'master'))
 
 # Functions
 source("pct-shiny-funs.R")
