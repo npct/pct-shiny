@@ -53,22 +53,9 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                                  ,sliderInput("nos_lines", label = "Flows to show (top n)", 1, 20, value = 5)
                                )
 
-
                              )
-
-                             ,absolutePanel(
-                                cursor = "default"
-                                ,id = "cursor"
-                                ,class = "panel panel-default"
-                                ,fixed = TRUE
-                                ,bottom = 0
-                                ,left = 15
-                                ,width = "65%"
-                                ,height = "auto"
-                                ,style = "opacity: 0.9"
-                                ,bsAlert("alert")
-                             )
-
+                             ,bsTooltip(id = "legend", title = "Scenario-specific quartiles</br>of Cycling Level",
+                                        placement = "centre", trigger = "hover")
                              ,absolutePanel(
                                cursor = "default"
                                ,id = "legend"
@@ -81,13 +68,9 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                ,plotOutput("legendCyclingPotential", width = "100%")
                                )
 
-                              ,bsTooltip(id = "legend", title = "Scenario-specific quartiles</br>of Cycling Level",
-                                         placement = "centre", trigger = "hover")
-                  )
+                   )
                    ,tabPanel("Help"
                     ,helpText("This tab contains information and screenshots on how to use the tool better.")
                     ,includeHTML("help.html")
                    )
-
-
 ))
