@@ -20,7 +20,7 @@ attrs <- c("Observed Level Cycling (OLC)" = "olc"
 shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                    ,header = tags$head(includeScript("../master/google-analytics.js"))
                    ,tabPanel("Interactive map"
-                             , helpText("Warning: this tool is under development. Its outputs may change as the model is refined.")
+                             ,helpText("Warning: this tool is under development. Its outputs may change as the model is refined.")
                              ,leafletOutput("map", width="auto", height="600")
                              ,absolutePanel(
                                cursor = "move"
@@ -68,5 +68,9 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                ,plotOutput("legendCyclingPotential", width = "100%")
                                )
 
+                   )
+                   ,tabPanel("Help"
+                    ,helpText("This tab contains useful information on how to use the tool better.")
+                    ,includeHTML("help.html")
                    )
 ))
