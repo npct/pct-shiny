@@ -70,7 +70,7 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
 
                    )
                    ,tabPanel("Help"
-                    ,helpText("This tab contains useful information on how to use the tool better.")
+                    ,helpText("This tab contains information and screenshots on how to use the tool better.")
                     ,includeHTML("help.html")
                    )
 ))
