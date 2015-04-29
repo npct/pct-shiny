@@ -39,7 +39,7 @@ shinyUI(
         selectInput("scenario", "Scenario:", scenarios),
         bsTooltip(
           id = "scenario",
-          title = "<strong>Baseline</strong> is the model based on the current cycling levels</br><strong>Gender equality</strong> assumes the number of women and men cycling evens out</br><strong>Go Dutch</strong> assumes a similar cycling rates as Holland</br><strong>Electric Bikes</strong> assumes ...",
+          title = "<strong>Baseline</strong> is the model based on the current cycling levels</br><strong>Gender equality</strong> assumes the number of women and men cycling evens out</br><strong>Go Dutch</strong> assumes a similar cycling rates as Holland</br><strong>Electric Bikes</strong> assumes that ownership and use of electric bicycles increases dramatically, increasing the distance people are willing to regularly cycle",
           placement = "left",
           trigger = "hover"
         ),
