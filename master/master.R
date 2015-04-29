@@ -45,7 +45,6 @@ rquiet@data <- cbind(rquiet@data, l@data)
 
 shinyServer(function(input, output, session){
 
-
   sortLines <- function(lines, sortBy, nos){
     if(!(sortBy %in% names(lines))) return(NULL)
     poly <- bbPoly()
@@ -147,6 +146,30 @@ shinyServer(function(input, output, session){
     }%>%
       mapOptions(zoomToLimits = "first")
   )
+
+  observe({
+    if (input$line_type != 'none'){
+      createAlert(session, "alert", "removeBoundaries", title = "<strong> Attention User! </strong>",
+                  content = "For a better map navigation, the <b>zone boundaries</b> are set to be invisible (none). You may set it again, if you like."
+                  , append = FALSE)
+      # Set zone_attr to 'none' for both baseline and other scenarios
+      if(input$scenario != "base"){
+        updateSelectInput(session, "zone_attr", selected = attrsZone[4:4])
+      }else{
+        updateSelectInput(session, "zone_attr", selected = attrsZone[4:4])
+      }
+    }else{
+      # Close the alert
+      closeAlert(session, "removeBoundaries")
+
+      # Revert zone_attr to its initial values
+      if(input$scenario != "base"){
+        updateSelectInput(session, "zone_attr", choices = attrsZone[2:4])
+      }else{
+        updateSelectInput(session, "zone_attr", choices = attrsZone)
+      }
+    }
+  })
 
   output$legendCyclingPotential <- renderPlot({
     if(!(plotZones()) || is.null(input$zone_attr) || is.null(input$scenario)){
