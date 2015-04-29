@@ -10,32 +10,11 @@ Running the following code should make the code reproducible on most
 computers:
 
 ```r
-pkgs <- c("shiny", "dplyr", "devtools")
+pkgs <- c("shiny", "shinyBS", "RColorBrewer", "httr", "rgdal", "downloader", "rgeos", "curl", "jsonlite")
 install.packages(pkgs)
 lapply(pkgs, library, character.only = T)
 # Install leaflet package from github
 install_github("rstudio/leaflet")
-```
-
-### Set the CYCLESTREET Env variable
-
-Some of the examples pull data from the
-[CycleStreets.net API](http://www.cyclestreets.net/api/).
-Once you have a token, you can add it to R as follows:
-
-```R
-Sys.setenv(CYCLESTREET = "my_token")
-```
-
-or in Ubuntu can be added as a session wide var
-```bash
-echo "export CYCLESTREET='my_token'" >> ~/.profile
-```
-or system wide
-```bash
-sudo -i # become root
-echo "export CYCLESTREET='my_token'" > /etc/profile.d/cyclestreet.sh
-exit
 ```
 
 ### To install shiny-server
@@ -45,10 +24,14 @@ exit
 * use default server config `wget https://raw.githubusercontent.com/rstudio/shiny-server/master/config/default.config > /etc/shiny-server/shiny-server.conf`
 * use default upstart `wget  https://raw.github.com/rstudio/shiny-server/master/config/upstart/shiny-server.conf  -O /etc/init/shiny-server.conf`
 
-### Deploying
+### Data files
 
-We use a branch called 'production' for the deployed version:
+The data files are kept in a seaprate repository https://github.com/npct/pct-data.git
+The script update-data.sh pulls the latest version of the data.  This will timeout on a Shiny server so it is
+advised to add
 
 ```bash
-git push production master
+0,30 * * * * /path-to-shiny-repo/pct-shiny/update-data.sh
 ```
+
+to the crontab (`crontab -e`)

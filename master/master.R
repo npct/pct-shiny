@@ -9,15 +9,10 @@ lapply(pkgs, library, character.only = TRUE)
 # Colours
 zcols <- c("darkslategrey", "yellow")
 
-dataDir <- file.path('..', 'pct-data')
-
-# clone the data repo if it do not exist
-ifelse(!dir.exists(dataDir), system2('git', args=c('clone', '--depth=1', 'https://github.com/npct/pct-data.git', dataDir)), FALSE)
-
-# Download files
-setwd(dataDir)
-system2('git', args=c("pull"), wait = FALSE)
-setwd(file.path('..', 'master'))
+# Download data files
+# This will timeout on the server (so a cron job is used instead
+# but will work locally
+system2('./update-data.sh', wait = FALSE)
 
 # Functions
 source("pct-shiny-funs.R")
