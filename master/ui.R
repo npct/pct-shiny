@@ -46,7 +46,7 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                                                  ,checkboxInput("freeze", "Freeze Lines", value = TRUE)
                                                  ,bsTooltip(id = "freeze",
                                                             title = "<strong>Ticked</strong> the flows are independent of the map boundary (zoom and position)</br><strong>Unticked</strong> the flows update depending on the map boundary",
-                                                            placement = "left", trigger = "hover")
+                                                            placement = "left", trigger = "hover", options = list(container = "body"))
                                                  ,selectInput("line_attr", "Flow attribute to display:", attrs, selected = "current")
                                                  ,bsTooltip(id = "line_attr", title = "Filter the routes by:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",placement = "left", trigger = "hover")
                                                  ,bsTooltip(id = "nos_lines", title = "Display the top n flows based on the selected flow attribute</br>thicker flows means higher attribute level",placement = "left", trigger = "hover")
