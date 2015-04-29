@@ -23,7 +23,7 @@ shinyUI(navbarPage("Infrastructure planning tool", id="nav"
                              ,helpText("Warning: this tool is under development. Its outputs may change as the model is refined.")
                              ,leafletOutput("map", width="auto", height="600")
                              ,absolutePanel(
-                               cursor = "move"
+                               cursor = "inherit"
                                ,id = "controls"
                                ,class = "panel panel-default"
                                ,fixed = TRUE
