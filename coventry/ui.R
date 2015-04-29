@@ -1,1 +1,1 @@
-source("../master/ui.R")
+source("../master/ui.R", local = T, chdir = T)
