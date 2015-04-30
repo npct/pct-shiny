@@ -16,6 +16,9 @@ attrs <- c("Observed Level Cycling (OLC)" = "olc",
            "Scenario-based Level of Cycling (SLC)" =    "slc",
            "Scenario-based Increase in Cycling (SIC)" = "sic")
 
+map_base_attrs <- c("Black and White" = "bw",
+           "Colour" =    "c"
+           )
 
 shinyUI(
   navbarPage(
@@ -39,7 +42,7 @@ shinyUI(
         selectInput("scenario", "Scenario:", scenarios),
         bsTooltip(
           id = "scenario",
-          title = "<strong>Baseline</strong> is the model based on the current cycling levels</br><strong>Gender equality</strong> assumes the number of women and men cycling evens out</br><strong>Go Dutch</strong> assumes a similar cycling rates as Holland</br><strong>Electric Bikes</strong> assumes that ownership and use of electric bicycles increases dramatically, increasing the distance people are willing to regularly cycle",
+          title = "<strong>Baseline:</strong> model based on the current cycling levels</br><strong>Gender equality:</strong> assumes the number of women and men cycling evens out</br><strong>Go Dutch:</strong> assumes a similar cycling rates as Holland</br><strong>Electric Bikes:</strong> assumes that ownership and use of electric bicycles increases dramatically, increasing the distance people are willing to regularly cycle",
           placement = "left",
           trigger = "hover"
         ),
@@ -76,6 +79,22 @@ shinyUI(
           plotOutput("legendCyclingPotential", width = "100%")
         ),
         title = "Scenario-specific quartiles</br>of Cycling Level",
+        placement = "centre", trigger = "hover"
+      ),
+
+      tipify(
+        absolutePanel(
+          cursor = "default",
+          id = "map_base_panel",
+          class = "panel panel-default",
+          fixed = TRUE,
+          bottom = 50,
+          left = 10,
+          width = 200,
+          style = "opacity: 0.7",
+          selectInput("map_base", "Map Base:", map_base_attrs)
+        ),
+        title = "Changing base of the map",
         placement = "centre", trigger = "hover"
       )
     ),
