@@ -42,13 +42,13 @@ shinyUI(
         selectInput("scenario", "Scenario:", scenarios),
         bsTooltip(
           id = "scenario",
-          title = "<strong>Baseline:</strong> model based on the current cycling levels</br><strong>Gender equality:</strong> assumes the number of women and men cycling evens out</br><strong>Go Dutch:</strong> assumes a similar cycling rates as Holland</br><strong>Electric Bikes:</strong> assumes that ownership and use of electric bicycles increases dramatically, increasing the distance people are willing to regularly cycle",
+          title = "<strong>Baseline</strong> model based on the current cycling levels</br><strong>Gender equality</strong> equal number of women and men cycling</br><strong>Go Dutch</strong> similar cycling rates as Holland</br><strong>Electric Bikes</strong> use of electric bicycles increases, increasing the distance people are willing to cycle",
           placement = "left",
           trigger = "hover"
         ),
         tipify(
           selectInput("zone_attr", "Zone Attribute:", attrs, selected = "current"),
-          title = "Alters to colours of the zones depending on the cycling level:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
+          title = "Set zone colours depending on the cycling level:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
           placement = "left", trigger = "hover"),
         tipify(selectInput("line_type", "Cycling Flows", line_types, selected = "none"),
                title = "Shows the cycling flow between the centres of zones using:<strong></br>Straight lines</br>Fastest cycle routes</br>Fastest and quietest routes</strong>",
@@ -62,7 +62,7 @@ shinyUI(
                  title = "Filter the routes by:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
                  placement = "left", trigger = "hover"),
           tipify(sliderInput("nos_lines", label = "Flows to show (top n)", 1, 20, value = 5),
-                 title = "Display the top n flows based on the selected flow attribute</br>thicker flows means higher attribute level",
+                 title = "Display the top n flows based on the selected flow attribute.</br>Thicker flows means higher attribute level",
                  placement = "left", trigger = "hover")
         )
       ),

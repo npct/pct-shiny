@@ -58,16 +58,6 @@ shinyServer(function(input, output, session){
 
   attrsZone <- c(attrsLine, c("None" = "none"))
 
-#   observe({
-#     if (is.na(input$map) || is.na(input$map_zoom) || input$map == 'NULL' || input$map_zoom == 'NULL'){return (NULL)}
-#     if (input$map_zoom > 13){
-#       cat(input$map_zoom, "\n")
-#     }else{
-#       return
-#     }
-
-#   })
-
   observe({
     if(input$scenario != "base"){
       updateSelectInput(session, "zone_attr", choices = attrsZone[2:4])
@@ -109,7 +99,6 @@ shinyServer(function(input, output, session){
   }
 
   map <- leaflet()
-
 
   output$map = renderLeaflet(
     map %>% {
