@@ -17,7 +17,7 @@ attrs <- c("Observed Level Cycling (OLC)" = "olc",
            "Scenario-based Increase in Cycling (SIC)" = "sic")
 
 map_base_attrs <- c("Black and White" = "bw",
-           "Colour" =    "c"
+           "OpenCycleMap" =    "c"
            )
 
 shinyUI(

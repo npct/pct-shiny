@@ -116,7 +116,7 @@ shinyServer(function(input, output, session){
         if (input$map_base == 'bw')
           addTiles(., urlTemplate = "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png")
         else
-          addTiles(., urlTemplate = "http://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png")
+          addTiles(., urlTemplate = "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png")
       }%>%{
       ## Add polygons (of MSOA boundaries)
       if(plotZones())
