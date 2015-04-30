@@ -87,7 +87,7 @@ shinyUI(
           cursor = "default",
           id = "map_base_panel",
           class = "panel panel-default",
-          bottom = 50,
+          bottom = 5,
           left = 10,
           width = 300,
           style = "opacity: 0.7",
