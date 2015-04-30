@@ -89,9 +89,9 @@ shinyUI(
           class = "panel panel-default",
           bottom = 50,
           left = 10,
-          width = 200,
+          width = 300,
           style = "opacity: 0.7",
-          radioButtons("map_base", "Map Base:", map_base_attrs)
+          radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
         ),
         title = "Changing base of the map",
         placement = "centre", trigger = "hover"
