@@ -156,7 +156,7 @@ shinyServer(function(input, output, session){
     zone_col <- getColourRamp(zcols, m)
 
     # Set a full form of the scenario as a label
-    ylabel <- "Observed Level Cycling (OLC)"
+    ylabel <- "Observed Level Cycling (OLC): cycle commuters"
     if (input$zone_attr == "slc")
       ylabel <- "Scenario-based Level of Cycling (SLC)"
     else if (input$zone_attr == "sic")
