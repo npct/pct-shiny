@@ -10,7 +10,7 @@ lapply(pkgs, library, character.only = TRUE)
 zcols <- c("darkslategrey", "yellow")
 
 # Download data files
-# This will timeout on the server (so a cron job is used instead
+# This will timeout on the server (so a cron job is used instead)
 # but will work locally
 system2('./update-data.sh', wait = FALSE)
 
@@ -97,16 +97,19 @@ shinyServer(function(input, output, session){
                    , opacity = 0.7
                    , popup = popupFn(sorted_l, input$scenario))
   }
+  mapTileUrl <- reactive({
+    if (input$map_base == 'bw')
+      "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
+    else
+      "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png"
+  })
 
   map <- leaflet()
 
   output$map = renderLeaflet(
-    map %>% {
-        if (input$map_base == 'bw')
-          addTiles(., urlTemplate = "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png")
-        else
-          addTiles(., urlTemplate = "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png")
-      }%>%{
+    map %>%
+      addTiles(urlTemplate = mapTileUrl(), options=tileOptions(opacity = 0.8, reuseTiles = T))
+    %>%{
       ## Add polygons (of MSOA boundaries)
       if(plotZones())
         addPolygons(. , data = zones
