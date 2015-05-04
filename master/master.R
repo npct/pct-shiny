@@ -60,12 +60,21 @@ shinyServer(function(input, output, session){
 
   observe({
     if(input$scenario != "base"){
+      if(input$advanced)
+        updateSelectInput(session, "line_attr", choices = attrsLine[2:3])
       updateSelectInput(session, "zone_attr", choices = attrsZone[2:4])
-      updateSelectInput(session, "line_attr", choices = attrsLine[2:3])
     }else{
+      if(input$advanced)
+        updateSelectInput(session, "line_attr", choices = attrsLine)
       updateSelectInput(session, "zone_attr", choices = attrsZone)
-      updateSelectInput(session, "line_attr", choices = attrsLine)
     }
+  })
+
+  lineAttr <- reactive({
+    if(input$advanced)
+      input$line_attr
+    else
+      input$zone_attr
   })
 
   plotZones <- reactive({ # Some attributes are only avaliable for baseline
@@ -93,7 +102,7 @@ shinyServer(function(input, output, session){
     else
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
-                   , weight = normalise(sorted_l@data[[dataFilter(input$scenario, input$line_attr)]], min = 3, max = 6)
+                   , weight = normalise(sorted_l@data[[dataFilter(input$scenario, lineAttr())]], min = 3, max = 6)
                    , opacity = 0.7
                    , popup = popupFn(sorted_l, input$scenario))
   }
@@ -125,19 +134,19 @@ shinyServer(function(input, output, session){
         .
     }%>%{
       if (input$line_type == 'straight'){
-        sortAndPlot(., l, dataFilter(input$scenario, input$line_attr), input$nos_lines,
+        sortAndPlot(., l, dataFilter(input$scenario, lineAttr()), input$nos_lines,
                     straightPopup, color = "maroon")
       }else
         .
     }%>%{
       if (input$line_type %in% c('route', 'd_route'))
-        sortAndPlot(., rfast, dataFilter(input$scenario, input$line_attr), input$nos_lines,
+        sortAndPlot(., rfast, dataFilter(input$scenario, lineAttr()), input$nos_lines,
                     routePopup, "red")
       else
         .
     }%>%{
       if (input$line_type == 'route')
-        sortAndPlot(., rquiet, dataFilter(input$scenario, input$line_attr), input$nos_lines,
+        sortAndPlot(., rquiet, dataFilter(input$scenario, lineAttr()), input$nos_lines,
                     routePopup, "darkblue")
       else
         .

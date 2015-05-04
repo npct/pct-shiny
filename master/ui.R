@@ -17,8 +17,7 @@ attrs <- c("Observed Level Cycling (OLC)" = "olc",
            "Scenario-based Increase in Cycling (SIC)" = "sic")
 
 map_base_attrs <- c("Black and White" = "bw",
-           "OpenCycleMap" =    "c"
-           )
+                    "OpenCycleMap" =    "c")
 
 shinyUI(
   navbarPage(
@@ -47,7 +46,7 @@ shinyUI(
           trigger = "hover"
         ),
         tipify(
-          selectInput("zone_attr", "Zone Attribute:", attrs, selected = "current"),
+          selectInput("zone_attr", "Zone Attribute:", attrs),
           title = "Set zone colours depending on the cycling level:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
           placement = "left", trigger = "hover"),
         tipify(selectInput("line_type", "Cycling Flows", line_types, selected = "none"),
@@ -58,13 +57,17 @@ shinyUI(
           tipify(checkboxInput("freeze", "Freeze Lines", value = TRUE),
                  title = "<strong>Ticked</strong> the flows are independent of the map boundary (zoom and position)</br><strong>Unticked</strong> the flows update depending on the map boundary",
                  placement = "left", trigger = "hover", options = list(container = "body")),
-          tipify(selectInput("line_attr", "Flow attribute to display:", attrs, selected = "current"),
-                 title = "Filter the routes by:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
-                 placement = "left", trigger = "hover"),
+          conditionalPanel(
+            condition = "input.advanced",
+            tipify(selectInput("line_attr", "Flow attribute to display:", attrs),
+                   title = "Filter the routes/lines by:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
+                   placement = "left", trigger = "hover")
+          ),
           tipify(sliderInput("nos_lines", label = "Flows to show (top n)", 1, 20, value = 5),
                  title = "Display the top n flows based on the selected flow attribute.</br>Thicker flows means higher attribute level",
                  placement = "left", trigger = "hover")
-        )
+        ),
+        checkboxInput('advanced', 'Advanced Controls')
       ),
       tipify(
         absolutePanel(
@@ -81,20 +84,22 @@ shinyUI(
         title = "Scenario-specific quartiles</br>of Cycling Level",
         placement = "centre", trigger = "hover"
       ),
-
-      tipify(
-        absolutePanel(
-          cursor = "default",
-          id = "map_base_panel",
-          class = "panel panel-default",
-          bottom = 5,
-          left = 10,
-          width = 300,
-          style = "opacity: 0.7",
-          radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
-        ),
-        title = "Changing base of the map",
-        placement = "centre", trigger = "hover"
+      conditionalPanel(
+        condition = "input.advanced",
+        tipify(
+          absolutePanel(
+            cursor = "default",
+            id = "map_base_panel",
+            class = "panel panel-default",
+            bottom = 5,
+            left = 10,
+            width = 300,
+            style = "opacity: 0.7",
+            radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
+          ),
+          title = "Changing base of the map",
+          placement = "centre", trigger = "hover"
+        )
       )
     ),
     tabPanel("Help",
