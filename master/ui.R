@@ -2,19 +2,21 @@ library(shiny)
 library(shinyBS)
 library(leaflet)
 
-scenarios <- c("Baseline" =           "base",
+scenarios <- c("Observed Level Cycling" = "olc",
+               "Govenment Target" =   "base",
                "Gender equality" =   "gendereq",
                "Go Dutch" =          "dutch",
                "Electric bicycles" = "ebike")
+
+attrsLine <- c("Scenario-based Level of Cycling (SLC)" =    "slc",
+               "Scenario-based Increase in Cycling (SIC)" = "sic")
 
 line_types <- c("None" = "none",
                 "Straight Lines" = "straight",
                 "Fastest Route" = "d_route",
                 "Fastest Route & Quiet Routes" = "route")
 
-attrs <- c("Observed Level Cycling (OLC)" = "olc",
-           "Scenario-based Level of Cycling (SLC)" =    "slc",
-           "Scenario-based Increase in Cycling (SIC)" = "sic")
+attrsZone <- c(attrsLine, c("None" = "none"))
 
 map_base_attrs <- c("Black and White" = "bw",
                     "OpenCycleMap" =    "c")
@@ -45,10 +47,13 @@ shinyUI(
           placement = "left",
           trigger = "hover"
         ),
-        tipify(
-          selectInput("zone_attr", "Zone Attribute:", attrs),
-          title = "Set zone colours depending on the cycling level:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
-          placement = "left", trigger = "hover"),
+        conditionalPanel(
+          condition = "input.scenario != 'olc'",
+          tipify(
+            selectInput("zone_attr", "Zone Attribute:", attrsZone),
+            title = "Set zone colours depending on the cycling level:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
+            placement = "left", trigger = "hover")
+        ),
         tipify(selectInput("line_type", "Cycling Flows", line_types, selected = "none"),
                title = "Shows the cycling flow between the centres of zones using:<strong></br>Straight lines</br>Fastest cycle routes</br>Fastest and quietest routes</strong>",
                placement = "left", trigger = "hover"),
@@ -59,7 +64,7 @@ shinyUI(
                  placement = "left", trigger = "hover", options = list(container = "body")),
           conditionalPanel(
             condition = "input.advanced",
-            tipify(selectInput("line_attr", "Flow attribute to display:", attrs),
+            tipify(selectInput("line_attr", "Flow attribute to display:", attrsLine),
                    title = "Filter the routes/lines by:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
                    placement = "left", trigger = "hover")
           ),

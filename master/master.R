@@ -52,33 +52,25 @@ shinyServer(function(input, output, session){
     linesInBb[ tail(order(linesInBb[[sortBy]]), nos), ]
   }
 
-  attrsLine <- c("Observed Level Cycling (OLC)" = "olc"
-                 ,"Scenario-based Level of Cycling (SLC)" =    "slc"
-                 ,"Scenario-based Increase in Cycling (SIC)" = "sic")
-
-  attrsZone <- c(attrsLine, c("None" = "none"))
-
-  observe({
-    if(input$scenario != "base"){
-      if(input$advanced)
-        updateSelectInput(session, "line_attr", choices = attrsLine[2:3])
-      updateSelectInput(session, "zone_attr", choices = attrsZone[2:4])
-    }else{
-      if(input$advanced)
-        updateSelectInput(session, "line_attr", choices = attrsLine)
-      updateSelectInput(session, "zone_attr", choices = attrsZone)
-    }
-  })
-
   lineAttr <- reactive({
-    if(input$advanced)
+    if(input$scenario == 'olc')
+      'olc'
+    else if(input$advanced)
       input$line_attr
     else
       input$zone_attr
   })
 
+  zoneAttr <- reactive({
+    if(input$scenario == 'olc') 'olc' else input$zone_attr
+  })
+
+  scenario <- reactive({
+    if(input$scenario == 'olc') 'base' else input$scenario
+  })
+
   plotZones <- reactive({ # Some attributes are only avaliable for baseline
-    (input$zone_attr != 'none') && (dataFilter(input$scenario, input$zone_attr) %in% names(zones@data))
+    (input$zone_attr != 'none') && (dataFilter(scenario(), zoneAttr()) %in% names(zones@data))
   })
 
   bbPoly <- reactive({
@@ -102,9 +94,9 @@ shinyServer(function(input, output, session){
     else
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
-                   , weight = normalise(sorted_l@data[[dataFilter(input$scenario, lineAttr())]], min = 3, max = 6)
+                   , weight = normalise(sorted_l@data[[dataFilter(scenario(), lineAttr())]], min = 3, max = 6)
                    , opacity = 0.7
-                   , popup = popupFn(sorted_l, input$scenario))
+                   , popup = popupFn(sorted_l, scenario()))
   }
   mapTileUrl <- reactive({
     if (input$map_base == 'bw')
@@ -125,34 +117,33 @@ shinyServer(function(input, output, session){
                     , weight = 2
                     , fillOpacity = 0.6
                     , opacity = 0.4
-                    , fillColor = getColourRamp(zcols, zones@data[[dataFilter(input$scenario, input$zone_attr)]])
+                    , fillColor = getColourRamp(zcols, zones@data[[dataFilter(scenario(), zoneAttr())]])
                     , color = "black"
                     , options = pathOptions(clickable=F)
-
         )
       else
         .
     }%>%{
       if (input$line_type == 'straight'){
-        sortAndPlot(., l, dataFilter(input$scenario, lineAttr()), input$nos_lines,
+        sortAndPlot(., l, dataFilter(scenario(), lineAttr()), input$nos_lines,
                     straightPopup, color = "maroon")
       }else
         .
     }%>%{
       if (input$line_type %in% c('route', 'd_route'))
-        sortAndPlot(., rfast, dataFilter(input$scenario, lineAttr()), input$nos_lines,
+        sortAndPlot(., rfast, dataFilter(scenario(), lineAttr()), input$nos_lines,
                     routePopup, "red")
       else
         .
     }%>%{
       if (input$line_type == 'route')
-        sortAndPlot(., rquiet, dataFilter(input$scenario, lineAttr()), input$nos_lines,
+        sortAndPlot(., rquiet, dataFilter(scenario(), lineAttr()), input$nos_lines,
                     routePopup, "darkblue")
       else
         .
     }%>%{
       if (plotZones())
-        addCircleMarkers(., data = cents, radius = 2, color = "black", popup = zonePopup(cents, input$scenario, input$zone_attr))
+        addCircleMarkers(., data = cents, radius = 2, color = "black", popup = zonePopup(cents, scenario(), zoneAttr()))
       else
         .
     }%>%
@@ -160,11 +151,11 @@ shinyServer(function(input, output, session){
   )
 
   output$legendCyclingPotential <- renderPlot({
-    if(!(plotZones()) || is.null(input$zone_attr) || is.null(input$scenario)){
+    if(!(plotZones()) || is.null(zoneAttr()) || is.null(scenario())){
       return()
     }
     # Read the zone data
-    data_ <- zones@data[[dataFilter(input$scenario, input$zone_attr)]]
+    data_ <- zones@data[[dataFilter(scenario(), zoneAttr())]]
     # Create quantiles out of the data
     m <- quantile(data_, probs=seq.int(0,1, length.out=4))
 
@@ -173,9 +164,9 @@ shinyServer(function(input, output, session){
 
     # Set a full form of the scenario as a label
     ylabel <- "Observed Level Cycling (OLC): cycle commuters"
-    if (input$zone_attr == "slc")
+    if (zoneAttr() == "slc")
       ylabel <- "Scenario-based Level of Cycling (SLC)"
-    else if (input$zone_attr == "sic")
+    else if (zoneAttr() == "sic")
       ylabel <- "Scenario-based Increase in Cycling (SIC)"
 
     # Set the labelling of Y-axis to bold
