@@ -1,0 +1,190 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head>
+
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>help</title></head><body>
+<div style="text-align: center;">
+<div style="text-align: center;">
+<br>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="vertical-align: top; width: 654px;"><span style="font-weight: bold; text-decoration: underline;">Scenario
+Selection</span><br>
+      <ol style="text-align: left;">
+        <li>Baseline Scenario</li>
+        <li>Gender equality - men and women have the same cycling ratio<br>
+</li>
+        <li>Go Dutch - Using the dutch scenario</li>
+        <li>Electric bicycles - introducing electric bicycles</li>
+      </ol>
+      </td>
+      <td style="vertical-align: top; width: 935px;"><img style="width: 314px; height: 180px;" alt="Scenario Selection" src="http://geo8.webarch.net/pct-shiny/master/scenario-selection.png"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 654px;"><span style="font-weight: bold; text-decoration: underline;">Zone Attribute</span>
+      <ol style="text-align: left;">
+        <li>Observed Level Cycling (OLC) refers to the amount of
+current cycling activity according to the Census data<br>
+        </li>
+        <li>Scenario-based Level of Cycling (SLC) is the expected rate
+of
+cycling in given area (comes from the underlying scenario)<br>
+        </li>
+        <li>Scenario-based Increase in Cycling (SIC) is the number of
+additional
+trips or cyclists that can be expected (the difference between the Observed and the Scenario cases)</li>
+</ol>
+      </td>
+      <td style="vertical-align: top; width: 935px;"><img style="width: 177px; height: 285px;" alt="Zone Attribute" src="http://geo8.webarch.net/pct-shiny/master/zone-attribute.png"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 654px;"><span style="font-weight: bold; text-decoration: underline;">Cycling Flows</span><br>
+      <ol>
+        <li>Straight Lines<br>
+        </li>
+        <li>Fastest Route</li>
+        <li>Fastest and Quietest Route<br>
+        </li>
+      </ol>
+      </td>
+      <td style="vertical-align: top; width: 935px;"><img style="width: 326px; height: 197px;" alt="Cycling Flows" src="http://geo8.webarch.net/pct-shiny/master/cycling-flows.png"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 654px;"><span style="font-weight: bold; text-decoration: underline;">Freeze Lines</span><br>
+      <ol>
+        <li>Checked: Dynaimc Lines (straight or fast/quiet route) are
+displayed depending on the map center<br>
+        </li>
+        <li>Uncheck: Fixed lines<br>
+        </li>
+      </ol>
+      </td>
+      <td style="vertical-align: top; width: 935px;"><img style="width: 283px; height: 44px;" alt="Fixed Lines" src="http://geo8.webarch.net/pct-shiny/master/freeze-lines.png"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 654px;"><span style="font-weight: bold; text-decoration: underline;">Line Attribute<br>
+      </span>
+      <ol style="text-align: left;">
+        <li>Observed Level Cycling (OLC) refers to the amount of
+current cycling activity according to the Census data<br>
+</li>
+        <li>Scenario-based Level of Cycling (SLC) is the expected rate
+of
+cycling in given area (comes from the underlying scenario)<br>
+</li>
+        <li>Scenario-based Increase in Cycling (SIC) is the number of
+additional
+trips or cyclists that can be expected (the difference between the Observed and the Scenario cases)<br>
+</li>
+      </ol>
+      </td>
+      <td style="vertical-align: top; width: 935px;"><img style="width: 179px; height: 257px;" alt="Line Attribute" src="http://geo8.webarch.net/pct-shiny/master/line-attribute.png"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 654px;"><span style="font-weight: bold; text-decoration: underline;">Number of Lines
+to Show<br>
+      <br>
+      </span>Number of lines to be displayed when any of the cycling
+flows is selected (apart fron 'none')<br>
+      </td>
+      <td style="vertical-align: top; width: 935px;"><img style="width: 381px; height: 127px;" alt="Number of Lines to Show" src="http://geo8.webarch.net/pct-shiny/master/number-of-lines.png"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 654px;"><span style="font-weight: bold; text-decoration: underline;">Direct Route<br>
+      <br></span>The
+red line represents a direct route from the centre of two zones. Once
+the user clicks on it, following information is displayed:<span style="font-weight: bold; text-decoration: underline;"><br>
+      </span>
+      <ol>
+        <li>Total commutes - the total number of flows between these two zones</li>
+        <li>Observed (OLC) - according to the census how many observed flows are between these two zones</li>
+        <li>Scenario (SLC) - according to the underlying scenario, how many flows are between these two zones</li>
+        <li>Increase (SLC - OLC) - the difference between observed and scenario flows</li>
+        <li>Route Distance - the route distance in km between the centre of the zones</li>
+        <li>Type of Route - red colour represents direct route<br>
+        </li>
+      </ol>
+      <span style="font-weight: bold; text-decoration: underline;">
+      </span></td>
+      <td style="vertical-align: top; width: 935px;"><img style="width: 416px; height: 227px;" alt="Direct Route" src="http://geo8.webarch.net/pct-shiny/master/direct-route.png"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;">Quiet Route<br>
+      <br></span>Similar to direct route, we also calculate the quiet route between zones. The blue line represents it. Once
+the user clicks on it, following information is displayed:<span style="font-weight: bold; text-decoration: underline;"><br>
+      </span>
+      <ol>
+<li>Total commutes - the total number of flows between these two zones</li><li>Observed (OLC) - according to the census how many observed flows are between these two zones</li><li>Scenario (SLC) - according to the underlying scenario, how many flows are between these two zones</li><li>Increase (SLC - OLC) - the difference between observed and scenario flows</li><li>Route Distance - the route distance in km between the centre of the zones</li><li>Type of Route - blue colour represents quite route<br>
+  </li>
+      </ol>
+
+
+      </td>
+      <td style="vertical-align: top;"><img style="width: 418px; height: 249px;" alt="Quiet Route" src="http://geo8.webarch.net/pct-shiny/master/quiet-route.png"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;">Straight Lines</span><br>
+      <br>
+Similar to routes, we also display the direct distance between the
+centre of zones. It is displayed by a maroon&nbsp; colour. Once a user
+clicks on it, a popup is displayed with following information<br>
+      <ol>
+<li>Total commutes - the total number of flows between these two zones</li><li>Observed (OLC) - according to the census how many observed flows are between these two zones</li><li>Scenario (SLC) - according to the underlying scenario, how many flows are between these two zones</li><li>Increase (SLC - OLC) - the difference between observed and scenario flows</li><li>Distance - the direct distance in km between the centre of the zones<br>
+</li>
+      </ol>
+<br>
+      </td>
+      <td style="vertical-align: top;"><img style="width: 415px; height: 313px;" alt="Straight Line" src="http://geo8.webarch.net/pct-shiny/master/straight-line-popup.png"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;">Zone Information</span><br>
+      <br>
+Zone informatio is also calculated and can be seen once user clicks on
+the centre of the them - represented by a black centroid. Following
+information is displayed:<br>
+      <ol>
+        <li>Zone: Zone name according to the Census</li>
+        <li>OLC: Observed level of cycling according to the Census</li>
+        <li>Hilliness: Shows the hilliness attribute of the zone<br>
+        </li>
+      </ol>
+
+      </td>
+      <td style="vertical-align: top;"><img style="width: 415px; height: 195px;" alt="Zone" src="http://geo8.webarch.net/pct-shiny/master/zone-popup.png"><br>
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;">Legend</span><br>
+      <br>
+We also display a legend which shows the quartile of level of cycling,
+depending on the scenario user has selected. It shows the title of the
+scenario, and also:<br>
+      <ol>
+        <li>The number of flows for each quartile</li>
+        <li>The colour assinged to each quartile</li>
+      </ol>
+
+      </td>
+      <td style="vertical-align: top;"><img style="width: 279px; height: 340px;" alt="Legend" src="http://geo8.webarch.net/pct-shiny/master/legend.png"><br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+</div>
+<br>
+<br>
+<br>
+</div>
+
+</body></html>
