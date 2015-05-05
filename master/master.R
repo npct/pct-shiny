@@ -21,25 +21,24 @@ source("pct-shiny-funs.R")
 # Load data #
 # # # # # # #
 
-rfast <- readRDS(paste0(data_dir, "rf.Rds" ))
-rquiet <- readRDS(paste0(data_dir, "rq.Rds"))
+rFast <- readRDS(paste0(data_dir, "rf.Rds" ))
+rQuiet <- readRDS(paste0(data_dir, "rq.Rds"))
 
 l <- readRDS(paste0(data_dir, "l.Rds"))
-rfast@data <- cbind(l@data, rfast@data)
-rquiet@data <- cbind(l@data, rquiet@data)
+rFast@data <- cbind(l@data, rFast@data)
+rQuiet@data <- cbind(l@data, rQuiet@data)
 zones <- readRDS(paste0(data_dir, "z.Rds"))
 
 cents <- readRDS(paste0(data_dir, "c.Rds"))
 flow <- l@data
-rfast@data <- cbind(rfast@data, l@data)
-rquiet@data <- cbind(rquiet@data, l@data)
+rFast@data <- cbind(rFast@data, l@data)
+rQuiet@data <- cbind(rQuiet@data, l@data)
 
 # # # # # # # #
 # shinyServer #
 # # # # # # # #
 
 shinyServer(function(input, output, session){
-
 
   sortLines <- function(lines, sortBy, nos){
     if(!(sortBy %in% names(lines))) return(NULL)
@@ -69,8 +68,16 @@ shinyServer(function(input, output, session){
     if(input$scenario == 'olc') 'base' else input$scenario
   })
 
+  lineData <- reactive({
+    dataFilter(scenario(), lineAttr())
+  })
+
+  zoneData <- reactive({
+    dataFilter(scenario(), zoneAttr())
+  })
+
   plotZones <- reactive({ # Some attributes are only avaliable for baseline
-    (input$zone_attr != 'none') && (dataFilter(scenario(), zoneAttr()) %in% names(zones@data))
+    (input$zone_attr != 'none') && (zoneData() %in% names(zones@data))
   })
 
   bbPoly <- reactive({
@@ -84,20 +91,21 @@ shinyServer(function(input, output, session){
       session$bb <- SpatialPolygons(list(Polygons(list(Polygon(r1)), 'bb')), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
       proj4string(session$bb)=CRS("+init=epsg:4326 +proj=longlat")
     }
-    return(session$bb)
+    session$bb
   })
 
-  sortAndPlot <- function(m, lines, attr, nos, popupFn, color){
-    sorted_l <- sortLines(lines, attr, nos)
+  plotLines <- function(m, lines, nos, popupFn, color){
+    sorted_l <- sortLines(lines, lineData(), nos)
     if(is.null(sorted_l))
       m
     else
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
-                   , weight = normalise(sorted_l@data[[dataFilter(scenario(), lineAttr())]], min = 3, max = 6)
+                   , weight = normalise(sorted_l@data[[lineData()]], min = 3, max = 6)
                    , opacity = 0.7
                    , popup = popupFn(sorted_l, scenario()))
   }
+
   mapTileUrl <- reactive({
     if (input$map_base == 'bw')
       "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
@@ -117,7 +125,7 @@ shinyServer(function(input, output, session){
                     , weight = 2
                     , fillOpacity = 0.6
                     , opacity = 0.4
-                    , fillColor = getColourRamp(zcols, zones@data[[dataFilter(scenario(), zoneAttr())]])
+                    , fillColor = getColourRamp(zcols, zones@data[[zoneData()]])
                     , color = "black"
                     , options = pathOptions(clickable=F)
         )
@@ -125,20 +133,17 @@ shinyServer(function(input, output, session){
         .
     }%>%{
       if (input$line_type == 'straight'){
-        sortAndPlot(., l, dataFilter(scenario(), lineAttr()), input$nos_lines,
-                    straightPopup, color = "maroon")
+        plotLines(., l, input$nos_lines, straightPopup, color = "maroon")
       }else
         .
     }%>%{
       if (input$line_type %in% c('route', 'd_route'))
-        sortAndPlot(., rfast, dataFilter(scenario(), lineAttr()), input$nos_lines,
-                    routePopup, "red")
+        plotLines(., rFast, input$nos_lines, routePopup, "red")
       else
         .
     }%>%{
       if (input$line_type == 'route')
-        sortAndPlot(., rquiet, dataFilter(scenario(), lineAttr()), input$nos_lines,
-                    routePopup, "darkblue")
+        plotLines(., rQuiet, input$nos_lines, routePopup, "darkblue")
       else
         .
     }%>%{
@@ -151,11 +156,11 @@ shinyServer(function(input, output, session){
   )
 
   output$legendCyclingPotential <- renderPlot({
-    if(!(plotZones()) || is.null(zoneAttr()) || is.null(scenario())){
+    if(!plotZones()){
       return()
     }
     # Read the zone data
-    data_ <- zones@data[[dataFilter(scenario(), zoneAttr())]]
+    data_ <- zones@data[[zoneData()]]
     # Create quantiles out of the data
     m <- quantile(data_, probs=seq.int(0,1, length.out=4))
 
