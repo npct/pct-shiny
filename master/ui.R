@@ -2,14 +2,14 @@ library(shiny)
 library(shinyBS)
 library(leaflet)
 
-scenarios <- c("Census 2011 Cycling" = "olc",
+scenarios <- c("Census 2011 Cycling" = "c2011",
                "Government Target" =   "base",
                "Gender equality" =   "gendereq",
                "Go Dutch" =          "dutch",
                "Electric bicycles" = "ebike")
 
-attrsLine <- c("Scenario-based Level of Cycling (SLC)" =    "slc",
-               "Scenario-based Increase in Cycling (SIC)" = "sic")
+attrsLine <- c("Scenario Level of Cycling (SLC)" =    "slc",
+               "Scenario Increase in Cycling (SIC)" = "sic")
 
 line_types <- c("None" = "none",
                 "Straight Lines" = "straight",
