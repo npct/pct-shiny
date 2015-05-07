@@ -68,7 +68,7 @@ shinyUI(
                    title = "Filter the routes/lines by:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
                    placement = "left", trigger = "hover")
           ),
-          tipify(sliderInput("nos_lines", label = "Flows to show (top n)", 1, 20, value = 5),
+          tipify(sliderInput("nos_lines", label = "Flows to show (top n)", 1, 50, value = 5),
                  title = "Display the top n flows based on the selected flow attribute.</br>Thicker flows means higher attribute level",
                  placement = "left", trigger = "hover")
         ),
