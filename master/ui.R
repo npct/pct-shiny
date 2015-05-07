@@ -97,7 +97,7 @@ shinyUI(
             id = "map_base_panel",
             class = "panel panel-default",
             bottom = 5,
-            left = 10,
+            left = 20,
             width = 300,
             style = "opacity: 0.7",
             radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
