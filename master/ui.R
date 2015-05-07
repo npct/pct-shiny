@@ -3,7 +3,7 @@ library(shinyBS)
 library(leaflet)
 
 scenarios <- c("Observed Level Cycling" = "olc",
-               "Govenment Target" =   "base",
+               "Government Target" =   "base",
                "Gender equality" =   "gendereq",
                "Go Dutch" =          "dutch",
                "Electric bicycles" = "ebike")
@@ -51,7 +51,7 @@ shinyUI(
           condition = "input.scenario != 'olc'",
           tipify(
             selectInput("zone_attr", "Zone Attribute:", attrsZone),
-            title = "Set zone colours depending on the cycling level:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
+            title = "Set zone colours depending on the cycling level:</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
             placement = "left", trigger = "hover")
         ),
         tipify(selectInput("line_type", "Cycling Flows", line_types, selected = "none"),
@@ -69,7 +69,7 @@ shinyUI(
                    placement = "left", trigger = "hover")
           ),
           tipify(sliderInput("nos_lines", label = "Flows to show (top n)", 1, 20, value = 5),
-                 title = "Display the top n flows based on the selected flow attribute.</br>Thicker flows means higher attribute level",
+                 title = "Display the top n flows based on the selected flow attribute.</br>Thicker flows mean higher attribute level",
                  placement = "left", trigger = "hover")
         ),
         checkboxInput('advanced', 'Advanced Controls')
