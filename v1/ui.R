@@ -12,9 +12,9 @@ line_types <- c("None" = "none",
                 "Fastest Route" = "d_route",
                 "Fastest Route & Quiet Routes" = "route")
 
-attrs <- c("Observed Level Cycling (OLC)" = "olc",
-           "Scenario-based Level of Cycling (SLC)" =    "slc",
-           "Scenario-based Increase in Cycling (SIC)" = "sic")
+attrs <- c("Census 2011 Cycling" = "c2011",
+           "Scenario Cycling Level (SCL)" =    "slc",
+           "Scenario Increase in Cycling (SIC)" = "sic")
 
 map_base_attrs <- c("Black and White" = "bw",
            "OpenCycleMap" =    "c"
