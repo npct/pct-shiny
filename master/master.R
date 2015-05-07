@@ -197,7 +197,7 @@ shinyServer(function(input, output, session){
   })
 
   output$datatable <- renderDataTable({
-    head(zones@data,50)
-  })
+    zones@data
+  }, options = list(pageLength = 10))
 
 })
