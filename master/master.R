@@ -195,4 +195,9 @@ shinyServer(function(input, output, session){
     barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)),
             col = zone_col, horiz=TRUE, xlab = "", ylab = ylabel, space = 0, axes = FALSE)
   })
+
+  output$datatable <- renderDataTable({
+    head(zones@data,50)
+  })
+
 })
