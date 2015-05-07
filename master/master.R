@@ -16,20 +16,16 @@ if (Sys.info()["sysname"] != "Windows") {
   # but will work locally
   system2('./update-data.sh', wait = FALSE)
 }else {
-  newDataCommits <- fromJSON(sprintf('https://api.github.com/repos/npct/pct-data/commits?since=%s',
-                                     format(file.info('../d.zip')$mtime, '%FT%R:%SZ')))
+  dataDir <- file.path('..', 'pct-data')
 
-  # Download files - remove first if needed
-  downloading.file <- '../downloading'
-  if((length(newDataCommits) > 0 || sum(grepl("rf", list.files(data_dir))) == 0) && !file.exists(downloading.file)){
-    file.create(downloading.file)
-    unlink('../d.zip')
-    unlink('../pct-data-master', recursive = TRUE)
-    url <- "https://github.com/npct/pct-data/archive/master.zip" # data store
-    download(url = url, destfile = "../d.zip")
-    unzip("../d.zip", exdir = "..")
-    unlink(downloading.file)
-  }
+  # clone the data repo if it do not exist
+  ifelse(!dir.exists(dataDir), system2('git', args=c('clone', '--depth=1', 'https://github.com/npct/pct-data.git', dataDir)), FALSE)
+
+  # Download files
+  setwd(dataDir)
+  system2('git', args=c("pull"), wait = FALSE)
+  setwd(file.path('..', 'master'))
+
 }
 
 # Functions
