@@ -2,14 +2,14 @@ library(shiny)
 library(shinyBS)
 library(leaflet)
 
-scenarios <- c("Observed Level Cycling" = "olc",
-               "Govenment Target" =   "base",
+scenarios <- c("Census 2011 Cycling" = "olc",
+               "Government Target" =   "base",
                "Gender equality" =   "gendereq",
                "Go Dutch" =          "dutch",
                "Electric bicycles" = "ebike")
 
-attrsLine <- c("Scenario-based Level of Cycling (SLC)" =    "slc",
-               "Scenario-based Increase in Cycling (SIC)" = "sic")
+attrsLine <- c("Scenario Level of Cycling (SLC)" =    "slc",
+               "Scenario Increase in Cycling (SIC)" = "sic")
 
 line_types <- c("None" = "none",
                 "Straight Lines" = "straight",
@@ -51,7 +51,7 @@ shinyUI(
           condition = "input.scenario != 'olc'",
           tipify(
             selectInput("zone_attr", "Zone Attribute:", attrsZone),
-            title = "Set zone colours depending on the cycling level:</br><strong>OCL</strong> Observed (census data)[on baseline only]</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
+            title = "Set zone colours depending on the cycling level:</br><strong>SCL</strong> Scenario (number model predicts)</br><strong>SIC</strong> Scenario Increase (change between observed and scenario)",
             placement = "left", trigger = "hover")
         ),
         tipify(selectInput("line_type", "Cycling Flows", line_types, selected = "none"),
@@ -97,7 +97,7 @@ shinyUI(
             id = "map_base_panel",
             class = "panel panel-default",
             bottom = 5,
-            left = 10,
+            left = 20,
             width = 300,
             style = "opacity: 0.7",
             radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
@@ -107,9 +107,13 @@ shinyUI(
         )
       )
     ),
+    tabPanel("Data Explorer",
+             helpText("This tab shows the underlying data of the zones."),
+             dataTableOutput("datatable")
+    ),
     tabPanel("Help",
-             helpText("This tab contains information and screenshots on how to use the tool better.")
-             ,includeHTML("help.html")
+             helpText("This tab contains information and screenshots on how to use the tool better."),
+             includeHTML("help.html")
     )
   )
 )
