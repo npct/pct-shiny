@@ -72,7 +72,7 @@ zonePopup <- function(data, scenario, zone){
   zone_filter_name <- toupper(zone)
   paste(
     tableStart,
-  sprintf("
+    sprintf("
     <tr>
       <td>Zone: </td>
       <td>%s</td>
@@ -83,6 +83,6 @@ zonePopup <- function(data, scenario, zone){
       <td>Hilliness: &nbsp</td>
       <td>%s&deg;</td>
     </tr>", data$geo_code, zone_filter_name, round(data[[dataFilter(scenario, zone)]], 2 ), round(data$avslope, 2)),
-  tableEnd)
+    tableEnd)
 }
 
