@@ -107,9 +107,13 @@ shinyUI(
         )
       )
     ),
-    tabPanel("Data Explorer",
-             helpText("This tab shows the underlying data of the zones."),
-             dataTableOutput("datatable")
+    tabPanel("Lines Data",
+             helpText("This tab shows the underlying data of the Cycling Flows (straight or otherwise)"),
+             dataTableOutput("linesDatatable")
+    ),
+    tabPanel("Zones Data",
+             helpText("This tab shows the underlying data of the Zones."),
+             dataTableOutput("zonesDataTable")
     ),
     tabPanel("Help",
              helpText("This tab contains information and screenshots on how to use the tool better."),
