@@ -94,6 +94,13 @@ shinyServer(function(input, output, session){
     (input$zone_attr != 'none') && (zoneData() %in% names(zones@data))
   })
 
+  # Reactive function for the lines data
+  # 1) Called when other than 'none' is selected for the Cycling Flows
+  # 2) Also called when freeze lines is unchecked and the user navigates the map
+  plotLinesData <- reactive({ # Only called when line_type is 'none' or
+    (input$line_type != 'none' && ((!input$freeze && !is.null(input$map_bounds)) || input$nos_lines > 0)) && (lineData() %in% names(l@data))
+  })
+
   bbPoly <- reactive({
     if(!input$freeze || is.null(session$bb)){
       if (is.null(input$map_bounds)){ return (NULL)}
@@ -110,6 +117,8 @@ shinyServer(function(input, output, session){
 
   plotLines <- function(m, lines, nos, popupFn, color){
     sorted_l <- sortLines(lines, lineData(), nos)
+    # Store the lines data in a session variable called ldata
+    session$ldata <- sorted_l
     if(is.null(sorted_l))
       m
     else
@@ -196,7 +205,19 @@ shinyServer(function(input, output, session){
             col = zone_col, horiz=TRUE, xlab = "", ylab = ylabel, space = 0, axes = FALSE)
   })
 
-  output$datatable <- renderDataTable({
+  output$linesDatatable <- renderDataTable({
+    # Only render lines data when any of the Cycling Flows is selected by the user
+    if(!plotLinesData()){
+      return()
+    }
+    # Reuse the lines data stored in the ldata session variable
+    session$ldata@data
+  }, options = list(pageLength = 10))
+
+  output$zonesDataTable <- renderDataTable({
+    if(is.null(zones@data)){
+      return()
+    }
     zones@data
   }, options = list(pageLength = 10))
 

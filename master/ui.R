@@ -107,9 +107,16 @@ shinyUI(
         )
       )
     ),
-    tabPanel("Data Explorer",
-             helpText("This tab shows the underlying data of the zones."),
-             dataTableOutput("datatable")
+    tabPanel("Lines Data",
+             helpText("This tab shows the underlying data of the Cycling Flows (straight or otherwise)"),
+             dataTableOutput("linesDatatable")
+    ),
+    tabPanel("Zones Data",
+             helpText(HTML("This tab shows the underlying data of the Zones </br>
+                            <strong>Data Source: </strong> We are using the 2011 Census data for England and Wales.
+                            It contains origin-destination data on workplace flows. For more information, please see the
+                            <a target='_blank' href = \"https://www.nomisweb.co.uk/census/2011/wu03ew\">source</a>")),
+             dataTableOutput("zonesDataTable")
     ),
     tabPanel("Help",
              helpText("This tab contains information and screenshots on how to use the tool better."),
