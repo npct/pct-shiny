@@ -191,11 +191,11 @@ shinyServer(function(input, output, session){
     zone_col <- getColourRamp(zcols, m)
 
     # Set a full form of the scenario as a label
-    ylabel <- "Observed Level Cycling (OLC): Commuters"
+    ylabel <- "Census 2011 Cycling: # of Commuters"
     if (zoneAttr() == "slc")
-      ylabel <- "Scenario-based Level of Cycling (SLC): Commuters"
+      ylabel <- "Scenario Level of Cycling (SLC): # of Commuters"
     else if (zoneAttr() == "sic")
-      ylabel <- "Scenario-based Increase in Cycling (SIC): Commuters"
+      ylabel <- "Scenario Increase in Cycling (SIC): # of Commuters"
 
     # Set the labelling of Y-axis to bold
     par(font.lab = 2)
