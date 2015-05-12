@@ -166,7 +166,7 @@ shinyServer(function(input, output, session){
         .
     }%>%{
       if (input$line_type == 'route')
-        plotLines(., rQuiet, input$nos_lines, routePopup, "lightgreen")
+        plotLines(., rQuiet, input$nos_lines, routePopup, "turquoise")
       else
         .
     }%>%{
