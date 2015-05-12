@@ -40,13 +40,10 @@ shinyUI(
         width = 180,
         height = "auto",
         style = "opacity: 0.9",
-        selectInput("scenario", "Scenario:", scenarios),
-        bsTooltip(
-          id = "scenario",
-          title = "<strong>Census 2011 Cycling</strong> Based on the Census 2011 data</br><strong>Government Target</strong> Scenario based increase in cycling levels</br><strong>Gender equality</strong> equal number of women and men cycling</br><strong>Go Dutch</strong> similar cycling rates as Holland</br><strong>Electric Bikes</strong> more electric which increases the distance people are willing to cycle",
-          placement = "left",
-          trigger = "hover"
-        ),
+        tipify(
+          selectInput("scenario", "Scenario:", scenarios),
+          title = "<strong>Select a Scenario</strong></br>Details of which can be seen in the Help tab",
+          placement = "left", trigger = "hover"),
         conditionalPanel(
           condition = "input.scenario != 'olc'",
           tipify(
@@ -109,6 +106,7 @@ shinyUI(
     ),
     tabPanel("Lines Data",
              helpText("This tab shows the underlying data of the Cycling Flows (straight or otherwise)"),
+             uiOutput("warningMessage"),
              dataTableOutput("linesDatatable")
     ),
     tabPanel("Zones Data",
