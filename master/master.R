@@ -214,7 +214,7 @@ shinyServer(function(input, output, session){
       return()
     }
     # Empty the warning message - as some lines have been selected by the user
-    output$warningMessage <- renderText("")
+    output$warningMessage <- renderUI("")
     # Reuse the lines data stored in the ldata session variable
     session$ldata@data
   }, options = list(pageLength = 10))
