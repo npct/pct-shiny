@@ -180,7 +180,7 @@ shinyServer(function(input, output, session){
 
   output$legendCyclingPotential <- renderPlot({
     if(!plotZones()){
-      return()
+       return()
     }
     # Read the zone data
     data_ <- zones@data[[zoneData()]]
@@ -208,8 +208,13 @@ shinyServer(function(input, output, session){
   output$linesDatatable <- renderDataTable({
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plotLinesData()){
+      # Set the warning message that no lines have been selected by the user
+      output$warningMessage <- renderUI(HTML("<strong>No lines selected: </strong> Lines must be displayed on map"))
+      # Return an empty data.frame
       return()
     }
+    # Empty the warning message - as some lines have been selected by the user
+    output$warningMessage <- renderText("")
     # Reuse the lines data stored in the ldata session variable
     session$ldata@data
   }, options = list(pageLength = 10))
