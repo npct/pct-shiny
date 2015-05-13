@@ -57,18 +57,18 @@ shinyUI(
         ),
         checkboxInput('advanced', 'Advanced Controls')
       ),
-        absolutePanel(
-          cursor = "default",
-          id = "legend",
-          draggable = TRUE,
-          class = "panel panel-default",
-          fixed = TRUE,
-          top = 150,
-          left = 30,
-          width = 100,
-          style = "opacity: 0.7",
-          plotOutput("legendCyclingPotential", width = "100%"),
-          bsTooltip("legendCyclingPotential", "", placement = "right", options = list(container = "body"))
+      absolutePanel(
+        cursor = "default",
+        id = "legend",
+        draggable = TRUE,
+        class = "panel panel-default",
+        fixed = TRUE,
+        top = 150,
+        left = 30,
+        width = 100,
+        style = "opacity: 0.7",
+        plotOutput("legendCyclingPotential", width = "100%"),
+        bsTooltip("legendCyclingPotential", "", placement = "right", options = list(container = "body"))
       ),
 
       absolutePanel(
@@ -80,26 +80,25 @@ shinyUI(
         right = 20,
         width = 250,
         bsCollapse(id = "credits",
-          bsCollapsePanel("Route Information", HTML("We are using an API from
-                          <a target='_blank' href = \"https://www.cyclestreets.net\">CycleStreets</a> to calculate routes.
-                          Please see more information:
-                          <a target='_blank' href = \"https://www.cyclestreets.net/api/v1/journey/\">Cycle Route</a>"),
-                          style = "success")
+                   bsCollapsePanel("Route Information", HTML("We are using an API from OpenStreetMap to calculate routes.
+                                                             Please see more information:
+                                                             <a target='_blank' href = \"https://wiki.openstreetmap.org/wiki/Relation:route#Cycle_routes_.28also_mountain_bike.29\">Cycle Route</a>"),
+                                   style = "success")
         )
       ),
 
       conditionalPanel(
         condition = "input.advanced",
-          absolutePanel(
-            cursor = "default",
-            id = "map_base_panel",
-            class = "panel panel-default",
-            bottom = 5,
-            left = 20,
-            width = 300,
-            style = "opacity: 0.7",
-            radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
-          )
+        absolutePanel(
+          cursor = "default",
+          id = "map_base_panel",
+          class = "panel panel-default",
+          bottom = 5,
+          left = 20,
+          width = 300,
+          style = "opacity: 0.7",
+          radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
+        )
       )
     ),
     tabPanel("Lines Data",
@@ -109,9 +108,9 @@ shinyUI(
     ),
     tabPanel("Zones Data",
              helpText(HTML("This tab shows the underlying data of the Zones </br>
-                            <strong>Data Source: </strong> We are using the 2011 Census data for England and Wales.
-                            It contains origin-destination data on workplace flows. For more information, please see the
-                            <a target='_blank' href = \"https://www.nomisweb.co.uk/census/2011/wu03ew\">source</a>")),
+                           <strong>Data Source: </strong> We are using the 2011 Census data for England and Wales.
+                           It contains origin-destination data on workplace flows. For more information, please see the
+                           <a target='_blank' href = \"https://www.nomisweb.co.uk/census/2011/wu03ew\">source</a>")),
              dataTableOutput("zonesDataTable")
     ),
     tabPanel("Help",
