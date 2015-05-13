@@ -54,6 +54,33 @@ rQuiet@data <- cbind(rQuiet@data, l@data)
 
 shinyServer(function(input, output, session){
 
+  addPopover(session, "legendCyclingPotential", "Legend", "Scenario-specific quartiles </br> of Cycling Level", placement = "right", trigger = "hover", options = NULL)
+
+  addPopover(session, "scenario", "Scenario", "<strong>Select a Scenario</strong></br>Details of which can be seen in the Help tab", placement = "top", trigger = "hover", options = NULL)
+
+  addPopover(session, "zone_attr", "Zone Attr", title = "Set zone colours depending on the cycling level",
+             placement = "top", trigger = "hover")
+
+  addPopover(session, "line_type", "Cycling Flows", title = "Shows the cycling flow between the centres of zones",
+             placement = "top", trigger = "hover")
+
+  addPopover(session, "advanced", "Advanced Options", title = "Displays advanced options",
+             placement = "top", trigger = "hover")
+
+
+  addPopover(session, "freeze", title = "<strong>Ticked</strong> the flows are independent of the map boundary (zoom and position)</br><strong>Unticked</strong> the flows update depending on the map boundary",
+             placement = "top", trigger = "hover", options = list(container = "body"))
+
+  addPopover(session, "line_attr", "Flow attribute to display:", title = "Filter the routes/lines",
+             placement = "top", trigger = "hover")
+
+  addPopover(session, "nos_lines", "Flows to show (top n)",
+             title = "Display the top n flows based on the selected flow attribute",
+             placement = "left", trigger = "hover")
+
+  addPopover(session, "map_base_panel", "Map Base", title = "Change base of the map",   placement = "top", trigger = "hover")
+
+
   sortLines <- function(lines, sortBy, nos){
     if(!(sortBy %in% names(lines))) return(NULL)
     poly <- bbPoly()
