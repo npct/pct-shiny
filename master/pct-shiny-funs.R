@@ -46,7 +46,10 @@ tableOLC <- '<tr>
 
 # Popup function for straight line data in html table
 straightPopup <- function(data, scenario){
-  if(scenario == 'base'){
+  if(scenario == 'olc'){
+    # OLC being a special case within the base scenario, we
+    # we change 'olc' to 'base' so that relevant data can be retrieved
+    scenario <- 'base'
     paste(
       tableStart,
       sprintf(paste0(tableOLC, '<tr>
@@ -75,7 +78,10 @@ routeTypeLabel[['quietest']] <- 'Quiet'
 
 # Route popup function
 routePopup <- function(data, scenario){
-  if(scenario == 'base'){
+  if(scenario == 'olc'){
+    # OLC being a special case within the base scenario, we
+    # we change 'olc' to 'base' so that relevant data can be retrieved
+    scenario <- 'base'
     paste(
       tableStart,
       sprintf(paste(tableOLC,'<tr>

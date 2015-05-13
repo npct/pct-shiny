@@ -154,7 +154,7 @@ shinyServer(function(input, output, session){
                    # Plot widths proportional to attribute value
                    , weight = normalise(sorted_l@data[[lineData()]], min = 3, max = 6)
                    , opacity = 0.7
-                   , popup = popupFn(sorted_l, scenario()))
+                   , popup = popupFn(sorted_l, input$scenario))
   }
 
   mapTileUrl <- reactive({
