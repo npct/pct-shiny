@@ -56,29 +56,30 @@ shinyServer(function(input, output, session){
 
   addPopover(session, "legendCyclingPotential", "Legend", "Scenario-specific quartiles </br> of Cycling Level", placement = "right", trigger = "hover", options = NULL)
 
-  addPopover(session, "scenario", "Scenario", "<strong>Select a Scenario</strong></br>Details of which can be seen in the Help tab", placement = "top", trigger = "hover", options = NULL)
+  addPopover(session, "scenario", content = "<strong>Select a Scenario</strong></br>Details of which can be seen in the Help tab", title = "Scenario",
+             placement = "top", trigger = "hover", options = NULL)
 
-  addPopover(session, "zone_attr", "Zone Attr", title = "Set zone colours depending on the cycling level",
+  addPopover(session, "zone_attr", content = "Set zone colours depending on the cycling level", title = "Zone Attr",
              placement = "top", trigger = "hover")
 
-  addPopover(session, "line_type", "Cycling Flows", title = "Shows the cycling flow between the centres of zones",
+  addPopover(session, "line_type", content = "Shows the cycling flow between the centres of zones", title = "Cycling Flows",
              placement = "top", trigger = "hover")
 
-  addPopover(session, "advanced", "Advanced Options", title = "Displays advanced options",
+  addPopover(session, "advanced", title = "Advanced Options", content = "Displays advanced options",
              placement = "top", trigger = "hover")
 
 
-  addPopover(session, "freeze", title = "<strong>Ticked</strong> the flows are independent of the map boundary (zoom and position)</br><strong>Unticked</strong> the flows update depending on the map boundary",
+  addPopover(session, "freeze", title = "Freeze Lines", content = "<strong>Ticked</strong> flows are independent of the map boundary (zoom and position)</br><strong>Unticked</strong> flows update depending on the map boundary",
              placement = "top", trigger = "hover", options = list(container = "body"))
 
-  addPopover(session, "line_attr", "Flow attribute to display:", title = "Filter the routes/lines",
+  addPopover(session, "line_attr", title = "Flow attribute to display:", content = "Filter the routes/lines",
              placement = "top", trigger = "hover")
 
-  addPopover(session, "nos_lines", "Flows to show (top n)",
-             title = "Display the top n flows based on the selected flow attribute",
+  addPopover(session, "nos_lines", title = "Flows to show (top n)",
+             content = "Display the top n flows based on the selected flow attribute",
              placement = "left", trigger = "hover")
 
-  addPopover(session, "map_base_panel", "Map Base", title = "Change base of the map",   placement = "top", trigger = "hover")
+  addPopover(session, "map_base_panel", title = "Map Base", content = "Change base of the map",   placement = "top", trigger = "hover")
 
 
   sortLines <- function(lines, sortBy, nos){
@@ -124,6 +125,7 @@ shinyServer(function(input, output, session){
   # Reactive function for the lines data
   # 1) Called when other than 'none' is selected for the Cycling Flows
   # 2) Also called when freeze lines is unchecked and the user navigates the map
+  # 3) Or when the user changes the Top Lines slider
   plotLinesData <- reactive({ # Only called when line_type is 'none' or
     (input$line_type != 'none' && ((!input$freeze && !is.null(input$map_bounds)) || input$nos_lines > 0)) && (lineData() %in% names(l@data))
   })
@@ -187,7 +189,7 @@ shinyServer(function(input, output, session){
       }else
         .
     }%>%{
-      if (input$line_type %in% c('route', 'd_route'))
+      if (input$line_type %in% c('d_route', 'route'))
         plotLines(., rFast, input$nos_lines, routePopup, "purple")
       else
         .
