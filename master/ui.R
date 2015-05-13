@@ -70,6 +70,24 @@ shinyUI(
           plotOutput("legendCyclingPotential", width = "100%"),
           bsTooltip("legendCyclingPotential", "", placement = "right", options = list(container = "body"))
       ),
+
+      absolutePanel(
+        cursor = "default",
+        id = "credits",
+        class = "panel panel-default",
+        fixed = TRUE,
+        bottom = 5,
+        right = 20,
+        width = 250,
+        bsCollapse(id = "credits",
+          bsCollapsePanel("Route Information", HTML("We are using an API from
+                          <a target='_blank' href = \"https://www.cyclestreets.net\">CycleStreets</a> to calculate routes.
+                          Please see more information:
+                          <a target='_blank' href = \"https://www.cyclestreets.net/api/v1/journey/\">Cycle Route</a>"),
+                          style = "success")
+        )
+      ),
+
       conditionalPanel(
         condition = "input.advanced",
           absolutePanel(
