@@ -81,7 +81,6 @@ shinyServer(function(input, output, session){
 
   addPopover(session, "map_base_panel", title = "<strong>Map Base</strong>", content = "Change base of the map",   placement = "top", trigger = "hover")
 
-
   sortLines <- function(lines, sortBy, nos){
     if(!(sortBy %in% names(lines))) return(NULL)
     poly <- bbPoly()

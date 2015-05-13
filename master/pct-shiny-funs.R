@@ -32,17 +32,41 @@ tableCommon <- '<tr>
     <td> %s </td>
     </tr>
     '
+# Remove SLC and SIC for the baseline scenario (census 2011)
+tableOLC <- '<tr>
+    <td> Total commutes &nbsp; </td>
+    <td> %s </td>
+    </tr>
+    <tr>
+    <td> Observed (OLC) &nbsp; </td>
+    <td> %s </td>
+    </tr>
+    <tr>
+    '
+
 # Popup function for straight line data in html table
 straightPopup <- function(data, scenario){
-  paste(
-    tableStart,
-    sprintf(paste0(tableCommon, '<tr>
-    <td> Distance (km) </td>
-    <td> %s </td>
-    </tr>'), data$All, data$Bicycle, round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$dist, 1)
-    ),
-    tableEnd
-  )
+  if(scenario == 'base'){
+    paste(
+      tableStart,
+      sprintf(paste0(tableOLC, '<tr>
+      <td> Distance (km) </td>
+      <td> %s </td>
+      </tr>'), data$All, data$Bicycle, round(data$dist, 1)
+      ),
+      tableEnd
+    )
+  }else{
+    paste(
+      tableStart,
+      sprintf(paste0(tableCommon, '<tr>
+      <td> Distance (km) </td>
+      <td> %s </td>
+      </tr>'), data$All, data$Bicycle, round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$dist, 1)
+      ),
+      tableEnd
+    )
+  }
 }
 
 routeTypeLabel <- NULL
@@ -51,21 +75,39 @@ routeTypeLabel[['quietest']] <- 'Quiet'
 
 # Route popup function
 routePopup <- function(data, scenario){
-  paste(
-    tableStart,
-    sprintf(paste(tableCommon,'<tr>
-                <td>Route Distance</td>
-                <td>%s km</td>
-                </tr><tr>
-                <td>Av. Route Time</td>
-                <td>%s min</td>
-                </tr><tr>
-                <td>Route Type</td>
-                <td>%s</td>
-                </tr>'),
-            data$All, data$Bicycle, round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$length, 1), round(data$time / 60, 1), routeTypeLabel[[data$plan[1]]]),
-    tableEnd
-  )
+  if(scenario == 'base'){
+    paste(
+      tableStart,
+      sprintf(paste(tableOLC,'<tr>
+                  <td>Route Distance</td>
+                  <td>%s km</td>
+                  </tr><tr>
+                  <td>Av. Route Time</td>
+                  <td>%s min</td>
+                  </tr><tr>
+                  <td>Route Type</td>
+                  <td>%s</td>
+                  </tr>'),
+              data$All, data$Bicycle, round(data$length, 1), round(data$time / 60, 1), routeTypeLabel[[data$plan[1]]]),
+      tableEnd
+    )
+  }else{
+    paste(
+      tableStart,
+      sprintf(paste(tableCommon,'<tr>
+                  <td>Route Distance</td>
+                  <td>%s km</td>
+                  </tr><tr>
+                  <td>Av. Route Time</td>
+                  <td>%s min</td>
+                  </tr><tr>
+                  <td>Route Type</td>
+                  <td>%s</td>
+                  </tr>'),
+              data$All, data$Bicycle, round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$length, 1), round(data$time / 60, 1), routeTypeLabel[[data$plan[1]]]),
+      tableEnd
+    )
+  }
 }
 
 zonePopup <- function(data, scenario, zone){
