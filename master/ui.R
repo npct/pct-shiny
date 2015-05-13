@@ -63,11 +63,12 @@ shinyUI(
         draggable = TRUE,
         class = "panel panel-default",
         fixed = TRUE,
-        top = 150,
-        left = 30,
+        top = 180,
+        left = 25,
+        height = 150,
         width = 100,
         style = "opacity: 0.7",
-        plotOutput("legendCyclingPotential", width = "100%"),
+        plotOutput("legendCyclingPotential", width = "100%", height = 350),
         bsTooltip("legendCyclingPotential", "", placement = "right", options = list(container = "body"))
       ),
       absolutePanel(
