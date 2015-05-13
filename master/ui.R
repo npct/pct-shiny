@@ -70,6 +70,23 @@ shinyUI(
           plotOutput("legendCyclingPotential", width = "100%"),
           bsTooltip("legendCyclingPotential", "", placement = "right", options = list(container = "body"))
       ),
+
+      absolutePanel(
+        cursor = "default",
+        id = "credits",
+        class = "panel panel-default",
+        fixed = TRUE,
+        bottom = 5,
+        right = 20,
+        width = 250,
+        bsCollapse(id = "credits",
+          bsCollapsePanel("Route Information", HTML("We are using an API from OpenStreetMap to calculate routes.
+                          Please see more information:
+                          <a target='_blank' href = \"https://wiki.openstreetmap.org/wiki/Relation:route#Cycle_routes_.28also_mountain_bike.29\">Cycle Route</a>"),
+                          style = "success")
+        )
+      ),
+
       conditionalPanel(
         condition = "input.advanced",
           absolutePanel(
