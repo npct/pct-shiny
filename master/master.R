@@ -13,7 +13,9 @@ if (Sys.info()["sysname"] != "Windows") {
   # Download data files
   # This will timeout on the server (so a cron job is used instead)
   # but will work locally
-  system2('./update-data.sh', wait = FALSE)
+  setwd('..')
+  system2('master/update-data.sh', wait = FALSE)
+  setwd('master')
 }else {
   dataDir <- file.path('..', 'pct-data')
 
