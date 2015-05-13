@@ -82,7 +82,7 @@ zonePopup <- function(data, scenario, zone){
     </tr><tr>
       <td>Hilliness: &nbsp</td>
       <td>%s&deg;</td>
-    </tr>", data$geo_code, zone_filter_name, round(data[[dataFilter(scenario, zone)]], 2 ), round(data$avslope, 2)),
+    </tr>", data$MSOA11NM, zone_filter_name, round(data[[dataFilter(scenario, zone)]], 2 ), round(data$avslope, 2)),
     tableEnd)
 }
 
