@@ -8,7 +8,7 @@ output: html_document
 This is a brief tutorial on how to use the Infrastructure Planning Tool hosted at:
 http://geo8.webarch.net/pct-shiny/master/
 
-There are a few controls which are always visible, which are:
+There are a few controls which are always visible. These are:
 
 * Scenario
       * Base - Baseline Scenario
@@ -17,6 +17,7 @@ There are a few controls which are always visible, which are:
       * Electric bicycles - introducing electric bicycles
 * Representation of cycling desired lines
       * Straight lines - Showing straight lines between the centroid of the underlying geographica details (either MSOA or SOA)
+              * The width of the line is directly propoprtional to the number of commuters
       * Fastest and Quitet Routes - Shows the fastest and the quietest routes between the centroid of the geography
 * Line attribute to display
 * Number of lines to show (top n)
