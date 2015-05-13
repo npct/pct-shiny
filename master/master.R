@@ -9,7 +9,6 @@ lapply(pkgs, library, character.only = TRUE)
 # Colours
 zcols <- c("darkslategrey", "yellow")
 
-
 if (Sys.info()["sysname"] != "Windows") {
   # Download data files
   # This will timeout on the server (so a cron job is used instead)
@@ -25,22 +24,19 @@ if (Sys.info()["sysname"] != "Windows") {
   setwd(dataDir)
   system2('git', args=c("pull"), wait = FALSE)
   setwd(file.path('..', 'master'))
-
 }
 
 # Functions
 source("pct-shiny-funs.R")
-
+LAs <- readOGR(dsn = "las-pcycle.geojson", layer = "OGRGeoJSON")
+LAs <- spTransform(LAs, CRS("+init=epsg:4326 +proj=longlat"))
 # # # # # # #
 # Load data #
 # # # # # # #
-
 rFast <- readRDS(paste0(data_dir, "rf.Rds" ))
 rQuiet <- readRDS(paste0(data_dir, "rq.Rds"))
 
 l <- readRDS(paste0(data_dir, "l.Rds"))
-rFast@data <- cbind(l@data, rFast@data)
-rQuiet@data <- cbind(l@data, rQuiet@data)
 zones <- readRDS(paste0(data_dir, "z.Rds"))
 
 cents <- readRDS(paste0(data_dir, "c.Rds"))
@@ -53,7 +49,7 @@ rQuiet@data <- cbind(rQuiet@data, l@data)
 # # # # # # # #
 
 shinyServer(function(input, output, session){
-
+  session$la <- ''
   addPopover(session, "legendCyclingPotential", "<strong>Legend</strong>", "Scenario-specific quartiles </br> of Cycling Level", placement = "right", trigger = "hover", options = NULL)
 
   addPopover(session, "scenario", content = "Details of which can be seen in the Help tab", title = "<strong>Select a Scenario</strong>",
@@ -67,7 +63,6 @@ shinyServer(function(input, output, session){
 
   addPopover(session, "advanced", title = "<strong>Advanced Options</strong>", content = "Displays advanced options",
              placement = "top", trigger = "hover")
-
 
   addPopover(session, "freeze", title = "<strong>Freeze Lines</strong>", content = "<strong>Ticked</strong> flows are independent of the map boundary (zoom and position)</br><strong>Unticked</strong> flows update depending on the map boundary",
              placement = "top", trigger = "hover", options = list(container = "body"))
@@ -83,13 +78,45 @@ shinyServer(function(input, output, session){
 
   sortLines <- function(lines, sortBy, nos){
     if(!(sortBy %in% names(lines))) return(NULL)
-    poly <- bbPoly()
+    poly <- flowsBB()
     if(is.null(poly)) return(NULL)
     poly <- spTransform(poly, CRS(proj4string(lines)))
     keep <- gContains( poly, lines,byid=TRUE )
     if(all(!keep)) return(NULL)
     linesInBb <- lines[drop(keep), ]
     linesInBb[ tail(order(linesInBb[[sortBy]]), nos), ]
+  }
+
+  findLA <- function(){
+    BB <- mapBB()
+    if(is.null(BB)) return(NULL)
+    mapCenter = gCentroid(BB, byid=T)
+    keep <- gContains(LAs, mapCenter, byid=T)
+    LAs[drop(keep), ]@data$NAME[1]
+  }
+
+  observe({
+    LA <- findLA()
+    if(session$la != LA && !is.null(LA)){
+      session$la <- LA
+      loadData(session$la)
+    }
+  })
+
+  loadData <- function(LA){
+    dataDir <-  file.path('..', 'pct-data', LA)
+    rFast <- readRDS(file.path(dataDir, "rf.Rds" ))
+    rQuiet <- readRDS(file.path(dataDir, "rq.Rds"))
+
+    l <- readRDS(file.path(dataDir, "l.Rds"))
+    rFast@data <- cbind(l@data, rFast@data)
+    rQuiet@data <- cbind(l@data, rQuiet@data)
+    zones <- readRDS(file.path(dataDir, "z.Rds"))
+
+    cents <- readRDS(file.path(dataDir, "c.Rds"))
+    flow <- l@data
+    rFast@data <- cbind(rFast@data, l@data)
+    rQuiet@data <- cbind(rQuiet@data, l@data)
   }
 
   lineAttr <- reactive({
@@ -129,21 +156,26 @@ shinyServer(function(input, output, session){
     (input$line_type != 'none' && ((!input$freeze && !is.null(input$map_bounds)) || input$nos_lines > 0)) && (lineData() %in% names(l@data))
   })
 
-  bbPoly <- reactive({
-    if(!input$freeze || is.null(session$bb)){
-      if (is.null(input$map_bounds)){ return (NULL)}
-      lat <- c(input$map_bounds$west , input$map_bounds$east, input$map_bounds$east, input$map_bounds$west )
-      lng <- c(input$map_bounds$north, input$map_bounds$north, input$map_bounds$south, input$map_bounds$south)
+  mapBB <- reactive({
+    if (is.null(input$map_bounds)){ return (NULL)}
+    lat <- c(input$map_bounds$west , input$map_bounds$east, input$map_bounds$east, input$map_bounds$west )
+    lng <- c(input$map_bounds$north, input$map_bounds$north, input$map_bounds$south, input$map_bounds$south)
+    c1 <- cbind(lat, lng)
+    r1 <- rbind(c1, c1[1, ])
+    bounds <- SpatialPolygons(list(Polygons(list(Polygon(r1)), 'bb')), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
+    proj4string(bounds)=CRS("+init=epsg:4326 +proj=longlat")
+    bounds
+  })
 
-      c1 <- cbind(lat, lng)
-      r1 <- rbind(c1, c1[1, ])
-      session$bb <- SpatialPolygons(list(Polygons(list(Polygon(r1)), 'bb')), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
-      proj4string(session$bb)=CRS("+init=epsg:4326 +proj=longlat")
+  flowsBB <- reactive({
+    if(!input$freeze || is.null(session$bb)){
+      session$bb = mapBB()
     }
     session$bb
   })
 
   plotLines <- function(m, lines, nos, popupFn, color){
+    findLA()
     sorted_l <- sortLines(lines, lineData(), nos)
     # Store the lines data in a session variable called ldata
     session$ldata <- sorted_l
