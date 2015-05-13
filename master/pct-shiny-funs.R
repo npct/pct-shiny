@@ -32,7 +32,7 @@ tableCommon <- '<tr>
     <td> %s </td>
     </tr>
     '
-# Remove SLC and SIC for the baseline scenario (census 2011)
+# Remove SLC and SIC for the 'olc' scenario (census 2011)
 tableOLC <- '<tr>
     <td> Total commutes &nbsp; </td>
     <td> %s </td>
@@ -47,7 +47,7 @@ tableOLC <- '<tr>
 # Popup function for straight line data in html table
 straightPopup <- function(data, scenario){
   if(scenario == 'olc'){
-    # OLC being a special case within the base scenario, we
+    # OLC being a special case within the base scenario,
     # we change 'olc' to 'base' so that relevant data can be retrieved
     scenario <- 'base'
     paste(
@@ -79,7 +79,7 @@ routeTypeLabel[['quietest']] <- 'Quiet'
 # Route popup function
 routePopup <- function(data, scenario){
   if(scenario == 'olc'){
-    # OLC being a special case within the base scenario, we
+    # OLC being a special case within the base scenario,
     # we change 'olc' to 'base' so that relevant data can be retrieved
     scenario <- 'base'
     paste(
