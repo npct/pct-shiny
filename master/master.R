@@ -189,13 +189,13 @@ shinyServer(function(input, output, session){
       }else
         .
     }%>%{
-      if (input$line_type %in% c('d_route', 'route'))
-        plotLines(., rFast, input$nos_lines, routePopup, "purple")
+      if (input$line_type == 'route')
+        plotLines(., rQuiet, input$nos_lines, routePopup, "turquoise")
       else
         .
     }%>%{
-      if (input$line_type == 'route')
-        plotLines(., rQuiet, input$nos_lines, routePopup, "turquoise")
+      if (input$line_type %in% c('d_route', 'route'))
+        plotLines(., rFast, input$nos_lines, routePopup, "purple")
       else
         .
     }%>%{
@@ -209,7 +209,7 @@ shinyServer(function(input, output, session){
 
   output$legendCyclingPotential <- renderPlot({
     if(!plotZones()){
-       return()
+      return()
     }
     # Read the zone data
     data_ <- zones@data[[zoneData()]]
