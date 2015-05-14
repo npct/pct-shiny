@@ -3,7 +3,7 @@
 # # # # #
 
 # use install.packages() or devtools::install_github() to install these
-pkgs <- c("shiny", "shinyBS", "leaflet", "RColorBrewer", "httr", "rgdal", "downloader", "rgeos", "curl", "jsonlite")
+pkgs <- c("shiny", "shinyBS", "leaflet", "RColorBrewer", "httr", "rgdal", "downloader", "rgeos", "curl", "jsonlite", "dclone")
 lapply(pkgs, library, character.only = TRUE)
 
 # Colours
@@ -38,7 +38,22 @@ LAs <- spTransform(LAs, CRS("+init=epsg:4326 +proj=longlat"))
 # # # # # # # #
 
 shinyServer(function(input, output, session){
+  loadData <- function(session){
+    session$l <- readRDS(file.path(session$dataDir, "l.Rds"))
+
+    session$rFast <- readRDS(file.path(session$dataDir, "rf.Rds" ))
+    session$rFast@data <- cbind(session$rFast@data, session$l@data)
+    session$rQuiet <- readRDS(file.path(session$dataDir, "rq.Rds"))
+    session$rQuiet@data <- cbind(session$rQuiet@data, session$l@data)
+
+    session$zones <-  readRDS(file.path(session$dataDir, "z.Rds"))
+    session$cents <-   readRDS(file.path(session$dataDir, "c.Rds"))
+
+
+  }
+
   session$dataDir <- data_dir
+  loadData(session)
 
   addPopover(session, "legendCyclingPotential", "<strong>Legend</strong>", "Scenario-specific quartiles </br> of Cycling Level", placement = "right", trigger = "hover", options = NULL)
 
@@ -82,39 +97,21 @@ shinyServer(function(input, output, session){
     if(is.null(BB)) return(NULL)
     mapCenter = gCentroid(BB, byid=T)
     keep <- gContains(LAs, mapCenter, byid=T)
-    LAs[drop(keep), ]@data$NAME[1]
+    tolower(LAs[drop(keep), ]@data$NAME[1])
   }
 
-  dataDir <- reactive({
+  observe({
     LA <- findLA()
     dataDir <-  file.path('..', 'pct-data', LA)
     if(session$dataDir != dataDir && !is.null(LA) && file.exists(dataDir) ){
       session$dataDir <- dataDir
+      loadData(session)
+      updateSelectInput(session, "scenario", selected ="base")
     }
     session$dataDir
   })
 
-  rFast <- reactive({
-    r <- readRDS(file.path(dataDir(), "rf.Rds" ))
-    r@data <- cbind(r@data, l()@data)
-  })
 
-  l <- reactive({
-    readRDS(file.path(dataDir(), "l.Rds"))
-  })
-
-  rQuiet <- reactive({
-    r <- readRDS(file.path(dataDir(), "rq.Rds"))
-    r@data <- cbind(r@data, l()@data)
-  })
-
-  zones <- reactive({
-    readRDS(file.path(dataDir(), "z.Rds"))
-  })
-
-  cents <- reactive({
-    readRDS(file.path(dataDir(), "c.Rds"))
-  })
 
   lineAttr <- reactive({
     if(input$scenario == 'olc')
@@ -142,7 +139,7 @@ shinyServer(function(input, output, session){
   })
 
   plotZones <- reactive({ # Some attributes are only avaliable for baseline
-    (input$zone_attr != 'none') && (zoneData() %in% names(zones()@data))
+    (input$zone_attr != 'none') && (zoneData() %in% names(session$zones@data))
   })
 
   # Reactive function for the lines data
@@ -150,7 +147,7 @@ shinyServer(function(input, output, session){
   # 2) Also called when freeze lines is unchecked and the user navigates the map
   # 3) Or when the user changes the Top Lines slider
   plotLinesData <- reactive({ # Only called when line_type is 'none' or
-    (input$line_type != 'none' && ((!input$freeze && !is.null(input$map_bounds)) || input$nos_lines > 0)) && (lineData() %in% names(l()@data))
+    (input$line_type != 'none' && ((!input$freeze && !is.null(input$map_bounds)) || input$nos_lines > 0)) && (lineData() %in% names(session$l@data))
   })
 
   mapBB <- reactive({
@@ -201,11 +198,11 @@ shinyServer(function(input, output, session){
     %>%{
       ## Add polygons (of MSOA boundaries)
       if(plotZones())
-        addPolygons(. , data = zones()
+        addPolygons(. , data = session$zones
                     , weight = 2
                     , fillOpacity = 0.6
                     , opacity = 0.4
-                    , fillColor = getColourRamp(zcols, zones()[[zoneData()]])
+                    , fillColor = getColourRamp(zcols, session$zones[[zoneData()]])
                     , color = "black"
                     , options = pathOptions(clickable=F)
         )
@@ -213,23 +210,23 @@ shinyServer(function(input, output, session){
         .
     }%>%{
       if (input$line_type == 'straight'){
-        plotLines(., l(), input$nos_lines, straightPopup, color = "maroon")
+        plotLines(., session$l, input$nos_lines, straightPopup, color = "maroon")
       }else
         .
     }%>%{
       if (input$line_type == 'route')
-        plotLines(., rQuiet(), input$nos_lines, routePopup, "turquoise")
+        plotLines(., session$rQuiet, input$nos_lines, routePopup, "turquoise")
       else
         .
     }%>%{
       if (input$line_type %in% c('d_route', 'route'))
-        plotLines(., rFast(), input$nos_lines, routePopup, "purple")
+        plotLines(., session$rFast, input$nos_lines, routePopup, "purple")
       else
         .
     }%>%{
       if (plotZones())
-        addCircleMarkers(., data = cents(), radius = 2, color = "black",
-                         popup = zonePopup(cents(), scenario(), zoneAttr()))
+        addCircleMarkers(., data = session$cents, radius = 2, color = "black",
+                         popup = zonePopup(session$cents, scenario(), zoneAttr()))
       else
         .
     }%>%
@@ -241,7 +238,7 @@ shinyServer(function(input, output, session){
       return()
     }
     # Read the zone data
-    data_ <- zones()@data[[zoneData()]]
+    data_ <- session$zones@data[[zoneData()]]
     # Create quantiles out of the data
     m <- quantile(data_, probs=seq.int(0,1, length.out=4))
 
@@ -278,10 +275,10 @@ shinyServer(function(input, output, session){
   }, options = list(pageLength = 10))
 
   output$zonesDataTable <- renderDataTable({
-    if(is.null(zones()@data)){
+    if(is.null(session$zones@data)){
       return()
     }
-    zones()@data
+    session$zones@data
   }, options = list(pageLength = 10))
 
 })
