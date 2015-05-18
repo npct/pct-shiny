@@ -3,7 +3,7 @@
 # # # # #
 
 # use install.packages() or devtools::install_github() to install these
-pkgs <- c("shiny", "shinyBS", "leaflet", "RColorBrewer", "httr", "rgdal", "downloader", "rgeos", "curl", "jsonlite", "dclone")
+pkgs <- c("shiny", "shinyBS", "leaflet", "RColorBrewer", "httr", "rgdal", "rgeos")
 lapply(pkgs, library, character.only = TRUE)
 
 # Colours
@@ -14,7 +14,7 @@ if (Sys.info()["sysname"] != "Windows") {
   # This will timeout on the server (so a cron job is used instead)
   # but will work locally
   setwd('..')
-  system2('master/update-data.sh', wait = FALSE)
+  system2(file.path('master', 'update-data.sh'), wait = FALSE)
   setwd('master')
 }else {
   dataDir <- file.path('..', 'pct-data')
