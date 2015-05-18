@@ -77,7 +77,7 @@ shinyServer(function(input, output, session){
 
   addPopover(session, "nos_lines", title = "<strong>Flows to show (top n)</strong>",
              content = "Display the top n flows based on the selected flow attribute",
-             placement = "left", trigger = "hover")
+             placement = "bottom", trigger = "hover")
 
   addPopover(session, "map_base_panel", title = "<strong>Map Base</strong>", content = "Change base of the map",   placement = "top", trigger = "hover")
 
