@@ -55,7 +55,7 @@ shinyServer(function(input, output, session){
   session$dataDir <- data_dir
   loadData(session)
 
-  addPopover(session, "legendCyclingPotential", "<strong>Legend</strong>", "Scenario-specific quartiles </br> of Cycling Level", placement = "right", trigger = "hover", options = NULL)
+  addPopover(session, "legendCyclingPotential", "<strong>Zone Attribute Legend</strong>", "Scenario-specific quartiles </br> of Cycling Level", placement = "right", trigger = "hover", options = NULL)
 
   addPopover(session, "scenario", content = "Details of which can be seen in the Help tab", title = "<strong>Select a Scenario</strong>",
              placement = "top", trigger = "hover", options = NULL)
