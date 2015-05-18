@@ -168,9 +168,7 @@ shinyServer(function(input, output, session){
   })
 
   plotLines <- function(m, lines, nos, popupFn, color){
-    findLA()
     sorted_l <- sortLines(lines, lineData(), nos)
-    # Store the lines data in a session variable called ldata
     session$ldata <- sorted_l
     if(is.null(sorted_l))
       m
