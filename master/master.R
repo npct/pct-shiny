@@ -48,8 +48,6 @@ shinyServer(function(input, output, session){
 
     session$zones <-  readRDS(file.path(session$dataDir, "z.Rds"))
     session$cents <-   readRDS(file.path(session$dataDir, "c.Rds"))
-
-
   }
 
   session$dataDir <- data_dir
@@ -97,6 +95,7 @@ shinyServer(function(input, output, session){
     if(is.null(BB)) return(NULL)
     mapCenter = gCentroid(BB, byid=T)
     keep <- gContains(LAs, mapCenter, byid=T)
+    if(all(drop(!keep))) return(NULL) # return NULL if center is outside the LAs shapefile
     tolower(LAs[drop(keep), ]@data$NAME[1])
   }
 
@@ -106,12 +105,12 @@ shinyServer(function(input, output, session){
     if(session$dataDir != dataDir && !is.null(LA) && file.exists(dataDir) ){
       session$dataDir <- dataDir
       loadData(session)
-      updateSelectInput(session, "scenario", selected ="base")
+      if(input$scenario != "olc")
+        updateSelectInput(session, "scenario", selected ="olc")
+      else
+        updateSelectInput(session, "scenario", selected ="base")
     }
-    session$dataDir
   })
-
-
 
   lineAttr <- reactive({
     if(input$scenario == 'olc')
