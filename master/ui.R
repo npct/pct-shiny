@@ -1,6 +1,7 @@
 library(shiny)
 library(shinyBS)
 library(leaflet)
+library(shinyjs)
 
 scenarios <- c("Census 2011 Cycling" = "olc",
                "Government Target" =   "base",
@@ -31,6 +32,7 @@ shinyUI(
       helpText("Warning: this tool is under development. Its outputs may change as the model is refined."),
       leafletOutput("map", width="auto", height="600"),
       absolutePanel(
+        useShinyjs(),
         draggable = TRUE,
         id = "controls",
         class = "panel panel-default",
@@ -40,24 +42,28 @@ shinyUI(
         width = 180,
         height = "auto",
         style = "opacity: 0.9",
-        selectInput("scenario", "Scenario:", scenarios),
-        conditionalPanel(
-          condition = "input.scenario != 'olc'",
-          selectInput("zone_attr", "Zone Attribute:", attrsZone)
-        ),
-        selectInput("line_type", "Cycling Flows", line_types, selected = "none"),
-        conditionalPanel(
-          condition = "input.line_type != 'none'",
-          checkboxInput("freeze", "Freeze Lines", value = TRUE),
-          conditionalPanel(
-            condition = "input.advanced",
-            selectInput("line_attr", "Flow attribute to display:", attrsLine)
-          ),
-          sliderInput("nos_lines", label = "Flows to show (top n)", 1, 50, value = 5)
-        ),
-        checkboxInput('advanced', 'Advanced Controls')
+        a(id = "togglePanel", "Show/hide Input Panel"),
+        div(id = "input_panel",
+            selectInput("scenario", "Scenario:", scenarios),
+            conditionalPanel(
+              condition = "input.scenario != 'olc'",
+              selectInput("zone_attr", "Zone Attribute:", attrsZone)
+            ),
+            selectInput("line_type", "Cycling Flows", line_types, selected = "none"),
+            conditionalPanel(
+              condition = "input.line_type != 'none'",
+              checkboxInput("freeze", "Freeze Lines", value = TRUE),
+              conditionalPanel(
+                condition = "input.advanced",
+                selectInput("line_attr", "Flow attribute to display:", attrsLine)
+              ),
+              sliderInput("nos_lines", label = "Flows to show (top n)", 1, 50, value = 5)
+            ),
+            checkboxInput('advanced', 'Advanced Controls')
+        )
       ),
       absolutePanel(
+        useShinyjs(),
         cursor = "default",
         id = "legend",
         draggable = TRUE,
@@ -68,8 +74,11 @@ shinyUI(
         height = 150,
         width = 100,
         style = "opacity: 0.7",
-        plotOutput("legendCyclingPotential", width = "100%", height = 350),
-        bsTooltip("legendCyclingPotential", "", placement = "right", options = list(container = "body"))
+        a(id = "toggleLegend", "Show/Hide Legend"),
+        div(id = "zone_legend",
+            plotOutput("legendCyclingPotential", width = "100%", height = 350),
+            bsTooltip("legendCyclingPotential", "", placement = "right", options = list(container = "body"))
+        )
       ),
       absolutePanel(
         cursor = "default",
@@ -98,6 +107,7 @@ shinyUI(
           width = 300,
           style = "opacity: 0.7",
           radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
+
         )
       )
     ),
