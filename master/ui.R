@@ -37,7 +37,7 @@ shinyUI(
         id = "controls",
         class = "panel panel-default",
         fixed = TRUE,
-        top = 140,
+        top = 110,
         right = 20,
         width = 180,
         height = "auto",
