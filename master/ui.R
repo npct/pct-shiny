@@ -83,13 +83,11 @@ shinyUI(
       absolutePanel(
         cursor = "default",
         id = "credits",
-        class = "panel panel-default",
-        fixed = TRUE,
-        bottom = 5,
+        bottom = 0,
         right = 20,
-        width = 250,
+        width = 120,
         bsCollapse(id = "credits",
-                   bsCollapsePanel("Route Information", HTML("We are using an API from
+                   bsCollapsePanel("Route Info.", HTML("We are using an API from
                                     <a target='_blank' href = \"https://www.cyclestreets.net\">CycleStreets</a> to calculate routes.
                                     Please follow the link for more information:
                                     <a target='_blank' href = \"https://www.cyclestreets.net/api/v1/journey/\">Cycle Route</a>"),
