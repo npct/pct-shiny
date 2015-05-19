@@ -4,6 +4,13 @@
 
 # use install.packages() or devtools::install_github() to install these
 pkgs <- c("shiny", "shinyBS", "leaflet", "RColorBrewer", "httr", "rgdal", "rgeos")
+
+# Install packages if they are not already installed
+if (length(setdiff(pkgs, rownames(installed.packages()))) > 0) {
+  install.packages(setdiff(pkgs, rownames(installed.packages())))
+}
+
+# Install all packages
 lapply(pkgs, library, character.only = TRUE)
 
 # Colours
