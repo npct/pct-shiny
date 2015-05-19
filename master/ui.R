@@ -71,7 +71,7 @@ shinyUI(
         fixed = TRUE,
         top = 180,
         left = 25,
-        height = 150,
+        height = 50,
         width = 100,
         style = "opacity: 0.7",
         a(id = "toggleLegend", "Show/Hide Legend"),
