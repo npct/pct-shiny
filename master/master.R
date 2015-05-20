@@ -3,7 +3,7 @@
 # # # # #
 
 # use install.packages() or devtools::install_github() to install these
-pkgs <- c("shiny", "shinyBS", "leaflet", "RColorBrewer", "httr", "rgdal", "rgeos")
+pkgs <- c("shiny", "leaflet", "RColorBrewer", "httr", "rgdal", "rgeos")
 
 # Install packages if they are not already installed
 if (length(setdiff(pkgs, rownames(installed.packages()))) > 0) {
