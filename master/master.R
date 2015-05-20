@@ -3,7 +3,7 @@
 # # # # #
 
 # use install.packages() or devtools::install_github() to install these
-pkgs <- c("shiny", "shinyBS", "leaflet", "RColorBrewer", "httr", "rgdal", "rgeos", "shinyjs")
+pkgs <- c("shiny", "shinyBS", "leaflet", "RColorBrewer", "httr", "rgdal", "rgeos")
 
 # Install packages if they are not already installed
 if (length(setdiff(pkgs, rownames(installed.packages()))) > 0) {
@@ -85,10 +85,6 @@ shinyServer(function(input, output, session){
              placement = "bottom", trigger = "hover")
 
   addPopover(session, "map_base_panel", title = "<strong>Map Base</strong>", content = "Change base of the map",   placement = "top", trigger = "hover")
-
-
-  onclick("togglePanel", toggle(id = "input_panel", anim = FALSE))
-  onclick("toggleLegend", toggle(id = "zone_legend", anim = FALSE))
 
   sortLines <- function(lines, sortBy, nos){
     if(!(sortBy %in% names(lines))) return(NULL)

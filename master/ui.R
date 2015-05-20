@@ -26,14 +26,13 @@ shinyUI(
   navbarPage(
     "Infrastructure planning tool",
     id="nav",
-    header = tags$head(includeScript("../master/google-analytics.js")),
+    header = tags$head(includeScript("../master/google-analytics.js"),
+                       includeScript("../master/toggle.js")),
     tabPanel(
       "Interactive map",
       helpText("Warning: this tool is under development. Its outputs may change as the model is refined."),
       leafletOutput("map", width="auto", height="600"),
       absolutePanel(
-        useShinyjs(),
-        draggable = TRUE,
         id = "controls",
         class = "panel panel-default",
         fixed = TRUE,
@@ -42,7 +41,7 @@ shinyUI(
         width = 180,
         height = "auto",
         style = "opacity: 0.9",
-        a(id = "togglePanel", "Show/hide Input Panel"),
+        a(id = "togglePanel", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide")),
         div(id = "input_panel",
             selectInput("scenario", "Scenario:", scenarios),
             conditionalPanel(
@@ -74,7 +73,7 @@ shinyUI(
         height = 50,
         width = 100,
         style = "opacity: 0.7",
-        a(id = "toggleLegend", "Show/Hide Legend"),
+        a(id = "toggleLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide")),
         div(id = "zone_legend",
             plotOutput("legendCyclingPotential", width = "100%", height = 350),
             bsTooltip("legendCyclingPotential", "", placement = "right", options = list(container = "body"))
