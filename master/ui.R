@@ -27,7 +27,9 @@ shinyUI(
     "Infrastructure planning tool",
     id="nav",
     header = tags$head(includeScript("../master/google-analytics.js"),
-                       includeScript("../master/toggle.js")),
+                       includeScript("../master/extra.js"),
+                       tags$link(rel = "stylesheet", type = "text/css", href ="bsOverride.css")
+                       ),
     tabPanel(
       "Interactive map",
       helpText("Warning: this tool is under development. Its outputs may change as the model is refined."),
