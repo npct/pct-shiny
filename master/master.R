@@ -60,32 +60,6 @@ shinyServer(function(input, output, session){
   session$dataDir <- data_dir
   loadData(session)
 
-  addPopover(session, "legendCyclingPotential", "<strong>Zone Attribute Legend</strong>", "Scenario-specific quartiles </br> of Cycling Level", placement = "right", trigger = "hover", options = NULL)
-
-  addPopover(session, "scenario", content = "Details of which can be seen in the Help tab", title = "<strong>Select a Scenario</strong>",
-             placement = "top", trigger = "hover", options = NULL)
-
-  addPopover(session, "zone_attr", content = "Set zone colours depending on the cycling level", title = "<strong>Zone Attribute</strong>",
-             placement = "top", trigger = "hover")
-
-  addPopover(session, "line_type", content = "Shows the cycling flow between the centres of zones", title = "<strong>Cycling Flows</strong>",
-             placement = "top", trigger = "hover")
-
-  addPopover(session, "advanced", title = "<strong>Advanced Options</strong>", content = "Displays advanced options",
-             placement = "top", trigger = "hover")
-
-  addPopover(session, "freeze", title = "<strong>Freeze Lines</strong>", content = "<strong>Ticked</strong> flows are independent of the map boundary (zoom and position)</br><strong>Unticked</strong> flows update depending on the map boundary",
-             placement = "top", trigger = "hover", options = list(container = "body"))
-
-  addPopover(session, "line_attr", title = "<strong>Flow attribute to display</strong>", content = "Filter the routes/lines",
-             placement = "top", trigger = "hover")
-
-  addPopover(session, "nos_lines", title = "<strong>Flows to show (top n)</strong>",
-             content = "Display the top n flows based on the selected flow attribute",
-             placement = "bottom", trigger = "hover")
-
-  addPopover(session, "map_base_panel", title = "<strong>Map Base</strong>", content = "Change base of the map",   placement = "top", trigger = "hover")
-
   sortLines <- function(lines, sortBy, nos){
     if(!(sortBy %in% names(lines))) return(NULL)
     poly <- flowsBB()
