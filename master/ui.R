@@ -77,8 +77,7 @@ shinyUI(
         style = "opacity: 0.7",
         a(id = "toggleLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide")),
         div(id = "zone_legend",
-            plotOutput("legendCyclingPotential", width = "100%", height = 350),
-            bsTooltip("legendCyclingPotential", "", placement = "right", options = list(container = "body"))
+            plotOutput("legendCyclingPotential", width = "100%", height = 350)
         )
       ),
       conditionalPanel(
