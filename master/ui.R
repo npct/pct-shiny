@@ -79,20 +79,6 @@ shinyUI(
             bsTooltip("legendCyclingPotential", "", placement = "right", options = list(container = "body"))
         )
       ),
-      absolutePanel(
-        cursor = "default",
-        id = "credits",
-        bottom = 0,
-        right = 20,
-        width = 120,
-        bsCollapse(id = "credits",
-                   bsCollapsePanel("Route Info.", HTML("We are using an API from
-                                    <a target='_blank' href = \"https://www.cyclestreets.net\">CycleStreets</a> to calculate routes.
-                                    Please follow the link for more information:
-                                    <a target='_blank' href = \"https://www.cyclestreets.net/api/v1/journey/\">Cycle Route</a>"),
-                                   style = "success")
-        )
-      ),
       conditionalPanel(
         condition = "input.advanced",
         absolutePanel(

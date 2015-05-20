@@ -172,7 +172,9 @@ shinyServer(function(input, output, session){
 
   output$map = renderLeaflet(
     map %>%
-      addTiles(urlTemplate = mapTileUrl(), options=tileOptions(opacity = 0.8, reuseTiles = T))
+      addTiles(urlTemplate = mapTileUrl(),
+               attribution = 'Route data from <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a>',
+               options=tileOptions(opacity = 0.8, reuseTiles = T))
     %>%{
       ## Add polygons (of MSOA boundaries)
       if(plotZones())
