@@ -60,6 +60,7 @@ shinyServer(function(input, output, session){
   }
 
   helper$dataDir <- data_dir
+  helper$scenarioWas <- NULL
   helper <- loadData(helper)
 
   sortLines <- function(lines, sortBy, nos){
@@ -96,12 +97,18 @@ shinyServer(function(input, output, session){
     else
       updateSelectInput(session, 'zone_attr', label = 'Attribute to display', choices = attrsLine)
 
+    if(!is.null(helper$scenarioWas)){
+      updateSelectInput(session, "scenario", selected = helper$scenarioWas)
+      helper$scenarioWas <<- NULL
+    }
+
     if(helper$dataDir != dataDir && !is.null(LA) && file.exists(dataDir) ){
       helper$dataDir <<- dataDir
+      helper$scenarioWas <<- input$scenario
       helper <<- loadData(helper)
       if(input$freeze)
-        updateCheckboxInput(session, "freeze", selected = F)
-      else if(input$scenario != "olc")
+        updateCheckboxInput(session, "freeze", value = F)
+      if(input$scenario != "olc")
         updateSelectInput(session, "scenario", selected ="olc")
       else
         updateSelectInput(session, "scenario", selected ="base")
