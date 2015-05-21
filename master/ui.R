@@ -1,7 +1,5 @@
 library(shiny)
-library(shinyBS)
 library(leaflet)
-library(shinyjs)
 
 scenarios <- c("Census 2011 Cycling" = "olc",
                "Government Target" =   "base",
@@ -64,7 +62,6 @@ shinyUI(
         )
       ),
       absolutePanel(
-        useShinyjs(),
         cursor = "default",
         id = "legend",
         draggable = TRUE,
