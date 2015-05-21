@@ -82,14 +82,26 @@ shinyServer(function(input, output, session){
     tolower(LAs[drop(keep), ]@data$NAME[1])
   }
 
+  attrsLine <- c("Scenario Level of Cycling (SLC)" =    "slc",
+                 "Scenario Increase in Cycling (SIC)" = "sic")
+
+  attrsZone <- c(attrsLine, c("None" = "none"))
+
   observe({
     LA <- findLA()
     dataDir <-  file.path('..', 'pct-data', LA)
 
+    if(input$advanced)
+      updateSelectInput(session, 'zone_attr', label = 'Flow Attribute', choices = attrsZone)
+    else
+      updateSelectInput(session, 'zone_attr', label = 'Attribute to display', choices = attrsLine)
+
     if(helper$dataDir != dataDir && !is.null(LA) && file.exists(dataDir) ){
       helper$dataDir <<- dataDir
       helper <<- loadData(helper)
-      if(input$scenario != "olc")
+      if(input$freeze)
+        updateCheckboxInput(session, "freeze", selected = F)
+      else if(input$scenario != "olc")
         updateSelectInput(session, "scenario", selected ="olc")
       else
         updateSelectInput(session, "scenario", selected ="base")
