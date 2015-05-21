@@ -3,7 +3,7 @@
 # # # # #
 
 # use install.packages() or devtools::install_github() to install these
-pkgs <- c("shiny", "leaflet", "RColorBrewer", "httr", "rgdal", "rgeos")
+pkgs <- c("shiny", "leaflet", "RColorBrewer", "httr", "rgdal", "rgeos", "DT")
 
 # Install packages if they are not already installed
 if (length(setdiff(pkgs, rownames(installed.packages()))) > 0) {
@@ -262,7 +262,7 @@ shinyServer(function(input, output, session){
             col = zone_col, horiz=TRUE, xlab = "", ylab = ylabel, space = 0, axes = FALSE)
   })
 
-  output$linesDatatable <- renderDataTable({
+  output$linesDatatable <- DT::renderDataTable({
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plotLinesData()){
       # Set the warning message that no lines have been selected by the user
@@ -273,14 +273,15 @@ shinyServer(function(input, output, session){
     # Empty the warning message - as some lines have been selected by the user
     output$warningMessage <- renderUI("")
     # Reuse the lines data stored in the ldata session variable
-    helper$ldata@data
-  }, options = list(pageLength = 10))
+    DT::datatable(helper$ldata@data, options = list(pageLength = 10))
+  })
 
-  output$zonesDataTable <- renderDataTable({
+  output$zonesDataTable <- DT::renderDataTable({
     if(is.null(helper$zones@data)){
       return()
     }
-    helper$zones@data
-  }, options = list(pageLength = 10))
+    DT::datatable(helper$zones@data, options = list(pageLength = 10))
+  })
+
 
 })
