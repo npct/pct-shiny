@@ -22,27 +22,24 @@ map_base_attrs <- c("Black and White" = "bw",
 
 shinyUI(
   navbarPage(
-    "Infrastructure planning tool",
-    id="nav",
-    header = tags$head(includeScript("../master/google-analytics.js"),
-                       includeScript("../master/extra.js"),
-                       tags$link(rel = "stylesheet", type = "text/css", href ="bsOverride.css")
-                       ),
+    "Infrastructure planning tool", id="nav",
     tabPanel(
       "Interactive map",
-      helpText("Warning: this tool is under development. Its outputs may change as the model is refined."),
-      leafletOutput("map", width="auto", height="600"),
-      absolutePanel(
-        id = "controls",
-        class = "panel panel-default",
-        fixed = TRUE,
-        top = 110,
-        right = 20,
-        width = 180,
-        height = "auto",
-        style = "opacity: 0.9",
-        a(id = "togglePanel", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide")),
-        div(id = "input_panel",
+      div(
+        class="outer",
+        tags$head(
+          includeScript("../master/google-analytics.js"),
+          includeScript("../master/extra.js"),
+          tags$link(rel = "stylesheet", type = "text/css", href ="bsOverride.css")
+        ),
+        leafletOutput("map", width="100%", height="100%"),
+        absolutePanel(
+          id = "controls", class = "panel panel-default",
+          fixed = TRUE,  top = 110,  right = 20, width = 180,
+          height = "auto",  style = "opacity: 0.9",
+          a(id = "togglePanel", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide")),
+          div(
+            id = "input_panel",
             selectInput("scenario", "Scenario:", scenarios),
             conditionalPanel(
               condition = "input.scenario != 'olc'",
@@ -59,36 +56,25 @@ shinyUI(
               sliderInput("nos_lines", label = "Flows to show (top n)", 1, 50, value = 5)
             ),
             checkboxInput('advanced', 'Advanced Controls')
-        )
-      ),
-      absolutePanel(
-        cursor = "default",
-        id = "legend",
-        draggable = TRUE,
-        class = "panel panel-default",
-        fixed = TRUE,
-        top = 180,
-        left = 25,
-        height = 50,
-        width = 100,
-        style = "opacity: 0.7",
-        a(id = "toggleLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide")),
-        div(id = "zone_legend",
-            plotOutput("legendCyclingPotential", width = "100%", height = 350)
-        )
-      ),
-      conditionalPanel(
-        condition = "input.advanced",
+          )
+        ),
         absolutePanel(
-          cursor = "default",
-          id = "map_base_panel",
-          class = "panel panel-default",
-          bottom = 25,
-          left = 15,
-          width = 300,
+          cursor = "default", id = "legend", draggable = T, class = "panel panel-default",
+          top = 180, left = 25, height = 50, width = 100,
           style = "opacity: 0.7",
-          radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
-
+          a(id = "toggleLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide")),
+          div(id = "zone_legend",
+              plotOutput("legendCyclingPotential", width = "100%", height = 350)
+          )
+        ),
+        conditionalPanel(
+          condition = "input.advanced",
+          absolutePanel(
+            cursor = "default", id = "map_base_panel", class = "panel panel-default",
+            bottom = 25, left = 15, width = 300,
+            style = "opacity: 0.7",
+            radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
+          )
         )
       )
     ),
