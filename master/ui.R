@@ -37,34 +37,54 @@ shinyUI(
           id = "controls", class = "panel panel-default",
           fixed = TRUE,  top = 110,  right = 20, width = 180,
           height = "auto",  style = "opacity: 0.9",
-          a(id = "togglePanel", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide")),
+          tags$div(title="Show/Hide Panel",
+            a(id = "togglePanel", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+          ),
           div(
             id = "input_panel",
-            selectInput("scenario", "Scenario:", scenarios),
+            tags$div(title="Scenario details can be seen in the Help tab",
+                     selectInput("scenario", "Scenario:", scenarios)
+            ),
             conditionalPanel(
               condition = "input.scenario != 'olc'",
-              selectInput("zone_attr", "Zone Attribute:", attrsZone)
+              tags$div(title="Set zone colours depending on the cycling level",
+                selectInput("zone_attr", "Zone Attribute:", attrsZone)
+              )
             ),
-            selectInput("line_type", "Cycling Flows", line_types, selected = "none"),
+            tags$div(title="Shows the cycling flow between the centres of zones",
+              selectInput("line_type", "Cycling Flows", line_types, selected = "none")
+            ),
             conditionalPanel(
               condition = "input.line_type != 'none'",
-              checkboxInput("freeze", "Freeze Lines", value = TRUE),
+              tags$div(title="Ticked: flows are independent of the map boundary (zoom and position), Unticked: flows update depending on the map boundary",
+                checkboxInput("freeze", "Freeze Lines", value = TRUE)
+              ),
               conditionalPanel(
                 condition = "input.advanced",
-                selectInput("line_attr", "Flow attribute to display:", attrsLine)
+                tags$div(title = "Flow attribute to display",
+                  selectInput("line_attr", "Flow attribute to display:", attrsLine)
+                )
               ),
-              sliderInput("nos_lines", label = "Flows to show (top n)", 1, 50, value = 5)
+              tags$div(title="Flows to show (top n)",
+                sliderInput("nos_lines", label = "Flows to show (top n)", 1, 50, value = 5)
+              )
             ),
-            checkboxInput('advanced', 'Advanced Controls')
+            tags$div(title="Displays advanced options",
+              checkboxInput('advanced', 'Advanced Controls')
+            )
           )
         ),
         absolutePanel(
           cursor = "default", id = "legend", draggable = T, class = "panel panel-default",
           top = 180, left = 25, height = 50, width = 100,
           style = "opacity: 0.7",
-          a(id = "toggleLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide")),
+          tags$div(title="Show/Hide zone legend",
+            a(id = "toggleLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+          ),
           div(id = "zone_legend",
-              plotOutput("legendCyclingPotential", width = "100%", height = 350)
+              tags$div(title="Scenario-specific quartiles of cycling level",
+                plotOutput("legendCyclingPotential", width = "100%", height = 350)
+              )
           )
         ),
         conditionalPanel(
@@ -73,7 +93,9 @@ shinyUI(
             cursor = "default", id = "map_base_panel", class = "panel panel-default",
             bottom = 25, left = 15, width = 300,
             style = "opacity: 0.7",
-            radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
+            tags$div(title="Change base of the map",
+              radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
+            )
           )
         )
       )
