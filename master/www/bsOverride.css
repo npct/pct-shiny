@@ -11,3 +11,7 @@ div.outer {
   overflow: hidden;
   padding: 0;
 }
+
+.rbox  {
+  font-size: 10px;
+}

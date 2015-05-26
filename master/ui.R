@@ -91,10 +91,12 @@ shinyUI(
           condition = "input.advanced",
           absolutePanel(
             cursor = "default", id = "map_base_panel", class = "panel panel-default",
-            bottom = 25, left = 15, width = 300,
-            style = "opacity: 0.7",
+            bottom = 0, left = 100, width = 200, height = 40,
+            style = "opacity: 0.9",
             tags$div(title="Change base of the map",
-              radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
+              tags$div(class = "rbox",
+                radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
+              )
             )
           )
         )
