@@ -30,6 +30,9 @@ shinyUI(
         tags$head(
           includeScript("../master/google-analytics.js"),
           includeScript("../master/extra.js"),
+          tags$style(type="text/css",
+                     "label {font-size: 12px;}",
+                     ".recalculating {opacity: 1.0;}"),
           tags$link(rel = "stylesheet", type = "text/css", href ="bsOverride.css")
         ),
         leafletOutput("map", width="100%", height="100%"),
