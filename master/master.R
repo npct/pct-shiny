@@ -93,7 +93,7 @@ shinyServer(function(input, output, session){
     dataDir <-  file.path('..', 'pct-data', LA)
 
     if(input$advanced)
-      updateSelectInput(session, 'zone_attr', label = 'Flow Attribute', choices = attrsZone)
+      updateSelectInput(session, 'zone_attr', label = 'Zone Attribute', choices = attrsZone)
     else
       updateSelectInput(session, 'zone_attr', label = 'Attribute to display', choices = attrsLine)
 
