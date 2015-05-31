@@ -95,7 +95,7 @@ shinyServer(function(input, output, session){
     if(input$advanced)
       updateSelectInput(session, 'zone_attr', label = 'Zone Attribute', choices = attrsZone)
     else
-      updateSelectInput(session, 'zone_attr', label = 'Attribute to display', choices = attrsLine)
+      updateSelectInput(session, 'zone_attr', label = 'Zone Attribute', choices = attrsLine)
 
     if(!is.null(helper$scenarioWas)){
       updateSelectInput(session, "scenario", selected = helper$scenarioWas)
