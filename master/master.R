@@ -116,12 +116,9 @@ shinyServer(function(input, output, session){
   })
 
   lineAttr <- reactive({
-    if(input$scenario == 'olc')
-      'olc'
-    else if(input$advanced)
-      input$line_attr
-    else
-      input$zone_attr
+    if(input$scenario == 'olc') 'olc'
+    else if(input$advanced) input$line_attr
+    else input$zone_attr
   })
 
   zoneAttr <- reactive({
@@ -282,6 +279,5 @@ shinyServer(function(input, output, session){
     }
     DT::datatable(helper$zones@data, options = list(pageLength = 10))
   })
-
 
 })

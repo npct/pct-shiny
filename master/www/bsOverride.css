@@ -11,3 +11,21 @@ div.outer {
   overflow: hidden;
   padding: 0;
 }
+
+.rbox  {
+  font-size: 10px;
+}
+
+.selectize-dropdown,
+.selectize-input,
+.selectize-input input {
+  font-size: 11px;
+}
+
+label {
+  font-size: 12px;
+}
+
+.recalculating{
+  opacity: 1.0;
+}
