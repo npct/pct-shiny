@@ -115,9 +115,8 @@ shinyUI(
                            <a target='_blank' href = \"https://www.nomisweb.co.uk/census/2011/wu03ew\">source</a>")),
              DT::dataTableOutput("zonesDataTable")
     ),
-    tabPanel("Model Output"
-#              ,
-#              includeHTML("../pct-data/manchester/model-output.html")
+    tabPanel("Model Output",
+             includeHTML("../pct-data/manchester/model-output.html")
     ),
     tabPanel("Help",
              helpText("This tab contains information and screenshots on how to use the tool better."),
