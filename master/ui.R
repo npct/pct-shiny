@@ -31,7 +31,7 @@ shinyUI(
           includeScript("../master/google-analytics.js"),
           includeScript("../master/extra.js"),
           tags$style(type="text/css"),
-          tags$link(rel = "stylesheet", type = "text/css", href ="bsOverride.css")
+          tags$link(rel = "stylesheet", type = "text/css", href ="stylesheet.css")
         ),
         leafletOutput("map", width="100%", height="100%"),
         absolutePanel(
