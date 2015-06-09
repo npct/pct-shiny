@@ -2,16 +2,12 @@
 # Setup #
 # # # # #
 
-# use install.packages() or devtools::install_github() to install these
-pkgs <- c("shiny", "leaflet", "RColorBrewer", "httr", "rgdal", "rgeos", "DT")
+# use install.packages() install these
+cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos")
+# use devtools::install_github("rstudio/PkgName")
+devPkgs <- c("leaflet", "DT")
 
-# Install packages if they are not already installed
-if (length(setdiff(pkgs, rownames(installed.packages()))) > 0) {
-  install.packages(setdiff(pkgs, rownames(installed.packages())))
-}
-
-# Install all packages
-lapply(pkgs, library, character.only = TRUE)
+lapply(c(cranPkgs, devPkgs), library, character.only = TRUE)
 
 # Colours
 zcols <- c("darkslategrey", "yellow")
