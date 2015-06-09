@@ -1,3 +1,2 @@
-data_dir <- "pct-data/coventry/"
+startingCity <- "coventry"
 source("../master/master.R", local = T, chdir = T)
-

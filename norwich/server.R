@@ -1,3 +1,3 @@
-data_dir <- "pct-data/norwich/"
+startingCity <- "norwich"
 source("../master/master.R", local = T, chdir = T)
 
