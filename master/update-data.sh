@@ -1,4 +1,5 @@
 #!/bin/sh
+cd 'pct-shiny'
 dataDir='pct-data'
 
 if [ ! -d ${dataDir} ]; then

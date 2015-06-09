@@ -16,24 +16,14 @@ lapply(pkgs, library, character.only = TRUE)
 # Colours
 zcols <- c("darkslategrey", "yellow")
 
-if (Sys.info()["sysname"] != "Windows") {
-  # Download data files
-  # This will timeout on the server (so a cron job is used instead)
-  # but will work locally
-  setwd('..')
-  system2(file.path('master', 'update-data.sh'), wait = FALSE)
-  setwd('master')
-}else {
+dataDir <- file.path('..', 'pct-data')
+# clone the data repo if it do not exist
+if(!dir.exists(dataDir)) system2('git', args=c('clone', '--depth=1', 'https://github.com/npct/pct-data.git', dataDir))
 
-  dataDir <- 'pct-data'
-  setwd('master/..')
-
-  # clone the data repo if it do not exist
-  ifelse(!dir.exists(dataDir), system2('git', args=c('clone', '--depth=1', 'https://github.com/npct/pct-data.git', dataDir)), FALSE)
-
-  system2('git', args=c("pull"), wait = FALSE)
-  setwd(file.path('..', 'master'))
-}
+# Download files
+setwd(dataDir)
+system2('git', args=c("pull"), wait = FALSE)
+setwd(file.path('..', 'master'))
 
 # Functions
 source("pct-shiny-funs.R")
@@ -60,7 +50,7 @@ shinyServer(function(input, output, session){
     helper
   }
 
-  helper$dataDir <- data_dir
+  helper$dataDir <- file.path(dataDir, startingCity)
   helper$scenarioWas <- NULL
   helper <- loadData(helper)
 
