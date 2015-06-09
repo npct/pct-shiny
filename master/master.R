@@ -47,6 +47,8 @@ LAs <- spTransform(LAs, CRS("+init=epsg:4326 +proj=longlat"))
 shinyServer(function(input, output, session){
   helper <- NULL
   loadData <- function(helper){
+    if (!grepl("\\..",helper$dataDir))
+      helper$dataDir <- paste("../",helper$dataDir,sep="")
     helper$l <- readRDS(file.path(helper$dataDir, "l.Rds"))
 
     helper$rFast <- readRDS(file.path(helper$dataDir, "rf.Rds" ))
