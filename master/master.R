@@ -24,13 +24,13 @@ if (Sys.info()["sysname"] != "Windows") {
   system2(file.path('master', 'update-data.sh'), wait = FALSE)
   setwd('master')
 }else {
-  dataDir <- file.path('..', 'pct-data')
+
+  dataDir <- 'pct-data'
+  setwd('master/..')
 
   # clone the data repo if it do not exist
   ifelse(!dir.exists(dataDir), system2('git', args=c('clone', '--depth=1', 'https://github.com/npct/pct-data.git', dataDir)), FALSE)
 
-  # Download files
-  setwd(dataDir)
   system2('git', args=c("pull"), wait = FALSE)
   setwd(file.path('..', 'master'))
 }
@@ -47,8 +47,7 @@ LAs <- spTransform(LAs, CRS("+init=epsg:4326 +proj=longlat"))
 shinyServer(function(input, output, session){
   helper <- NULL
   loadData <- function(helper){
-    if (!grepl("\\..",helper$dataDir))
-      helper$dataDir <- paste("../",helper$dataDir,sep="")
+
     helper$l <- readRDS(file.path(helper$dataDir, "l.Rds"))
 
     helper$rFast <- readRDS(file.path(helper$dataDir, "rf.Rds" ))
@@ -92,7 +91,7 @@ shinyServer(function(input, output, session){
 
   observe({
     LA <- findLA()
-    dataDir <-  file.path('..', 'pct-data', LA)
+    dataDir <-  file.path('pct-data', LA)
 
     if(input$advanced)
       updateSelectInput(session, 'zone_attr', label = 'Zone Attribute', choices = attrsZone)
