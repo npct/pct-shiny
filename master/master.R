@@ -50,7 +50,7 @@ shinyServer(function(input, output, session){
     helper
   }
 
-  helper$dataDir <- file.path(dataDir, la)
+  helper$dataDir <- file.path(dataDir, startingCity)
   helper$scenarioWas <- NULL
   helper <- loadData(helper)
 
