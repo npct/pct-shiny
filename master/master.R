@@ -13,13 +13,8 @@ lapply(c(cranPkgs, devPkgs), library, character.only = TRUE)
 zcols <- c("darkslategrey", "yellow")
 
 dataDirRoot <- file.path('..', 'pct-data')
-# clone the data repo if it do not exist
-if(!dir.exists(dataDirRoot)) system2('git', args=c('clone', '--depth=1', 'https://github.com/npct/pct-data.git', dataDirRoot))
 
-# Download files
-setwd(dataDirRoot)
-system2('git', args=c("pull"), wait = FALSE)
-setwd(file.path('..', 'master'))
+source("load-shiny-data.R")
 
 # Functions
 source("pct-shiny-funs.R")
