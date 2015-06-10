@@ -10,20 +10,14 @@ if (length(setdiff(pkgs, rownames(installed.packages()))) > 0) {
   install.packages(setdiff(pkgs, rownames(installed.packages())))
 }
 
-# Install all packages
+# Load the packages
 lapply(pkgs, library, character.only = TRUE)
 
-# Colours
+# Colourscheme
 zcols <- c("darkslategrey", "yellow")
 
-dataDir <- file.path('..', 'pct-data')
-# clone the data repo if it do not exist
-if(!dir.exists(dataDir)) system2('git', args=c('clone', '--depth=1', 'https://github.com/npct/pct-data.git', dataDir))
-
-# Download files
-setwd(dataDir)
-system2('git', args=c("pull"), wait = FALSE)
-setwd(file.path('..', 'master'))
+# Data directory
+data_dir <- file.path('..', 'pct-data', la)
 
 # Functions
 source("pct-shiny-funs.R")
@@ -37,7 +31,8 @@ LAs <- spTransform(LAs, CRS("+init=epsg:4326 +proj=longlat"))
 shinyServer(function(input, output, session){
   helper <- NULL
   loadData <- function(helper){
-
+    if (!grepl("\\..", helper$dataDir))
+      helper$dataDir <- paste("../", helper$dataDir, sep= "")
     helper$l <- readRDS(file.path(helper$dataDir, "l.Rds"))
 
     helper$rFast <- readRDS(file.path(helper$dataDir, "rf.Rds" ))
@@ -50,7 +45,7 @@ shinyServer(function(input, output, session){
     helper
   }
 
-  helper$dataDir <- file.path(dataDir, startingCity)
+  helper$dataDir <- data_dir
   helper$scenarioWas <- NULL
   helper <- loadData(helper)
 
@@ -81,7 +76,7 @@ shinyServer(function(input, output, session){
 
   observe({
     LA <- findLA()
-    dataDir <-  file.path('pct-data', LA)
+    dataDir <-  file.path('..', 'pct-data', la)
 
     if(input$advanced)
       updateSelectInput(session, 'zone_attr', label = 'Zone Attribute', choices = attrsZone)

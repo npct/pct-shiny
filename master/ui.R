@@ -126,7 +126,7 @@ shinyUI(
              )
     ),
     tabPanel("Model Output",
-             includeHTML("pct-data/leeds/model-output.html")
+             includeHTML("../pct-data/leeds/model-output.html")
     ),
     tabPanel("Help",
             helpText("This tab contains information and screenshots on how to use the tool better."),
