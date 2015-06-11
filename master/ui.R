@@ -22,7 +22,7 @@ map_base_attrs <- c("Black and White" = "bw",
 
 shinyUI(
   navbarPage(
-    "Infrastructure planning tool", id="nav",
+    "Cycling planning tool", id="nav",
     tabPanel(
       "Interactive map",
       div(
@@ -77,13 +77,14 @@ shinyUI(
         ),
         absolutePanel(
           cursor = "default", id = "legend", draggable = T, class = "panel panel-default",
-          top = 180, left = 25, height = 50, width = 100,
+          top = 100, left = 25, height = 30, width = 100,
           style = "opacity: 0.7",
           tags$div(title="Show/Hide zone legend",
             a(id = "toggleLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
           ),
           div(id = "zone_legend",
               tags$div(title="Scenario-specific quartiles of cycling level",
+                selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)"), selected = "Commute data"),
                 plotOutput("legendCyclingPotential", width = "100%", height = 350)
               )
           )
