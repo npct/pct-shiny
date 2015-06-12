@@ -12,7 +12,7 @@ lapply(c(cranPkgs, devPkgs), library, character.only = TRUE)
 # Colours
 zcols <- c("darkslategrey", "yellow")
 
-dataDirRoot <- file.path('..', 'pct-data')
+dataDirRoot <- '../pct-data'
 
 source("load-shiny-data.R")
 
