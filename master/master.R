@@ -11,10 +11,8 @@ lapply(c(cranPkgs, devPkgs), library, character.only = TRUE)
 
 # Colours
 zcols <- c("darkslategrey", "yellow")
-
 dataDirRoot <- '../pct-data'
-
-source("load-shiny-data.R")
+source("load-shiny-data.R", local = T) # to load data
 
 # Functions
 source("pct-shiny-funs.R")
