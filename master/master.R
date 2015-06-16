@@ -67,17 +67,19 @@ shinyServer(function(input, output, session){
 
   attrsZone <- c(attrsLine, c("None" = "none"))
 
+  setModelOutput <- function(LA){
+    output$moutput <- renderUI({
+      modelFile <- file.path(dataDirRoot, LA, "model-output.html")
+      if (file.exists(modelFile))
+        includeHTML(modelFile)
+      else
+        HTML("<strong>Sorry but no model output files are avaiable for this local authority</strong>")
+    })
+  }
+  setModelOutput(startingCity)
   observe({
     LA <- findLA()
     dataDir <-  file.path(dataDirRoot, LA)
-
-    output$moutput <- renderUI({
-      if (file.exists(paste(dataDir, "/model-output.html", sep = ""))){
-        return(includeHTML(paste(dataDir, "/model-output.html", sep="")))
-      }else{
-        return(HTML("<strong>Sorry but no model output files are avaiable for this local authority</strong>"))
-      }
-    })
 
     if(input$advanced)
       updateSelectInput(session, 'zone_attr', label = 'Zone Attribute', choices = attrsZone)
@@ -90,6 +92,7 @@ shinyServer(function(input, output, session){
     }
 
     if(helper$dataDir != dataDir && !is.null(LA) && file.exists(dataDir) ){
+      setModelOutput(LA)
       helper$dataDir <<- dataDir
       helper$scenarioWas <<- input$scenario
       helper <<- loadData(helper)
