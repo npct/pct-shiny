@@ -5,7 +5,7 @@ scenarios <- c("Census 2011 Cycling" = "olc",
                "Government Target" =   "cdp",
                "Gender equality" =   "gendereq",
                "Go Dutch" =          "dutch",
-               "Electric bicycles" = "ebike")
+               "Ebikes (prototype)" = "ebike")
 
 attrsLine <- c("Scenario Level of Cycling (SLC)" =    "slc",
                "Scenario Increase in Cycling (SIC)" = "sic")
