@@ -33,6 +33,7 @@ shinyUI(
           tags$style(type="text/css"),
           tags$link(rel = "stylesheet", type = "text/css", href ="stylesheet.css")
         ),
+        br(),
         leafletOutput("map", width="100%", height="100%"),
         absolutePanel(
           id = "controls", class = "panel panel-default",
@@ -127,7 +128,7 @@ shinyUI(
              )
     ),
     tabPanel("Model Output",
-             includeHTML("../pct-data/leeds/model-output.html")
+             htmlOutput("moutput")
     ),
     tabPanel("Help",
             helpText("This tab contains information and screenshots on how to use the tool better."),

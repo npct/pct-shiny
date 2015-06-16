@@ -71,6 +71,14 @@ shinyServer(function(input, output, session){
     LA <- findLA()
     dataDir <-  file.path(dataDirRoot, LA)
 
+    output$moutput <- renderUI({
+      if (file.exists(paste(dataDir, "/model-output.html", sep = ""))){
+        return(includeHTML(paste(dataDir, "/model-output.html", sep="")))
+      }else{
+        return(HTML("<strong>Sorry but no model output files are avaiable for this local authority</strong>"))
+      }
+    })
+
     if(input$advanced)
       updateSelectInput(session, 'zone_attr', label = 'Zone Attribute', choices = attrsZone)
     else
