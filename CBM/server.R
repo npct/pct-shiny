@@ -1,6 +1,7 @@
 library(shiny)
 library(DT)
 library(sqldf)
+library(devtools)
 if (!require(rCharts)) {
   install_github('rCharts', 'ramnathv')
   library(rCharts)
@@ -183,5 +184,15 @@ shinyServer(function(input, output, session){
     h$set(dom = 'plotCarAccess')
     return (h)
   })
+
+  output$plotGenericVariable <- renderChart({
+    generateScenarioTable()
+    #retrieveVariableName()
+    h <- genericPlot(input$varname)
+    h$set(dom = 'plotGenericVariable')
+    return (h)
+  })
+
+
 
 })
