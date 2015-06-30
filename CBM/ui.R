@@ -1,5 +1,6 @@
 library(DT)
 if (!require(rCharts)) {
+  library(devtools)
   install_github('rCharts', 'ramnathv')
   library(rCharts)
 }
