@@ -1,6 +1,5 @@
 library(shiny)
 library(DT)
-library(sqldf)
 library(devtools)
 if (!require(rCharts)) {
   install_github('rCharts', 'ramnathv')
@@ -124,6 +123,9 @@ shinyServer(function(input, output, session){
       # types of charts: http://api.highcharts.com/highcharts#plotOptions
       h1$yAxis(title = list(text = var))
       h1$xAxis(title = list(text = '# of Scenarios'))
+      if (input$inEQ != "All" & input$inEB != "All"){
+        h1$xAxis(title = list(text = 'Cycling Multiplier'))
+      }
 
       sub1 <- subset(scdata, TDR == 0.7)
       h1$series(data = sub1[[var]], name = "TDR 0.7")
