@@ -29,12 +29,13 @@ git init --shared=group
 git config --bool core.bare true
 
 #set hook to be run when repo receives a push
-echo "#\!/bin/sh \ngit --work-tree=`pwd` --git-dir=`pwd`/.git checkout -f" > .git/hooks/post-receive
-chmod +x .git/hooks/post-receive
+echo "#\!/bin/sh \nunset GIT_INDEX_FILE\ngit --work-tree=`pwd` --git-dir=`pwd`/.git checkout -f" > .git/hooks/post-update
+chmod +x .git/hooks/post-update
 
 chgrp -R users .
 chmod -R g+rwX .
 
 # set directory to have group write AND setgid so new objects inherit permissions
 find . -type d -exec chmod g+s '{}' +
+find . -type f -exec chmod ug+rw {} \;
 ```
