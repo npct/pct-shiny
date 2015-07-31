@@ -185,7 +185,7 @@ shinyServer(function(input, output, session){
 
   output$map = renderLeaflet(
     map %>%
-      addTiles(urlTemplate = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}")  %>%
+      addTiles(urlTemplate = "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png")  %>%
       addTiles(urlTemplate = mapTileUrl(),
                attribution = 'Route data from <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a>',
                options=tileOptions(opacity = 1, reuseTiles = T))
