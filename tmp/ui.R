@@ -22,7 +22,7 @@ map_base_attrs <- c("Black and White" = "bw",
 
 shinyUI(
   navbarPage(
-    "Cycling planning tool", id="nav",
+    HTML('Cycling planning tool'), id="nav",
     tabPanel(
       "Interactive map",
       div(
@@ -131,7 +131,7 @@ shinyUI(
              htmlOutput("moutput")
     ),
     tabPanel("Help",
-            helpText("This tab contains information and screenshots on how to use the tool better."),
+            helpText("This tab contains information and screenshots on how to use the tool. The tool has an open source (MIT) license - see github.com/npct/pct-shiny."),
             includeHTML("help.html")
     )
   )
