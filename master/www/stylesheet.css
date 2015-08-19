@@ -36,6 +36,11 @@ label {
   left: 120px;
   font-size: 12px;
 }
-.leaflet-bottom .leaflet-control-scale{
+
+.leaflet-bottom .leaflet-control-scale {
   margin-bottom: 20px;
+}
+
+body {
+  max-width: unset !important;
 }
