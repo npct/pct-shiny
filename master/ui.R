@@ -22,7 +22,9 @@ map_base_attrs <- c("Black and White" = "bw",
 
 shinyUI(
   navbarPage(
-    "Cycling Planning Tool", id="nav",
+    title=div(HTML('<a href="https://www.gov.uk/government/organisations/department-for-transport"> <img  height="100" width="150"
+               style="padding-bottom: 45px; padding-top: 0px" alt="Department for Transport" src="assets/dft.jpg"> </a>')),
+    id="nav",
     tabPanel(
       "Interactive map",
       div(
