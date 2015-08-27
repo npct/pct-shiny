@@ -188,8 +188,7 @@ shinyServer(function(input, output, session){
       addTiles(urlTemplate = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}")  %>%
       addTiles(urlTemplate = mapTileUrl(),
                attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> | Route data from <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a>',
-               options=tileOptions(opacity = 1, reuseTiles = T)) %>%
-
+               options=tileOptions(opacity = 1, reuseTiles = T))
     %>%{
       ## Add polygons (of MSOA boundaries)
       if(plotZones())
