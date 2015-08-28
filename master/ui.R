@@ -111,7 +111,7 @@ shinyUI(
         )
       ),
       tags$div(id="cite",
-               'This is a prototype tool released under an', a('MIT licence', href= "/licence.html", target='_blank'), '.'
+               'This is a prototype tool released under an', a('MIT licence', href= "https://github.com/npct/pct-shiny/blob/master/LICENSE", target='_blank'), '.'
       )
     ),
     tabPanel("Lines Data",
