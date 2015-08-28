@@ -32,13 +32,13 @@ label {
 
 #cite {
   position: absolute;
-  bottom: 5px;
+  bottom: 25px;
   left: 120px;
   font-size: 12px;
 }
 
 .leaflet-bottom .leaflet-control-scale {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 
 body {

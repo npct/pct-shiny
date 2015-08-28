@@ -26,7 +26,7 @@ shinyUI(
                     <img style="padding-bottom: 0px; padding-top: 0px"
                     height="35px" width="200px"
                     alt="Department for Transport"
-                    src = "assets/DepartmentForTransportLogo.gif"> </a>')),
+                    src = "assets/Department_for_Transport.png"> </a>')),
     windowTitle = "National Propensity to Cycling Tool",
     id="nav",
     tabPanel(
@@ -111,7 +111,7 @@ shinyUI(
         )
       ),
       tags$div(id="cite",
-               'This is a prototype tool released under an', a('MIT licence', href= "https://github.com/npct/pct-shiny/blob/master/LICENSE", target='_blank'), '.'
+               'This is a prototype tool released under an', a('MIT licence', href= "licence.html", target='_blank'), '.'
       )
     ),
     tabPanel("Lines Data",
