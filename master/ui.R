@@ -22,11 +22,11 @@ map_base_attrs <- c("Black and White" = "bw",
 
 shinyUI(
   navbarPage(
-    title=div(HTML('<a href="https://www.gov.uk/government/organisations/department-for-transport">
-                   <img style="padding-bottom: 5px; padding-top: 0px"
-                   height="60" width="100"
+    title=div(HTML('<a href="https://www.gov.uk/government/organisations/department-for-transport" target="_blank">
+                   <img style="padding-bottom: 0px; padding-top: 0px"
+                   height="35px" width="70px"
                    alt="Department for Transport"
-                   src="assets/dft.png"> </a>')),
+                   src="assets/Department_for_Transport.png"> </a>')),
     windowTitle = "National Propensity to Cycling Tool",
     id="nav",
     tabPanel(
