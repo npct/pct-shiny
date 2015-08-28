@@ -22,8 +22,7 @@ map_base_attrs <- c("Black and White" = "bw",
 
 shinyUI(
   navbarPage(
-    title=div(HTML('<a href="https://www.gov.uk/government/organisations/department-for-transport"> <img  height="100" width="150"
-               style="padding-bottom: 45px; padding-top: 0px" alt="Department for Transport" src="assets/dft.jpg"> </a>')),
+    title=div(HTML('<a href="https://www.gov.uk/government/organisations/department-for-transport"> <img alt="Department for Transport" src="assets/dft.png"> </a>')),
     id="nav",
     tabPanel(
       "Interactive map",
