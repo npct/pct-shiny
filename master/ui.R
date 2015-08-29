@@ -74,7 +74,7 @@ shinyUI(
                 )
               ),
               tags$div(title="Flows to show (top n)",
-                sliderInput("nos_lines", label = "Flows to show (top n)", 1, 50, value = 5)
+                sliderInput("nos_lines", label = "Flows to show (top n)", 1, 100, value = 5)
               )
             ),
             tags$div(title="Displays advanced options",
@@ -111,7 +111,7 @@ shinyUI(
         )
       ),
       tags$div(id="cite",
-               'This is a prototype tool released under an', a('MIT licence', href= "licence.html", target='_blank'), '.'
+               'This is a prototype tool released under the', a('MIT licence', href= "licence.html", target='_blank'), '.'
       )
     ),
     tabPanel("Lines Data",
