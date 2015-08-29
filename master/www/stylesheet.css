@@ -8,7 +8,8 @@ div.outer {
   left: 0;
   right: 0;
   bottom: 0;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
   padding: 0;
 }
 
@@ -31,16 +32,16 @@ label {
 }
 
 #cite {
-  position: absolute;
+  position: relative;
   bottom: 25px;
   left: 120px;
   font-size: 12px;
 }
 
-.leaflet-bottom .leaflet-control-scale {
-  margin-bottom: 40px;
-}
-
 body {
   max-width: unset !important;
+}
+
+#dft {
+  margin-bottom: 10px;
 }

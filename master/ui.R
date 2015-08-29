@@ -22,12 +22,7 @@ map_base_attrs <- c("Black and White" = "bw",
 
 shinyUI(
   navbarPage(
-    title=div(HTML('<a href="https://www.gov.uk/government/organisations/department-for-transport" target="_blank">
-                    <img style="padding-bottom: 0px; padding-top: 0px"
-                    height="35px" width="200px"
-                    alt="Department for Transport"
-                    src = "assets/Department_for_Transport.png"> </a>')),
-    windowTitle = "National Propensity to Cycling Tool",
+    title = "National Propensity to Cycling Tool",
     id="nav",
     tabPanel(
       "Interactive map",
@@ -40,7 +35,7 @@ shinyUI(
           tags$link(rel = "stylesheet", type = "text/css", href ="stylesheet.css")
         ),
         br(),
-        leafletOutput("map", width="100%", height="100%"),
+        leafletOutput("map", width="100%", height="95%"),
         absolutePanel(
           id = "controls", class = "panel panel-default",
           fixed = TRUE,  top = 110,  right = 20, width = 180,
@@ -108,10 +103,16 @@ shinyUI(
               )
             )
           )
+        ),
+        tags$div(id="cite",
+                 'This is a prototype tool released under the', a('MIT licence', href= "licence.html", target='_blank'), '.'
+        ),
+        tags$div(id='dft', class="clearfix",
+                 HTML('Funder: <a href="https://www.gov.uk/government/organisations/department-for-transport" target="_blank">
+                    <img style="padding-bottom: 0px; padding-top: 0px"
+                    alt="Department for Transport"
+                    src = "assets/Department_for_Transport2.png"> </a>')
         )
-      ),
-      tags$div(id="cite",
-               'This is a prototype tool released under the', a('MIT licence', href= "licence.html", target='_blank'), '.'
       )
     ),
     tabPanel("Lines Data",
