@@ -177,7 +177,8 @@ shinyServer(function(input, output, session){
     if (input$map_base == 'wsr')
       "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}"
     else
-      "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png"
+      # Replaced coloured open street map with black and white
+      "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
   })
 
   map <- leaflet()
