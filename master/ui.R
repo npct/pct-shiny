@@ -45,7 +45,7 @@ shinyUI(
           ),
           div(
             id = "input_panel",
-            tags$div(title="Scenario details can be seen in the More Information tab",
+            tags$div(title="Scenario details can be seen in the Help tab",
                      selectInput("scenario", "Scenario:", scenarios)
             ),
             conditionalPanel(
