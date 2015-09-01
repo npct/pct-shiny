@@ -17,8 +17,8 @@ line_types <- c("None" = "none",
 
 attrsZone <- c(attrsLine, c("None" = "none"))
 
-map_base_attrs <- c("Black and White" = "bw",
-                    "OpenCycleMap" =    "c")
+map_base_attrs <- c("World Shaded Relief Map" = "wsr",
+                    "Open Cycle Map" =    "c")
 
 shinyUI(
   navbarPage(
@@ -95,7 +95,7 @@ shinyUI(
           condition = "input.advanced",
           absolutePanel(
             cursor = "default", id = "map_base_panel", class = "panel panel-default",
-            bottom = 35, left = 120, width = 250, height = 50,
+            bottom = 35, left = 120, width = 285, height = 50,
             style = "opacity: 0.9",
             tags$div(title="Change base of the map",
               tags$div(class = "rbox",

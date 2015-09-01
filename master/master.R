@@ -174,9 +174,8 @@ shinyServer(function(input, output, session){
   }
 
   mapTileUrl <- reactive({
-    if (input$map_base == 'bw')
-      # "http://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}" # one option
-    "http://a{s}.acetate.geoiq.com/tiles/acetate-roads/{z}/{x}/{y}.png"
+    if (input$map_base == 'wsr')
+      "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}"
     else
       "http://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png"
   })
@@ -185,7 +184,7 @@ shinyServer(function(input, output, session){
 
   output$map = renderLeaflet(
     map %>%
-      addTiles(urlTemplate = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}",
+      addTiles(urlTemplate = mapTileUrl(),
                attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> | Route data from <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a>',
                options=tileOptions(opacity = 1, reuseTiles = T))
     %>%{
