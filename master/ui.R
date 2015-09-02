@@ -105,7 +105,7 @@ shinyUI(
           )
         ),
         tags$div(id="cite",
-                 'This is a prototype released under the', a('MIT licence', href= "licence.html", target='_blank'), 'and funded by the', a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport")
+                 'This is a prototype released under the', a('MIT licence', href= "licence.html", target='_blank'), 'and funded by the', a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport", target="_blank")
         ),
         tags$div(id='dft', class="clearfix",
                  HTML('<a href="https://www.gov.uk/government/organisations/department-for-transport" target="_blank">
