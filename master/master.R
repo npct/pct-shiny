@@ -174,8 +174,8 @@ shinyServer(function(input, output, session){
   }
 
   mapTileUrl <- reactive({
-    if (input$map_base == 'wsr')
-      "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}"
+    if (input$map_base == 'acetate')
+      "http://a{s}.acetate.geoiq.com/tiles/acetate-hillshading/{z}/{x}/{y}.png"
     else
       # Replaced coloured open street map with black and white
       "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
