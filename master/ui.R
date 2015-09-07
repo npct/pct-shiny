@@ -22,7 +22,7 @@ map_base_attrs <- c("Acetate" = "acetate",
 
 shinyUI(
   navbarPage(
-    title = "National Propensity to Cycle Tool",
+    title = "National Propensity to Cycle Tool (Prototype)",
     id="nav",
     tabPanel(
       "Interactive map",
