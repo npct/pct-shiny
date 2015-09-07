@@ -138,7 +138,7 @@ shinyUI(
     tabPanel("More information",
             includeHTML("more-info.html")
     ),
-    tabPanel("Help",
+    tabPanel("How to use it",
              includeHTML("help.html")
     )
   )
