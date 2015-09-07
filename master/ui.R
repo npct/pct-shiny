@@ -135,7 +135,7 @@ shinyUI(
     tabPanel("Model Output",
              htmlOutput("moutput")
     ),
-    tabPanel("More information",
+    tabPanel("About",
             includeHTML("more-info.html")
     ),
     tabPanel("How to use it",
