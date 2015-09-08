@@ -51,6 +51,7 @@ var styleRegion = function (region, name) {
 coast.attr(coastStyle);
 coast[0].setAttribute("fill-rule", "evenodd");
 
+map.canvas.style.backgroundColor = '#FAF8F6';
 for(var regionName in regions) {
   styleRegion(regions[regionName], regionName);
 }
