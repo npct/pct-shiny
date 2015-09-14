@@ -17,8 +17,8 @@ line_types <- c("None" = "none",
 
 attrsZone <- c(attrsLine, c("None" = "none"))
 
-map_base_attrs <- c("Acetate" = "acetate",
-                    "Open Cycle Map" =    "c")
+map_base_attrs <- c("Open Cycle Map" = "acetate",
+                    "Satellite" =    "c")
 
 shinyUI(
   navbarPage(
