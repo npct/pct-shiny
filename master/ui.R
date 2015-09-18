@@ -41,7 +41,7 @@ shinyUI(
           fixed = TRUE,  top = 110,  right = 20, width = 180,
           height = "auto",  style = "opacity: 0.9",
           tags$div(title="Show/Hide Panel",
-            a(id = "togglePanel", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+                   a(id = "togglePanel", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
           ),
           div(
             id = "input_panel",
@@ -51,32 +51,29 @@ shinyUI(
             conditionalPanel(
               condition = "input.scenario != 'olc'",
               tags$div(title="Set zone colours depending on the cycling level",
-                selectInput("zone_attr", "Zone Attribute:", attrsZone)
+                       selectInput("zone_attr", "Zone Attribute:", attrsZone)
               )
             ),
             tags$div(title="Shows the cycling flow between the centres of zones",
-              selectInput("line_type", "Cycling Flows", line_types, selected = "none")
+                     selectInput("line_type", "Cycling Flows", line_types, selected = "none")
             ),
             conditionalPanel(
               condition = "input.line_type != 'none'",
               tags$div(title="Ticked: flows are independent of the map boundary (zoom and position), Unticked: flows update depending on the map boundary",
-                checkboxInput("freeze", "Freeze Lines", value = TRUE)
+                       checkboxInput("freeze", "Freeze Lines", value = TRUE)
               ),
               conditionalPanel(
                 condition = "input.advanced",
                 tags$div(title = "Flow attribute to display",
-                  selectInput("line_attr", "Flow attribute to display:", attrsLine)
-                ),
-                tags$div(title = "Fill Transparency",
-                  sliderInput("transp_rate", label = "Fill Transparency", 1, 10, value = 5)
+                         selectInput("line_attr", "Flow attribute to display:", attrsLine)
                 )
               ),
               tags$div(title="Flows to show (top n)",
-                sliderInput("nos_lines", label = "Flows to show (top n)", 1, 100, value = 5)
+                       sliderInput("nos_lines", label = "Flows to show (top n)", 1, 100, value = 5)
               )
             ),
             tags$div(title="Displays advanced options",
-              checkboxInput('advanced', 'Advanced Controls')
+                     checkboxInput('advanced', 'Advanced Controls')
             )
           )
         ),
@@ -85,15 +82,27 @@ shinyUI(
           top = 100, left = 25, height = 30, width = 100,
           style = "opacity: 0.7",
           tags$div(title="Show/Hide zone legend",
-            a(id = "toggleLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+                   a(id = "toggleLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
           ),
           div(id = "zone_legend",
               tags$div(title="Scenario-specific quartiles of cycling level",
-                selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)"), selected = "Commute data"),
-                plotOutput("legendCyclingPotential", width = "100%", height = 350)
+                       selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)"), selected = "Commute data"),
+                       plotOutput("legendCyclingPotential", width = "100%", height = 350)
               )
           )
         ),
+        conditionalPanel(
+          condition = "input.advanced",
+          absolutePanel(
+            cursor = "default", id = "transp_rate", class = "panel panel-default",
+            bottom = 40, right = 5, width = 175, height = 50,
+            style = "opacity: 0.9",
+            tags$div(title = "Zone Transparency",
+                     sliderInput("transp_rate", label = "Zone Transparency", 1, 10, value = 5)
+            )
+          )
+        ),
+
         conditionalPanel(
           condition = "input.advanced",
           absolutePanel(
@@ -101,9 +110,9 @@ shinyUI(
             bottom = 35, left = 120, width = 190, height = 50,
             style = "opacity: 0.9",
             tags$div(title="Change base of the map",
-              tags$div(class = "rbox",
-                radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
-              )
+                     tags$div(class = "rbox",
+                              radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
+                     )
             )
           )
         ),
@@ -139,7 +148,7 @@ shinyUI(
              htmlOutput("moutput")
     ),
     tabPanel("About",
-            includeHTML("more-info.html")
+             includeHTML("more-info.html")
     ),
     tabPanel("How to use it",
              includeHTML("help.html")
