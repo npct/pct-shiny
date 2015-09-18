@@ -66,6 +66,9 @@ shinyUI(
                 condition = "input.advanced",
                 tags$div(title = "Flow attribute to display",
                   selectInput("line_attr", "Flow attribute to display:", attrsLine)
+                ),
+                tags$div(title = "Fill Transparency",
+                  sliderInput("transp_rate", label = "Fill Transparency", 1, 10, value = 5)
                 )
               ),
               tags$div(title="Flows to show (top n)",

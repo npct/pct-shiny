@@ -11,6 +11,7 @@ lapply(c(cranPkgs, devPkgs), library, character.only = TRUE)
 
 # Colours
 zcols <- c("darkslategrey", "yellow")
+#zcols <- c("#F0FFFF", "#838B8B")
 dataDirRoot <- '../pct-data'
 source("load-shiny-data.R", local = T) # to load data
 
@@ -193,7 +194,8 @@ shinyServer(function(input, output, session){
       if(plotZones())
         addPolygons(. , data = helper$zones
                     , weight = 2
-                    , fillOpacity = 0.4
+                    #, fillOpacity = 0.4
+                    , fillOpacity = (input$transp_rate / 10)
                     , opacity = 0.2
                     , fillColor = getColourRamp(zcols, helper$zones[[zoneData()]])
                     , color = "black"
