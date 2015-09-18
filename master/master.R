@@ -266,14 +266,14 @@ shinyServer(function(input, output, session){
     # Empty the warning message - as some lines have been selected by the user
     output$warningMessage <- renderUI("")
     # Reuse the lines data stored in the ldata session variable
-    DT::datatable(helper$ldata@data, options = list(pageLength = 10))
+    DT::datatable(helper$ldata@data, options = list(pageLength = 10))  %>% formatRound(columns = colnames(helper$ldata@data[sapply(helper$ldata@data,is.numeric)]), digits=2)
   })
 
   output$zonesDataTable <- DT::renderDataTable({
     if(is.null(helper$zones@data)){
       return()
     }
-    DT::datatable(helper$zones@data, options = list(pageLength = 10))
+    DT::datatable(helper$zones@data, options = list(pageLength = 10))   %>% formatRound(columns = colnames(helper$zones@data[sapply(helper$zones@data,is.numeric)]), digits=2)
   })
 
 
