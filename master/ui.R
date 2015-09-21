@@ -80,16 +80,16 @@ shinyUI(
               )
           )
         ),
-          absolutePanel(
-            cursor = "default", id = "map_base_panel", class = "panel panel-default",
-            bottom = 35, left = 120, width = 190, height = 50,
-            style = "opacity: 0.9",
-            tags$div(title="Change base of the map",
-                     tags$div(class = "rbox",
-                              radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
-                     )
-            )
-          ),
+        absolutePanel(
+          cursor = "default", id = "map_base_panel", class = "panel panel-default",
+          bottom = 35, left = 120, width = 190, height = 50,
+          style = "opacity: 0.9",
+          tags$div(title="Change base of the map",
+                   tags$div(class = "rbox",
+                            radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
+                   )
+          )
+        ),
         tags$div(id="cite",
                  'This is a prototype released under the', a('MIT licence', href= "licence.html", target='_blank'), 'and funded by the', a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport", target="_blank")
         ),
