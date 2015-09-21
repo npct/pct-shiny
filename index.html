@@ -2,25 +2,41 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>UK Unitary Authorities</title>
+    <link href="./www/bootstrap.min.css" rel="stylesheet">
+    <link href="./www/paper.css" rel="stylesheet">
+    <title>National Propensity to Cycle Tool (NPCT)</title>
   </head>
   <body>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare aliquam interdum.
-      Etiam et justo ut leo bibendum dapibus. Proin at nunc eu dui sagittis ultrices ac vel risus.
-      Maecenas nunc mi, porttitor non accumsan sed, mattis id urna. Integer cursus augue lacus, mollis mattis erat euismod at.
-      Proin in nisi congue, pharetra arcu nec, venenatis ex. Etiam ut mollis erat. Cras egestas turpis sed nisi dapibus porta.
-      Praesent imperdiet id ante id luctus. Morbi placerat vestibulum fringilla.
-    </p>
-    <div id="map" style="text-align: center;"></div>
-    <p>
-      Etiam velit ligula, porttitor in justo laoreet, placerat faucibus neque.
-      Aenean aliquet non erat ut placerat. Fusce porta, sapien nec lobortis bibendum,
-      libero odio pellentesque elit, non malesuada velit massa sit amet lacus.
-      Fusce quis rutrum est, vel malesuada magna.
-    </p>
-    <script src="./www/raphael-min.js"></script>
-    <script src="./www/english_ua.js"></script>
-    <script src="./www/map.js"></script>
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <span class="navbar-brand">National Propensity to Cycle Tool (Prototype)</span>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+      <p>
+        Welcome to the National Propensity to Cycle Tool (NPCT) Prototype.
+      </p>
+      <p>
+        The NPCT provides evidence to guide cycling investment in England.  The
+        map shows cycling levels at the small area level and between areas based
+        on 2011 Census commuting data.  It also shows what level of cycling might
+        be expected as cycling increases. The new cycling trips can be allocated
+        to the road network to see on which routes the most provision might be
+        necessary. Users can select from different scenarios to choose the
+        overall cycling scenario and can then see what this might mean for each
+        area. The model estimates cycling potential based upon trip distances and
+        hilliness. Therefore, it highlights the greatest unmet potential in areas
+        that currently have lots of short trips in relatively flat areas but
+        where people are not currently cycling.  At the moment the model just
+        shows commuting main mode trips but additional layers will added to
+        future versions.
+      </p>
+      <div id="paper"></div>
+      <script src="./www/raphael-min.js"></script>
+      <script src="./www/english_ua.js"></script>
+      <script src="./www/map.js"></script>
+    </div>
   </body>
 </html>

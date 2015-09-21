@@ -1,25 +1,39 @@
 var animationSpeed = 50;
+var w = 1105;
+var h = 765;
+var rand;
+var paper = new Raphael('paper');
+paper.setViewBox(0, 0, w, h, true);
+paper.canvas.setAttribute('preserveAspectRatio', 'none');
 
 var availableRegions = ['Leeds', 'Manchester', 'Norfolk', 'Coventry'];
 
 var hoverStyle = {
-  fill: "#A8BED5",
+  fill: "hsb(.8, .5, .5)",
   "stroke-width": 1.5,
 };
 
-var unavailableStyle = {
-  fill: "#ddd",
-  stroke: "#aaa",
-  "stroke-width": 0.75,
-  "stroke-linejoin": "round"
+var unavailableStyle = function(){
+  var r = Math.random() * 10 + 215;
+  var g = Math.random() * 10 + 215;
+  var b = Math.random() * 10 + 215;
+  return {
+    fill: "rgb("+r+","+g+","+b+")",
+    stroke: "#aaa",
+    "stroke-width": 0.75,
+    "stroke-linejoin": "round"
+  };
 };
 
-var availableStyle = {
-  fill: "#8080CC",
-  stroke: "#aaa",
-  "stroke-width": 0.75,
-  "stroke-linejoin": "round",
-  cursor: "pointer"
+var availableStyle = function(rand) {
+  var h = rand/100 + 0.795;
+  return {
+    fill: "hsb("+h+", 1, 1)",
+    stroke: "#aaa",
+    "stroke-width": 0.75,
+    "stroke-linejoin": "round",
+    cursor: "pointer"
+  };
 };
 
 var coastStyle = {
@@ -33,25 +47,26 @@ var coastStyle = {
 
 var styleRegion = function (region, name) {
   if(availableRegions.indexOf(name) > -1){
+    rand = Math.random();
     region[0].addEventListener("mouseover", function() {
       region.animate(hoverStyle, animationSpeed);
     }, true);
-
     region[0].addEventListener("mouseout", function() {
-      region.animate(availableStyle, animationSpeed);
+      region.animate(availableStyle(rand), animationSpeed);
     }, true);
-    region.attr(availableStyle);
+    region.attr(availableStyle(rand));
     region.attr({href: name.replace(/\s+/g, '_').toLowerCase(), title: name});
   } else {
-    region.attr(unavailableStyle);
+    region.attr(unavailableStyle());
     region.attr({title: name});
   }
 };
 
-coast.attr(coastStyle);
-coast[0].setAttribute("fill-rule", "evenodd");
+var coastPath = paper.path(coast);
+coastPath.attr(coastStyle);
+coastPath[0].setAttribute("fill-rule", "evenodd");
 
-map.canvas.style.backgroundColor = '#FAF8F6';
+paper.canvas.style.backgroundColor = '#FAF8F6';
 for(var regionName in regions) {
-  styleRegion(regions[regionName], regionName);
+  styleRegion(paper.path(regions[regionName]), regionName);
 }
