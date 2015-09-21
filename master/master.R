@@ -63,10 +63,8 @@ shinyServer(function(input, output, session){
     tolower(LAs[drop(keep), ]@data$NAME[1])
   }
 
-  attrsLine <- c("Scenario Level of Cycling (SLC)" =    "slc",
+  attrsZone <- c("Scenario Level of Cycling (SLC)" =    "slc",
                  "Scenario Increase in Cycling (SIC)" = "sic")
-
-  attrsZone <- c(attrsLine, c("None" = "none"))
 
   setModelOutput <- function(LA){
     output$moutput <- renderUI({
@@ -82,10 +80,7 @@ shinyServer(function(input, output, session){
     LA <- findLA()
     dataDir <-  file.path(dataDirRoot, LA)
 
-    if(input$advanced)
-      updateSelectInput(session, 'zone_attr', label = 'Zone Attribute', choices = attrsZone)
-    else
-      updateSelectInput(session, 'zone_attr', label = 'Attribute to display', choices = attrsLine)
+    updateSelectInput(session, 'zone_attr', label = 'Attribute to display', choices = attrsZone)
 
     if(!is.null(helper$scenarioWas)){
       updateSelectInput(session, "scenario", selected = helper$scenarioWas)
@@ -105,12 +100,16 @@ shinyServer(function(input, output, session){
         updateSelectInput(session, "scenario", selected ="base")
     }
   })
+  transpRate <- reactive({
+    if (input$map_base == 'acetate')
+      0.7
+    else
+      0.4
+  })
 
   lineAttr <- reactive({
     if(input$scenario == 'olc')
       'olc'
-    else if(input$advanced)
-      input$line_attr
     else
       input$zone_attr
   })
@@ -194,8 +193,7 @@ shinyServer(function(input, output, session){
       if(plotZones())
         addPolygons(. , data = helper$zones
                     , weight = 2
-                    #, fillOpacity = 0.4
-                    , fillOpacity = (input$transp_rate / 10)
+                    , fillOpacity = transpRate()
                     , opacity = 0.2
                     , fillColor = getColourRamp(zcols, helper$zones[[zoneData()]])
                     , color = "black"

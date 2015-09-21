@@ -7,15 +7,13 @@ scenarios <- c("Census 2011 Cycling" = "olc",
                "Go Dutch" =          "dutch",
                "Ebikes (prototype)" = "ebike")
 
-attrsLine <- c("Scenario Level of Cycling (SLC)" =    "slc",
-               "Scenario Increase in Cycling (SIC)" = "sic")
-
 line_types <- c("None" = "none",
                 "Straight Lines" = "straight",
                 "Fastest Route" = "d_route",
                 "Fastest Route & Quiet Routes" = "route")
 
-attrsZone <- c(attrsLine, c("None" = "none"))
+attrsZone <- c("Scenario Level of Cycling (SLC)" =    "slc",
+               "Scenario Increase in Cycling (SIC)" = "sic")
 
 map_base_attrs <- c("Open Cycle Map" = "acetate",
                     "Satellite" =    "c")
@@ -62,18 +60,9 @@ shinyUI(
               tags$div(title="Ticked: flows are independent of the map boundary (zoom and position), Unticked: flows update depending on the map boundary",
                        checkboxInput("freeze", "Freeze Lines", value = TRUE)
               ),
-              conditionalPanel(
-                condition = "input.advanced",
-                tags$div(title = "Flow attribute to display",
-                         selectInput("line_attr", "Flow attribute to display:", attrsLine)
-                )
-              ),
               tags$div(title="Flows to show (top n)",
                        sliderInput("nos_lines", label = "Flows to show (top n)", 1, 100, value = 5)
               )
-            ),
-            tags$div(title="Displays advanced options",
-                     checkboxInput('advanced', 'Advanced Controls')
             )
           )
         ),
@@ -91,20 +80,6 @@ shinyUI(
               )
           )
         ),
-        conditionalPanel(
-          condition = "input.advanced",
-          absolutePanel(
-            cursor = "default", id = "transp_rate", class = "panel panel-default",
-            bottom = 40, right = 5, width = 175, height = 50,
-            style = "opacity: 0.9",
-            tags$div(title = "Zone Transparency",
-                     sliderInput("transp_rate", label = "Zone Transparency", 1, 10, value = 5)
-            )
-          )
-        ),
-
-        conditionalPanel(
-          condition = "input.advanced",
           absolutePanel(
             cursor = "default", id = "map_base_panel", class = "panel panel-default",
             bottom = 35, left = 120, width = 190, height = 50,
@@ -114,8 +89,7 @@ shinyUI(
                               radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
                      )
             )
-          )
-        ),
+          ),
         tags$div(id="cite",
                  'This is a prototype released under the', a('MIT licence', href= "licence.html", target='_blank'), 'and funded by the', a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport", target="_blank")
         ),
