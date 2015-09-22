@@ -15,7 +15,7 @@ line_types <- c("None" = "none",
 attrsZone <- c("Scenario Level of Cycling (SLC)" =    "slc",
                "Scenario Increase in Cycling (SIC)" = "sic")
 
-map_base_attrs <- c("Open Cycle Map" = "acetate",
+map_base_attrs <- c("Roadmap" = "acetate",
                     "Satellite" =    "c")
 
 shinyUI(
