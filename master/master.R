@@ -78,6 +78,19 @@ shinyServer(function(input, output, session){
   setModelOutput(startingCity)
   observe({
     LA <- findLA()
+    event <- input$map_shape_click
+    if (is.null(event) || event$id == "remove")
+      return()
+
+    isolate({
+      print(event$id)
+      line <- helper$l[helper$l$id == event$id,]
+      leafletProxy("map") %>% addPolylines(data = line, color = "red"
+                                                 # Plot widths proportional to attribute value
+                                                 , opacity = 1.0
+                                                 , layerId = "remove")
+    })
+
     dataDir <-  file.path(dataDirRoot, LA)
 
     updateSelectInput(session, 'zone_attr', label = 'Attribute to display', choices = attrsZone)
@@ -138,7 +151,7 @@ shinyServer(function(input, output, session){
   # 1) Called when other than 'none' is selected for the Cycling Flows
   # 2) Also called when freeze lines is unchecked and the user navigates the map
   # 3) Or when the user changes the Top Lines slider
-  plotLinesData <- reactive({ # Only called when line_type is 'none' or
+  plotLinesData <- reactive({
     (input$line_type != 'none' && ((!input$freeze && !is.null(input$map_bounds)) || input$nos_lines > 0)) && (lineData() %in% names(helper$l@data))
   })
 
@@ -170,14 +183,14 @@ shinyServer(function(input, output, session){
                    # Plot widths proportional to attribute value
                    , weight = normalise(sorted_l[[lineData()]], min = 3, max = 6)
                    , opacity = 0.7
-                   , popup = popupFn(sorted_l, input$scenario))
+                   , popup = popupFn(sorted_l, input$scenario)
+                   , layerId = sorted_l[['id']])
   }
 
   mapTileUrl <- reactive({
     if (input$map_base == 'acetate')
       "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
     else
-      # Replaced coloured open street map with black and white
       "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
   })
 
