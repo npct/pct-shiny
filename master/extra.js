@@ -1,6 +1,6 @@
 $( window ).load(function() {
   var togglePanel = function(panelId, link){
-    var panel = $(panelId)
+    var panel = $(panelId);
     panel.toggle();
     if(panel.is(":visible")){
       $(link).html('<span class="glyphicon glyphicon-circle-arrow-up">Hide</span>');
@@ -8,8 +8,8 @@ $( window ).load(function() {
       $(link).html('<span class="glyphicon glyphicon-circle-arrow-down">Show</span>');
     }
   };
-  $('#togglePanel').click(function(){ togglePanel('#input_panel', this) });
-  $('#toggleLegend').click(function(){ togglePanel('#zone_legend', this) });
+  $('#togglePanel').click(function(){ togglePanel('#input_panel', this); });
+  $('#toggleLegend').click(function(){ togglePanel('#zone_legend', this); });
 
   var initMap = function(){
     if($(map).data('leaflet-map')){
@@ -20,6 +20,6 @@ $( window ).load(function() {
     else {
       setTimeout(initMap, 100);
     }
-  }
+  };
   initMap();
 });
