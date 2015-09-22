@@ -26,6 +26,7 @@ LAs <- spTransform(LAs, CRS("+init=epsg:4326 +proj=longlat"))
 
 shinyServer(function(input, output, session){
   helper <- NULL
+  helper$eLatLng <- ""
   loadData <- function(helper){
     helper$l <- readRDS(file.path(helper$dataDir, "l.Rds"))
 
@@ -77,20 +78,24 @@ shinyServer(function(input, output, session){
   }
   setModelOutput(startingCity)
   observe({
-    LA <- findLA()
     event <- input$map_shape_click
-    if (is.null(event) || event$id == "remove")
+    if (is.null(event) || event$id == "highlighted")
       return()
-
+    eLatLng <- paste0(event$lat,event$lng)
+    if( eLatLng == helper$eLatLng)
+      return()
+    helper$eLatLng <<- eLatLng
     isolate({
-      print(event$id)
-      line <- helper$l[helper$l$id == event$id,]
-      leafletProxy("map") %>% addPolylines(data = line, color = "red"
-                                                 # Plot widths proportional to attribute value
-                                                 , opacity = 1.0
-                                                 , layerId = "remove")
+      if (input$line_type == 'straight')
+        line <- helper$l[helper$l$id == event$id,]
+      else
+        line <- helper$rFast[helper$rFast$id == event$id,]
+      leafletProxy("map") %>% addPolylines(data = line, color = "white", opacity = 0.4,
+                                           layerId = "highlighted")
     })
-
+  })
+  observe({
+    LA <- findLA()
     dataDir <-  file.path(dataDirRoot, LA)
 
     updateSelectInput(session, 'zone_attr', label = 'Attribute to display', choices = attrsZone)
