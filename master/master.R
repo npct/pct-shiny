@@ -86,10 +86,15 @@ shinyServer(function(input, output, session){
       return()
     helper$eLatLng <<- eLatLng
     isolate({
+      idColor <- unlist(strsplit(event$id, "-"))
+      id <- idColor[1]
+      color <- idColor[2]
       if (input$line_type == 'straight')
-        line <- helper$l[helper$l$id == event$id,]
+        line <- helper$l[helper$l$id == id,]
+      else if (color == "purple")
+        line <- helper$rFast[helper$rFast$id == id,]
       else
-        line <- helper$rFast[helper$rFast$id == event$id,]
+        line <- helper$rQuiet[helper$rQuiet$id == id,]
       leafletProxy("map") %>% addPolylines(data = line, color = "white", opacity = 0.4,
                                            layerId = "highlighted")
     })
@@ -189,7 +194,7 @@ shinyServer(function(input, output, session){
                    , weight = normalise(sorted_l[[lineData()]], min = 3, max = 6)
                    , opacity = 0.7
                    , popup = popupFn(sorted_l, input$scenario)
-                   , layerId = sorted_l[['id']])
+                   , layerId = paste0(sorted_l[['id']], '-', color))
   }
 
   mapTileUrl <- reactive({
