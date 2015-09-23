@@ -126,14 +126,26 @@ shinyServer(function(input, output, session){
     }
   })
   observe({
+    leafletProxy("map")  %>% clearGroup(., "maroon") %>%
+      clearGroup(., "turquoise") %>% clearGroup(., "purple")
     if (input$line_type == 'straight')
-      leafletProxy("map") %>% plotLines(., helper$l, input$nos_lines, straightPopup, color = "maroon")
+      leafletProxy("map") %>% plotLines(., helper$l, input$nos_lines, straightPopup, "maroon")
     if (input$line_type == 'route')
       leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "turquoise")
     if (input$line_type %in% c('d_route', 'route'))
       leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
-    leafletProxy("map") %>% addCircleMarkers(., data = helper$cents, radius = 2, color = "black",
-                                             popup = zonePopup(helper$cents, scenario(), zoneAttr()))
+  })
+  observe({
+    leafletProxy("map")  %>% clearShapes() %>%
+      addPolygons(.,  data = helper$zones
+                  , weight = 2
+                  , fillOpacity = transpRate()
+                  , opacity = 0.2
+                  , fillColor = getColourRamp(zcols, helper$zones[[zoneData()]])
+                  , color = "black"
+                  , options = pathOptions(clickable=F)) %>%
+      addCircleMarkers(., data = helper$cents, radius = 2, color = "black",
+                       popup = zonePopup(helper$cents, scenario(), zoneAttr()))
   })
   transpRate <- reactive({
     if (input$map_base == 'acetate')  # Have the satalite map more transparent
@@ -200,7 +212,7 @@ shinyServer(function(input, output, session){
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
                    , weight = normalise(sorted_l[[lineData()]], min = 3, max = 6)
-                   , opacity = 0.7
+                   , opacity = 0.7, group = color,
                    , popup = popupFn(sorted_l, input$scenario)
                    , layerId = paste0(sorted_l[['id']], '-', color))
   }
@@ -217,13 +229,7 @@ shinyServer(function(input, output, session){
       addTiles(., urlTemplate = mapTileUrl(),
                attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> | Route data from <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a>',
                options=tileOptions(opacity = 1, reuseTiles = T)) %>%
-      addPolygons(.,  data = helper$zones
-                  , weight = 2
-                  , fillOpacity = transpRate()
-                  , opacity = 0.2
-                  , fillColor = getColourRamp(zcols, helper$zones[[zoneData()]])
-                  , color = "black"
-                  , options = pathOptions(clickable=F)) %>%
+      addCircleMarkers(., data = helper$cents, radius = 0.1, color = "black") %>%
       mapOptions(zoomToLimits = "first")
   )
 
