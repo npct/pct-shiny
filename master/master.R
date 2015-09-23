@@ -125,6 +125,17 @@ shinyServer(function(input, output, session){
         updateSelectInput(session, "scenario", selected ="base")
     }
   })
+  observe({
+    if (input$line_type == 'straight')
+      leafletProxy("map") %>% plotLines(., helper$l, input$nos_lines, straightPopup, color = "maroon")
+    if (input$line_type == 'route')
+      leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "turquoise")
+    if (input$line_type %in% c('d_route', 'route'))
+      leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
+    if (plotZones())
+      leafletProxy("map") %>% addCircleMarkers(., data = helper$cents, radius = 2, color = "black",
+                                                        popup = zonePopup(helper$cents, scenario(), zoneAttr()))
+  })
   transpRate <- reactive({
     if (input$map_base == 'acetate')  # Have the satalite map more transparent
       0.7
@@ -206,48 +217,18 @@ shinyServer(function(input, output, session){
       "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
   })
 
-  map <- leaflet()
-
   output$map = renderLeaflet(
-    map %>%
-      addTiles(urlTemplate = mapTileUrl(),
+    leaflet() %>%
+      addTiles(., urlTemplate = mapTileUrl(),
                attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> | Route data from <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a>',
-               options=tileOptions(opacity = 1, reuseTiles = T))
-    %>%{
-      ## Add polygons (of MSOA boundaries)
-      if(plotZones())
-        addPolygons(. , data = helper$zones
-                    , weight = 2
-                    , fillOpacity = transpRate()
-                    , opacity = 0.2
-                    , fillColor = getColourRamp(zcols, helper$zones[[zoneData()]])
-                    , color = "black"
-                    , options = pathOptions(clickable=F)
-        )
-      else
-        .
-    }%>%{
-      if (input$line_type == 'straight'){
-        plotLines(., helper$l, input$nos_lines, straightPopup, color = "maroon")
-      }else
-        .
-    }%>%{
-      if (input$line_type == 'route')
-        plotLines(., helper$rQuiet, input$nos_lines, routePopup, "turquoise")
-      else
-        .
-    }%>%{
-      if (input$line_type %in% c('d_route', 'route'))
-        plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
-      else
-        .
-    }%>%{
-      if (plotZones())
-        addCircleMarkers(., data = helper$cents, radius = 2, color = "black",
-                         popup = zonePopup(helper$cents, scenario(), zoneAttr()))
-      else
-        .
-    }%>%
+               options=tileOptions(opacity = 1, reuseTiles = T)) %>%
+      addPolygons(.,  data = helper$zones
+                  , weight = 2
+                  , fillOpacity = transpRate()
+                  , opacity = 0.2
+                  , fillColor = getColourRamp(zcols, helper$zones[[zoneData()]])
+                  , color = "black"
+                  , options = pathOptions(clickable=F)) %>%
       mapOptions(zoomToLimits = "first")
   )
 
