@@ -132,9 +132,8 @@ shinyServer(function(input, output, session){
       leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "turquoise")
     if (input$line_type %in% c('d_route', 'route'))
       leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
-    if (plotZones())
-      leafletProxy("map") %>% addCircleMarkers(., data = helper$cents, radius = 2, color = "black",
-                                                        popup = zonePopup(helper$cents, scenario(), zoneAttr()))
+    leafletProxy("map") %>% addCircleMarkers(., data = helper$cents, radius = 2, color = "black",
+                                             popup = zonePopup(helper$cents, scenario(), zoneAttr()))
   })
   transpRate <- reactive({
     if (input$map_base == 'acetate')  # Have the satalite map more transparent
@@ -164,10 +163,6 @@ shinyServer(function(input, output, session){
 
   zoneData <- reactive({
     dataFilter(scenario(), zoneAttr())
-  })
-
-  plotZones <- reactive({ # Some attributes are only avaliable for baseline
-    (input$zone_attr != 'none') && (zoneData() %in% names(helper$zones@data))
   })
 
   # Reactive function for the lines data
@@ -233,9 +228,6 @@ shinyServer(function(input, output, session){
   )
 
   output$legendCyclingPotential <- renderPlot({
-    if(!plotZones()){
-      return()
-    }
     # Read the zone data
     data_ <- helper$zones@data[[zoneData()]]
     # Create quantiles out of the data
