@@ -77,11 +77,15 @@ shinyServer(function(input, output, session){
     })
   }
   setModelOutput(startingCity)
-  observe({
+
+  observe({ # For highlighting the clicked line
     event <- input$map_shape_click
     if (is.null(event) || event$id == "highlighted")
       return()
     eLatLng <- paste0(event$lat,event$lng)
+
+    # Fix bug when a line has been click then the click event is
+    # re-emmited when the map is moved
     if( eLatLng == helper$eLatLng)
       return()
     helper$eLatLng <<- eLatLng
@@ -113,16 +117,16 @@ shinyServer(function(input, output, session){
       helper$dataDir <<- dataDir
       helper$scenarioWas <<- input$scenario
       helper <<- loadData(helper)
-      if(input$freeze)
+      if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
         updateCheckboxInput(session, "freeze", value = F)
-      if(input$scenario != "olc")
+      if(input$scenario != "olc") # Hack to force the map to re-render when a new zone is selected
         updateSelectInput(session, "scenario", selected ="olc")
       else
         updateSelectInput(session, "scenario", selected ="base")
     }
   })
   transpRate <- reactive({
-    if (input$map_base == 'acetate')
+    if (input$map_base == 'acetate')  # Have the satalite map more transparent
       0.7
     else
       0.4
