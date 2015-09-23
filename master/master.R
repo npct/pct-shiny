@@ -103,8 +103,6 @@ shinyServer(function(input, output, session){
     LA <- findLA()
     dataDir <-  file.path(dataDirRoot, LA)
 
-    updateSelectInput(session, 'zone_attr', label = 'Attribute to display', choices = attrsZone)
-
     if(!is.null(helper$scenarioWas)){
       updateSelectInput(session, "scenario", selected = helper$scenarioWas)
       helper$scenarioWas <<- NULL
