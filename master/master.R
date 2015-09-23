@@ -284,7 +284,7 @@ shinyServer(function(input, output, session){
       # Set the warning message that no lines have been selected by the user
       output$warningMessage <- renderUI(HTML("<strong>No lines selected: </strong> Lines must be displayed on map"))
       # Return an empty data.frame
-      return()
+      return(data.frame(File=character()))
     }
     # Empty the warning message - as some lines have been selected by the user
     output$warningMessage <- renderUI("")
