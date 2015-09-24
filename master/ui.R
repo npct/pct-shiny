@@ -12,11 +12,11 @@ line_types <- c("None" = "none",
                 "Fastest Route" = "d_route",
                 "Fastest Route & Quiet Routes" = "route")
 
-attrsZone <- c("Scenario Level of Cycling (SLC)" =    "slc",
+attrsZone <- c("Scenario Level of Cycling (SLC)"    = "slc",
                "Scenario Increase in Cycling (SIC)" = "sic")
 
-map_base_attrs <- c("Roadmap" = "acetate",
-                    "Satellite" =    "c")
+map_base_attrs <- c("Roadmap"   = "acetate",
+                    "Satellite" = "c")
 
 shinyUI(
   navbarPage(
@@ -55,15 +55,20 @@ shinyUI(
             tags$div(title="Shows the cycling flow between the centres of zones",
                      selectInput("line_type", "Cycling Flows", line_types, selected = "none")
             ),
-            checkboxInput("ad_conts", "Additional controls", value = FALSE),
+           # checkboxInput("ad_conts", "Additional controls", value = FALSE),
             conditionalPanel(
               condition = "input.line_type != 'none'",
-              tags$div(title="Ticked: flows are independent of the map boundary (zoom and position), Unticked: flows update depending on the map boundary",
+              tags$div(title="Untick to allow lines to update when you move the map",
                        checkboxInput("freeze", "Freeze Lines", value = TRUE)
               ),
               tags$div(title="Flows to show (top n)",
                        sliderInput("nos_lines", label = "Flows to show (top n)", 1, 100, value = 5)
               )
+            ),
+            tags$div(title="Change base of the map",
+                     tags$div(class = "rbox",
+                              radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
+                     )
             )
           )
         ),
@@ -79,16 +84,6 @@ shinyUI(
                        selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)"), selected = "Commute data"),
                        plotOutput("legendCyclingPotential", width = "100%", height = 350)
               )
-          )
-        ),
-        absolutePanel(
-          cursor = "default", id = "map_base_panel", class = "panel panel-default",
-          bottom = 35, left = 120, width = 190, height = 50,
-          style = "opacity: 0.9",
-          tags$div(title="Change base of the map",
-                   tags$div(class = "rbox",
-                            radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
-                   )
           )
         ),
         tags$div(id="cite",
