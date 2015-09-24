@@ -134,6 +134,7 @@ shinyServer(function(input, output, session){
       leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "turquoise")
     if (input$line_type %in% c('d_route', 'route'))
       leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
+    transpRate() # needed to force lines to be redrawn when scenario
   })
   observe({
     leafletProxy("map")  %>% clearShapes() %>%
