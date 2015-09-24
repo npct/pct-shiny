@@ -55,6 +55,7 @@ shinyUI(
             tags$div(title="Shows the cycling flow between the centres of zones",
                      selectInput("line_type", "Cycling Flows", line_types, selected = "none")
             ),
+            checkboxInput("ad_conts", "Additional controls", value = FALSE),
             conditionalPanel(
               condition = "input.line_type != 'none'",
               tags$div(title="Ticked: flows are independent of the map boundary (zoom and position), Unticked: flows update depending on the map boundary",
