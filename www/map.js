@@ -12,7 +12,6 @@ var hoverStyle = {
   fill: "hsb(.8, .5, .5)",
   "stroke-width": 1.5,
 };
-
 var unavailableStyle = function(){
   var r = Math.random() * 10 + 215;
   var g = Math.random() * 10 + 215;
@@ -21,6 +20,7 @@ var unavailableStyle = function(){
     fill: "rgb("+r+","+g+","+b+")",
     stroke: "#aaa",
     "stroke-width": 0.75,
+    "opacity": 0.25,
     "stroke-linejoin": "round"
   };
 };
@@ -32,17 +32,9 @@ var availableStyle = function(rand) {
     stroke: "#aaa",
     "stroke-width": 0.75,
     "stroke-linejoin": "round",
+    "opacity": 0.5,
     cursor: "pointer"
   };
-};
-
-var coastStyle = {
-  "stroke-linecap": "round",
-  "stroke-linejoin": "round",
-  "stroke-miterlimit": 100,
-  fill: "#ADADFF",
-  stroke: "#aaa",
-  "stroke-width": 0.5,
 };
 
 var styleRegion = function (region, name) {
@@ -62,11 +54,8 @@ var styleRegion = function (region, name) {
   }
 };
 
-var coastPath = paper.path(coast);
-coastPath.attr(coastStyle);
-coastPath[0].setAttribute("fill-rule", "evenodd");
+var img = paper.image("./www/osm_bw.png", 0, 0, w, h);
 
-paper.canvas.style.backgroundColor = '#FAF8F6';
 for(var regionName in regions) {
   styleRegion(paper.path(regions[regionName]), regionName);
 }

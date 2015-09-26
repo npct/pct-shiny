@@ -1,37 +1,51 @@
 <!DOCTYPE html5>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <link href="./www/bootstrap.min.css" rel="stylesheet">
-    <link href="./www/paper.css" rel="stylesheet">
-    <title>National Propensity to Cycle Tool (NPCT)</title>
-  </head>
-  <body>
-    <nav class="navbar navbar-default navbar-static-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <span class="navbar-brand">National Propensity to Cycle Tool (Prototype)</span>
+    <head>
+        <meta charset="utf-8" />
+        <link href="./www/bootstrap.min.css" rel="stylesheet">
+        <link href="./www/paper.css" rel="stylesheet">
+        <title>National Propensity to Cycle Tool (NPCT)</title>
+    </head>
+    <body>
+        <nav class="navbar navbar-default navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <span class="navbar-brand">National Propensity to Cycle Tool (Prototype)</span>
+                </div>
+            </div>
+        </nav>
+        <div class="container lead">
+            <p>
+                <b>Welcome to the National Propensity to Cycle Tool (NPCT) Prototype.</b>
+            </p>
+            The NPCT provides evidence to guide cycling investment in England.
+            The map shows cycling levels at the small area level and between
+            areas based on 2011 Census commuting data. It also shows what
+            spatial distribution of cycling might be expected as cycling
+            increases.<br />
+            The cycling trips can be allocated to the road network. The purpose
+            of the route allocation is to see on which routes the most
+            provision might be necessary as cycling grows rather than to show
+            where people currently cycle. We recognise that many people
+            currently do not chose the fastest route but for cycling to achieve
+            its potential will require direct routes on which people feel
+            safe.<br />
+            Users can select from different scenarios to choose the overall
+            cycling scenario and can then see what this might mean for each
+            area. The model estimates cycling potential based upon trip
+            distances and hilliness. Therefore, it highlights the greatest
+            unmet potential in areas that currently have lots of short trips in
+            relatively flat areas but where people are not currently
+            cycling.<br />
+            At the moment the model just shows commuting main mode trips but
+            additional layers will added to future versions
+            <p>
+            </p>
+            <div id="paper"></div>
         </div>
-      </div>
-    </nav>
-    <div class="container">
-      <p>
-        <b>Welcome to the National Propensity to Cycle Tool (NPCT) Prototype.</b>
-      </p>
-      The NPCT provides evidence to guide cycling investment in England. The map shows cycling levels at the small area level       and between areas based on 2011 Census commuting data. It also shows what spatial distribution of cycling might be expected as cycling increases.<br />
-
-The cycling trips can be allocated to the road network. The purpose of the route allocation is to see on which routes the most provision might be necessary as cycling grows rather than to show where people currently cycle. We recognise that many people currently do not chose the fastest route but for cycling to achieve its potential will require direct routes on which people feel safe.<br />
-
-Users can select from different scenarios to choose the overall cycling scenario and can then see what this might mean for each area. The model estimates cycling potential based upon trip distances and hilliness. Therefore, it highlights the greatest unmet potential in areas that currently have lots of short trips in relatively flat areas but where people are not currently cycling.<br />
-
-At the moment the model just shows commuting main mode trips but additional layers will added to future versions<br />
-
-      <p>
-      </p>
-      <div id="paper"></div>
-      <script src="./www/raphael-min.js"></script>
-      <script src="./www/english_ua.js"></script>
-      <script src="./www/map.js"></script>
+        <script src="./www/raphael-min.js"></script>
+        <script src="./www/english_ua.js"></script>
+        <script src="./www/map.js"></script>
     </div>
-  </body>
+</body>
 </html>

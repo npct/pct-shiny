@@ -1,10 +1,6 @@
 #paper {
-  border: 0.9px inset;
-  padding: 10px;
-  resize: both;
-  overflow: auto;
-  width: 552px;
-  height: 382px;
+    resize: both;
+    overflow: auto;
+    width: 417px;
+    height: 458px;
 }
-
-svg { height: 100%; width: 100%; }
