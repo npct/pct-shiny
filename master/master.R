@@ -11,7 +11,7 @@ lapply(c(cranPkgs, devPkgs), library, character.only = TRUE)
 
 # Colours
 zcols <- c("darkslategrey", "yellow")
-
+#zcols <- c("#F0FFFF", "#838B8B")
 dataDirRoot <- '../pct-data'
 source("load-shiny-data.R", local = T) # to load data
 
@@ -125,7 +125,17 @@ shinyServer(function(input, output, session){
         updateSelectInput(session, "scenario", selected ="base")
     }
   })
-
+  observe({
+    leafletProxy("map")  %>% clearGroup(., "maroon") %>%
+      clearGroup(., "turquoise") %>% clearGroup(., "purple")
+    if (input$line_type == 'straight')
+      leafletProxy("map") %>% plotLines(., helper$l, input$nos_lines, straightPopup, "maroon")
+    if (input$line_type == 'route')
+      leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "turquoise")
+    if (input$line_type %in% c('d_route', 'route'))
+      leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
+    transpRate() # needed to force lines to be redrawn when scenario
+  })
   observe({
     leafletProxy("map")  %>% clearShapes() %>%
       addPolygons(.,  data = helper$zones
@@ -137,18 +147,7 @@ shinyServer(function(input, output, session){
                   , options = pathOptions(clickable=F)) %>%
       addCircleMarkers(., data = helper$cents, radius = 2, color = "black",
                        popup = zonePopup(helper$cents, scenario(), zoneAttr()))
-    leafletProxy("map")  %>% clearGroup(., "maroon") %>%
-      clearGroup(., "turquoise") %>% clearGroup(., "purple")
-    if (input$line_type == 'straight')
-      leafletProxy("map") %>% plotLines(., helper$l, input$nos_lines, straightPopup, "maroon")
-    if (input$line_type == 'route')
-      leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "turquoise")
-    if (input$line_type %in% c('d_route', 'route'))
-      leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
-    transpRate() # needed to force lines to be redrawn when scenario
-
   })
-
   transpRate <- reactive({
     if (input$map_base == 'acetate')  # Have the satalite map more transparent
       0.7
