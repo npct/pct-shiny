@@ -153,7 +153,7 @@ shinyServer(function(input, output, session){
     if (input$map_base == 'acetate')  # Have the satalite map more transparent
       0.7
     else
-      0.4
+      0.0
   })
 
   lineAttr <- reactive({
