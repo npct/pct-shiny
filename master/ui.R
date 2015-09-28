@@ -49,13 +49,12 @@ shinyUI(
             conditionalPanel(
               condition = "input.scenario != 'olc'",
               tags$div(title="Set zone colours depending on the cycling level",
-                       selectInput("zone_attr", "Zone Attribute:", attrsZone)
+                       selectInput("zone_attr", "Scenario Attribute:", attrsZone)
               )
             ),
             tags$div(title="Shows the cycling flow between the centres of zones",
                      selectInput("line_type", "Cycling Flows", line_types, selected = "none")
             ),
-           # checkboxInput("ad_conts", "Additional controls", value = FALSE),
             conditionalPanel(
               condition = "input.line_type != 'none'",
               tags$div(title="Untick to allow lines to update when you move the map",
