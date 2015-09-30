@@ -123,7 +123,7 @@ shinyUI(
              includeHTML("more-info.html")
     ),
     tabPanel("How to use it",
-             includeHTML("help.html")
+             includeMarkdown("helpmd.md")
     )
   )
 )
