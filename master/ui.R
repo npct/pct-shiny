@@ -124,6 +124,9 @@ shinyUI(
     ),
     tabPanel("How to use it",
              includeMarkdown("helpmd.md")
+    ),
+    tabPanel("FAQs",
+             includeMarkdown("FAQs.md")
     )
   )
 )
