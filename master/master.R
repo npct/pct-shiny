@@ -128,26 +128,51 @@ shinyServer(function(input, output, session){
   observe({
     leafletProxy("map")  %>% clearGroup(., "maroon") %>%
       clearGroup(., "turquoise") %>% clearGroup(., "purple")
-    if (input$line_type == 'straight')
-      leafletProxy("map") %>% plotLines(., helper$l, input$nos_lines, straightPopup, "maroon")
-    if (input$line_type == 'route')
-      leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "turquoise")
-    if (input$line_type %in% c('d_route', 'route'))
-      leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
+    leafletProxy("map") %>% {
+      if (input$line_type == 'straight')
+        plotLines(., helper$l, input$nos_lines, straightPopup, "maroon")
+      else
+      .
+    } %>% {
+      if (input$line_type == 'route')
+        leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "turquoise")
+      else
+        .
+    } %>% {
+      if (input$line_type %in% c('d_route', 'route'))
+        leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
+    }
     # needed to force lines to be redrawn when scenario, zone or base map changes
     paste(input$scenario, input$zone_attr, input$map_base)
   })
   observe({
-    leafletProxy("map")  %>% clearShapes() %>%
+    leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centers") %>%
       addPolygons(.,  data = helper$zones
                   , weight = 2
                   , fillOpacity = transpRate()
                   , opacity = 0.2
                   , fillColor = getColourRamp(zcols, helper$zones[[zoneData()]])
                   , color = "black"
+                  , group = "zones"
                   , options = pathOptions(clickable=F)) %>%
-      addCircleMarkers(., data = helper$cents, radius = 2, color = "black",
+      addCircleMarkers(., data = helper$cents, radius = 2, color = "black", group = "centers",
                        popup = zonePopup(helper$cents, scenario(), zoneAttr()))
+    isolate({
+      leafletProxy("map") %>% {
+        if (input$line_type == 'straight')
+          plotLines(., helper$l, input$nos_lines, straightPopup, "maroon")
+        else
+          .
+      } %>% {
+        if (input$line_type == 'route')
+          leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "turquoise")
+        else
+          .
+      } %>% {
+        if (input$line_type %in% c('d_route', 'route'))
+          leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
+      }
+    })
   })
   transpRate <- reactive({
     if (input$map_base == 'acetate')  # Have the satalite map more transparent
