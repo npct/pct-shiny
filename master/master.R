@@ -5,7 +5,7 @@
 # use install.packages() install these
 cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT")
 sel <- cranPkgs %in% installed.packages()
-install.packages(cranPkgs[!sel])
+# install.packages(cranPkgs[!sel])
 lapply(cranPkgs, library, character.only = TRUE)
 
 # Colours
