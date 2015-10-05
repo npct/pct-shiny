@@ -53,7 +53,7 @@ We estimated what would happen if to cycling levels in England if England had th
 <br>
 </div>
 
-[2\. How does propensity to cycle differ between London and the Netherlands?](javascript:toggleElement('a2'))
+[2\. How does propensity to cycle differ between England and the Netherlands?](javascript:toggleElement('a2'))
 
 <div id="a2" style="display:none">People in the Netherlands make 26.7% of trips by bicycle, fifteen times higher than the figure of 1.7% in England. In addition, cycling in England is skewed towards younger, male cyclists (Figure 1A). By contrast in the Netherlands cycling remains common into older age, and women are in fact slightly more likely to cycle than men (Figure 1B). This means that the difference between England and the Netherlands is particularly large for women and older people (Figure 2). For example, whereas the cycle mode share is ‘only’ six times higher in the Netherlands than in England for men in their thirties, it is over 20 times higher for women in their thirties or men in their seventies and eighties. For women in their seventies and eighties, the cycle mode share is over 60 times higher in the Netherlands than in England.  
 
