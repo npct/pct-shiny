@@ -126,9 +126,7 @@ shinyUI(
              includeMarkdown("helpmd.md")
     ),
     tabPanel("FAQs",
-             #includeMarkdown(rmarkdown::render("to-delete.Rmd"))
              includeHTML("FAQs.html")
-             #includeMarkdown("FAQs.md")
     )
   )
 )
