@@ -44,7 +44,7 @@ It is also true that the Netherlands is a flatter country than England. As illus
 <td align="center" valign="center">
 <img src="./assets/Figure 2_FAQs.jpg"/>
 <br />
-Figure 2: Distribution of the population of the Netherlands in terms of the hililness of their local area, relative to the tenths defined in England.
+Figure 2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England.
 </td>
 </tr>
 </table>
