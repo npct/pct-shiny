@@ -36,6 +36,7 @@ shinyServer(function(input, output, session){
 
     helper$zones <-  readRDS(file.path(helper$dataDir, "z.Rds"))
     helper$cents <-   readRDS(file.path(helper$dataDir, "c.Rds"))
+    helper$rnet <-   readRDS(file.path(helper$dataDir, "rnet.Rds"))
     helper
   }
 
@@ -188,11 +189,11 @@ shinyServer(function(input, output, session){
   })
 
   zoneAttr <- reactive({
-    if(input$scenario == "" || input$scenario == 'olc') 'olc' else input$zone_attr
+    if(input$scenario == 'olc') 'olc' else input$zone_attr
   })
 
   scenario <- reactive({
-    if(input$scenario == "" || input$scenario == 'olc') 'base' else input$scenario
+    if(input$scenario == 'olc') 'base' else input$scenario
   })
 
   lineData <- reactive({
@@ -255,7 +256,8 @@ shinyServer(function(input, output, session){
       addTiles(., urlTemplate = mapTileUrl(),
                attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> | Route data from <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a>',
                options=tileOptions(opacity = 1, reuseTiles = T)) %>%
-      addCircleMarkers(., data = helper$cents, radius = 0.1, color = "black", group="centers") %>%
+      addCircleMarkers(., data = helper$cents, radius = 0.1, color = "black") %>%
+        addPolylines(data = helper$rnet, color = "black", opacity = 1, weight = 10 * rnet$base_olc / mean(rnet$base_olc)) %>%
       mapOptions(zoomToLimits = "first")
   )
 
