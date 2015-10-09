@@ -19,6 +19,22 @@ function toggleElement(id) {
   }
   
 </script>
+
+
+<style> 
+  <!--
+    td {
+        border: 0px;
+    }
+    tr.row2 td {
+        padding-top: 100px;
+    }
+    tr.caption td {
+        padding-top: 30px;
+    }
+  -->
+</style>
+
 <b> Under development </b>
 
 [1\. Does hilliness matter for cycling? Do the Dutch just cycle more because the Netherlands is flatter?](javascript:toggleElement('a1'))
@@ -33,9 +49,15 @@ function toggleElement(id) {
   <img src="./assets/Fig0.png" width = "80%" height = "70%"/>
 </a>
 <br>
+</td>
+</tr>
+
+<tr class="caption">
+<td align="center" valign="center">
 <b>Figure 1: Proportion of trips cycled in England, according to the hilliness of the local area</b>
 </td>
 </tr>
+
 </table>
 </div>
 <br>
@@ -46,16 +68,21 @@ It is also true that the Netherlands is a flatter country than England. As illus
 <table align="center" width="70%" border="0" cellpadding="5">
 <tr>
 <td align="center" valign="center">
-<a href="./assets/Fig1.png" title="Figure 2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England." target="_blank">
+<a href="./assets/FAQs/Fig1.png" title="Figure 2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England." target="_blank">
 <img src="./assets/Fig1.png" width = "80%" height = "70%"/>
 </a>
-<br>
+</td>
+</tr>
+
+<tr class="caption">
+<td align="center" valign="center">
 <b>Figure 2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England.</b>
 </td>
 </tr>
+
 </table>
 </div>
-
+<br>
 We estimated what would happen to cycling levels in England if England had the same flat topography as the Netherlands (but the existing infrastructure, travel patterns and cycling cultures). We did this by re-weighting the cycle mode share shown in Figure 1 according to the Dutch distribution of hilliness shown in Figure 2 i.e. giving much more weight to the cycling levels of those living in the flattest parts of England than those living in the hilliest parts. In this &#34;Dutch levels of hilliness&#34; scenario, the proportion of trips cycled in England rose from 1.7% to 2.6%. This is still ten times lower than the mode share of 26.7% actually observed in the Netherlands. So although hilliness does explain a small part of why the English cycle less than the Dutch, it still leaves a massive difference unexplained. Or to put it another way, only if cycling levels in England were increased ten-fold would &#34;the Netherlands is flatter&#34; become a convincing excuse for England lagging behind.
 <br>
 <br>
@@ -69,24 +96,30 @@ We estimated what would happen to cycling levels in England if England had the s
 <table align="center" width="90%" border="0" cellpadding="5">
 <tr>
 <td align="center" valign="center">
-<a href="./assets/Fig2.png" title="Figure 1: Proportion of trips cycled in England and Netherlands stratified by age and sex" target="_blank">
-<img src="./assets/Fig2.png" width = "80%" height = "80%"/>
+<a href="./assets/FAQs/Fig2.png" title="Figure 1: Proportion of trips cycled in England and Netherlands stratified by age and sex" target="_blank">
+<img src="./assets/Fig2.png" width = "90%" height = "50%"/>
 </a>
 <br />
+</td>
+</tr>
+
+<tr class="caption">
+<td align="center" valign="center">
 <b>Figure 1: Proportion of trips cycled in England and Netherlands stratified by age and sex</b>
 </td>
+</tr>
 
-</table>
-</div>
-<br>
-
-<div style="margin: 0 auto; text-align: center">
-<table align="center" width="90%" border="0" cellpadding="5">
-<tr>
+<tr class="row2">
 <td align="center" valign="center">
-<a href="./assets/Fig3.png" title="Figure 2: Ratio of cycle mode share in the Netherlands versus England, stratified by age and sex" target="_blank">
-<img src="./assets/Fig3.png" width="100%" height = "60%"/>
+<a href="./assets/FAQs/Fig3.png" title="Figure 2: Ratio of cycle mode share in the Netherlands versus England, stratified by age and sex" target="_blank">
+<img src="./assets/Fig3.png" width= "50% height = "60%"/>
+<br>
 </a>
+</td>
+</tr>
+
+<tr class="caption">
+<td align="center" valign="center">
 <b>Figure 2: Ratio of cycle mode share in the Netherlands versus England, stratified by age and sex</b>
 </td>
 </tr>
@@ -104,13 +137,19 @@ In both countries, the probability of cycling falls rapidly as trip distance inc
 <table align="center" width="80%" border="0" cellpadding="5">
 <tr>
 <td align="center" valign="center">
-<a href="./assets/Fig4.png" title="Figure 3: ‘Distance decay’ curves in England and the Netherlands, showing the probability that a trip of a given distance will be cycled relative to a trip of 2 miles" target="_blank">
+<a href="./assets/FAQs/Fig4.png" title="Figure 3: ‘Distance decay’ curves in England and the Netherlands, showing the probability that a trip of a given distance will be cycled relative to a trip of 2 miles" target="_blank">
 <img src="./assets/Fig4.png" width="100%" height = "80%"/>
 </a>
-<br />
+<br>
+</td>
+</tr>
+
+<tr class="caption">
+<td align="center" valign="center">
 <b>Figure 3: ‘Distance decay’ curves in England and the Netherlands, showing the probability that a trip of a given distance will be cycled relative to a trip of 2 miles</b>
 </td>
 </tr>
+
 </table>
 </div>
 
