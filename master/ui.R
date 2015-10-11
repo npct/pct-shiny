@@ -10,7 +10,8 @@ scenarios <- c("Census 2011 Cycling" = "olc",
 line_types <- c("None" = "none",
                 "Straight Lines" = "straight",
                 "Fastest Route" = "d_route",
-                "Fastest Route & Quiet Routes" = "route")
+                "Fastest Route & Quiet Routes" = "route",
+                "Route Network" = "rnet")
 
 attrsZone <- c("Scenario Level of Cycling (SLC)"    = "slc",
                "Scenario Increase in Cycling (SIC)" = "sic")
