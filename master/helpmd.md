@@ -6,18 +6,20 @@ output: html_document
 ---
 
 The tool should be used interactively. By switching between different scenarios,
-for example, one can see how the distribution of cycling can be expected to
+for example, one can see how the distribution of cycling can be expected to change
 as cycling grows. By switching between line types, you can see whether or not
 'desire lines' of high demand are supplied with quiet and direct routes.
 
 By experimenting with the 'Freeze lines' option and zooming into specific
 areas of interest, the level of cycling at more local levels can be explored.
-And by setting the basemap to 'Satellite', the potential for creating new
+And by setting the basemap to 'Satellite' when zoomed into specific parts of the
+road network, the space available to create new
 cycle paths and car-free zones can be explored.
 
 Overall, there are many ways that the tool can be used to improve cycling
-provision.
-The subsequent table explains the various options in the interactive
+provision. It is likely that more features will be added in future versions
+(if you have any suggestions, please [get in touch](mailto:npct@npct.org.uk)).
+The table below explains the various options in the interactive
 map.
 
 <table class="table table-hover table-responsive">
