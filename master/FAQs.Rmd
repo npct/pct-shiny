@@ -32,7 +32,9 @@ function toggleElement(id) {
   -->
 </style>
 
-<b> Under development </b>
+These are **Frequently Asked Questions** (FAQ) from testing the Propensity to Cycle
+Tool (PCT). The aim is clarify doubts that some have had about what the tool is,
+how it works, and why it was designed in this way.
 
 [1\. Does hilliness matter for cycling? Do the Dutch just cycle more because the Netherlands is flatter?](javascript:toggleElement('a1'))
 
@@ -168,4 +170,23 @@ The aim of the NPCT is not to predict exactly where people are currently cycling
 
 <p>Instead, for utility trips, improving direct routes will reduce safety and time disincentives to cycling. So while a good proportion of current cyclists may use the &#39;quietest&#39; route, a big increase in capacity will likely necessitate substantial improvements to the &#39;direct&#39; route, which will then carry many more riders.</p>
 <p>Thus we have chosen to present the &#39;direct&#39; as the most first choice for creating good cycling routes. </p>
+</div>
+
+[4\. What are the estimates of future cycling rate based on?](javascript:toggleElement('a4'))
+
+<div id="a4" style="display:none">
+
+The estimates of future cycling rate are based on a regression model, the results of which
+can be seen in the [Model Output Tab](#tab-9331-4).
+
+To create different scenarios of the future, we used different distance decay curves.
+For the Dutch scenario, for example, we assumed that the likelihood of
+cycling a given distance was the same in the UK as it is in the Netherlands.
+
+The regression model also takes hilliness into account. The output is displayed in a way
+that focusses on the *absolute* rate of cycling rather than the *percentage* who cycle
+in a particular area or along a particular desire line. Thus short distance trips
+with a currently low rate of cycling, few hills and a high number of commutes will
+tend to have the highest projected increase in cycling.
+
 </div>
