@@ -174,10 +174,8 @@ The aim of the NPCT is not to predict exactly where people are currently cycling
 
 [4\. What are the estimates of future cycling rate based on?](javascript:toggleElement('a4'))
 
-<div id="a4" style="display:none">
-
 The estimates of future cycling rate are based on a regression model, the results of which
-can be seen in the [Model Output Tab](#tab-9331-4).
+can be seen in the Model Output Tab.
 
 To create different scenarios of the future, we used different distance decay curves.
 For the Dutch scenario, for example, we assumed that the likelihood of
