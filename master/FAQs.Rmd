@@ -33,8 +33,7 @@ function toggleElement(id) {
 </style>
 
 These are **Frequently Asked Questions** (FAQ) from testing the Propensity to Cycle
-Tool (PCT). The aim is clarify doubts that some have had about what the tool is,
-how it works, and why it was designed in this way.
+Tool (PCT). The aim is to explain users what the tool is, how it works, and why it was designed in this way.
 
 [1\. Does hilliness matter for cycling? Do the Dutch just cycle more because the Netherlands is flatter?](javascript:toggleElement('a1'))
 
@@ -173,6 +172,8 @@ The aim of the NPCT is not to predict exactly where people are currently cycling
 </div>
 
 [4\. What are the estimates of future cycling rate based on?](javascript:toggleElement('a4'))
+
+<div id="a4" style="display:none"> 
 
 The estimates of future cycling rate are based on a regression model, the results of which
 can be seen in the Model Output Tab.
