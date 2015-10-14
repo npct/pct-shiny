@@ -167,8 +167,31 @@ The aim of the NPCT is not to predict exactly where people are currently cycling
 <p>So are the quietest routes for those groups, and the direct routes for others? No, because this project also shows that propensity to cycle declines more rapidly with distance for women and older people. If a quieter route creates a detour such that a 2 mile trip becomes effectively a 3 mile trip, younger men’s propensity to cycle the route will decrease 11%. But for younger women, the decline is 19%, and for older adults (60+) the propensity would decrease by 35%.</p>
 <p>This hits women’s and older men’s cycling twice: they are less likely than men to want to cycle the direct route, but then are also less likely to be willing to cycle an effectively longer alternative route. It’s likely to be part of the reason for disparities in cycling by age and gender.</p>
 
+<div style="margin: 0 auto; text-align: center">
+<table align="center" width="70%" border="0" cellpadding="5">
+<tr>
+
+<td align="center" valign="center">
+<a href="./assets/FAQs/Route.png" title="Direct and Quiet Routes between two zones." target="_blank">
+<img src="./assets/Route.png" width = "80%" height = "70%"/>
+</a>
+<br>
+</td>
+</tr>
+
+<tr class="caption">
+<td align="center" valign="center">
+<b>Figure 1: Direct and Quiet Routes between two zones.</b>
+</td>
+</tr>
+
+</table>
+</div>
+<br>
+
 <p>Instead, for utility trips, improving direct routes will reduce safety and time disincentives to cycling. So while a good proportion of current cyclists may use the &#39;quietest&#39; route, a big increase in capacity will likely necessitate substantial improvements to the &#39;direct&#39; route, which will then carry many more riders.</p>
 <p>Thus we have chosen to present the &#39;direct&#39; as the most first choice for creating good cycling routes. </p>
+
 </div>
 
 [4\. What are the estimates of future cycling rate based on?](javascript:toggleElement('a4'))
