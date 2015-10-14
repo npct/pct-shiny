@@ -36,13 +36,14 @@ shinyServer(function(input, output, session){
 
     helper$zones <-  readRDS(file.path(helper$dataDir, "z.Rds"))
     helper$cents <-   readRDS(file.path(helper$dataDir, "c.Rds"))
-    # helper$rnet <-   readRDS(file.path(helper$dataDir, "rnet.Rds"))
+
+    helper$rnet <- readRDS(file.path(dataDirRoot, startingCity, "rnet.Rds"))
+
+    helper$rnet_weight <- 0.4 * helper$rnet$dutch_slc / mean(helper$rnet$base_olc)
+    helper$rnet_weight[helper$rnet_weight > 59] <- 60
+
     helper
   }
-
-  rnet <- readRDS(file.path("../pct-data", startingCity, "rnet.Rds"))
-  rnet_weight <- 0.4 * rnet$dutch_slc / mean(rnet$base_olc)
-  rnet_weight[rnet_weight > 59] <- 60
 
   helper$dataDir <- file.path(dataDirRoot, startingCity)
   helper$scenarioWas <- NULL
@@ -131,12 +132,12 @@ shinyServer(function(input, output, session){
   })
   observe({
     leafletProxy("map")  %>% clearGroup(., "maroon") %>%
-      clearGroup(., "turquoise") %>% clearGroup(., "purple")
+      clearGroup(., "turquoise") %>% clearGroup(., "purple") %>% clearGroup(., "red")
     leafletProxy("map") %>% {
       if (input$line_type == 'straight')
         plotLines(., helper$l, input$nos_lines, straightPopup, "maroon")
       else
-      .
+        .
     } %>% {
       if (input$line_type == 'route')
         leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "turquoise")
@@ -145,6 +146,14 @@ shinyServer(function(input, output, session){
     } %>% {
       if (input$line_type %in% c('d_route', 'route'))
         leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
+      else
+        .
+    } %>% {
+
+      if (input$line_type == 'rnet')
+        leafletProxy("map") %>% plotRnets(.)
+      else
+        .
     }
     # needed to force lines to be redrawn when scenario, zone or base map changes
     paste(input$scenario, input$zone_attr, input$map_base)
@@ -248,6 +257,10 @@ shinyServer(function(input, output, session){
                    , layerId = paste0(sorted_l[['id']], '-', color))
   }
 
+  plotRnets <- function(m){
+    addPolylines(m, data = helper$rnet, group = "red", color = "red", opacity = 1, weight = helper$rnet_weight)
+  }
+
   mapTileUrl <- reactive({
     if (input$map_base == 'acetate')
       "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
@@ -261,7 +274,7 @@ shinyServer(function(input, output, session){
                attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> | Route data from <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a>',
                options=tileOptions(opacity = 1, reuseTiles = T)) %>%
       addCircleMarkers(., data = helper$cents, radius = 0.1, color = "black") %>%
-        addPolylines(data = rnet, color = "red", opacity = 1, weight = rnet_weight) %>%
+#       addPolylines(data = helper$rnet, color = "red", opacity = 1, weight = helper$rnet_weight) %>%
       mapOptions(zoomToLimits = "first")
   )
 
