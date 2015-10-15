@@ -53,7 +53,7 @@ for(i in folders[-1]){
     region <- spRbind(region, r)
   }
 }
-popup <- paste0(region$url_text, ", % cycling = ", region$pcycle)
+popup <- paste0(region$url_text, ", ", region$pcycle, "% cycling ", )
 m <- leaflet() %>% addTiles() %>% addPolygons(data = region, popup = popup)
 m
 # saveWidget(m, file = "map.html")
