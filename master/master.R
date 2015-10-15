@@ -151,7 +151,7 @@ shinyServer(function(input, output, session){
     } %>% {
 
       if (input$line_type == 'rnet')
-        leafletProxy("map") %>% plotRnets(.)
+        leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "red")
       else
         .
     }
@@ -257,9 +257,25 @@ shinyServer(function(input, output, session){
                    , layerId = paste0(sorted_l[['id']], '-', color))
   }
 
-  plotRnets <- function(m){
-    addPolylines(m, data = helper$rnet, group = "red", color = "red", opacity = 1, weight = helper$rnet_weight)
+
+
+  plotRnets <- function(m, lines, nos, popupFn, color){
+    sorted_l <- sortLines(lines, lineData(), nos)
+    helper$rnetldata <<- sorted_l
+    if(is.null(sorted_l))
+      m
+    else
+      addPolylines(m, data = sorted_l,
+                   group = color,
+                   color = color,
+                   opacity = 0.3,
+                   popup = popupFn(sorted_l, input$scenario),
+                   weight = helper$rnet_weight)
   }
+
+#   plotRnets <- function(m){
+#     addPolylines(m, data = helper$rnet, group = "red", color = "red", opacity = 1, weight = helper$rnet_weight)
+#   }
 
   mapTileUrl <- reactive({
     if (input$map_base == 'acetate')
