@@ -116,6 +116,25 @@ routePopup <- function(data, scenario){
   }
 }
 
+
+
+# Network Route popup function
+networkRoutePopup <- function(data, scenario){
+  # base_olc  cdp_slc	gendereq_slc	dutch_slc	ebike_slc
+  #if (data != NULL){
+    paste(
+      tableStart,
+      sprintf(paste('<tr>
+                    <td>Base OLC: </td>
+                    <td>&nbsp;%s km</td>
+                    </tr>'),
+              data$base_olc),
+      tableEnd
+    )
+  #}
+
+}
+
 zonePopup <- function(data, scenario, zone){
   zone_filter_name <- toupper(zone)
   paste(
