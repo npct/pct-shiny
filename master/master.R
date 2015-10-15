@@ -102,9 +102,14 @@ shinyServer(function(input, output, session){
         line <- helper$l[helper$l$id == id,]
       else if (color == "purple")
         line <- helper$rFast[helper$rFast$id == id,]
-      else
+      else if (color == "turquoise")
         line <- helper$rQuiet[helper$rQuiet$id == id,]
-      leafletProxy("map") %>% addPolylines(data = line, color = "white", opacity = 0.4,
+      else if (color == "red"){
+        line <- helper$rnet[helper$rnet$id == id,]
+      }
+
+      if (color != "red")
+        leafletProxy("map") %>% addPolylines(data = line, color = "white", opacity = 0.4,
                                            layerId = "highlighted")
     })
   })
@@ -150,8 +155,9 @@ shinyServer(function(input, output, session){
         .
     } %>% {
 
-      if (input$line_type == 'rnet')
+      if (input$line_type == 'rnet'){
         leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "red")
+      }
       else
         .
     }
@@ -168,7 +174,7 @@ shinyServer(function(input, output, session){
                   , color = "black"
                   , group = "zones"
                   , options = pathOptions(clickable=F)) %>%
-      addCircleMarkers(., data = helper$cents, radius = 2, color = "black", group = "centers",
+      addCircleMarkers(., data = helper$cents, radius = circleRadius(), color = "black", group = "centers",
                        popup = zonePopup(helper$cents, scenario(), zoneAttr()))
     isolate({
       leafletProxy("map") %>% {
@@ -192,6 +198,13 @@ shinyServer(function(input, output, session){
       0.7
     else
       0.0
+  })
+
+  circleRadius <- reactive({
+    if (input$map_base == 'acetate')  # Have the satalite map bigger circles
+      2
+    else
+      10
   })
 
   lineAttr <- reactive({
@@ -289,7 +302,7 @@ shinyServer(function(input, output, session){
       addTiles(., urlTemplate = mapTileUrl(),
                attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> | Route data from <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a>',
                options=tileOptions(opacity = 1, reuseTiles = T)) %>%
-      addCircleMarkers(., data = helper$cents, radius = 0.1, color = "black") %>%
+      addCircleMarkers(., data = helper$cents, radius = circleRadius(), color = "black") %>%
 #       addPolylines(data = helper$rnet, color = "red", opacity = 1, weight = helper$rnet_weight) %>%
       mapOptions(zoomToLimits = "first")
   )
