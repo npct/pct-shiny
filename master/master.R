@@ -210,7 +210,7 @@ shinyServer(function(input, output, session){
     if (input$map_base == 'acetate')  # Have the satalite map bigger circles
       2
     else
-      10
+      4
   })
 
   lineAttr <- reactive({
