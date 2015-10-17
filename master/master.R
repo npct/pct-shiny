@@ -91,6 +91,7 @@ shinyServer(function(input, output, session){
     if( eLatLng == helper$eLatLng)
       return()
     helper$eLatLng <<- eLatLng
+
     isolate({
       idColor <- unlist(strsplit(event$id, "-"))
       id <- idColor[1]
@@ -178,7 +179,7 @@ shinyServer(function(input, output, session){
       addCircleMarkers(., data = helper$cents, radius = circleRadius(), color = "black", group = "centers",
                        popup = zonePopup(helper$cents, scenario(), zoneAttr()))
 
-    # Change the lines in isolation from the zones
+    # Change the lines in isolation from the zones - should replicate previous observe
     isolate({
       leafletProxy("map") %>% {
         if (input$line_type == 'straight')
@@ -193,7 +194,16 @@ shinyServer(function(input, output, session){
       } %>% {
         if (input$line_type %in% c('d_route', 'route'))
           leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
+        else .
+        } %>% {
+
+      if (input$line_type == 'rnet'){
+        leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "red")
       }
+
+      else
+        .
+    }
     })
   })
   transpRate <- reactive({
