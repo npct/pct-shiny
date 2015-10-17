@@ -102,9 +102,6 @@ shinyServer(function(input, output, session){
         line <- helper$rFast[helper$rFast$id == id,]
       else if (color == "turquoise")
         line <- helper$rQuiet[helper$rQuiet$id == id,]
-      else if (color == "red"){
-        line <- helper$rnet[helper$rnet$id == id,]
-      }
 
       if (color != "red")
         leafletProxy("map") %>% addPolylines(data = line, color = "white", opacity = 0.4,

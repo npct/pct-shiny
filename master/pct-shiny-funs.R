@@ -121,18 +121,23 @@ routePopup <- function(data, scenario){
 # Network Route popup function
 networkRoutePopup <- function(data, scenario){
   # base_olc  cdp_slc	gendereq_slc	dutch_slc	ebike_slc
-  #if (data != NULL){
-    paste(
-      tableStart,
-      sprintf(paste('<tr>
-                    <td>Base OLC: </td>
-                    <td>&nbsp;%s km</td>
-                    </tr>'),
-              data$base_olc),
-      tableEnd
-    )
-  #}
+  if(scenario == "olc")
+    dfrnet <- "base_olc"
+  else
+    dfrnet <- dataFilter(scenario, "slc")
 
+  paste(
+    tableStart,
+    sprintf(paste('<tr>
+                    <td>Base OLC: </td>
+                    <td>&nbsp;%s cyclists</td>
+                  </tr><tr>
+                    <td>Scenario: </td>
+                    <td>&nbsp;%s cyclists</td>
+                  </tr>'),
+            data$base_olc, round(data[[dfrnet]])),
+    tableEnd
+  )
 }
 
 zonePopup <- function(data, scenario, zone){
