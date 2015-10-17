@@ -294,9 +294,11 @@ shinyServer(function(input, output, session){
       addPolylines(m, data = sorted_l,
                    group = color,
                    color = color,
-                   opacity = 0.7,
+                   opacity = 0.9,
                    popup = popupFn(sorted_l, input$scenario),
-                   weight = normalise(sorted_l[[lineData()]], min = 1, max = 20) )
+                   weight = normalise(sorted_l[[lineData()]], min = 1, max = 20),
+                   layerId = paste0("-", as.character(1:nrow(sorted_l)))
+                   )
     }
   }
 
