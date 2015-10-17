@@ -62,7 +62,7 @@ shinyUI(
                        checkboxInput("freeze", "Freeze Lines", value = TRUE)
               ),
               tags$div(title="Flows to show",
-                       sliderInput("nos_lines", label = "Flows to show (top n)", 1, 100, value = 5)
+                       sliderInput("nos_lines", label = "Number of lines or % of network", 1, 100, value = 5)
               )
             ),
             tags$div(title="Change base of the map",
