@@ -135,6 +135,8 @@ shinyServer(function(input, output, session){
         updateSelectInput(session, "scenario", selected ="base")
     }
   })
+
+  # Plot if lines change
   observe({
     leafletProxy("map")  %>% clearGroup(., "maroon") %>%
       clearGroup(., "turquoise") %>% clearGroup(., "purple") %>% clearGroup(., "red")
@@ -164,6 +166,8 @@ shinyServer(function(input, output, session){
     # needed to force lines to be redrawn when scenario, zone or base map changes
     paste(input$scenario, input$zone_attr, input$map_base)
   })
+
+  # This function updates the zones and the lines
   observe({
     leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centers") %>%
       addPolygons(.,  data = helper$zones
@@ -176,6 +180,8 @@ shinyServer(function(input, output, session){
                   , options = pathOptions(clickable=F)) %>%
       addCircleMarkers(., data = helper$cents, radius = circleRadius(), color = "black", group = "centers",
                        popup = zonePopup(helper$cents, scenario(), zoneAttr()))
+
+    # Change the lines in isolation from the zones
     isolate({
       leafletProxy("map") %>% {
         if (input$line_type == 'straight')
@@ -272,7 +278,8 @@ shinyServer(function(input, output, session){
 
 
 
-  plotRnets <- function(m, lines, nos, popupFn, color){
+  plotRnets <- function(m, lines, perc, popupFn, color){
+    nos = perc / 100 * nrow(lines)
     sorted_l <- sortLines(lines, lineData(), nos)
     helper$rnetldata <<- sorted_l
     if(is.null(sorted_l))

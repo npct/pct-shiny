@@ -61,7 +61,7 @@ shinyUI(
               tags$div(title="Untick to allow lines to update when you move the map",
                        checkboxInput("freeze", "Freeze Lines", value = TRUE)
               ),
-              tags$div(title="Flows to show (top n)",
+              tags$div(title="Flows to show",
                        sliderInput("nos_lines", label = "Flows to show (top n)", 1, 100, value = 5)
               )
             ),
