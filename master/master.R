@@ -297,7 +297,7 @@ shinyServer(function(input, output, session){
                    opacity = 0.9,
                    popup = popupFn(sorted_l, input$scenario),
                    weight = normalise(sorted_l[[lineData()]], min = 1, max = 20),
-                   layerId = paste0("-", as.character(1:nrow(sorted_l)))
+                   layerId = paste0(1:nrow(sorted_l), '-', color)
                    )
     }
   }
