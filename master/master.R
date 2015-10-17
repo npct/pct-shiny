@@ -39,9 +39,6 @@ shinyServer(function(input, output, session){
 
     helper$rnet <- readRDS(file.path(dataDirRoot, startingCity, "rnet.Rds"))
 
-    helper$rnet_weight <- 0.4 * helper$rnet$dutch_slc / mean(helper$rnet$base_olc)
-    helper$rnet_weight[helper$rnet_weight > 59] <- 60
-
     helper
   }
 
@@ -276,26 +273,22 @@ shinyServer(function(input, output, session){
                    , layerId = paste0(sorted_l[['id']], '-', color))
   }
 
-
-
   plotRnets <- function(m, lines, perc, popupFn, color){
-    nos = perc / 100 * nrow(lines)
+    nos <- perc / 100 * nrow(lines)
     sorted_l <- sortLines(lines, lineData(), nos)
-    helper$rnetldata <<- sorted_l
-    if(is.null(sorted_l))
+    helper$rnetldata <- lines
+
+    if(is.null(sorted_l)){
       m
-    else
+    } else {
       addPolylines(m, data = sorted_l,
                    group = color,
                    color = color,
-                   opacity = 0.3,
+                   opacity = 0.7,
                    popup = popupFn(sorted_l, input$scenario),
-                   weight = helper$rnet_weight)
+                   weight = normalise(sorted_l[[lineData()]], min = 1, max = 20) )
+    }
   }
-
-#   plotRnets <- function(m){
-#     addPolylines(m, data = helper$rnet, group = "red", color = "red", opacity = 1, weight = helper$rnet_weight)
-#   }
 
   mapTileUrl <- reactive({
     if (input$map_base == 'acetate')
@@ -310,7 +303,6 @@ shinyServer(function(input, output, session){
                attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> | Route data from <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a>',
                options=tileOptions(opacity = 1, reuseTiles = T)) %>%
       addCircleMarkers(., data = helper$cents, radius = circleRadius(), color = "black") %>%
-#       addPolylines(data = helper$rnet, color = "red", opacity = 1, weight = helper$rnet_weight) %>%
       mapOptions(zoomToLimits = "first")
   )
 
