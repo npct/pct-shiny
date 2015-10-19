@@ -93,17 +93,17 @@ shinyServer(function(input, output, session){
     helper$eLatLng <<- eLatLng
 
     isolate({
-      idColor <- unlist(strsplit(event$id, "-"))
-      id <- idColor[1]
-      color <- idColor[2]
+      idGroupName <- unlist(strsplit(event$id, "-"))
+      id <- idGroupName[1]
+      groupName <- idGroupName[2]
       if (input$line_type == 'straight')
         line <- helper$l[helper$l$id == id,]
-      else if (color == "purple")
+      else if (groupName == "faster_route")
         line <- helper$rFast[helper$rFast$id == id,]
-      else if (color == "turquoise")
+      else if (groupName == "quieter_route")
         line <- helper$rQuiet[helper$rQuiet$id == id,]
 
-      if (color != "red")
+      if (groupName != "route_network")
         leafletProxy("map") %>% addPolylines(data = line, color = "white", opacity = 0.4,
                                            layerId = "highlighted")
     })
@@ -133,27 +133,27 @@ shinyServer(function(input, output, session){
 
   # Plot if lines change
   observe({
-    leafletProxy("map")  %>% clearGroup(., "maroon") %>%
-      clearGroup(., "turquoise") %>% clearGroup(., "purple") %>% clearGroup(., "red")
+    leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
+      clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network")
     leafletProxy("map") %>% {
       if (input$line_type == 'straight')
-        plotLines(., helper$l, input$nos_lines, straightPopup, "maroon")
+        plotLines(., helper$l, input$nos_lines, straightPopup, "straight_line", "maroon")
       else
         .
     } %>% {
       if (input$line_type == 'route')
-        leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "turquoise")
+        leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "quieter_route", "turquoise")
       else
         .
     } %>% {
       if (input$line_type %in% c('d_route', 'route'))
-        leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
+        leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup,"faster_route",  "purple")
       else
         .
     } %>% {
 
       if (input$line_type == 'rnet'){
-        leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "red")
+        leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "route_network", "red")
       }
       else
         .
@@ -180,22 +180,22 @@ shinyServer(function(input, output, session){
     isolate({
       leafletProxy("map") %>% {
         if (input$line_type == 'straight')
-          plotLines(., helper$l, input$nos_lines, straightPopup, "maroon")
+          plotLines(., helper$l, input$nos_lines, straightPopup, "straight_line", "maroon")
         else
           .
       } %>% {
         if (input$line_type == 'route')
-          leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "turquoise")
+          leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "quieter_route", "turquoise")
         else
           .
       } %>% {
         if (input$line_type %in% c('d_route', 'route'))
-          leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup, "purple")
+          leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup,"faster_route",  "purple")
         else .
         } %>% {
 
       if (input$line_type == 'rnet'){
-        leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "red")
+        leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "route_network", "red")
       }
 
       else
@@ -266,7 +266,7 @@ shinyServer(function(input, output, session){
     helper$bb
   })
 
-  plotLines <- function(m, lines, nos, popupFn, color){
+  plotLines <- function(m, lines, nos, popupFn, groupName, color){
     sorted_l <- sortLines(lines, lineData(), nos)
     helper$ldata <<- sorted_l
     if(is.null(sorted_l))
@@ -275,12 +275,13 @@ shinyServer(function(input, output, session){
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
                    , weight = normalise(sorted_l[[lineData()]], min = 3, max = 6)
-                   , opacity = 0.7, group = color,
+                   , opacity = 0.7
+                   , group = groupName,
                    , popup = popupFn(sorted_l, input$scenario)
-                   , layerId = paste0(sorted_l[['id']], '-', color))
+                   , layerId = paste0(sorted_l[['id']], '-', groupName))
   }
 
-  plotRnets <- function(m, lines, perc, popupFn, color){
+  plotRnets <- function(m, lines, perc, popupFn, groupName, color){
     nos <- perc / 100 * nrow(lines)
     sorted_l <- sortLines(lines, lineData(), nos)
     helper$rnetldata <- lines
@@ -289,12 +290,12 @@ shinyServer(function(input, output, session){
       m
     } else {
       addPolylines(m, data = sorted_l,
-                   group = color,
+                   group = groupName,
                    color = color,
                    opacity = 0.9,
                    popup = popupFn(sorted_l, input$scenario),
                    weight = normalise(sorted_l[[lineData()]], min = 1, max = 20),
-                   layerId = paste0(1:nrow(sorted_l), '-', color)
+                   layerId = paste0(1:nrow(sorted_l), '-', groupName)
                    )
     }
   }
