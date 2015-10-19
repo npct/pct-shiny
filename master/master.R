@@ -137,23 +137,23 @@ shinyServer(function(input, output, session){
       clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network")
     leafletProxy("map") %>% {
       if (input$line_type == 'straight')
-        plotLines(., helper$l, input$nos_lines, straightPopup, "straight_line", "maroon")
+        plotLines(., helper$l, input$nos_lines, straightPopup, "straight_line", getLineColour("straight_line"))
       else
         .
     } %>% {
       if (input$line_type == 'route')
-        leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "quieter_route", "turquoise")
+        leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "quieter_route", getLineColour("quieter_route"))
       else
         .
     } %>% {
       if (input$line_type %in% c('d_route', 'route'))
-        leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup,"faster_route",  "purple")
+        leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route"))
       else
         .
     } %>% {
 
       if (input$line_type == 'rnet'){
-        leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "route_network", "red")
+        leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
       }
       else
         .
@@ -180,22 +180,22 @@ shinyServer(function(input, output, session){
     isolate({
       leafletProxy("map") %>% {
         if (input$line_type == 'straight')
-          plotLines(., helper$l, input$nos_lines, straightPopup, "straight_line", "maroon")
+          plotLines(., helper$l, input$nos_lines, straightPopup, "straight_line", getLineColour("straight_line"))
         else
           .
       } %>% {
         if (input$line_type == 'route')
-          leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "quieter_route", "turquoise")
+          leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "quieter_route", getLineColour("quieter_route"))
         else
           .
       } %>% {
         if (input$line_type %in% c('d_route', 'route'))
-          leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup,"faster_route",  "purple")
+          leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route"))
         else .
         } %>% {
 
       if (input$line_type == 'rnet'){
-        leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "route_network", "red")
+        leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
       }
 
       else

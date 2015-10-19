@@ -1,3 +1,8 @@
+# Data Frame which contains the links of lines and their colours
+lineAndColourDF <- data.frame(
+  lineType = c("straight_line", "quieter_route","faster_route", "route_network"),
+  lineColour = c("maroon","turquoise","purple","red"))
+
 # Normalise the data ready for plotting
 normalise <- function(values, min = 0, max = 1){
   min + max * (values - min(values))/diff(range(values))
@@ -158,3 +163,6 @@ zonePopup <- function(data, scenario, zone){
     tableEnd)
 }
 
+getLineColour <- function(lineType){
+  lineAndColourDF$lineColour[lineAndColourDF$lineType == lineType]
+}
