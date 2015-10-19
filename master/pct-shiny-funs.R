@@ -1,7 +1,7 @@
 # Data Frame which contains the links of lines and their colours
 lineAndColourDF <- data.frame(
   lineType = c("straight_line", "quieter_route","faster_route", "route_network"),
-  lineColour = c("maroon","turquoise","purple","red"))
+  lineColour = c("maroon","turquoise","purple","blue"))
 
 # Normalise the data ready for plotting
 normalise <- function(values, min = 0, max = 1){
