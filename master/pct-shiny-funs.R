@@ -12,6 +12,7 @@ normalise <- function(values, min = 0, max = 1){
 getColourRamp <- function(colors, values) {
   v <- normalise(values)
   x <- colorRamp(colors)(v)
+  x[is.na(x)] <- 1
   rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
 }
 
