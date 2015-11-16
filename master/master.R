@@ -37,7 +37,7 @@ shinyServer(function(input, output, session){
     helper$zones <-  readRDS(file.path(helper$dataDir, "z.Rds"))
     helper$cents <-   readRDS(file.path(helper$dataDir, "c.Rds"))
 
-    helper$rnet <- readRDS(file.path(dataDirRoot, startingCity, "rnet.Rds"))
+    helper$rnet <- readRDS(file.path(helper$dataDir, "rnet.Rds"))
     helper$rnet$id <- 1:nrow(helper$rnet)
 
     helper
@@ -287,7 +287,7 @@ shinyServer(function(input, output, session){
   plotRnets <- function(m, lines, perc, popupFn, color){
     nos <- perc / 100 * nrow(lines)
     sorted_l <- sortLines(lines, lineData(), nos)
-    helper$rnetldata <- lines
+    helper$rnetldata <- sorted_l
 
     if(is.null(sorted_l)){
       m
