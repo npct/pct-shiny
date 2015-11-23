@@ -312,7 +312,7 @@ shinyServer(function(input, output, session){
   output$map = renderLeaflet(
     leaflet() %>%
       addTiles(., urlTemplate = mapTileUrl(),
-               attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> | Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> | Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors”',
+               attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> | Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> | Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                options=tileOptions(opacity = 1, reuseTiles = T)) %>%
       addCircleMarkers(., data = helper$cents, radius = circleRadius(), color = "black") %>%
       mapOptions(zoomToLimits = "first")
