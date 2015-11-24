@@ -3,10 +3,11 @@
 # # # # #
 
 # use install.packages() install these
-cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT")
-sel <- cranPkgs %in% installed.packages()
-# install.packages(cranPkgs[!sel])
-lapply(cranPkgs, library, character.only = TRUE)
+cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos")
+# use devtools::install_github("rstudio/PkgName")
+devPkgs <- c("leaflet", "DT")
+
+lapply(c(cranPkgs, devPkgs), library, character.only = TRUE)
 
 # Colours
 zcols <- c("darkslategrey", "yellow")
@@ -312,7 +313,7 @@ shinyServer(function(input, output, session){
   output$map = renderLeaflet(
     leaflet() %>%
       addTiles(., urlTemplate = mapTileUrl(),
-               attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> | Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> | Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors”',
+               attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> | Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> | Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                options=tileOptions(opacity = 1, reuseTiles = T)) %>%
       addCircleMarkers(., data = helper$cents, radius = circleRadius(), color = "black") %>%
       mapOptions(zoomToLimits = "first")
