@@ -157,9 +157,12 @@ shinyServer(function(input, output, session){
 
       if (input$line_type == 'rnet'){
         leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
+        updateSelectInput(session, inputId = "nos_lines", label = "Percent (%) of Network", selected = 50)
       }
-      else
+      else{
         .
+        updateSelectInput(session, inputId = "nos_lines", label = "Number of lines", selected = 5)
+      }
     }
     # needed to force lines to be redrawn when scenario, zone or base map changes
     paste(input$scenario, input$zone_attr, input$map_base)
