@@ -121,6 +121,7 @@ shinyServer(function(input, output, session){
   # Updates the Local Authority if the map is moved
   # over another LA with data
   observe({
+    if(file.exists(file.path(helper$dataDir, 'isolated'))) return()
     LA <- findLA()
     dataDir <-  file.path(dataDirRoot, LA)
 
