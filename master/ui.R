@@ -48,12 +48,6 @@ shinyUI(
             tags$div(title="Scenario details can be seen in the Help tab",
                      selectInput("scenario", "Scenario:", scenarios)
             ),
-            conditionalPanel(
-              condition = "input.scenario != 'olc'",
-              tags$div(title="Set zone colours depending on the cycling level",
-                       selectInput("zone_attr", "Scenario Attribute:", attrsZone)
-              )
-            ),
             tags$div(title="Shows the cycling flow between the centres of zones",
                      selectInput("line_type", "Cycling Flows", line_types, selected = "none")
             ),

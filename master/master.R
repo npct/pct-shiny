@@ -168,7 +168,7 @@ shinyServer(function(input, output, session){
       }
     }
     # needed to force lines to be redrawn when scenario, zone or base map changes
-    paste(input$scenario, input$zone_attr, input$map_base)
+    paste(input$scenario, input$map_base)
   })
 
   # This function updates the zones and the lines
@@ -230,11 +230,11 @@ shinyServer(function(input, output, session){
     if(input$scenario == 'olc')
       'olc'
     else
-      input$zone_attr
+      'slc'
   })
 
   zoneAttr <- reactive({
-    if(input$scenario == 'olc') 'olc' else input$zone_attr
+    if(input$scenario == 'olc') 'olc' else 'slc'
   })
 
   scenario <- reactive({
@@ -334,10 +334,10 @@ shinyServer(function(input, output, session){
 
   addURLBasedTiles <- function(map){
     addTiles(map, urlTemplate = mapTileUrl(),
-               attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
+             attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
                    Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
                    Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-               options=tileOptions(opacity = 1, reuseTiles = T))
+             options=tileOptions(opacity = 1, reuseTiles = T))
   }
 
   output$legendCyclingPotential <- renderPlot({
