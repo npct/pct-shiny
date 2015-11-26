@@ -212,25 +212,17 @@ shinyServer(function(input, output, session){
       }
     })
   })
+
   transpRate <- reactive({
-    if (input$map_base == 'roadmap')  # Have the satalite map more transparent
-      0.7
-    else
-      0.0
+    if (input$map_base == 'roadmap') 0.7 else 0.0
   })
 
   circleRadius <- reactive({
-    if (input$map_base == 'roadmap')  # Have the satalite map bigger circles
-      2
-    else
-      4
+    if (input$map_base == 'roadmap') 2 else 4
   })
 
   lineAttr <- reactive({
-    if(input$scenario == 'olc')
-      'olc'
-    else
-      'slc'
+    if(input$scenario == 'olc') 'olc' else 'slc'
   })
 
   zoneAttr <- reactive({
@@ -384,6 +376,4 @@ shinyServer(function(input, output, session){
     }
     DT::datatable(helper$zones@data, options = list(pageLength = 10))   %>% formatRound(columns = colnames(helper$zones@data[sapply(helper$zones@data,is.numeric)]), digits=2)
   })
-
-
 })
