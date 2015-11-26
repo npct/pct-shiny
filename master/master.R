@@ -163,7 +163,7 @@ shinyServer(function(input, output, session){
       }
       else{
         .
-        updateSelectInput(session, inputId = "nos_lines", label = "Number of lines")
+        updateSelectInput(session, inputId = "nos_lines", label = "Number of Lines")
       }
     }
     # needed to force lines to be redrawn when scenario, zone or base map changes
