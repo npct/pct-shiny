@@ -26,33 +26,39 @@ LAs <- spTransform(LAs, CRS("+init=epsg:4326 +proj=longlat"))
 # # # # # # # #
 
 shinyServer(function(input, output, session){
+  # For all plotting data
+  toPlot <- NULL
+  # For any other persitant values
   helper <- NULL
+
   helper$eLatLng <- ""
-  loadData <- function(helper){
-    helper$l <- readRDS(file.path(helper$dataDir, "l.Rds"))
-
-    helper$rFast <- readRDS(file.path(helper$dataDir, "rf.Rds" ))
-    helper$rFast@data <- cbind(helper$rFast@data, helper$l@data)
-    helper$rQuiet <- readRDS(file.path(helper$dataDir, "rq.Rds"))
-    helper$rQuiet@data <- cbind(helper$rQuiet@data, helper$l@data)
-
-    helper$zones <-  readRDS(file.path(helper$dataDir, "z.Rds"))
-    helper$cents <-   readRDS(file.path(helper$dataDir, "c.Rds"))
-
-    helper$rnet <- readRDS(file.path(helper$dataDir, "rnet.Rds"))
-    helper$rnet$id <- 1:nrow(helper$rnet)
-
-    helper
-  }
-
   helper$dataDir <- file.path(dataDirRoot, startingCity)
   helper$scenarioWas <- NULL
-  helper <- loadData(helper)
 
+  # To set initialize toPlot
+  loadData <- function(dataDir){
+    toPlot
+    toPlot$l <- readRDS(file.path(dataDir, "l.Rds"))
+
+    toPlot$rFast <- readRDS(file.path(dataDir, "rf.Rds" ))
+    toPlot$rFast@data <- cbind(toPlot$rFast@data, toPlot$l@data)
+    toPlot$rQuiet <- readRDS(file.path(dataDir, "rq.Rds"))
+    toPlot$rQuiet@data <- cbind(toPlot$rQuiet@data, toPlot$l@data)
+
+    toPlot$zones <-  readRDS(file.path(dataDir, "z.Rds"))
+    toPlot$cents <-   readRDS(file.path(dataDir, "c.Rds"))
+
+    toPlot$rnet <- readRDS(file.path(dataDir, "rnet.Rds"))
+    toPlot$rnet$id <- 1:nrow(toPlot$rnet)
+
+    toPlot
+  }
+
+  toPlot <- loadData(helper$dataDir)
+
+  # Selects and sorts lines within a bounding box - given by flowsBB()
   sortLines <- function(lines, sortBy, nos){
-    if(!(sortBy %in% names(lines))) return(NULL)
     poly <- flowsBB()
-    if(is.null(poly)) return(NULL)
     poly <- spTransform(poly, CRS(proj4string(lines)))
     keep <- gContains( poly, lines,byid=TRUE )
     if(all(!keep)) return(NULL)
@@ -60,6 +66,7 @@ shinyServer(function(input, output, session){
     linesInBb[ tail(order(linesInBb[[sortBy]]), nos), ]
   }
 
+  # Finds the Local Authority shown inside the map bounds
   findLA <- function(){
     BB <- mapBB()
     if(is.null(BB)) return(NULL)
@@ -99,23 +106,25 @@ shinyServer(function(input, output, session){
       idGroupName <- unlist(strsplit(event$id, "-"))
       id <- idGroupName[1]
       groupName <- idGroupName[2]
-      if (input$line_type == 'straight')
-        line <- helper$l[helper$l$id == id,]
-      else if (groupName == "faster_route")
-        line <- helper$rFast[helper$rFast$id == id,]
-      else if (groupName == "quieter_route")
-        line <- helper$rQuiet[helper$rQuiet$id == id,]
-      else if (groupName == "route_network")
-        line <- helper$rnet[helper$rnet$id == id,]
+      line <- switch(groupName,
+               'straight_line' = toPlot$l[toPlot$l$id == id,],
+               'faster_route' = toPlot$rFast[toPlot$rFast$id == id,],
+               'quieter_route' = toPlot$rQuiet[toPlot$rQuiet$id == id,],
+               'route_network' = toPlot$rnet[toPlot$rnet$id == id,]
+               )
       if (!is.null(line))
-        leafletProxy("map") %>% addPolylines(data = line, color = "white", opacity = 0.4,
-                                             group = "highlighted", layerId = "highlighted")
+        leafletProxy("map") %>% addPolylines(data = line, color = "white",
+                                             opacity = 0.4, layerId = "highlighted")
     })
   })
+
+  # Updates the Local Authority if the map is moved
+  # over another LA with data
   observe({
     LA <- findLA()
     dataDir <-  file.path(dataDirRoot, LA)
 
+    # Part of the hack to force re-rending when LA changes
     if(!is.null(helper$scenarioWas)){
       updateSelectInput(session, "scenario", selected = helper$scenarioWas)
       helper$scenarioWas <<- NULL
@@ -125,10 +134,10 @@ shinyServer(function(input, output, session){
       setModelOutput(LA)
       helper$dataDir <<- dataDir
       helper$scenarioWas <<- input$scenario
-      helper <<- loadData(helper)
+      toPlot <<- loadData(dataDir)
       if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
         updateCheckboxInput(session, "freeze", value = F)
-      if(input$scenario != "olc") # Hack to force the map to re-render when a new zone is selected
+      if(input$scenario != "olc") # Hack to force the map to re-render
         updateSelectInput(session, "scenario", selected ="olc")
       else
         updateSelectInput(session, "scenario", selected ="cdp")
@@ -139,34 +148,21 @@ shinyServer(function(input, output, session){
   observe({
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
       clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
-      clearGroup(., "highlighted")
+      removeShape(., "highlighted")
 
     leafletProxy("map") %>% {
-      if (input$line_type == 'straight')
-        plotLines(., helper$l, input$nos_lines, straightPopup, "straight_line", getLineColour("straight_line"))
-      else
-        .
-    } %>% {
-      if (input$line_type == 'route')
-        leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "quieter_route", getLineColour("quieter_route"))
-      else
-        .
-    } %>% {
-      if (input$line_type %in% c('d_route', 'route'))
-        leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route"))
-      else
-        .
-    } %>% {
-
-      if (input$line_type == 'rnet'){
-        leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
-        updateSelectInput(session, inputId = "nos_lines", label = "Percent (%) of Network")
-      }
-      else{
-        .
-        updateSelectInput(session, inputId = "nos_lines", label = "Number of Lines")
-      }
+      switch(input$line_type,
+             'straight' = plotLines(., toPlot$l, input$nos_lines, straightPopup, "straight_line", getLineColour("straight_line")),
+             'route'= plotLines(., toPlot$rQuiet, input$nos_lines, routePopup, "quieter_route", getLineColour("quieter_route")),
+             'd_route'=, 'route'= plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route")),
+             'rnet' = plotLines(., toPlot$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
+      )
     }
+    if(input$line_type == 'rnet')
+      updateSelectInput(session, inputId = "nos_lines", label = "Percent (%) of Network")
+    else
+      updateSelectInput(session, inputId = "nos_lines", label = "Number of Lines")
+
     # needed to force lines to be redrawn when scenario, zone or base map changes
     paste(input$scenario, input$map_base)
   })
@@ -174,41 +170,26 @@ shinyServer(function(input, output, session){
   # This function updates the zones and the lines
   observe({
     leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centers") %>%
-      addPolygons(.,  data = helper$zones
+      addPolygons(.,  data = toPlot$zones
                   , weight = 2
                   , fillOpacity = transpRate()
                   , opacity = 0.2
-                  , fillColor = getColourRamp(zcols, helper$zones[[zoneData()]])
+                  , fillColor = getColourRamp(zcols, toPlot$zones[[zoneData()]])
                   , color = "black"
                   , group = "zones"
                   , options = pathOptions(clickable=F)) %>%
-      addCircleMarkers(., data = helper$cents, radius = circleRadius(), color = "black", group = "centers",
-                       popup = zonePopup(helper$cents, scenario(), zoneAttr()))
+      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centers",
+                       popup = zonePopup(toPlot$cents, scenario(), zoneAttr()))
 
     # Change the lines in isolation from the zones - should replicate previous observe
     isolate({
       leafletProxy("map") %>% {
-        if (input$line_type == 'straight')
-          plotLines(., helper$l, input$nos_lines, straightPopup, "straight_line", getLineColour("straight_line"))
-        else
-          .
-      } %>% {
-        if (input$line_type == 'route')
-          leafletProxy("map") %>% plotLines(., helper$rQuiet, input$nos_lines, routePopup, "quieter_route", getLineColour("quieter_route"))
-        else
-          .
-      } %>% {
-        if (input$line_type %in% c('d_route', 'route'))
-          leafletProxy("map") %>% plotLines(., helper$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route"))
-        else .
-      } %>% {
-
-        if (input$line_type == 'rnet'){
-          leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
-        }
-
-        else
-          .
+        switch(input$line_type,
+               'straight' = plotLines(., toPlot$l, input$nos_lines, straightPopup, "straight_line", getLineColour("straight_line")),
+               'route'= plotLines(., toPlot$rQuiet, input$nos_lines, routePopup, "quieter_route", getLineColour("quieter_route")),
+               'd_route'=, 'route'= plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route")),
+               'rnet' = plotLines(., toPlot$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
+        )
       }
     })
   })
@@ -246,9 +227,10 @@ shinyServer(function(input, output, session){
   # 2) Also called when freeze lines is unchecked and the user navigates the map
   # 3) Or when the user changes the Top Lines slider
   plotLinesData <- reactive({
-    (input$line_type != 'none' && ((!input$freeze && !is.null(input$map_bounds)) || input$nos_lines > 0)) && (lineData() %in% names(helper$l@data))
+    (input$line_type != 'none' && ((!input$freeze && !is.null(input$map_bounds)) || input$nos_lines > 0)) && (lineData() %in% names(toPlot$l@data))
   })
 
+  # Returns the map bounding box
   mapBB <- reactive({
     if (is.null(input$map_bounds)){ return (NULL)}
     lat <- c(input$map_bounds$west , input$map_bounds$east, input$map_bounds$east, input$map_bounds$west )
@@ -260,6 +242,8 @@ shinyServer(function(input, output, session){
     bounds
   })
 
+  # Updates the bounding box (bb) to the current map bb unless the map is frozen
+  # Returns a bb
   flowsBB <- reactive({
     if(!input$freeze || is.null(helper$bb)){
       helper$bb <<- mapBB()
@@ -268,85 +252,60 @@ shinyServer(function(input, output, session){
   })
 
   plotLines <- function(m, lines, nos, popupFn, groupName, color){
+    if(groupName=="route_network"){
+      nos <- nos / 100 * nrow(lines)
+      min <- 1
+      max <- 20
+    } else {
+      min <- 3
+      max <- 6
+    }
     sorted_l <- sortLines(lines, lineData(), nos)
-    helper$ldata <<- sorted_l
+    toPlot$ldata <<- sorted_l
     if(is.null(sorted_l))
       m
     else
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
-                   , weight = normalise(sorted_l[[lineData()]], min = 3, max = 6)
-                   , opacity = 0.7
+                   , weight = normalise(sorted_l[[lineData()]], min = min, max = max)
+                   , opacity = 0.8
                    , group = groupName,
                    , popup = popupFn(sorted_l, input$scenario)
                    , layerId = paste0(sorted_l[['id']], '-', groupName))
   }
 
-  plotRnets <- function(m, lines, perc, popupFn, groupName, color){
-    nos <- perc / 100 * nrow(lines)
-    sorted_l <- sortLines(lines, lineData(), nos)
-    helper$rnetldata <- lines
-
-    if(is.null(sorted_l)){
-      m
-    } else {
-      addPolylines(m, data = sorted_l,
-                   group = groupName,
-                   color = color,
-                   opacity = 0.9,
-                   popup = popupFn(sorted_l, input$scenario),
-                   weight = normalise(sorted_l[[lineData()]], min = 1, max = 20),
-                   layerId = paste0(sorted_l[['id']], '-', groupName)
-      )
-    }
-  }
-
   mapTileUrl <- reactive({
-    if (input$map_base == 'roadmap')
-      "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
-    else if (input$map_base == "satellite")
-      "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-    else if (input$map_base == "IMD")
-      "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png"
-
+    switch(input$map_base,
+           'roadmap' = "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
+           'satellite' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+           'IMD"' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png"
+    )
   })
-
 
   output$map = renderLeaflet(
     leaflet() %>%
-      # addURLBasedTiles(.) %>%
       addTiles(., urlTemplate = mapTileUrl(),
                attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
                Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
                Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                options=tileOptions(opacity = 1, reuseTiles = T)) %>%
-      addCircleMarkers(., data = helper$cents, radius = circleRadius(), color = "black") %>%
+      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black") %>%
       mapOptions(zoomToLimits = "first")
   )
 
-  addURLBasedTiles <- function(map){
-    addTiles(map, urlTemplate = mapTileUrl(),
-             attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
-                   Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
-                   Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-             options=tileOptions(opacity = 1, reuseTiles = T))
-  }
-
   output$legendCyclingPotential <- renderPlot({
-    # Read the zone data
-    data_ <- helper$zones@data[[zoneData()]]
-    # Create quantiles out of the data
-    m <- quantile(data_, probs=seq.int(0,1, length.out=4))
+    # Create quantiles out of the zone data
+    m <- quantile(toPlot$zones@data[[zoneData()]], probs=seq.int(0,1, length.out=4))
 
     # Create a zone colour based on the value of data
     zone_col <- getColourRamp(zcols, m)
 
     # Set a full form of the scenario as a label
-    ylabel <- "Census 2011 Cycling: N. Commuters"
-    if (zoneAttr() == "slc")
-      ylabel <- "Scenario Level of Cycling (SLC): N. Commuters"
-    else if (zoneAttr() == "sic")
-      ylabel <- "Scenario Increase in Cycling (SIC): N. Commuters"
+    ylabel <- switch(zoneAttr(),
+                     "slc" = "Scenario Level of Cycling (SLC): N. Commuters",
+                     "sic" = "Scenario Increase in Cycling (SIC): N. Commuters",
+                     "Census 2011 Cycling: N. Commuters"
+    )
 
     # Set the labelling of Y-axis to bold
     par(font.lab = 2)
@@ -367,13 +326,15 @@ shinyServer(function(input, output, session){
     # Empty the warning message - as some lines have been selected by the user
     output$warningMessage <- renderUI("")
     # Reuse the lines data stored in the ldata session variable
-    DT::datatable(helper$ldata@data, options = list(pageLength = 10))  %>% formatRound(columns = colnames(helper$ldata@data[sapply(helper$ldata@data,is.numeric)]), digits=2)
+    DT::datatable(toPlot$ldata@data, options = list(pageLength = 10)) %>%
+      formatRound(columns = colnames(toPlot$ldata@data[sapply(toPlot$ldata@data,is.numeric)]), digits=2)
   })
 
   output$zonesDataTable <- DT::renderDataTable({
-    if(is.null(helper$zones@data)){
+    if(is.null(toPlot$zones@data)){
       return()
     }
-    DT::datatable(helper$zones@data, options = list(pageLength = 10))   %>% formatRound(columns = colnames(helper$zones@data[sapply(helper$zones@data,is.numeric)]), digits=2)
+    DT::datatable(toPlot$zones@data, options = list(pageLength = 10)) %>%
+      formatRound(columns = colnames(toPlot$zones@data[sapply(toPlot$zones@data,is.numeric)]), digits=2)
   })
 })
