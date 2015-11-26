@@ -131,7 +131,7 @@ shinyServer(function(input, output, session){
       if(input$scenario != "olc") # Hack to force the map to re-render when a new zone is selected
         updateSelectInput(session, "scenario", selected ="olc")
       else
-        updateSelectInput(session, "scenario", selected ="base")
+        updateSelectInput(session, "scenario", selected ="cdp")
     }
   })
 
