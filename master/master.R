@@ -213,14 +213,14 @@ shinyServer(function(input, output, session){
     })
   })
   transpRate <- reactive({
-    if (input$map_base == 'acetate')  # Have the satalite map more transparent
+    if (input$map_base == 'roadmap')  # Have the satalite map more transparent
       0.7
     else
       0.0
   })
 
   circleRadius <- reactive({
-    if (input$map_base == 'acetate')  # Have the satalite map bigger circles
+    if (input$map_base == 'roadmap')  # Have the satalite map bigger circles
       2
     else
       4
@@ -310,24 +310,35 @@ shinyServer(function(input, output, session){
   }
 
   mapTileUrl <- reactive({
-    if (input$map_base == 'acetate')
+    if (input$map_base == 'roadmap')
       "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png"
-    else
+    else if (input$map_base == "satellite")
       "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+    else if (input$map_base == "IMD")
+      "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png"
+
   })
+
 
   output$map = renderLeaflet(
     leaflet() %>%
+      # addURLBasedTiles(.) %>%
       addTiles(., urlTemplate = mapTileUrl(),
                attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
-                Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
-                Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+               Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
+               Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                options=tileOptions(opacity = 1, reuseTiles = T)) %>%
       addCircleMarkers(., data = helper$cents, radius = circleRadius(), color = "black") %>%
       mapOptions(zoomToLimits = "first")
   )
 
-
+  addURLBasedTiles <- function(map){
+    addTiles(map, urlTemplate = mapTileUrl(),
+               attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
+                   Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
+                   Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+               options=tileOptions(opacity = 1, reuseTiles = T))
+  }
 
   output$legendCyclingPotential <- renderPlot({
     # Read the zone data

@@ -16,8 +16,9 @@ line_types <- c("None" = "none",
 attrsZone <- c("Scenario Level of Cycling (SLC)"    = "slc",
                "Scenario Increase in Cycling (SIC)" = "sic")
 
-map_base_attrs <- c("Roadmap"   = "acetate",
-                    "Satellite" = "c")
+map_base_attrs <- c("Roadmap"   = "roadmap",
+                    "Satellite" = "satellite",
+                    "IMD" = "IMD")
 
 shinyUI(
   navbarPage(
@@ -67,7 +68,7 @@ shinyUI(
             ),
             tags$div(title="Change base of the map",
                      tags$div(class = "rbox",
-                              radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
+                              radioButtons("map_base", "Map Base:", map_base_attrs, inline = FALSE)
                      )
             )
           )
