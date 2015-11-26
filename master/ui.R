@@ -16,8 +16,9 @@ line_types <- c("None" = "none",
 attrsZone <- c("Scenario Level of Cycling (SLC)"    = "slc",
                "Scenario Increase in Cycling (SIC)" = "sic")
 
-map_base_attrs <- c("Roadmap"   = "acetate",
-                    "Satellite" = "c")
+map_base_attrs <- c("Roadmap"   = "roadmap",
+                    "Satellite" = "satellite",
+                    "IMD" = "IMD")
 
 shinyUI(
   navbarPage(
@@ -47,12 +48,6 @@ shinyUI(
             tags$div(title="Scenario details can be seen in the Help tab",
                      selectInput("scenario", "Scenario:", scenarios)
             ),
-            conditionalPanel(
-              condition = "input.scenario != 'olc'",
-              tags$div(title="Set zone colours depending on the cycling level",
-                       selectInput("zone_attr", "Scenario Attribute:", attrsZone)
-              )
-            ),
             tags$div(title="Shows the cycling flow between the centres of zones",
                      selectInput("line_type", "Cycling Flows", line_types, selected = "none")
             ),
@@ -67,7 +62,7 @@ shinyUI(
             ),
             tags$div(title="Change base of the map",
                      tags$div(class = "rbox",
-                              radioButtons("map_base", "Map Base:", map_base_attrs, inline = TRUE)
+                              radioButtons("map_base", "Map Base:", map_base_attrs, inline = FALSE)
                      )
             )
           )
