@@ -31,6 +31,7 @@ shinyUI(
         tags$head(
           includeScript("../master/google-analytics.js"),
           includeScript("../master/extra.js"),
+          includeScript("../master/jQuery.print.js"),
           tags$style(type="text/css"),
           tags$link(rel = "stylesheet", type = "text/css", href ="stylesheet.css")
         ),
@@ -64,7 +65,8 @@ shinyUI(
                      tags$div(class = "rbox",
                               radioButtons("map_base", "Map Base:", map_base_attrs, inline = FALSE)
                      )
-            )
+            ),
+            tags$button(id="printBtn", class="btn btn-default btn-xs","Print map")
           )
         ),
         absolutePanel(
