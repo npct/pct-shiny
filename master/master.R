@@ -157,11 +157,11 @@ shinyServer(function(input, output, session){
 
       if (input$line_type == 'rnet'){
         leafletProxy("map") %>% plotRnets(., helper$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
-        updateSelectInput(session, inputId = "nos_lines", label = "Percent (%) of Network", selected = 50)
+        updateSelectInput(session, inputId = "nos_lines", label = "Percent (%) of Network")
       }
       else{
         .
-        updateSelectInput(session, inputId = "nos_lines", label = "Number of lines", selected = 5)
+        updateSelectInput(session, inputId = "nos_lines", label = "Number of lines")
       }
     }
     # needed to force lines to be redrawn when scenario, zone or base map changes
@@ -316,7 +316,9 @@ shinyServer(function(input, output, session){
   output$map = renderLeaflet(
     leaflet() %>%
       addTiles(., urlTemplate = mapTileUrl(),
-               attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> | Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> | Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+               attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
+                Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
+                Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                options=tileOptions(opacity = 1, reuseTiles = T)) %>%
       addCircleMarkers(., data = helper$cents, radius = circleRadius(), color = "black") %>%
       mapOptions(zoomToLimits = "first")
