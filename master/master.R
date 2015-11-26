@@ -105,8 +105,9 @@ shinyServer(function(input, output, session){
         line <- helper$rFast[helper$rFast$id == id,]
       else if (groupName == "quieter_route")
         line <- helper$rQuiet[helper$rQuiet$id == id,]
-
-      if (groupName != "route_network")
+      else if (groupName == "route_network")
+        line <- helper$rnet[helper$rnet$id == id,]
+      if (!is.null(line))
         leafletProxy("map") %>% addPolylines(data = line, color = "white", opacity = 0.4,
                                              group = "highlighted", layerId = "highlighted")
     })
@@ -303,7 +304,7 @@ shinyServer(function(input, output, session){
                    opacity = 0.9,
                    popup = popupFn(sorted_l, input$scenario),
                    weight = normalise(sorted_l[[lineData()]], min = 1, max = 20),
-                   layerId = paste0(1:nrow(sorted_l), '-', groupName)
+                   layerId = paste0(sorted_l[['id']], '-', groupName)
       )
     }
   }
