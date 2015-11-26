@@ -108,7 +108,7 @@ shinyServer(function(input, output, session){
 
       if (groupName != "route_network")
         leafletProxy("map") %>% addPolylines(data = line, color = "white", opacity = 0.4,
-                                             layerId = "highlighted")
+                                             group = "highlighted", layerId = "highlighted")
     })
   })
   observe({
@@ -137,7 +137,9 @@ shinyServer(function(input, output, session){
   # Plot if lines change
   observe({
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
-      clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network")
+      clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
+      clearGroup(., "highlighted")
+
     leafletProxy("map") %>% {
       if (input$line_type == 'straight')
         plotLines(., helper$l, input$nos_lines, straightPopup, "straight_line", getLineColour("straight_line"))
