@@ -22,4 +22,8 @@ $( window ).load(function() {
     }
   };
   initMap();
+
+  $("#printBtn").click(function(){
+    $('#map').print();
+  });
 });
