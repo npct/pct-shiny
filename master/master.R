@@ -154,8 +154,11 @@ shinyServer(function(input, output, session){
     leafletProxy("map") %>% {
       switch(input$line_type,
              'straight' = plotLines(., toPlot$l, input$nos_lines, straightPopup, "straight_line", getLineColour("straight_line")),
-             'route'= plotLines(., toPlot$rQuiet, input$nos_lines, routePopup, "quieter_route", getLineColour("quieter_route")),
-             'd_route'=, 'route'= plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route")),
+             'route'= {
+               plotLines(., toPlot$rQuiet, input$nos_lines, routePopup, "quieter_route", getLineColour("quieter_route"))
+               plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route"))
+             },
+             'd_route'= plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route")),
              'rnet' = plotLines(., toPlot$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
       )
     }
@@ -187,8 +190,11 @@ shinyServer(function(input, output, session){
       leafletProxy("map") %>% {
         switch(input$line_type,
                'straight' = plotLines(., toPlot$l, input$nos_lines, straightPopup, "straight_line", getLineColour("straight_line")),
-               'route'= plotLines(., toPlot$rQuiet, input$nos_lines, routePopup, "quieter_route", getLineColour("quieter_route")),
-               'd_route'=, 'route'= plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route")),
+               'route'= {
+                 plotLines(., toPlot$rQuiet, input$nos_lines, routePopup, "quieter_route", getLineColour("quieter_route"))
+                 plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route"))
+               },
+               'd_route'= plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route")),
                'rnet' = plotLines(., toPlot$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
         )
       }
@@ -279,9 +285,11 @@ shinyServer(function(input, output, session){
     switch(input$map_base,
            'roadmap' = "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
            'satellite' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-           'IMD"' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png"
+           'IMD' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png"
     )
   })
+
+
 
   output$map = renderLeaflet(
     leaflet() %>%
