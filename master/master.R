@@ -28,7 +28,7 @@ LAs <- spTransform(LAs, CRS("+init=epsg:4326 +proj=longlat"))
 shinyServer(function(input, output, session){
   # For all plotting data
   toPlot <- NULL
-  # For any other persitant values
+  # For any other persistent values
   helper <- NULL
 
   helper$eLatLng <- ""
@@ -56,7 +56,7 @@ shinyServer(function(input, output, session){
 
   toPlot <- loadData(helper$dataDir)
 
-  # Selects and sorts lines within a bounding box - given by flowsBB()
+  # Select and sort lines within a bounding box - given by flowsBB()
   sortLines <- function(lines, sortBy, nos){
     poly <- flowsBB()
     poly <- spTransform(poly, CRS(proj4string(lines)))
@@ -85,7 +85,7 @@ shinyServer(function(input, output, session){
       if (file.exists(modelFile))
         includeHTML(modelFile)
       else
-        HTML("<strong>Sorry but no model output files are avaiable for this local authority</strong>")
+        HTML("<strong>No model output files are available for this region</strong>")
     })
   }
   setModelOutput(startingCity)
@@ -96,7 +96,7 @@ shinyServer(function(input, output, session){
       return()
     eLatLng <- paste0(event$lat,event$lng)
 
-    # Fix bug when a line has been click then the click event is
+    # Fix bug when a line has been clicked then the click event is
     # re-emmited when the map is moved
     if( eLatLng == helper$eLatLng)
       return()
@@ -167,7 +167,7 @@ shinyServer(function(input, output, session){
     else
       updateSelectInput(session, inputId = "nos_lines", label = "Number of Lines")
 
-    # needed to force lines to be redrawn when scenario, zone or base map changes
+    # Needed to force lines to be redrawn when scenario, zone or base map changes
     paste(input$scenario, input$map_base)
   })
 
@@ -288,8 +288,6 @@ shinyServer(function(input, output, session){
            'IMD' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png"
     )
   })
-
-
 
   output$map = renderLeaflet(
     leaflet() %>%
