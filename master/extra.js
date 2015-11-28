@@ -10,7 +10,13 @@ $( window ).load(function() {
   };
   $('#togglePanel').click(function(){ togglePanel('#input_panel', this); });
   $('#toggleLegend').click(function(){ togglePanel('#zone_legend', this); });
-
+  var imd = $("[id^='map_base'] [value='IMD']");
+  imd.popover({
+      placement: "bottom",
+      content: 'From the <a href="http://maps.cdrc.ac.uk/#/geodemographics/imde2015/" target="_blank">Index of Multiple Deprivation 2015</a>',
+      html: true,
+      trigger: "click"
+  });
   var initMap = function(){
     if($(map).data('leaflet-map')){
       // lMap is the leaflet map object see http://leafletjs.com/reference.html

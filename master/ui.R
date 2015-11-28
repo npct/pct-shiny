@@ -63,14 +63,14 @@ shinyUI(
             ),
             tags$div(title="Change base of the map",
                      tags$div(class = "rbox",
-                              radioButtons("map_base", "Map Base:", map_base_attrs, inline = FALSE)
+                              radioButtons("map_base", "Map Base:", map_base_attrs)
                      )
             ),
             tags$button(id="printBtn", class="btn btn-default btn-xs","Print map")
           )
         ),
         absolutePanel(
-          cursor = "default", id = "legend", draggable = T, class = "panel panel-default",
+          cursor = "default", id = "legend", class = "panel panel-default",
           top = 100, left = 25, height = 30, width = 100,
           style = "opacity: 0.7",
           tags$div(title="Show/Hide zone legend",
