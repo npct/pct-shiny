@@ -276,7 +276,7 @@ shinyServer(function(input, output, session){
                    # Plot widths proportional to attribute value
                    , weight = normalise(sorted_l[[lineData()]], min = min, max = max)
                    , opacity = 0.8
-                   , group = groupName,
+                   , group = groupName
                    , popup = popupFn(sorted_l, input$scenario)
                    , layerId = paste0(sorted_l[['id']], '-', groupName))
   }

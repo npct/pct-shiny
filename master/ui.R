@@ -32,8 +32,7 @@ shinyUI(
           includeScript("../master/google-analytics.js"),
           includeScript("../master/extra.js"),
           includeScript("../master/jQuery.print.js"),
-          tags$style(type="text/css"),
-          tags$link(rel = "stylesheet", type = "text/css", href ="stylesheet.css")
+          includeCSS("../master/www/stylesheet.css")
         ),
         br(),
         leafletOutput("map", width="100%", height="95%"),
