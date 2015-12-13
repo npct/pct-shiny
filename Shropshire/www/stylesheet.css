@@ -1,0 +1,47 @@
+.help-block  {
+  font-size: 10px;
+}
+
+div.outer {
+  position: fixed;
+  top: 41px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 0;
+}
+
+.rbox  {
+  font-size: 10px;
+}
+
+.selectize-dropdown,
+.selectize-input,
+.selectize-input input {
+  font-size: 11px;
+}
+
+label {
+  font-size: 12px;
+}
+
+.recalculating{
+  opacity: 1.0;
+}
+
+#cite {
+  position: relative;
+  bottom: 25px;
+  left: 120px;
+  font-size: 12px;
+}
+
+body {
+  max-width: unset !important;
+}
+
+#dft {
+  margin-bottom: 10px;
+}
