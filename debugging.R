@@ -1,7 +1,7 @@
 
 
 dataDirRoot <- "~/repos/pct-shiny/pct-data/"
-startingCity <- "Liverpool-City-Region/"
+startingCity <- "Shropshire"
 
 # For all plotting data
 toPlot <- NULL
@@ -18,9 +18,9 @@ dataDir <- helper$dataDir
 list.files(startingCity)
 list.files("Sheffield")
 file.copy(paste0("pct-data/", startingCity, "/model-output.html"), startingCity)
-dir.create(paste0(startingCity, "www"))
+dir.create(paste0(startingCity, "/www"))
 f <- list.files("leeds/www/")
-file.copy(paste0("leeds/www/", f), paste0(startingCity, "www/", f))
+file.copy(paste0("leeds/www/", f), paste0(startingCity, "/www/", f))
 
 # To set initialize toPlot
 loadData <- function(dataDir){
