@@ -114,3 +114,8 @@ proj4string(z)
 ll <- list(l, c, rf, z, rq)
 
 lapply(, proj4string)
+
+# debug lines
+l <- readRDS("pct-data/liverpool-city-region/l.Rds")
+l2 <- readRDS("pct-data/leeds/l.Rds")
+names(l2)[!names(l2) %in% names(l)] # found missing vars
