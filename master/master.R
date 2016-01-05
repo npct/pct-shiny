@@ -13,7 +13,9 @@ lapply(c(cranPkgs, devPkgs), library, character.only = TRUE)
 zcols <- c("darkslategrey", "yellow")
 #zcols <- c("#F0FFFF", "#838B8B")
 
-dataDirRoot <- '../pct-data'
+# temporary fix allowing use of pct-data as a sibling of pct-shiny
+ifelse(dir.exists("../../pct-data"),
+  dataDirRoot <- '../../pct-data', dataDirRoot <- '../pct-data')
 source("load-shiny-data.R", local = T) # to load data
 
 # Functions
