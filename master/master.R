@@ -165,9 +165,9 @@ shinyServer(function(input, output, session){
       )
     }
     if(input$line_type == 'rnet')
-      updateSelectInput(session, inputId = "nos_lines", label = "Percent (%) of Network")
+      updateSliderInput(session, inputId = "nos_lines", max= 50, label = "Percent (%) of Network")
     else
-      updateSelectInput(session, inputId = "nos_lines", label = "Number of Lines")
+      updateSliderInput(session, inputId = "nos_lines", max= 100, label = "Number of Lines")
 
     # Needed to force lines to be redrawn when scenario, zone or base map changes
     paste(input$scenario, input$map_base)
