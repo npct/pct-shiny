@@ -1,7 +1,40 @@
 # Data Frame which contains the links of lines and their colours
 lineAndColourDF <- data.frame(
-  lineType = c("straight_line", "quieter_route","faster_route", "route_network"),
-  lineColour = c("maroon","turquoise","purple","blue"))
+  lineType = c("straight_line", "quieter_route", "faster_route", "route_network"),
+  lineColour = c("maroon","turquoise","purple","blue")
+)
+
+getLineColour <- function(lineType){
+  lineAndColourDF$lineColour[lineAndColourDF$lineType == lineType]
+}
+
+numericLineColNames <- c(
+  "Average Slope"                     = "avslope",
+  "Distance (straight line)"           = "dist",
+  "Cirquity"                          = "cirquity",
+  "Distance (fastest route)"          = "dist_fast",
+  "Distance (quietest route)"         = "dist_quiet",
+  "Cycling Observed (%)"              = "clc",
+  "Cycling in Government Target (%)"  = "base_slc",
+  "Increase in Government Target (%)" = "base_sic",
+  "Cycling with Gender equality (%)"  = "gendereq_slc",
+  "Increase with Gender equality (%)" = "gendereq_sic",
+  "Cycling at Dutch levels (%)"       = "dutch_slc",
+  "Increase at Dutch levels (%)"      = "dutch_sic",
+  "Cycling with Ebikes (%)"           = "ebike_slc",
+  "Increase with Ebikes (%)"          = "ebike_sic"
+)
+
+lineColNames <- c(
+  "Start and end zones"               = "id",
+  "All commutes"                      = "All",
+  "Light rail"                        = "Light_rail",
+  "Train"                             = "Train",
+  "Bus"                               = "Bus",
+  "Car"                               = "Car_driver",
+  "Bicycle"                           = "Bicycle",
+  numericLineColNames
+)
 
 # Normalise the data ready for plotting
 normalise <- function(values, min = 0, max = 1){
@@ -122,8 +155,6 @@ routePopup <- function(data, scenario){
   }
 }
 
-
-
 # Network Route popup function
 networkRoutePopup <- function(data, scenario){
   # base_olc  cdp_slc	gendereq_slc	dutch_slc	ebike_slc
@@ -162,8 +193,4 @@ zonePopup <- function(data, scenario, zone){
       <td>%s&deg;</td>
     </tr>", data$MSOA11NM, zone_filter_name, round(data[[dataFilter(scenario, zone)]], 2 ), round(data$avslope, 2)),
     tableEnd)
-}
-
-getLineColour <- function(lineType){
-  lineAndColourDF$lineColour[lineAndColourDF$lineType == lineType]
 }

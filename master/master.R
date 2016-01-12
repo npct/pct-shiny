@@ -11,7 +11,6 @@ lapply(c(cranPkgs, devPkgs), library, character.only = TRUE)
 
 # Colours
 zcols <- c("darkslategrey", "yellow")
-#zcols <- c("#F0FFFF", "#838B8B")
 
 # temporary fix allowing use of pct-data as a sibling of pct-shiny
 ifelse(dir.exists("../../pct-data"),
@@ -334,9 +333,11 @@ shinyServer(function(input, output, session){
     }
     # Empty the warning message - as some lines have been selected by the user
     output$warningMessage <- renderUI("")
+
     # Reuse the lines data stored in the ldata session variable
-    DT::datatable(toPlot$ldata@data, options = list(pageLength = 10)) %>%
-      formatRound(columns = colnames(toPlot$ldata@data[sapply(toPlot$ldata@data,is.numeric)]), digits=2)
+    linesToPlot <- toPlot$ldata@data[,unname(lineColNames)]
+    DT::datatable(linesToPlot, options = list(pageLength = 10), colnames = lineColNames) %>%
+      formatRound(columns = names(numericLineColNames), digits=2)
   })
 
   output$zonesDataTable <- DT::renderDataTable({
