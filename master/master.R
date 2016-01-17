@@ -343,7 +343,8 @@ shinyServer(function(input, output, session){
     if(is.null(toPlot$zones@data)){
       return()
     }
-    DT::datatable(toPlot$zones@data, options = list(pageLength = 10)) %>%
-      formatRound(columns = colnames(toPlot$zones@data[sapply(toPlot$zones@data,is.numeric)]), digits=2)
+    zonesToPlot <- toPlot$zones@data[,unname(zoneColNames)]
+    DT::datatable(zonesToPlot, options = list(pageLength = 10), colnames = zoneColNames) %>%
+      formatRound(columns = names(numericZoneColNames), digits=2)
   })
 })

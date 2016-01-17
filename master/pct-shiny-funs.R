@@ -10,21 +10,20 @@ getLineColour <- function(lineType){
 
 numericLineColNames <- c(
   "Average Slope"                     = "avslope",
-  "Distance (straight line)"           = "dist",
+  "Straight Line Distance (km)"       = "dist",
   "Cirquity"                          = "cirquity",
-  "Distance (fastest route)"          = "dist_fast",
-  "Distance (quietest route)"         = "dist_quiet",
+  "Fastest Route Distance (km)"       = "dist_fast",
+  "Quietest Route Distance (km)"      = "dist_quiet",
   "Cycling Observed (%)"              = "clc",
-  "Cycling in Government Target (%)"  = "base_slc",
-  "Increase in Government Target (%)" = "base_sic",
-  "Cycling with Gender equality (%)"  = "gendereq_slc",
-  "Increase with Gender equality (%)" = "gendereq_sic",
-  "Cycling at Dutch levels (%)"       = "dutch_slc",
-  "Increase at Dutch levels (%)"      = "dutch_sic",
-  "Cycling with Ebikes (%)"           = "ebike_slc",
-  "Increase with Ebikes (%)"          = "ebike_sic"
+  "Cyclists at Government target"     = "base_slc",
+  "Increase at Government target"     = "base_sic",
+  "Cyclists at gender equality"       = "gendereq_slc",
+  "Increase at gender equality"       = "gendereq_sic",
+  "Cyclists at Dutch levels"          = "dutch_slc",
+  "Increase at Dutch levels"          = "dutch_sic",
+  "Cyclists at Ebikes scenario"       = "ebike_slc",
+  "Increase at Ebikes scenario"       = "ebike_sic"
 )
-
 lineColNames <- c(
   "Start and end zones"               = "id",
   "All commutes"                      = "All",
@@ -34,6 +33,25 @@ lineColNames <- c(
   "Car"                               = "Car_driver",
   "Bicycle"                           = "Bicycle",
   numericLineColNames
+)
+
+numericZoneColNames <- c(
+  "Average slope"                     = "avslope",
+  "Cyclists in census"                = "base_olc",
+  "Cyclists at govenment target"      = "base_slc",
+  "Increase at govenment target"      = "base_sic",
+  "Cyclists at gender equality"       = "gendereq_slc",
+  "Increase at gender equality"       = "gendereq_sic",
+  "Cyclists at Dutch levels"          = "dutch_slc",
+  "Increase at Dutch levels"          = "dutch_sic",
+  "Cyclists at Ebike scenario"        = "ebike_slc",
+  "Increase at Ebike scenario"        = "ebike_sic"
+)
+
+zoneColNames <- c(
+  "Geo code"                          = "geo_code",
+  "Geo label"                         = "geo_label",
+  numericZoneColNames
 )
 
 # Normalise the data ready for plotting
