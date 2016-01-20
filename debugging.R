@@ -1,20 +1,26 @@
 
 
-dataDirRoot <- "../pct-data/"
-startingCity <- "wiltshire"
+dataDirRoot <- "~/repos/pct-shiny/pct-data/"
+startingCity <- "Shropshire"
 
 # For all plotting data
 toPlot <- NULL
 # For any other persistent values
 helper <- NULL
 
+helper$eLatLng <- ""
 helper$dataDir <- file.path(dataDirRoot, startingCity)
 helper$scenarioWas <- NULL
 
-dataDir <- file.path(dataDirRoot, startingCity)
+dataDir <- helper$dataDir
 
 # check files in pct-shiny
 list.files(startingCity)
+list.files("Sheffield")
+file.copy(paste0("pct-data/", startingCity, "/model-output.html"), startingCity)
+dir.create(paste0(startingCity, "/www"))
+f <- list.files("leeds/www/")
+file.copy(paste0("leeds/www/", f), paste0(startingCity, "/www/", f))
 
 # To set initialize toPlot
 loadData <- function(dataDir){
@@ -39,21 +45,26 @@ loadData <- function(dataDir){
 
 leaflet() %>%
   addTiles() %>%
-  addCircleMarkers(., data = cents, color = "black") %>%
+  addCircleMarkers(., data = toPlot$cents, color = "black") %>%
   mapOptions(zoomToLimits = "first")
 
 # initial data
-cents <- readRDS(file.path(dataDir, "c.Rds"))
-zones <- readRDS(file.path(dataDir, "z.Rds"))
+c <- readRDS(file.path(data_dir, "c.Rds"))
+z <- readRDS(file.path(data_dir, "z.Rds"))
 
 
 
+
+dfc <- c@data
+dfc2 <-
 
 sapply(z@data, class)
 df <- z@data[4:ncol(z)]
 
 head(df)
 z@data[4:ncol(z)] <- 1
+
+saveRDS(z, file.path(data_dir, "z.Rds"))
 
 apply(df, 1, is.nan)
 is.nan(df$cirquity)
@@ -78,18 +89,12 @@ df <- sapply(z@data[4:ncol(z)], function(x){
 
 
 
-l <- readRDS(file.path(dataDir, "l.Rds"))
-rf <- readRDS(file.path(dataDir, "rf.Rds"))
-rq <- readRDS(file.path(dataDir, "rq.Rds"))
-rnet <- readRDS(file.path(dataDir, "rnet.Rds"))
+l <- readRDS(file.path(data_dir, "l.Rds"))
+rf <- readRDS(file.path(data_dir, "rf.Rds"))
+rq <- readRDS(file.path(data_dir, "rq.Rds"))
+rnet <- readRDS(file.path(data_dir, "rnet.Rds"))
 
-# sel <- nrow(l)
-sel <- 75
-plot(l[sel,])
-plot(rf[sel,], add = T)
-plot(rq[sel,], add = T)
-
-plot(zones)
+plot(z)
 bbox(z)
 plot(l, col = "blue", add = T)
 plot(rf, col = "red", add = T)
