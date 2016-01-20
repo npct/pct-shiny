@@ -99,10 +99,6 @@ tableOLC <- '<tr>
     <td> %s </td>
     </tr>
     <tr>
-    <td> Car users(perc) &nbsp; </td>
-    <td> %s </td>
-    </tr>
-    <tr>
     '
 
 # Popup function for straight line data in html table
@@ -116,7 +112,7 @@ straightPopup <- function(data, scenario){
       sprintf(paste0(tableOLC, '<tr>
       <td> Distance (km) </td>
       <td> %s </td>
-      </tr>'), data$All, data$Bicycle, round(100*data$clcar,1), round(data$dist, 1)
+      </tr>'), data$All, data$Bicycle, round(data$dist, 1)
       ),
       tableEnd
     )
@@ -211,11 +207,8 @@ zonePopup <- function(data, scenario, zone){
       <td>%s: </td>
       <td>%s </td>
     </tr><tr>
-    <td>Car users (perc): &nbsp</td>
-      <td>%s </td>
-      </tr><tr>
       <td>Hilliness: &nbsp</td>
       <td>%s&deg;</td>
-    </tr>", data$MSOA11NM, zone_filter_name, round(data[[dataFilter(scenario, zone)]], 2 ), data$base_olcarusers, round(data$avslope, 2)),
+    </tr>", data$MSOA11NM, zone_filter_name, round(data[[dataFilter(scenario, zone)]], 2 ), round(data$avslope, 2)),
     tableEnd)
 }
