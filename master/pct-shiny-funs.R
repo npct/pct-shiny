@@ -99,7 +99,7 @@ tableOLC <- '<tr>
 <td> %s </td>
 </tr>
 <tr>
-<td> Car users(perc) &nbsp; </td>
+<td> &#37; who drive &nbsp; </td>
 <td> %s </td>
 </tr>
 <tr>
@@ -210,10 +210,12 @@ zonePopup <- function(data, scenario, zone){
             </tr><tr>
             <td>%s: </td>
             <td>%s </td>
-            </tr><tr>
-            <td>Car users (perc): &nbsp</td>
+            </tr>
+            <tr>
+            <td> &#37; who drive: &nbsp</td>
             <td>%s </td>
-            </tr><tr>
+            </tr>
+            <tr>
             <td>Hilliness: &nbsp</td>
             <td>%s&deg;</td>
             </tr>", data$MSOA11NM, zone_filter_name, round(data[[dataFilter(scenario, zone)]], 2 ), round(100*data$base_olcarusers,1), round(data$avslope, 2)),
