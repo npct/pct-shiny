@@ -155,7 +155,7 @@ routePopup <- function(data, scenario){
                     <td>Route Type</td>
                     <td>%s</td>
                     </tr>'),
-              data$All, data$Bicycle, round(data$length, 1), round(data$time / 60, 1), routeTypeLabel[[data$plan[1]]]),
+              data$All, data$Bicycle, round(100*data$clcar,1),round(data$length, 1), round(data$time / 60, 1), routeTypeLabel[[data$plan[1]]]),
       tableEnd
       )
   }else{
