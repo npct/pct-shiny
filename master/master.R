@@ -2,10 +2,14 @@
 # Setup #
 # # # # #
 
-# use install.packages(cranPkgs) install these
+# packages required
 cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT")
 
-lapply(c(cranPkgs, devPkgs), library, character.only = TRUE)
+installed <- cranPkgs %in% installed.packages()
+# install packages that are missing
+if(length(cranPkgs[!installed]) > 0) install.packages(cranPkgs[!installed])
+
+lapply(c(cranPkgs), library, character.only = TRUE)
 
 # Colours
 zcols <- c("darkslategrey", "yellow")

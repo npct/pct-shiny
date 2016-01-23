@@ -206,7 +206,6 @@ networkRoutePopup <- function(data, scenario){
 }
 
 zonePopup <- function(data, scenario, zone){
-  print(zone)
   zone_filter_name <- scenariosNames[zone]
   paste(
     tableStart,
