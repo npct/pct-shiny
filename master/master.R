@@ -2,10 +2,8 @@
 # Setup #
 # # # # #
 
-# use install.packages() install these
-cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos")
-# use devtools::install_github("rstudio/PkgName")
-devPkgs <- c("leaflet", "DT")
+# use install.packages(cranPkgs) install these
+cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT")
 
 lapply(c(cranPkgs, devPkgs), library, character.only = TRUE)
 
