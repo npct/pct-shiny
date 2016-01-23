@@ -24,6 +24,7 @@ numericLineColNames <- c(
   "Cyclists at Ebikes scenario"       = "ebike_slc",
   "Increase at Ebikes scenario"       = "ebike_sic"
 )
+
 lineColNames <- c(
   "Start and end zones"               = "id",
   "All commutes"                      = "All",
@@ -52,6 +53,11 @@ zoneColNames <- c(
   "Geo code"                          = "geo_code",
   "Geo label"                         = "geo_label",
   numericZoneColNames
+)
+
+scenariosNames <- c(
+  "olc"      = "Observed Cycling",
+  "slc"      = "Cycling Scenario"
 )
 
 # Normalise the data ready for plotting
@@ -188,7 +194,7 @@ networkRoutePopup <- function(data, scenario){
   paste(
     tableStart,
     sprintf(paste('<tr>
-                  <td>Base OLC: </td>
+                  <td>Observed: </td>
                   <td>&nbsp;%s cyclists</td>
                   </tr><tr>
                   <td>Scenario: </td>
@@ -200,7 +206,8 @@ networkRoutePopup <- function(data, scenario){
 }
 
 zonePopup <- function(data, scenario, zone){
-  zone_filter_name <- toupper(zone)
+  print(zone)
+  zone_filter_name <- scenariosNames[zone]
   paste(
     tableStart,
     sprintf("
