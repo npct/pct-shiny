@@ -63,6 +63,10 @@ shinyUI(
                      tags$div(class = "rbox",
                               radioButtons("map_base", "Map Base:", map_base_attrs)
                      )
+            ),
+            conditionalPanel(
+              condition = "input.line_type != 'none'",
+              tags$div(downloadButton('downloadData', 'geojson'))
             )
           )
         ),

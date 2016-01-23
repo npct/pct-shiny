@@ -3,7 +3,7 @@
 # # # # #
 
 # packages required
-cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT")
+cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT", "geojsonio")
 
 installed <- cranPkgs %in% installed.packages()
 # install packages that are missing
@@ -349,4 +349,19 @@ shinyServer(function(input, output, session){
     DT::datatable(zonesToPlot, options = list(pageLength = 10), colnames = zoneColNames) %>%
       formatRound(columns = names(numericZoneColNames), digits=2)
   })
+  output$downloadData <- downloadHandler(
+
+    # This function returns a string which tells the client
+    # browser what name to use when saving the file.
+    filename = function() {
+      paste("lines", "geojson", sep = ".")
+    },
+
+    # This function should write data to a file given to it by
+    # the argument 'file'.
+    content = function(file) {
+      # Write to a file specified by the 'file' argument
+      geojson_write(toPlot$ldata, file = file)
+    }
+  )
 })
