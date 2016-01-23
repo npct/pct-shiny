@@ -56,8 +56,8 @@ zoneColNames <- c(
 )
 
 scenariosNames <- c(
-  "olc"      = "Observed Cycling",
-  "slc"      = "Cycling Scenario"
+  "olc"      = "Cyclists (observed)",
+  "slc"      = "Cyclists (scenario)"
 )
 
 # Normalise the data ready for plotting
