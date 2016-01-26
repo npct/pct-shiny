@@ -3,7 +3,7 @@
 # # # # #
 
 # packages required
-cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT", "geojsonio")
+cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT")
 
 installed <- cranPkgs %in% installed.packages()
 # install packages that are missing
@@ -360,8 +360,10 @@ shinyServer(function(input, output, session){
     # This function should write data to a file given to it by
     # the argument 'file'.
     content = function(file) {
-      # Write to a file specified by the 'file' argument
-      geojson_write(toPlot$ldata, file = file)
+      # Bug in writeOGR that there can be no "." in the file name
+      fileNoDot <- unlist(strsplit(file, ".", fixed = T))[1]
+      writeOGR(toPlot$ldata, dsn = fileNoDot, layer = "", driver='GeoJSON', overwrite_layer= T)
+      file.rename(fileNoDot, file)
     }
   )
 })
