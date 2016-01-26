@@ -13,7 +13,7 @@ The script update-data.sh pulls the latest version of the data.  This will timeo
 advised to add
 
 ```bash
-0,30 * * * * /path_to_shiny_repo/pct-shiny/update-data.sh
+0,30 * * * * /path_to_shiny_repo/pct-shiny/scrips/update-data.sh
 ```
 to the crontab (`crontab -e`)
 
