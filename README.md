@@ -16,5 +16,5 @@ git clone git@github.com:npct/pct-data.git --depth=1
 
 so that [pct-data](https://github.com/npct/pct-data) is in a sibling folder.
 
-The `public_www` folder contains all the current starting regions
+The `regions_www` folder contains all the current starting regions
 which can be run as shiny apps.
