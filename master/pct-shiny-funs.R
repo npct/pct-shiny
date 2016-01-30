@@ -84,7 +84,7 @@ tableCommon <- '<tr>
 </tr>
 <tr>
 <td> Cycle commutes </td>
-<td> %s (%s &#37;) </td>
+<td> %s (%s&#37;) </td>
 </tr>
 <tr>
 <td> Cycle commutes (scenario) </td>
@@ -158,10 +158,17 @@ routePopup <- function(data, scenario){
                     <td>Av. Route Time</td>
                     <td>%s min</td>
                     </tr><tr>
+                    </tr><tr>
+                    <td>Hilliness (average gradient)</td>
+                    <td>%s&#37;</td>
+                    </tr><tr>
                     <td>Route Type</td>
                     <td>%s</td>
                     </tr>'),
-              data$All, data$Bicycle, round(100*data$clc), data$Car_driver, round(100*data$clcar), round(data$length, 1), round(data$time / 60, 1), routeTypeLabel[[data$plan[1]]]),
+              data$All, data$Bicycle, round(100*data$clc), data$Car_driver,
+              round(100*data$clcar), round(data$length, 1),
+              round(data$time / 60, 1), round(data$av_incline * 100, 1),
+              routeTypeLabel[[data$plan[1]]]),
       tableEnd
       )
   }else{
@@ -171,13 +178,20 @@ routePopup <- function(data, scenario){
                     <td>Route Distance</td>
                     <td>%s km</td>
                     </tr><tr>
-                    <td>Av. Route Time</td>
+                    <td>Estimated Time</td>
                     <td>%s min</td>
+                    </tr><tr>
+                    </tr><tr>
+                    <td>Hilliness (average gradient)</td>
+                    <td>%s&#37;</td>
                     </tr><tr>
                     <td>Route Type</td>
                     <td>%s</td>
                     </tr>'),
-              data$All, data$Bicycle, round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$length, 1), round(data$time / 60, 1), routeTypeLabel[[data$plan[1]]]),
+              data$All, data$Bicycle, round(100*data$clc), round(data[[dataFilter(scenario, "slc")]]),
+              round(data[[dataFilter(scenario, "sic")]]), round(data$length, 1),
+              round(data$time / 60, 1), round(data$av_incline * 100, 1),
+              routeTypeLabel[[data$plan[1]]]),
       tableEnd
       )
   }
@@ -218,7 +232,7 @@ zonePopup <- function(data, scenario, zone){
             <td>%s </td>
             </tr>
             <tr>
-            <td> &#37; who drive: &nbsp</td>
+            <td>&#37; who drive: &nbsp</td>
             <td>%s </td>
             </tr>
             <tr>
