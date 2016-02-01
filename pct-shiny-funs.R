@@ -83,15 +83,15 @@ tableCommon <- '<tr>
 <td> %s </td>
 </tr>
 <tr>
-<td> Cycle commutes </td>
-<td> %s (%s&#37;) </td>
-</tr>
-<tr>
-<td> Cycle commutes (scenario) </td>
+<td> Observed (OLC) </td>
 <td> %s </td>
 </tr>
 <tr>
-<td> Increase in commutes &nbsp; </td>
+<td> Scenario (SLC) </td>
+<td> %s </td>
+</tr>
+<tr>
+<td> Increase (SLC - OLC) &nbsp; </td>
 <td> %s </td>
 </tr>
 '
@@ -101,12 +101,12 @@ tableOLC <- '<tr>
 <td> %s </td>
 </tr>
 <tr>
-<td> Cycle commutes &nbsp; </td>
-<td> %s (%s&#37;) </td>
+<td> Observed (OLC) &nbsp; </td>
+<td> %s </td>
 </tr>
 <tr>
-<td> Car drive commutes &nbsp; </td>
-<td> %s (%s&#37;)</td>
+<td> &#37; who drive &nbsp; </td>
+<td> %s </td>
 </tr>
 <tr>
 '
@@ -122,7 +122,7 @@ straightPopup <- function(data, scenario){
       sprintf(paste0(tableOLC, '<tr>
                      <td> Distance (km) </td>
                      <td> %s </td>
-                     </tr>'), data$All, data$Bicycle, round(100*data$clc), data$Car_driver, round(100*data$clcar), round(data$dist, 1)
+                     </tr>'), data$All, data$Bicycle, round(100*data$clcar,1), round(data$dist, 1)
       ),
       tableEnd
       )
@@ -132,7 +132,7 @@ straightPopup <- function(data, scenario){
       sprintf(paste0(tableCommon, '<tr>
                      <td> Distance (km) </td>
                      <td> %s </td>
-                     </tr>'), data$All, data$Bicycle, round(100*data$clc), round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$dist, 1)
+                     </tr>'), data$All, data$Bicycle, round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$dist, 1)
       ),
       tableEnd
       )
@@ -158,17 +158,10 @@ routePopup <- function(data, scenario){
                     <td>Av. Route Time</td>
                     <td>%s min</td>
                     </tr><tr>
-                    </tr><tr>
-                    <td>Hilliness (average gradient)</td>
-                    <td>%s&#37;</td>
-                    </tr><tr>
                     <td>Route Type</td>
                     <td>%s</td>
                     </tr>'),
-              data$All, data$Bicycle, round(100*data$clc), data$Car_driver,
-              round(100*data$clcar), round(data$length, 1),
-              round(data$time / 60, 1), round(data$av_incline * 100, 1),
-              routeTypeLabel[[data$plan[1]]]),
+              data$All, data$Bicycle, round(100*data$clcar,1),round(data$length, 1), round(data$time / 60, 1), routeTypeLabel[[data$plan[1]]]),
       tableEnd
       )
   }else{
@@ -178,20 +171,13 @@ routePopup <- function(data, scenario){
                     <td>Route Distance</td>
                     <td>%s km</td>
                     </tr><tr>
-                    <td>Estimated Time</td>
+                    <td>Av. Route Time</td>
                     <td>%s min</td>
-                    </tr><tr>
-                    </tr><tr>
-                    <td>Hilliness (average gradient)</td>
-                    <td>%s&#37;</td>
                     </tr><tr>
                     <td>Route Type</td>
                     <td>%s</td>
                     </tr>'),
-              data$All, data$Bicycle, round(100*data$clc), round(data[[dataFilter(scenario, "slc")]]),
-              round(data[[dataFilter(scenario, "sic")]]), round(data$length, 1),
-              round(data$time / 60, 1), round(data$av_incline * 100, 1),
-              routeTypeLabel[[data$plan[1]]]),
+              data$All, data$Bicycle, round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$length, 1), round(data$time / 60, 1), routeTypeLabel[[data$plan[1]]]),
       tableEnd
       )
   }
@@ -232,7 +218,7 @@ zonePopup <- function(data, scenario, zone){
             <td>%s </td>
             </tr>
             <tr>
-            <td>&#37; who drive: &nbsp</td>
+            <td> &#37; who drive: &nbsp</td>
             <td>%s </td>
             </tr>
             <tr>
