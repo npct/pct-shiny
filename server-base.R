@@ -62,7 +62,7 @@ shinyServer(function(input, output, session){
   sortLines <- function(lines, sortBy, nos){
     poly <- flowsBB()
     poly <- spTransform(poly, CRS(proj4string(lines)))
-    keep <- gContains( poly, lines,byid=TRUE )
+    keep <- gContains(poly, lines,byid=TRUE )
     if(all(!keep)) return(NULL)
     linesInBb <- lines[drop(keep), ]
     linesInBb[ tail(order(linesInBb[[sortBy]]), nos), ]
