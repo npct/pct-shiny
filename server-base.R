@@ -326,7 +326,6 @@ shinyServer(function(input, output, session){
 
 
   output$IMDLegend <- renderPlot({
-
     myLab <- c("Most deprived decile", "2nd", "3rd", "4th", "5th",
                "6th", "7th", "8th", "9th", "Least deprived decile",
                "Data missing", "Data not available")
@@ -340,11 +339,12 @@ shinyServer(function(input, output, session){
     myColors <- rev(myColors)
 
     # Set the labelling of Y-axis to bold
-    par(font.lab = 2)
+    par(font.lab = 2, mar=c(0.0,5.8,0.0,1.0))
 
-    bp <- barplot(rep(1,12), beside = TRUE, col = myColors, ylab = "Index of Multiple Deprivation (IMD)", horiz = T, axes = F)
+    bp <- barplot(rep(1,12), beside = TRUE, col = myColors,
+                  ylab = "IDM From 2015\nIndex of Multiple Deprivation", horiz = T, axes = F)
 
-    text(0,bp,myLab,cex=0.8,pos=4,font=2, col = "black")
+    text(0, bp, myLab, cex=0.8, pos=4, font=2, col = "black")
   })
 
   output$linesDatatable <- DT::renderDataTable({
