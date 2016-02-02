@@ -10,6 +10,8 @@ $( window ).load(function() {
   };
   $('#togglePanel').click(function(){ togglePanel('#input_panel', this); });
   $('#toggleLegend').click(function(){ togglePanel('#zone_legend', this); });
+  $('#toggleMapLegend').click(function(){ togglePanel('#map_legend', this); });
+
   var imd = $("[id^='map_base'] [value='IMD']");
   imd.popover({
       placement: "bottom",
