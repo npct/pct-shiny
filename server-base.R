@@ -324,6 +324,29 @@ shinyServer(function(input, output, session){
             col = zone_col, horiz=TRUE, xlab = "", ylab = ylabel, space = 0, axes = FALSE)
   })
 
+
+  output$IMDLegend <- renderPlot({
+
+    myLab <- c("Most deprived decile", "2nd", "3rd", "4th", "5th",
+               "6th", "7th", "8th", "9th", "Least deprived decile",
+               "Data missing", "Data not available")
+
+    myLab <- rev(myLab)
+
+    myColors <- c("#a50026","#d73027", "#f46d43","#fdae61","#fee08b",
+                  "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850",
+                  "#006837", "#aaaaaa", "#dddddd")
+
+    myColors <- rev(myColors)
+
+    # Set the labelling of Y-axis to bold
+    par(font.lab = 2)
+
+    bp <- barplot(rep(1,12), beside = TRUE, col = myColors, ylab = "Index of Multiple Deprivation (IMD)", horiz = T, axes = F)
+
+    text(0,bp,myLab,cex=0.8,pos=4,font=2, col = "black")
+  })
+
   output$linesDatatable <- DT::renderDataTable({
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plotLinesData()){
