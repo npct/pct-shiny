@@ -88,20 +88,22 @@ shinyUI(
           )
         )
         ,
-        absolutePanel(
-          cursor = "default", id = "legend", class = "panel panel-default",
-          top = 500, right = 5, height = 20, width = 215,
-          style = "opacity: 0.7",
-          tags$div(title="Show/Hide map legend",
-                   a(id = "toggleMapLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
-          ),
-          div(id = "map_legend",
-              tags$div(title="imd",
-                conditionalPanel(
-                         condition = "input.map_base == 'IMD'",
-                         plotOutput("IMDLegend", width = "100%", height = 300)
-                       )
-              )
+
+        conditionalPanel(
+          condition = "input.map_base == 'IMD'",
+          absolutePanel(
+            cursor = "default", id = "legend", class = "panel panel-default",
+            bottom = 350, right = 5, height = 20, width = 215,
+            style = "opacity: 0.7",
+            tags$div(title="Show/Hide map legend",
+                     a(id = "toggleMapLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+            ),
+            div(id = "map_legend",
+                tags$div(title="imd",
+                   plotOutput("IMDLegend", width = "100%", height = 300)
+
+                )
+            )
           )
         ),
         tags$div(id="cite",
