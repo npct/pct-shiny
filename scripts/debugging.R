@@ -1,30 +1,13 @@
-
-
-dataDirRoot <- "~/repos/pct-shiny/pct-data/"
-startingCity <- "Shropshire"
-
-# For all plotting data
-toPlot <- NULL
-# For any other persistent values
-helper <- NULL
-
-helper$eLatLng <- ""
-helper$dataDir <- file.path(dataDirRoot, startingCity)
-helper$scenarioWas <- NULL
-
-dataDir <- helper$dataDir
+dataDir <- file.path("../pct-data/tiverton/")
 
 # check files in pct-shiny
-list.files(startingCity)
-list.files("Sheffield")
-file.copy(paste0("pct-data/", startingCity, "/model-output.html"), startingCity)
-dir.create(paste0(startingCity, "/www"))
-f <- list.files("leeds/www/")
-file.copy(paste0("leeds/www/", f), paste0(startingCity, "/www/", f))
+list.files(dataDir) # are all files there?
+
+# file.copy(paste0("pct-data/", startingCity, "/model-output.html"), startingCity)
+# dir.create(paste0(startingCity, "/www"))
 
 # To set initialize toPlot
-loadData <- function(dataDir){
-  toPlot
+  toPlot <- NULL
   toPlot$l <- readRDS(file.path(dataDir, "l.Rds"))
 
   toPlot$rFast <- readRDS(file.path(dataDir, "rf.Rds" ))
@@ -39,14 +22,19 @@ loadData <- function(dataDir){
   toPlot$rnet$id <- 1:nrow(toPlot$rnet)
 
   toPlot
-}
+
+# Shared variables
+sel <- names(toPlot$rFast) %in% names(toPlot$l)
+df <- toPlot$l@data
+df2 <- toPlot$rFast@data
+summary(toPlot$l@data[which(sel)] - toPlot$rFast@data)
 
 # render it
 
 leaflet() %>%
   addTiles() %>%
   addCircleMarkers(., data = toPlot$cents, color = "black") %>%
-  mapOptions(zoomToLimits = "first")
+  addPolylines(data = toPlot$l)
 
 # initial data
 c <- readRDS(file.path(data_dir, "c.Rds"))
