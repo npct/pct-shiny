@@ -297,7 +297,9 @@ shinyServer(function(input, output, session){
                attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
                Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
                Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-               options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1), reuseTiles = T)) %>%
+               options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
+                                   maxZoom = ifelse(input$map_base == "IMD", 14, 18),
+                                   reuseTiles = T)) %>%
       addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black") %>%
       mapOptions(zoomToLimits = "first")
   )
