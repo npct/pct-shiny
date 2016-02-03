@@ -342,7 +342,7 @@ shinyServer(function(input, output, session){
     par(font.lab = 2, mar=c(0.0,5.8,0.0,1.0))
 
     bp <- barplot(rep(1,12), beside = TRUE, col = myColors,
-                  ylab = "IDM From 2015\nIndex of Multiple Deprivation", horiz = T, axes = F)
+                  ylab = "IMD From 2015\nIndex of Multiple Deprivation", horiz = T, axes = F)
 
     text(0, bp, myLab, cex=0.8, pos=4, font=2, col = "black")
   })
