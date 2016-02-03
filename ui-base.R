@@ -98,7 +98,7 @@ shinyUI(
                      a(id = "toggleMapLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
             ),
             div(id = "map_legend",
-                tags$div(title="imd",
+                tags$div(title="Index of Multiple Deprivation",
                    plotOutput("IMDLegend", width = "100%", height = 180)
 
                 )
