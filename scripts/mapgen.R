@@ -16,7 +16,8 @@ library(shiny)
 
 pct_data <- file.path("..", "pct-data")
 regions_www <- "regions_www"
-exclude <- c("gm", "Bedford", "master", "norfolk") # regions to exclude from map
+exclude <- c("gm", "Bedford", "master", "norfolk",
+             "liverpool-city-region2", "tiverton", "nottingham", "birmingham") # regions to exclude from map
 folders <- list.dirs(path= regions_www, recursive = FALSE, full.names = F)
 folders <- folders[-which(folders %in% exclude)]
 # extract zone info and simplify
