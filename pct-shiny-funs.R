@@ -38,7 +38,7 @@ lineColNames <- c(
 
 numericZoneColNames <- c(
   "Average slope"                     = "avslope",
-  "Cyclists in census"                = "base_olc",
+  "Cyclists in census"                = "Bicycle",
   "Cyclists at govenment target"      = "base_slc",
   "Increase at govenment target"      = "base_sic",
   "Cyclists at gender equality"       = "gendereq_slc",
@@ -201,7 +201,7 @@ routePopup <- function(data, scenario){
 networkRoutePopup <- function(data, scenario){
   # base_olc  govtarget_slc	gendereq_slc	dutch_slc	ebike_slc
   if(scenario == "olc")
-    dfrnet <- "base_olc"
+    dfrnet <- "Bicycle"
   else
     dfrnet <- dataFilter(scenario, "slc")
 
@@ -214,7 +214,7 @@ networkRoutePopup <- function(data, scenario){
                   <td>Scenario: </td>
                   <td>&nbsp;%s cyclists</td>
                   </tr>'),
-            data$base_olc, round(data[[dfrnet]])),
+            data$Bicycle, round(data[[dfrnet]])),
     tableEnd
     )
 }
@@ -238,6 +238,8 @@ zonePopup <- function(data, scenario, zone){
             <tr>
             <td>Hilliness: &nbsp</td>
             <td>%s&deg;</td>
-            </tr>", data$MSOA11NM, zone_filter_name, round(data[[dataFilter(scenario, zone)]], 2 ), round(100*data$base_olcarusers,1), round(data$avslope, 2)),
+            </tr>", data$MSOA11NM, zone_filter_name,
+            round(data[[dataFilter(scenario, zone)]], 2 ),
+            round(100*data$base_olcarusers,1), round(data$avslope, 2)),
     tableEnd)
 }
