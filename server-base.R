@@ -143,7 +143,7 @@ shinyServer(function(input, output, session){
       if(input$scenario != "olc") # Hack to force the map to re-render
         updateSelectInput(session, "scenario", selected ="olc")
       else
-        updateSelectInput(session, "scenario", selected ="cdp")
+        updateSelectInput(session, "scenario", selected ="govtarget")
     }
   })
 

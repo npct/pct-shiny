@@ -199,7 +199,7 @@ routePopup <- function(data, scenario){
 
 # Network Route popup function
 networkRoutePopup <- function(data, scenario){
-  # base_olc  cdp_slc	gendereq_slc	dutch_slc	ebike_slc
+  # base_olc  govtarget_slc	gendereq_slc	dutch_slc	ebike_slc
   if(scenario == "olc")
     dfrnet <- "base_olc"
   else

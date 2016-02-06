@@ -2,7 +2,7 @@ library(shiny)
 library(leaflet)
 
 scenarios <- c("Census 2011 Cycling" = "olc",
-               "Government Target" =   "cdp",
+               "Government Target" =   "govtarget",
                "Gender equality" =   "gendereq",
                "Go Dutch" =          "dutch",
                "Ebikes (prototype)" = "ebike")
