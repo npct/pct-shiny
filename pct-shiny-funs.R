@@ -15,8 +15,8 @@ numericLineColNames <- c(
   "Fastest Route Distance (km)"       = "dist_fast",
   "Quietest Route Distance (km)"      = "dist_quiet",
   "Cycling Observed (%)"              = "clc",
-  "Cyclists at Government target"     = "base_slc",
-  "Increase at Government target"     = "base_sic",
+  "Cyclists at Government target"     = "govtarget_slc",
+  "Increase at Government target"     = "govtarget_sic",
   "Cyclists at gender equality"       = "gendereq_slc",
   "Increase at gender equality"       = "gendereq_sic",
   "Cyclists at Dutch levels"          = "dutch_slc",
@@ -28,8 +28,7 @@ numericLineColNames <- c(
 lineColNames <- c(
   "Start and end zones"               = "id",
   "All commutes"                      = "All",
-  "Light rail"                        = "Light_rail",
-  "Train"                             = "Train",
+  "Rail"                              = "Rail",
   "Bus"                               = "Bus",
   "Car"                               = "Car_driver",
   "Bicycle"                           = "Bicycle",
@@ -73,9 +72,10 @@ getColourRamp <- function(colors, values) {
   rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
 }
 
-dataFilter <- function(scenario, attr){
-  paste(scenario, attr, sep = "_")
+dataFilter <- function(scenario, type){
+  ifelse(scenario == "olc", "Bicycle", paste(scenario, type, sep = "_"))
 }
+
 tableStart <- '<table><tbody>'
 tableEnd <- '</table></tbody>'
 tableCommon <- '<tr>
@@ -95,48 +95,18 @@ tableCommon <- '<tr>
 <td> %s </td>
 </tr>
 '
-# Remove SLC and SIC for the 'olc' scenario (census 2011)
-tableOLC <- '<tr>
-<td> Total commutes &nbsp; </td>
-<td> %s </td>
-</tr>
-<tr>
-<td> Cycle commutes &nbsp; </td>
-<td> %s (%s&#37;) </td>
-</tr>
-<tr>
-<td> Car drive commutes &nbsp; </td>
-<td> %s (%s&#37;)</td>
-</tr>
-<tr>
-'
 
 # Popup function for straight line data in html table
 straightPopup <- function(data, scenario){
-  if(scenario == 'olc'){
-    # OLC being a special case within the base scenario,
-    # we change 'olc' to 'base' so that relevant data can be retrieved
-    scenario <- 'base'
-    paste(
-      tableStart,
-      sprintf(paste0(tableOLC, '<tr>
-                     <td> Distance (km) </td>
-                     <td> %s </td>
-                     </tr>'), data$All, data$Bicycle, round(100*data$clc), data$Car_driver, round(100*data$clcar), round(data$dist, 1)
-      ),
-      tableEnd
-      )
-  }else{
-    paste(
-      tableStart,
-      sprintf(paste0(tableCommon, '<tr>
+  paste(
+    tableStart,
+    sprintf(paste0(tableCommon, '<tr>
                      <td> Distance (km) </td>
                      <td> %s </td>
                      </tr>'), data$All, data$Bicycle, round(100*data$clc), round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$dist, 1)
-      ),
-      tableEnd
-      )
-  }
+    ),
+    tableEnd
+  )
 }
 
 routeTypeLabel <- NULL
@@ -145,66 +115,32 @@ routeTypeLabel[['quietest']] <- 'Quiet'
 
 # Route popup function
 routePopup <- function(data, scenario){
-  if(scenario == 'olc'){
-    # OLC being a special case within the base scenario,
-    # we change 'olc' to 'base' so that relevant data can be retrieved
-    scenario <- 'base'
-    paste(
-      tableStart,
-      sprintf(paste(tableOLC,'<tr>
-                    <td>Route Distance</td>
-                    <td>%s km</td>
-                    </tr><tr>
-                    <td>Av. Route Time</td>
-                    <td>%s min</td>
-                    </tr><tr>
-                    </tr><tr>
-                    <td>Hilliness (average gradient)</td>
-                    <td>%s&#37;</td>
-                    </tr><tr>
-                    <td>Route Type</td>
-                    <td>%s</td>
-                    </tr>'),
-              data$All, data$Bicycle, round(100*data$clc), data$Car_driver,
-              round(100*data$clcar), round(data$length, 1),
-              round(data$time / 60, 1), round(data$av_incline * 100, 1),
-              routeTypeLabel[[data$plan[1]]]),
-      tableEnd
-      )
-  }else{
-    paste(
-      tableStart,
-      sprintf(paste(tableCommon,'<tr>
-                    <td>Route Distance</td>
-                    <td>%s km</td>
-                    </tr><tr>
-                    <td>Estimated Time</td>
-                    <td>%s min</td>
-                    </tr><tr>
-                    </tr><tr>
-                    <td>Hilliness (average gradient)</td>
-                    <td>%s&#37;</td>
-                    </tr><tr>
-                    <td>Route Type</td>
-                    <td>%s</td>
-                    </tr>'),
-              data$All, data$Bicycle, round(100*data$clc), round(data[[dataFilter(scenario, "slc")]]),
-              round(data[[dataFilter(scenario, "sic")]]), round(data$length, 1),
-              round(data$time / 60, 1), round(data$av_incline * 100, 1),
-              routeTypeLabel[[data$plan[1]]]),
-      tableEnd
-      )
-  }
+  paste(
+    tableStart,
+    sprintf(paste(tableCommon,'<tr>
+                  <td>Route Distance</td>
+                  <td>%s km</td>
+                  </tr><tr>
+                  <td>Av. Route Time</td>
+                  <td>%s min</td>
+                  </tr><tr>
+                  </tr><tr>
+                  <td>Hilliness (average gradient)</td>
+                  <td>%s&#37;</td>
+                  </tr><tr>
+                  <td>Route Type</td>
+                  <td>%s</td>
+                  </tr>'),
+            data$All, data$Bicycle, round(100*data$clc), round(data[[dataFilter(scenario, "slc")]]),
+            round(data[[dataFilter(scenario, "sic")]]), round(data$length, 1),
+            round(data$time / 60, 1), round(data$av_incline * 100, 1),
+            routeTypeLabel[[data$plan[1]]]),
+    tableEnd
+  )
 }
 
 # Network Route popup function
 networkRoutePopup <- function(data, scenario){
-  # base_olc  govtarget_slc	gendereq_slc	dutch_slc	ebike_slc
-  if(scenario == "olc")
-    dfrnet <- "Bicycle"
-  else
-    dfrnet <- dataFilter(scenario, "slc")
-
   paste(
     tableStart,
     sprintf(paste('<tr>
@@ -214,7 +150,7 @@ networkRoutePopup <- function(data, scenario){
                   <td>Scenario: </td>
                   <td>&nbsp;%s cyclists</td>
                   </tr>'),
-            data$Bicycle, round(data[[dfrnet]])),
+            data$Bicycle, round(data[[dataFilter(scenario, "slc")]])),
     tableEnd
     )
 }
