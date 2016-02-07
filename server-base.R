@@ -143,7 +143,7 @@ shinyServer(function(input, output, session){
       if(input$scenario != "olc") # Hack to force the map to re-render
         updateSelectInput(session, "scenario", selected ="olc")
       else
-        updateSelectInput(session, "scenario", selected ="cdp")
+        updateSelectInput(session, "scenario", selected ="govtarget")
     }
   })
 
@@ -185,7 +185,7 @@ shinyServer(function(input, output, session){
                   , group = "zones"
                   , options = pathOptions(clickable=F)) %>%
       addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centers",
-                       popup = zonePopup(toPlot$cents, scenario(), zoneAttr()))
+                       popup = zonePopup(toPlot$cents, input$scenario, zoneAttr()))
 
     # Change the lines in isolation from the zones - should replicate previous observe
     isolate({
@@ -211,24 +211,20 @@ shinyServer(function(input, output, session){
     if (input$map_base == 'roadmap') 2 else 4
   })
 
+  # These are redundant as there is currently no option to visualize the scenario increase
   lineAttr <- reactive({
     if(input$scenario == 'olc') 'olc' else 'slc'
   })
-
   zoneAttr <- reactive({
     if(input$scenario == 'olc') 'olc' else 'slc'
   })
 
-  scenario <- reactive({
-    if(input$scenario == 'olc') 'base' else input$scenario
-  })
-
   lineData <- reactive({
-    dataFilter(scenario(), lineAttr())
+    dataFilter(input$scenario, lineAttr())
   })
 
   zoneData <- reactive({
-    dataFilter(scenario(), zoneAttr())
+    dataFilter(input$scenario, zoneAttr())
   })
 
   # Reactive function for the lines data
