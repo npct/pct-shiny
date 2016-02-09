@@ -20,14 +20,15 @@ source(file.path("scripts", "load-shiny-data.R"), local = T) # to load data
 
 # Functions
 source("pct-shiny-funs.R")
-LAs <- readOGR(dsn = "las-pcycle.geojson", layer = "OGRGeoJSON")
-LAs <- spTransform(LAs, CRS("+init=epsg:4326 +proj=longlat"))
+regions <- readOGR(dsn = "regions.geojson", layer = "OGRGeoJSON")
+regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 
 # # # # # # # #
 # shinyServer #
 # # # # # # # #
 
 shinyServer(function(input, output, session){
+  region <- reactiveValues(current = startingCity)
   # For all plotting data
   toPlot <- NULL
   # For any other persistent values
@@ -35,7 +36,6 @@ shinyServer(function(input, output, session){
 
   helper$eLatLng <- ""
   helper$dataDir <- file.path(dataDirRoot, startingCity)
-  helper$scenarioWas <- NULL
 
   # To set initialize toPlot
   loadData <- function(dataDir){
@@ -69,28 +69,27 @@ shinyServer(function(input, output, session){
   }
 
   # Finds the Local Authority shown inside the map bounds
-  findLA <- function(){
+  findRegion <- function(){
     BB <- mapBB()
     if(is.null(BB)) return(NULL)
     mapCenter = gCentroid(BB, byid=T)
-    keep <- gContains(LAs, mapCenter, byid=T)
-    if(all(drop(!keep))) return(NULL) # return NULL if center is outside the LAs shapefile
-    tolower(LAs[drop(keep), ]@data$NAME[1])
+    keep <- gContains(regions, mapCenter, byid=T)
+    if(all(drop(!keep))) return(NULL) # return NULL if center is outside the shapefile
+    tolower(regions[drop(keep), ]$Region[1])
   }
 
   attrsZone <- c("Scenario Level of Cycling (SLC)" =    "slc",
                  "Scenario Increase in Cycling (SIC)" = "sic")
 
-  setModelOutput <- function(LA){
+  observe({
     output$moutput <- renderUI({
-      modelFile <- file.path(dataDirRoot, LA, "model-output.html")
+      modelFile <- file.path(dataDirRoot, region$current, "model-output.html")
       if (file.exists(modelFile))
         includeHTML(modelFile)
       else
         HTML("<strong>No model output files are available for this region</strong>")
     })
-  }
-  setModelOutput(startingCity)
+  })
 
   observe({ # For highlighting the clicked line
     event <- input$map_shape_click
@@ -121,29 +120,19 @@ shinyServer(function(input, output, session){
   })
 
   # Updates the Local Authority if the map is moved
-  # over another LA with data
+  # over another region with data
   observe({
     if(file.exists(file.path(helper$dataDir, 'isolated'))) return()
-    LA <- findLA()
-    dataDir <-  file.path(dataDirRoot, LA)
+    region <- findRegion()
+    dataDir <- file.path(dataDirRoot, region)
 
-    # Part of the hack to force re-rending when LA changes
-    if(!is.null(helper$scenarioWas)){
-      updateSelectInput(session, "scenario", selected = helper$scenarioWas)
-      helper$scenarioWas <<- NULL
-    }
-
-    if(helper$dataDir != dataDir && !is.null(LA) && file.exists(dataDir) ){
-      setModelOutput(LA)
+    if(!is.null(region) && helper$dataDir != dataDir && file.exists(dataDir)){
+      region$current <- region
+      leafletProxy("map")  %>% clearGroup(., "cents")
       helper$dataDir <<- dataDir
-      helper$scenarioWas <<- input$scenario
       toPlot <<- loadData(dataDir)
       if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
         updateCheckboxInput(session, "freeze", value = F)
-      if(input$scenario != "olc") # Hack to force the map to re-render
-        updateSelectInput(session, "scenario", selected ="olc")
-      else
-        updateSelectInput(session, "scenario", selected ="govtarget")
     }
   })
 
@@ -170,11 +159,12 @@ shinyServer(function(input, output, session){
       updateSliderInput(session, inputId = "nos_lines", max= 100, label = "Number of Lines")
 
     # Needed to force lines to be redrawn when scenario, zone or base map changes
-    paste(input$scenario, input$map_base)
+    paste(input$scenario, input$map_base, region$current)
   })
 
   # This function updates the zones and the lines
   observe({
+    region$current
     leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centers") %>%
       addPolygons(.,  data = toPlot$zones
                   , weight = 2
@@ -296,7 +286,7 @@ shinyServer(function(input, output, session){
                options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
                                    maxZoom = ifelse(input$map_base == "IMD", 14, 18),
                                    reuseTiles = T)) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black") %>%
+      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "cents") %>%
       mapOptions(zoomToLimits = "first")
   )
 
