@@ -123,11 +123,11 @@ shinyServer(function(input, output, session){
   # over another region with data
   observe({
     if(file.exists(file.path(helper$dataDir, 'isolated'))) return()
-    region <- findRegion()
-    dataDir <- file.path(dataDirRoot, region)
+    newRegion <- findRegion()
+    dataDir <- file.path(dataDirRoot, newRegion)
 
-    if(!is.null(region) && helper$dataDir != dataDir && file.exists(dataDir)){
-      region$current <- region
+    if(!is.null(newRegion) && helper$dataDir != dataDir && file.exists(dataDir)){
+      region$current <- newRegion
       leafletProxy("map")  %>% clearGroup(., "cents")
       helper$dataDir <<- dataDir
       toPlot <<- loadData(dataDir)
