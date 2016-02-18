@@ -55,8 +55,8 @@ zoneColNames <- c(
 )
 
 scenariosNames <- c(
-  "olc"      = "Cyclists (observed)",
-  "slc"      = "Cyclists (scenario)"
+  "olc"      = "Cycle commuters (Census 2011)",
+  "slc"      = "Cycle commuters (scenario)"
 )
 
 # Normalise the data ready for plotting
@@ -77,36 +77,62 @@ dataFilter <- function(scenario, type){
 }
 
 tableStart <- '<table><tbody>'
+
 tableEnd <- '</table></tbody>'
+
 tableCommon <- '<tr>
-<td> Total commutes </td>
+<td>Total commuters:  </td>
 <td> %s </td>
 </tr>
 <tr>
-<td> Cycle commutes </td>
-<td> %s (%s&#37;) </td>
+<td>Cycle commuters (Census 2011):  </td>
+<td> %s (%s&#37;)</td>
 </tr>
 <tr>
-<td> Cycle commutes (scenario) </td>
+<td>Cycle commuters (scenario):  </td>
 <td> %s </td>
 </tr>
+'
+
+# Remove SLC and SIC for the 'olc' scenario (census 2011)
+tableOLC <- '<tr>
+<td>Total commuters:  </td>
+<td>  %s </td>
+</tr>
 <tr>
-<td> Increase in commutes &nbsp; </td>
-<td> %s </td>
+<td>Cycle commuters (Census 2011):  </td>
+<td>  %s (%s&#37;)</td>
+</tr>
+<tr>
+<td>Car commuters (Census 2011):    </td>
+<td>  %s </td>
 </tr>
 '
 
 # Popup function for straight line data in html table
 straightPopup <- function(data, scenario){
-  paste(
-    tableStart,
-    sprintf(paste0(tableCommon, '<tr>
+
+  if(scenario == 'olc') {
+     scenario <- 'base'
+     tableInterm <- sprintf(paste0(tableOLC, '<tr>
                      <td> Distance (km) </td>
                      <td> %s </td>
-                     </tr>'), data$All, data$Bicycle, round(100*data$clc), round(data[[dataFilter(scenario, "slc")]]), round(data[[dataFilter(scenario, "sic")]]), round(data$dist, 1)
-    ),
-    tableEnd
-  )
+                     </tr>'),
+                      data$All, data$Bicycle, round(100*data$clc),
+                      data$Car_driver, round(data$dist, 1))
+                      }
+
+  else {
+    tableInterm <- sprintf(paste0(tableCommon, '<tr>
+                    <td> Distance (km) </td>
+                    <td> %s </td>
+                    </tr>'),
+                     data$All, data$Bicycle,round(100*data$clc),
+                     round(data[[dataFilter(scenario, "slc")]]), round(data$dist, 1))
+            }
+
+    paste(tableStart,tableInterm,tableEnd)
+
 }
 
 routeTypeLabel <- NULL
@@ -115,67 +141,141 @@ routeTypeLabel[['quietest']] <- 'Quiet'
 
 # Route popup function
 routePopup <- function(data, scenario){
-  paste(
-    tableStart,
-    sprintf(paste(tableCommon,'<tr>
-                  <td>Route Distance</td>
-                  <td>%s km</td>
-                  </tr><tr>
-                  <td>Av. Route Time</td>
-                  <td>%s min</td>
-                  </tr><tr>
-                  </tr><tr>
-                  <td>Hilliness (average gradient)</td>
-                  <td>%s&#37;</td>
-                  </tr><tr>
-                  <td>Route Type</td>
-                  <td>%s</td>
-                  </tr>'),
-            data$All, data$Bicycle, round(100*data$clc), round(data[[dataFilter(scenario, "slc")]]),
-            round(data[[dataFilter(scenario, "sic")]]), round(data$length, 1),
-            round(data$time / 60, 1), round(data$av_incline * 100, 1),
-            routeTypeLabel[[data$plan[1]]]),
-    tableEnd
-  )
+
+  blob <-   '<tr>
+            <td>Route Distance:   </td>
+            <td>%s km</td>
+            </tr>
+            <tr>
+            <td>Av. Route Time:   </td>
+            <td>%s min</td>
+            </tr>
+            <tr>
+            <td>Hilliness (av. gradient): </td>
+            <td>%s&#37;</td>
+            </tr>
+            <tr>
+            <td>Route Type:   </td>
+            <td>%s</td>
+            </tr>'
+
+  if(scenario == 'olc') {
+    scenario <- 'base'
+
+    tableInterm <- sprintf(paste(
+                          tableOLC,
+                          blob),
+                          data$All, data$Bicycle, round(100*data$clc),
+                          data$Car_driver,round(data$length, 1), round(data$time/60, 1),
+                          round(data$av_incline*100, 1),routeTypeLabel[[data$plan[1]]] )
+              }
+
+  else {
+
+    tableInterm <- sprintf(paste(
+                          tableCommon,
+                          blob),
+                          data$All, data$Bicycle, round(100*data$clc),
+                          round(data[[dataFilter(scenario, "slc")]]),
+                          round(data$length, 1),round(data$time / 60, 1), round(data$av_incline*100, 1),
+                          routeTypeLabel[[data$plan[1]]])
+
+  }
+
+  paste(tableStart,tableInterm,tableEnd)
+
 }
+
 
 # Network Route popup function
 networkRoutePopup <- function(data, scenario){
-  paste(
-    tableStart,
-    sprintf(paste('<tr>
-                  <td>Observed: </td>
-                  <td>&nbsp;%s cyclists</td>
-                  </tr><tr>
-                  <td>Scenario: </td>
-                  <td>&nbsp;%s cyclists</td>
+
+  if(scenario == 'olc') {
+
+    tableInterm <-sprintf(paste('<tr>
+                  <td>Cycle commuters (Census 2011):&nbsp</td>
+                  <td> %s </td>
                   </tr>'),
-            data$Bicycle, round(data[[dataFilter(scenario, "slc")]])),
-    tableEnd
+                  data$Bicycle)
+          }
+
+      else {
+
+        tableInterm <-sprintf(paste('<tr>
+                  <td>Cycle commuters (Census 2011):&nbsp</td>
+                  <td> %s </td>
+                  </tr>
+                  <tr>
+                  <td>Cycle commuters (scenario):&nbsp</td>
+                  <td> %s </td>
+                  </tr>'),
+                  data$Bicycle, round(data[[dataFilter(scenario, "slc")]]))
+                    }
+
+
+    paste(
+      tableStart,
+      tableInterm,
+      tableEnd
     )
+
 }
 
 zonePopup <- function(data, scenario, zone){
+
   zone_filter_name <- scenariosNames[zone]
-  paste(
-    tableStart,
-    sprintf("
-            <tr>
-            <td>Zone: </td>
-            <td>%s</td>
-            </tr><tr>
-            <td>%s: </td>
-            <td>%s </td>
-            </tr>
-            <tr>
-            <td>&#37; who drive: &nbsp</td>
-            <td>%s </td>
-            </tr>
-            <tr>
-            <td>Hilliness: &nbsp</td>
-            <td>%s&deg;</td>
-            </tr>", data$MSOA11NM, zone_filter_name,
-            round(data[[dataFilter(scenario, zone)]], 2 ),
-            round(100*data$base_olcarusers,1), round(data$avslope, 2)),
-    tableEnd)
+
+
+  if(scenario == 'olc') {
+    tableInterm <-sprintf('
+                        <tr>
+                          <td>Zone:   </td>
+                          <td>%s</td>
+                          </tr>
+                          <tr>
+                          <td>%s:  </td>
+                          <td>%s </td>
+                          </tr>
+                          <tr>
+                          <td>Car commuters (Census 2011):    </td>
+                          <td>%s </td>
+                          </tr>
+                          <tr>
+                          <td>Hilliness: &nbsp</td>
+                          <td>%s&deg;</td>
+                          </tr>', data$MSOA11NM, zone_filter_name,
+                          round(data[[dataFilter(scenario, zone)]] ),
+                          round(data$All * data$base_olcarusers), round(data$avslope, 1))
+
+      }
+
+  else {
+
+  tableInterm <-sprintf('
+                        <tr>
+                        <td>Zone:   </td>
+                        <td>%s</td>
+                        </tr>
+                        <tr>
+                        <td>Cycle commuters (Census 2011):  </td>
+                        <td>%s </td>
+                        </tr>
+                        <tr>
+                        <td>%s:  </td>
+                        <td>%s </td>
+                        </tr>
+                        <tr>
+                        <td>Hilliness: &nbsp</td>
+                        <td>%s&deg;</td>
+                        </tr>', data$MSOA11NM, round(data[[dataFilter('olc', zone)]] ),
+                        zone_filter_name,round(data[[dataFilter(scenario, zone)]] ),
+                        round(data$avslope, 1))
+
+  }
+
+
+  paste(tableStart,
+        tableInterm,
+        tableEnd)
+
 }
