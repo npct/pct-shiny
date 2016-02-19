@@ -1,2 +1,3 @@
 startingCity <- "cornwall-and-isles-of-scilly"
-source("../../server-base.R", local = T, chdir = T)
+shinyRoot <- file.path("..", "..")
+source(file.path(shinyRoot, "server-base.R"), local = T)
