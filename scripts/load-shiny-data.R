@@ -9,7 +9,7 @@
 # Download files
 if(dir.exists(dataDirRoot)){
   old <- setwd(dataDirRoot)
-  system2('git', args=c("pull"), wait = FALSE)
+  system2('git', "fetch", wait = F)
   setwd(old)
 }
 
