@@ -10,7 +10,7 @@ export PATH=$PATH:/home/git/bin
 
 echo "Check out the latest version into our temp directory"
 mkdir -p /home/git/var-shiny/pct-shiny
-git --work-tree /home/git/var-shiny/pct-shiny --git-dir /home/git/pct-shiny checkout master -f
+git --work-tree /home/git/var-shiny/pct-shiny --git-dir /home/git/pct-shiny checkout production -f
 
 DATAVER=`cat /home/git/var-shiny/pct-shiny/data_sha`
 echo "The data sha is ${DATAVER}"
