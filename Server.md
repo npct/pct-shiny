@@ -151,9 +151,11 @@ the core of the session config is,
 
  backend shiny_server
         balance roundrobin
-        cookie SRV_ID insert
-        server 3838 127.0.0.1:3838 maxconn 5000 cookie check
-        server 3839 127.0.0.1:3839 maxconn 5000 cookie check
+        cookie SRV_ID insert indirect nocache
+        server hex_3838 46.235.225.97:3838 maxconn 5000 check cookie hex_3838
+        server hex_3839 46.235.225.97:3839 maxconn 5000 check cookie hex_3839
+        server cam_3838 46.235.225.97:3838 maxconn 5000 check cookie cam_3838
+        server cam_3839 46.235.225.97:3839 maxconn 5000 check cookie cam_3839
 ```
 
 ... we've configured this for 32 processes on each host in production so you don't need to reconfigure haproxy unless you exceed 32 shiny servers per VM
