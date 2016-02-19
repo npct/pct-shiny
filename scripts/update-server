@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#(C) 2016 NPTC
+#Written by Pete Stevens of Mythic Beasts Ltd to support NPTC production
+#deployment
+
+export SSH_AUTH_SOCK=''
+echo "Updating $1"
+
+echo "Shutting all the shiny servers on $1"
+ssh -a -l root -i /home/git/.ssh/id_shiny_control $1 stop
+
+echo "Copy the files into place from var-shiny to $1:/var/shiny"
+rsync -a --delete -e "ssh -a  -i /home/git/.ssh/id_npt_deploy" /home/git/var-shiny/ root@$1:
+
+echo "Starting up all the shiny server on $1"
+ssh -a -l root -i /home/git/.ssh/id_shiny_control $1 start
