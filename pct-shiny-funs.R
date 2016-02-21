@@ -38,8 +38,8 @@ lineColNames <- c(
 numericZoneColNames <- c(
   "Average slope"                     = "avslope",
   "Cyclists in census"                = "Bicycle",
-  "Cyclists at govenment target"      = "base_slc",
-  "Increase at govenment target"      = "base_sic",
+  "Cyclists at govenment target"      = "govtarget_slc",
+  "Increase at govenment target"      = "govtarget_sic",
   "Cyclists at gender equality"       = "gendereq_slc",
   "Increase at gender equality"       = "gendereq_sic",
   "Cyclists at Dutch levels"          = "dutch_slc",
