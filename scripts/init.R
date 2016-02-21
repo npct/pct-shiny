@@ -1,3 +1,17 @@
+# Clone the data repo if it do not exist
+
+if(!dir.exists(dataDirRoot)) {
+  system2('git', args=c('clone', '--depth=1',
+                        'https://github.com/npct/pct-data.git', dataDirRoot))
+}
+
+# Update the data repo
+if(dir.exists(dataDirRoot)){
+  old <- setwd(dataDirRoot)
+  system2('git', "fetch", wait = F)
+  setwd(old)
+}
+
 data_sha <- readLines(file.path(shinyRoot, "data_sha"))
 
 installed <- cranPkgs %in% installed.packages()
