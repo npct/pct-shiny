@@ -2,31 +2,26 @@
 # Setup #
 # # # # #
 
-# packages required
-cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT")
-
-installed <- cranPkgs %in% installed.packages()
-# install packages that are missing
-if(length(cranPkgs[!installed]) > 0) install.packages(cranPkgs[!installed])
-
-lapply(c(cranPkgs), library, character.only = TRUE)
-
 # Colours
 zcols <- c("darkslategrey", "yellow")
 
 # expect pct-data as a sibling of pct-shiny
-dataDirRoot <- file.path('..', '..', '..', 'pct-data')
-source(file.path("scripts", "load-shiny-data.R"), local = T) # to load data
+dataDirRoot <- file.path(shinyRoot, '..', 'pct-data')
+# packages required
+cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT")
+
+source(file.path(shinyRoot, "scripts", "init.R"), local = T)
+source(file.path(shinyRoot, "scripts", "load-shiny-data.R"), local = T) # to load data
+lapply(c(cranPkgs), library, character.only = TRUE)
 
 # Functions
-source("pct-shiny-funs.R")
-regions <- readOGR(dsn = "regions.geojson", layer = "OGRGeoJSON")
+source(file.path(shinyRoot, "pct-shiny-funs.R"))
+regions <- readOGR(dsn = file.path(shinyRoot, "regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 
 # # # # # # # #
 # shinyServer #
 # # # # # # # #
-
 shinyServer(function(input, output, session){
   region <- reactiveValues(current = startingCity)
   # For all plotting data
