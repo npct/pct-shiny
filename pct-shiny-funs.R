@@ -55,7 +55,7 @@ zoneColNames <- c(
 )
 
 scenariosNames <- c(
-  "olc"      = "Cycle commuters (Census 2011)",
+  "olc"      = "Cycle commuters (recorded)",
   "slc"      = "Cycle commuters (scenario)"
 )
 
@@ -85,7 +85,7 @@ tableCommon <- '<tr>
 <td> %s </td>
 </tr>
 <tr>
-<td>Cycle commuters (Census 2011):  </td>
+<td>Cycle commuters (recorded):  </td>
 <td> %s (%s&#37;)</td>
 </tr>
 <tr>
@@ -94,17 +94,17 @@ tableCommon <- '<tr>
 </tr>
 '
 
-# Remove SLC and SIC for the 'olc' scenario (census 2011)
+# Remove SLC and SIC for the 'olc' scenario (recorded)
 tableOLC <- '<tr>
 <td>Total commuters:  </td>
 <td>  %s </td>
 </tr>
 <tr>
-<td>Cycle commuters (Census 2011):  </td>
+<td>Cycle commuters (recorded):  </td>
 <td>  %s (%s&#37;)</td>
 </tr>
 <tr>
-<td>Car commuters (Census 2011):    </td>
+<td>Car commuters (recorded):    </td>
 <td>  %s </td>
 </tr>
 '
@@ -193,7 +193,7 @@ networkRoutePopup <- function(data, scenario){
   if(scenario == 'olc') {
 
     tableInterm <-sprintf(paste('<tr>
-                  <td>Cycle commuters (Census 2011):&nbsp</td>
+                  <td>Cycle commuters (recorded):&nbsp</td>
                   <td> %s </td>
                   </tr>'),
                   data$Bicycle)
@@ -202,7 +202,7 @@ networkRoutePopup <- function(data, scenario){
       else {
 
         tableInterm <-sprintf(paste('<tr>
-                  <td>Cycle commuters (Census 2011):&nbsp</td>
+                  <td>Cycle commuters (recorded):&nbsp</td>
                   <td> %s </td>
                   </tr>
                   <tr>
@@ -237,7 +237,7 @@ zonePopup <- function(data, scenario, zone){
                           <td>%s </td>
                           </tr>
                           <tr>
-                          <td>Car commuters (Census 2011):    </td>
+                          <td>Car commuters (recorded):    </td>
                           <td>%s </td>
                           </tr>
                           <tr>
@@ -257,7 +257,7 @@ zonePopup <- function(data, scenario, zone){
                         <td>%s</td>
                         </tr>
                         <tr>
-                        <td>Cycle commuters (Census 2011):  </td>
+                        <td>Cycle commuters (recorded):  </td>
                         <td>%s </td>
                         </tr>
                         <tr>

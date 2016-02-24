@@ -299,7 +299,7 @@ shinyServer(function(input, output, session){
     ylabel <- switch(zoneAttr(),
                      "slc" = "Scenario Level of Cycling (SLC): N. Commuters",
                      "sic" = "Scenario Increase in Cycling (SIC): N. Commuters",
-                     "Census 2011 Cycling: N. Commuters"
+                     "Census 2011: Commuter cyclists"
     )
 
     # Set the labelling of Y-axis to bold
