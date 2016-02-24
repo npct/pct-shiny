@@ -55,8 +55,8 @@ zoneColNames <- c(
 )
 
 scenariosNames <- c(
-  "olc"      = "Cycle commuters (recorded)",
-  "slc"      = "Cycle commuters (scenario)"
+  "olc"      = "Cyclists (recorded)",
+  "slc"      = "Cyclists (scenario)"
 )
 
 # Normalise the data ready for plotting
@@ -85,11 +85,11 @@ tableCommon <- '<tr>
 <td> %s </td>
 </tr>
 <tr>
-<td>Cycle commuters (recorded):  </td>
+<td>Cyclists (recorded):  </td>
 <td> %s (%s&#37;)</td>
 </tr>
 <tr>
-<td>Cycle commuters (scenario):  </td>
+<td>Cyclists (scenario):  </td>
 <td> %s </td>
 </tr>
 '
@@ -100,11 +100,11 @@ tableOLC <- '<tr>
 <td>  %s </td>
 </tr>
 <tr>
-<td>Cycle commuters (recorded):  </td>
+<td>Cyclists (recorded):  </td>
 <td>  %s (%s&#37;)</td>
 </tr>
 <tr>
-<td>Car commuters (recorded):    </td>
+<td>Drivers (recorded):    </td>
 <td>  %s </td>
 </tr>
 '
@@ -193,7 +193,7 @@ networkRoutePopup <- function(data, scenario){
   if(scenario == 'olc') {
 
     tableInterm <-sprintf(paste('<tr>
-                  <td>Cycle commuters (recorded):&nbsp</td>
+                  <td>Cyclists (recorded):&nbsp</td>
                   <td> %s </td>
                   </tr>'),
                   data$Bicycle)
@@ -202,11 +202,11 @@ networkRoutePopup <- function(data, scenario){
       else {
 
         tableInterm <-sprintf(paste('<tr>
-                  <td>Cycle commuters (recorded):&nbsp</td>
+                  <td>Cyclists (recorded):&nbsp</td>
                   <td> %s </td>
                   </tr>
                   <tr>
-                  <td>Cycle commuters (scenario):&nbsp</td>
+                  <td>Cyclists (scenario):&nbsp</td>
                   <td> %s </td>
                   </tr>'),
                   data$Bicycle, round(data[[dataFilter(scenario, "slc")]]))
@@ -237,7 +237,7 @@ zonePopup <- function(data, scenario, zone){
                           <td>%s </td>
                           </tr>
                           <tr>
-                          <td>Car commuters (recorded):    </td>
+                          <td>Drivers (recorded):    </td>
                           <td>%s </td>
                           </tr>
                           <tr>
@@ -257,7 +257,7 @@ zonePopup <- function(data, scenario, zone){
                         <td>%s</td>
                         </tr>
                         <tr>
-                        <td>Cycle commuters (recorded):  </td>
+                        <td>Cyclists (recorded):  </td>
                         <td>%s </td>
                         </tr>
                         <tr>
