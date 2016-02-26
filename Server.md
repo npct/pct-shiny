@@ -197,3 +197,46 @@ and you also need the ssh authorized_keys config for the keys
 command="/usr/local/sbin/shiny-control $SSH_ORIGINAL_COMMAND",no-port-forwarding,no-x11-forwarding,no-agent-forwarding ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDuzCaVH7xoSzZtNshjOJBQc2RQSwT1jwcXkLg7RtQUHJI42NTtM5jewDdWChkyUAoZKzZMfBh9IndjEdqirYoGHAcujSfZBvarwrlYmhtS+Ip3lfDybyzMUsUquHO7vw08dZByyT3Nl7Ner7Tcn1CBhgDSl8w1NDdtTz81eLyIPTMlx7v9XLcwG5XcixR1iVsk3tFoz7Mgig1CR0cfmAhKOq92Dlfoe7RHGyXjo+CiTQ+VLFL+PgwpIGG+CkDlCSqpN4lDxgcVZbPF0jzZHD1SvNPKVALCuLZDWSdGh4XyENObDLk5YThjY3yudIA49t0VcViQM3uV6+jEwqBBJ2E9 git@npt1
 command="/usr/local/sbin/rrsync /var/shiny",no-port-forwarding,no-x11-forwarding,no-agent-forwarding ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrk5fjbsfLf+63YuJ1tNRlHsiFF9X5F6RQdLtxeyB18xJnxUjLW82fwqRGIwGpYH0i2yTX941hEq2NFmvfsqCgZMK+H7zkLlBulXTo5CShVbGnuZg3/ZrSDKR9QlpgYKH06R8LCEwi83FpT2Uyq1zdBVwIDFLexUVwOi4MqMfatN7xTgDYBECbcpJS2pJonkkwRWXGVKu8KYw1uyotUd3elBVKiwNzeMIiLGPP9bx3yQL4mfwTtAaxr9YWRUAE26dkD5yrt/HH2bPYrsTxlbJm79Cd5zwJjXjJRbdurk2h8pWOqyALopAuL1xrTeoyaYlXnwBWcDJYLyjcTjydanYN git@npt1
 ```
+
+Also make sure the user can set `LANG` so comment out
+```
+AcceptEnv LANG LC_*
+```
+in `/etc/ssh/sshd_config`
+
+## ICT
+
+This is a separate shiny application that lives in the same server. Clone the ICT git into /home/git/ICT on the server with the git user
+
+
+```sh
+git clone https://github.com/ITHIM/ICT.git ICT
+```
+add a /home/git/bin/publish-ict script
+
+and a post-update hook in the ICT repo
+
+```sh
+#!/bin/bash
+
+git update-server-info
+/home/git/bin/publish-ict
+```
+Update all the shiny config files to include
+
+```
+location /ICT/ {
+  app_dir /var/shiny/ICT/app;
+}
+```
+The dependencies are:
+
+```
+apt-get install libssh2-1-dev
+```
+and
+
+```
+R -e "install.packages(c('DT', 'devtools', 'shinyBS', 'shinyjs', 'dplyr', 'plyr', 'stringr', 'Hmisc'), repos='https://cran.rstudio.com/')"
+R -e "devtools::install_github('rCharts', 'ramnathv')"
+```
