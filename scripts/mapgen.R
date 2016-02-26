@@ -13,6 +13,7 @@
 library(rgeos)
 library(maptools)
 library(shiny)
+library(leaflet)
 
 pct_data <- file.path("..", "pct-data")
 regions_www <- "regions_www"
@@ -25,6 +26,7 @@ for(i in folders){
   if(file.exists(file.path(regions_www, i, "server.R"))){
     print(i)
     r <- readRDS(file.path(pct_data, i, "z.Rds"))
+    if(!any(is.nan(r$av_distance))) { r <- rmapshaper::ms_simplify(r) }
     r <- gBuffer(r, width = 0)
     spChFIDs(r) <- i
     df <- data.frame(Name = i)
@@ -34,8 +36,7 @@ for(i in folders){
     l <- readRDS(file.path(pct_data, i, "l.Rds"))
     r$pcycle <- round(100 * sum(l$Bicycle) / sum(l$All))
 
-    r$url <- paste0(".", i)
-    r$url_text <- as.character(a(i, href = r$url))
+    r$url_text <- as.character(a(paste("See map of", i), href = paste0("./", i)))
     r$url_text <- gsub('">', '" target ="_top">', r$url_text)
 
     if(exists("region")){
@@ -46,7 +47,21 @@ for(i in folders){
     }
   }
 }
+normalise <- function(values, min = 0, max = 1){
+  min + max * (values - min(values))/diff(range(values))
+}
+
+getColourRamp <- function(values) {
+  v <- normalise(values)
+  x <- colorRamp(c("red", "green"))(v)
+  x[is.na(x)] <- 1
+  rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
+}
+
 popup <- paste0(region$url_text, ", ", region$pcycle, "% cycling ")
-m <- leaflet() %>% addTiles() %>% addPolygons(data = region, popup = popup)
+m <- leaflet() %>%
+  addTiles(urlTemplate= "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png") %>%
+  addPolygons(data = region, popup = popup, fillColor = getColourRamp(region$pcycle), weight = 1, color = "black" )
 m
-saveWidget(m, file = file.path(regions_www, "map.html"))
+htmlwidgets::saveWidget(m, file = "map.html")
+file.rename("map.html", file.path(regions_www, "map.html"))
