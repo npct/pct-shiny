@@ -13,8 +13,8 @@ Created by the Propensity to Cycle Tool team.
 
 Last updated: `r format(Sys.Date(), format = '%m-%d-%y')`.
 
-Welcome to the prototype of the National Propensity to Cycle Tool for England (PCT-England) 
-This tool provides evidence to guide cycling investment in England. Within each region, the tool shows cycling levels at the small area level and between areas based on 2011 Census commuting data. It also shows what spatial distribution of cycling might be expected as cycling increases.
+Welcome to the National Propensity to Cycle Tool (PCT), an online and interactive planning support tool to provide an evidence base to inform investment in cycling. To run the tool for England (PCT-England), click on a region in the map to the left.
+The tool shows cycling levels at area, 'desire line' and route network levels based on the 2011 Census for commuting and for various scenarios, illustrating where cycling has the greatest potential to grow.
 
 The cycling trips can be allocated to the road network, based on the fastest cycling route. The purpose of the route allocation is to see on which routes the most provision might be necessary as cycling grows rather than to show where people currently cycle. We recognise that many people currently choose longer routes to avoid busy roads, but for cycling to achieve its potential will require the creation direct routes on which people feel safe. The purpose of the route allocation is therefore to see on which routes the most provision might be necessary as cycling grows rather than to show where people currently cycle.
 
