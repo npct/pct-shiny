@@ -32,7 +32,7 @@ The Propensity to Cycle Tool (PCT) was designed to assist transport planners and
 
 The PCT can be used at different scales.
 
-First, the PCT is a strategic planning tool. Different visons of the future are represented through the various scenarios of change, including the government's target to double cycling in a decade to the more ambitious 'Go Dutch' scenario whereby Dutch propensities to cycle (allowing for English hilliness and trip distances) are reached in England. By showing what the rate of cycling could feasibly look like in different parts of cities and regions, and illustrating the associated increase in cycle use on the road network, the PCT should inform policies that seek a wider shift towards sustainable transport more generally.
+First, the PCT is a strategic planning tool. Different visons of the future are represented through various scenarios of change, including the [government's Cycling Delivery Plan](https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/364791/141015_Cycling_Delivery_Plan.pdf) target to double cycling in a decade and the more ambitious 'Go Dutch' scenario, whereby cycling levels are reached in England (allowing for English hilliness and trip distances). By showing what the rate of cycling could feasibly look like in different parts of cities and regions, and illustrating the associated increase in cycle use on the road network, the PCT should inform policies that seek a wider shift towards sustainable transport.
 
 Second, the PCT can also be used at a smaller scale. The scenario level of commuter cycling along a particular road can be used to estimate future mode share for cycling on that corridor. This can be compared with current allocation of space to different modes, and used to consider re-allocation from less sustainable modes to cater for cycling growth. In other cases, low current or potential flows may indicate a barrier, such as a major road or rail line, causing severance and lengthening trips. This could be addressed through new infrastructure such as a pedestrian and cycle bridge. 
 
@@ -44,7 +44,7 @@ We would like to thank Brook Lyndhurst for facilitating Phase 1 of the DfT contr
 
 We would also like to thank the ESRC and EPSRC for additional funding through Impact Acceleration Awards.
 
-The PCT uses transparent and tested methods on the best available available data. However, we cannot accept liability for, included but not limited to, loss or damages.
+The PCT uses transparent and tested methods on the best available data. However, we cannot accept liability for, included but not limited to, loss or damages.
 
 For more information or questions, please contact us at: [pct@pct.bike](mailto:pct@pct.bike).
 
