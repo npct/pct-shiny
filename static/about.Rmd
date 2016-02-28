@@ -44,7 +44,7 @@ We would like to thank Brook Lyndhurst for facilitating Phase 1 of the DfT contr
 
 We would also like to thank the ESRC and EPSRC for additional funding through Impact Acceleration Awards.
 
-The PCT uses transparent and tested methods on the best available data. However, we cannot accept liability for, included but not limited to, loss or damages.
+The PCT uses transparent and tested methods on the best available data. However we cannot accept liability for any loss or damage caused.
 
 For more information or questions, please contact us at: [pct@pct.bike](mailto:pct@pct.bike).
 
