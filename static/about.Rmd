@@ -38,7 +38,7 @@ Second, the PCT can also be used at a smaller scale. The scenario level of commu
 
 Central both to strategic and smaller-scale use is the question of where to prioritise high quality cycling infrastructure of sufficient capacity for a planned growth in cycling.
 
-In summary the PCT is a planning support system to improve cycling provision at many levels from regions to specific points on the road network. For further work on the approach, please see the [academic paper](http://arxiv.org/abs/1509.04425): The Propensity to Cycle Tool: An open source online system for sustainable transport planning [@lovelace_propensity_2015].
+In summary the PCT is a planning support system to improve cycling provision at many levels from regions to specific points on the road network. For further work on the approach, please see [paper](http://arxiv.org/abs/1509.04425) on the PCT [@lovelace_propensity_2015].
 
 We would like to thank Brook Lyndhurst for facilitating Phase 1 of the DfT contract and Atkins for facilitating Phase 2.
 
