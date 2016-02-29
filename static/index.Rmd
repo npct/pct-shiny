@@ -1,0 +1,24 @@
+---
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), '../regions_www/index.html')) })
+output:
+  html_document:
+    includes:
+      in_header: header.html
+      after_body: doc_afix.html
+---
+
+<!--If editing this page use index.Rmd which compiles into index.html-->
+
+Created by the Propensity to Cycle Tool team.
+
+Last updated: `r format(Sys.Date(), format = '%Y-%m-%d')`.
+
+Welcome to the National Propensity to Cycle Tool (PCT), an online and interactive planning support tool to provide an evidence base to inform investment in cycling. To run the tool for England (PCT-England), click on a region in the map to the left.
+
+The tool shows cycling levels at area, 'desire line' and route network levels based on the 2011 Census for commuting and for various scenarios, illustrating where cycling has the greatest potential to grow.
+
+The cycling trips can be allocated to the road network, based on the fastest cycling route. The purpose of the route allocation is to see on which routes the most provision might be necessary as cycling grows rather than to show where people currently cycle. We recognise that many people currently choose longer routes to avoid busy roads. But for cycling to reach its potential safe direct routes are needed. The Route Network layer is therefore intended to show where (on which routes) investment is most needed rather than where people currently cycle.
+
+Users can select different overall cycling scenarios, such as ‘Go Dutch’ or ‘Ebikes’, and can then see what this might mean for cycling levels in each small area and along the network. The model estimates cycling potential based upon trip distances and hilliness. Therefore, it highlights the greatest unmet potential in areas that currently have high numbers of short trips in relatively flat areas but where people are not currently cycling.
+
+Currently the PCT only shows commuting trips but additional layers are planned.  See [the about page](about.html) for more information.
