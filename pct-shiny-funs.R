@@ -243,9 +243,9 @@ zonePopup <- function(data, scenario, zone){
                           <tr>
                           <td>Hilliness: &nbsp</td>
                           <td>%s&deg;</td>
-                          </tr>', data$MSOA11NM, zone_filter_name,
+                          </tr>', data$geo_label, zone_filter_name,
                           round(data[[dataFilter(scenario, zone)]] ),
-                          round(data$All * data$base_olcarusers), round(data$avslope, 1))
+                          data$Car, round(data$avslope, 1))
 
       }
 
@@ -267,7 +267,7 @@ zonePopup <- function(data, scenario, zone){
                         <tr>
                         <td>Hilliness: &nbsp</td>
                         <td>%s&deg;</td>
-                        </tr>', data$MSOA11NM, round(data[[dataFilter('olc', zone)]] ),
+                        </tr>', data$geo_label, round(data[[dataFilter('olc', zone)]] ),
                         zone_filter_name,round(data[[dataFilter(scenario, zone)]] ),
                         round(data$avslope, 1))
 
