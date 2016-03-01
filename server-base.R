@@ -27,8 +27,8 @@ dataDirRoot <- file.path(shinyRoot, '..', 'pct-data')
 # packages required
 cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT")
 
-onProduction <- grepl('^/var/shiny/pct-shiny', getwd())
-if(!onProduction){
+onProduction <- grepl('/var/shiny/pct-shiny', getwd())
+if(onProduction){
   source(file.path(shinyRoot, "scripts", "init.R"), local = T)
 }
 
