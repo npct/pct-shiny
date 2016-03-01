@@ -81,7 +81,7 @@ tableStart <- '<table><tbody>'
 tableEnd <- '</table></tbody>'
 
 tableCommon <- knitr::kable(data.frame(Attribute = c("Total commutes", "Cyclists (recorded):", "Cyclists (scenario)"),
-                          Value = c("%s", "%s (%s&#37;)", "%s")), "html")
+                          Value = c("%s", "%s (%s percent)", "%s")), "html")
 
 # Remove SLC and SIC for the 'olc' scenario (recorded)
 tableOLC <- '<tr>
