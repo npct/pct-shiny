@@ -80,19 +80,9 @@ tableStart <- '<table><tbody>'
 
 tableEnd <- '</table></tbody>'
 
-tableCommon <- '<tr>
-<td>Total commuters:  </td>
-<td> %s </td>
-</tr>
-<tr>
-<td>Cyclists (recorded):  </td>
-<td> %s (%s&#37;)</td>
-</tr>
-<tr>
-<td>Cyclists (scenario):  </td>
-<td> %s </td>
-</tr>
-'
+tableCommon <- knitr::kable(data.frame(
+  Attribute = c("Total commutes: ", "Cyclists (recorded): ", "Cyclists (scenario): "),
+  Value = c("%s","%s (%s%%)" , "%s")), "html")
 
 # Remove SLC and SIC for the 'olc' scenario (recorded)
 tableOLC <- '<tr>
@@ -118,7 +108,7 @@ straightPopup <- function(data, scenario){
                      <td> Distance (km) </td>
                      <td> %s </td>
                      </tr>'),
-                      data$All, data$Bicycle, round(100*data$clc),
+                      data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
                       data$Car_driver, round(data$dist, 1))
                       }
 
@@ -127,7 +117,7 @@ straightPopup <- function(data, scenario){
                     <td> Distance (km) </td>
                     <td> %s </td>
                     </tr>'),
-                     data$All, data$Bicycle,round(100*data$clc),
+                     data$All, data$Bicycle,round(100 * data$Bicycle / data$All),
                      round(data[[dataFilter(scenario, "slc")]]), round(data$dist, 1))
             }
 
@@ -165,7 +155,7 @@ routePopup <- function(data, scenario){
     tableInterm <- sprintf(paste(
                           tableOLC,
                           blob),
-                          data$All, data$Bicycle, round(100*data$clc),
+                          data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
                           data$Car_driver,round(data$length, 1), round(data$time/60, 1),
                           round(data$av_incline*100, 1),routeTypeLabel[[data$plan[1]]] )
               }
@@ -175,7 +165,7 @@ routePopup <- function(data, scenario){
     tableInterm <- sprintf(paste(
                           tableCommon,
                           blob),
-                          data$All, data$Bicycle, round(100*data$clc),
+                          data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
                           round(data[[dataFilter(scenario, "slc")]]),
                           round(data$length, 1),round(data$time / 60, 1), round(data$av_incline*100, 1),
                           routeTypeLabel[[data$plan[1]]])
