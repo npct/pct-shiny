@@ -11,7 +11,7 @@ $( window ).load(function() {
   $('#togglePanel').click(function(){ togglePanel('#input_panel', this); });
   $('#toggleLegend').click(function(){ togglePanel('#zone_legend', this); });
   $('#toggleMapLegend').click(function(){ togglePanel('#map_legend', this); });
-
+  $('select').addClass("form-control");
   var initMap = function(){
     if($(map).data('leaflet-map')){
       // lMap is the leaflet map object see http://leafletjs.com/reference.html
