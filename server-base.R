@@ -31,7 +31,7 @@ onProduction <- grepl('^/var/shiny/pct-shiny', getwd())
 if(!onProduction){
   source(file.path(shinyRoot, "scripts", "init.R"), local = T)
 }
-
+repo_sha <- as.character(readLines(file.path(shinyRoot, "repo_sha")))
 lapply(c(cranPkgs), library, character.only = TRUE)
 
 # Functions
@@ -291,6 +291,13 @@ shinyServer(function(input, output, session){
            'IMD' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png"
     )
   })
+  output$citeHtml <- renderUI({
+    HTML(paste('Ver', a(repo_sha, href= paste0("https://github.com/npct/pct-shiny/tree/", repo_sha), target='_blank'),
+               'released under a', a('GNU AGP licence', href= "licence.html", target='_blank'),
+               'and funded by the', a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport", target="_blank")
+               ))
+  })
+
 
   output$map = renderLeaflet(
     leaflet() %>%

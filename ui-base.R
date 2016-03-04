@@ -123,7 +123,7 @@ shinyUI(
           )
         ),
         tags$div(id="cite",
-                 'This is a prototype released under the', a('GNU AGP licence', href= "licence.html", target='_blank'), 'and funded by the', a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport", target="_blank")
+                 htmlOutput("citeHtml")
         )
       )
     ),
