@@ -26,8 +26,8 @@ scenarios <- c("Census 2011 Cycling" = "olc",
 
 line_types <- c("None" = "none",
                 "Straight Lines" = "straight",
-                "Fastest Route" = "d_route",
-                "Fastest Route & Quiet Routes" = "route",
+                "Fast Routes" = "d_route",
+                "Fast & Quiet Routes" = "route",
                 "Route Network" = "rnet")
 
 attrsZone <- c("Scenario Level of Cycling (SLC)"    = "slc",
@@ -62,10 +62,10 @@ shinyUI(
           div(
             id = "input_panel",
             tags$div(title="Scenario details can be seen in the Help tab",
-                     selectInput("scenario", "Scenario:", scenarios)
+                     selectInput("scenario", "Scenario:", scenarios, selectize = F)
             ),
             tags$div(title="Shows the cycling flow between the centres of zones",
-                     selectInput("line_type", "Cycling Flows", line_types, selected = "none")
+                     selectInput("line_type", "Cycling Flows", line_types, selected = "none", selectize = F)
             ),
             conditionalPanel(
               condition = "input.line_type != 'none'",
@@ -96,7 +96,7 @@ shinyUI(
           ),
           div(id = "zone_legend",
               tags$div(title="Scenario-specific quartiles of cycling level",
-                       selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)"), selected = "Commute data"),
+                       selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)"), selected = "Commute data", selectize = F),
                        conditionalPanel(
                          condition = "input.map_base != 'c'",
                          plotOutput("legendCyclingPotential", width = "100%", height = 300)
