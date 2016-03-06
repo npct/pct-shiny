@@ -24,6 +24,12 @@ option {
   font-size: 11px;
 }
 
+select::-ms-expand {
+  width:12px;
+  border:none;
+  background:#fff;
+}
+
 select.form-control {
   font-size: 11px;
 }
