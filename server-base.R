@@ -28,10 +28,12 @@ dataDirRoot <- file.path(shinyRoot, '..', 'pct-data')
 cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT")
 
 onProduction <- grepl('^/var/shiny/pct-shiny', getwd())
-if(!onProduction){
-  source(file.path(shinyRoot, "scripts", "init.R"), local = T)
-}
-repo_sha <- as.character(readLines(file.path(shinyRoot, "repo_sha")))
+
+# Run the following lines to check out the current version of the data (see sha)
+# if(!onProduction){
+#   source(file.path(shinyRoot, "scripts", "init.R"), local = T)
+# }
+repo_sha <- as.character(readLines(file.path(shinyRoot, "data_sha")))
 lapply(c(cranPkgs), library, character.only = TRUE)
 
 # Functions

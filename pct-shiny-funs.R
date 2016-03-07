@@ -9,7 +9,7 @@ getLineColour <- function(lineType){
 }
 
 numericLineColNames <- c(
-  "Average Slope"                     = "avslope",
+  "Average Slope (%)"                     = "avslope",
   "Straight Line Distance (km)"       = "dist",
   "Cirquity"                          = "cirquity",
   "Fastest Route Distance (km)"       = "dist_fast",
@@ -36,7 +36,6 @@ lineColNames <- c(
 )
 
 numericZoneColNames <- c(
-  "Average slope"                     = "avslope",
   "Cyclists in census"                = "Bicycle",
   "Cyclists at govenment target"      = "govtarget_slc",
   "Increase at govenment target"      = "govtarget_sic",
