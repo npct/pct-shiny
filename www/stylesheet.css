@@ -19,7 +19,12 @@ div.outer {
 
 .selectize-dropdown,
 .selectize-input,
-.selectize-input input {
+.selectize-input input,
+option {
+  font-size: 11px;
+}
+
+select.form-control {
   font-size: 11px;
 }
 
