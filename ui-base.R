@@ -26,8 +26,8 @@ scenarios <- c("Census 2011 Cycling" = "olc",
 
 line_types <- c("None" = "none",
                 "Straight Lines" = "straight",
-                "Fast Routes" = "d_route",
-                "Fast & Quiet Routes" = "route",
+                "Fastest Route" = "d_route",
+                "Fastest Route & Quiet Routes" = "route",
                 "Route Network" = "rnet")
 
 attrsZone <- c("Scenario Level of Cycling (SLC)"    = "slc",
@@ -62,10 +62,10 @@ shinyUI(
           div(
             id = "input_panel",
             tags$div(title="Scenario details can be seen in the Help tab",
-                     selectInput("scenario", "Scenario:", scenarios, selectize = F)
+                     selectInput("scenario", "Scenario:", scenarios)
             ),
             tags$div(title="Shows the cycling flow between the centres of zones",
-                     selectInput("line_type", "Cycling Flows", line_types, selected = "none", selectize = F)
+                     selectInput("line_type", "Cycling Flows", line_types, selected = "none")
             ),
             conditionalPanel(
               condition = "input.line_type != 'none'",
@@ -73,7 +73,7 @@ shinyUI(
                        checkboxInput("freeze", "Freeze Lines", value = TRUE)
               ),
               tags$div(title="Flows to show",
-                       sliderInput("nos_lines", label = "Number of Lines", 1, 100, value = 10, ticks = F)
+                       sliderInput("nos_lines", label = "Number of Lines", 1, 100, value = 10)
               )
             ),
             tags$div(title="Change base of the map",
@@ -96,7 +96,7 @@ shinyUI(
           ),
           div(id = "zone_legend",
               tags$div(title="Scenario-specific quartiles of cycling level",
-                       selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)"), selected = "Commute data", selectize = T),
+                       selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)"), selected = "Commute data"),
                        conditionalPanel(
                          condition = "input.map_base != 'c'",
                          plotOutput("legendCyclingPotential", width = "100%", height = 300)
@@ -123,7 +123,7 @@ shinyUI(
           )
         ),
         tags$div(id="cite",
-                 htmlOutput("citeHtml")
+                 'This is a prototype released under the', a('GNU AGP licence', href= "licence.html", target='_blank'), 'and funded by the', a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport", target="_blank")
         )
       )
     ),

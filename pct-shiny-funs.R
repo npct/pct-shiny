@@ -9,7 +9,7 @@ getLineColour <- function(lineType){
 }
 
 numericLineColNames <- c(
-  "Average Slope (%)"                 = "avslope",
+  "Average Slope"                     = "avslope",
   "Straight Line Distance (km)"       = "dist",
   "Cirquity"                          = "cirquity",
   "Fastest Route Distance (km)"       = "dist_fast",
@@ -36,7 +36,7 @@ lineColNames <- c(
 )
 
 numericZoneColNames <- c(
-  # "Average slope"                     = "avslope",
+  "Average slope"                     = "avslope",
   "Cyclists in census"                = "Bicycle",
   "Cyclists at govenment target"      = "govtarget_slc",
   "Increase at govenment target"      = "govtarget_sic",
@@ -80,9 +80,19 @@ tableStart <- '<table><tbody>'
 
 tableEnd <- '</table></tbody>'
 
-tableCommon <- knitr::kable(data.frame(
-  Attribute = c("Total commutes: ", "Cyclists (recorded): ", "Cyclists (scenario): "),
-  Value = c("%s","%s (%s%%)" , "%s")), "html")
+tableCommon <- '<tr>
+<td>Total commuters:  </td>
+<td> %s </td>
+</tr>
+<tr>
+<td>Cyclists (recorded):  </td>
+<td> %s (%s&#37;)</td>
+</tr>
+<tr>
+<td>Cyclists (scenario):  </td>
+<td> %s </td>
+</tr>
+'
 
 # Remove SLC and SIC for the 'olc' scenario (recorded)
 tableOLC <- '<tr>
@@ -108,7 +118,7 @@ straightPopup <- function(data, scenario){
                      <td> Distance (km) </td>
                      <td> %s </td>
                      </tr>'),
-                      data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
+                      data$All, data$Bicycle, round(100*data$clc),
                       data$Car_driver, round(data$dist, 1))
                       }
 
@@ -117,7 +127,7 @@ straightPopup <- function(data, scenario){
                     <td> Distance (km) </td>
                     <td> %s </td>
                     </tr>'),
-                     data$All, data$Bicycle,round(100 * data$Bicycle / data$All),
+                     data$All, data$Bicycle,round(100*data$clc),
                      round(data[[dataFilter(scenario, "slc")]]), round(data$dist, 1))
             }
 
@@ -155,7 +165,7 @@ routePopup <- function(data, scenario){
     tableInterm <- sprintf(paste(
                           tableOLC,
                           blob),
-                          data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
+                          data$All, data$Bicycle, round(100*data$clc),
                           data$Car_driver,round(data$length, 1), round(data$time/60, 1),
                           round(data$av_incline*100, 1),routeTypeLabel[[data$plan[1]]] )
               }
@@ -165,7 +175,7 @@ routePopup <- function(data, scenario){
     tableInterm <- sprintf(paste(
                           tableCommon,
                           blob),
-                          data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
+                          data$All, data$Bicycle, round(100*data$clc),
                           round(data[[dataFilter(scenario, "slc")]]),
                           round(data$length, 1),round(data$time / 60, 1), round(data$av_incline*100, 1),
                           routeTypeLabel[[data$plan[1]]])
@@ -233,9 +243,9 @@ zonePopup <- function(data, scenario, zone){
                           <tr>
                           <td>Hilliness: &nbsp</td>
                           <td>%s&deg;</td>
-                          </tr>', data$geo_label, zone_filter_name,
+                          </tr>', data$MSOA11NM, zone_filter_name,
                           round(data[[dataFilter(scenario, zone)]] ),
-                          data$Car, round(data$avslope, 1))
+                          round(data$All * data$base_olcarusers), round(data$avslope, 1))
 
       }
 
@@ -257,7 +267,7 @@ zonePopup <- function(data, scenario, zone){
                         <tr>
                         <td>Hilliness: &nbsp</td>
                         <td>%s&deg;</td>
-                        </tr>', data$geo_label, round(data[[dataFilter('olc', zone)]] ),
+                        </tr>', data$MSOA11NM, round(data[[dataFilter('olc', zone)]] ),
                         zone_filter_name,round(data[[dataFilter(scenario, zone)]] ),
                         round(data$avslope, 1))
 

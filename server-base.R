@@ -28,12 +28,10 @@ dataDirRoot <- file.path(shinyRoot, '..', 'pct-data')
 cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT")
 
 onProduction <- grepl('^/var/shiny/pct-shiny', getwd())
+if(!onProduction){
+  source(file.path(shinyRoot, "scripts", "init.R"), local = T)
+}
 
-# Run the following lines to check out the current version of the data (see sha)
-# if(!onProduction){
-#   source(file.path(shinyRoot, "scripts", "init.R"), local = T)
-# }
-repo_sha <- as.character(readLines(file.path(shinyRoot, "data_sha")))
 lapply(c(cranPkgs), library, character.only = TRUE)
 
 # Functions
@@ -171,9 +169,9 @@ shinyServer(function(input, output, session){
       )
     }
     if(input$line_type == 'rnet')
-      updateSliderInput(session, inputId = "nos_lines", min = 25, max= 50, step = 25, label = "Percent (%) of Network")
+      updateSliderInput(session, inputId = "nos_lines", max= 50, label = "Percent (%) of Network")
     else
-      updateSliderInput(session, inputId = "nos_lines", max= 100, step = 5,  label = "Number of Lines")
+      updateSliderInput(session, inputId = "nos_lines", max= 100, label = "Number of Lines")
 
     # Needed to force lines to be redrawn when scenario, zone or base map changes
     paste(input$scenario, input$map_base, region$current)
@@ -293,13 +291,6 @@ shinyServer(function(input, output, session){
            'IMD' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png"
     )
   })
-  output$citeHtml <- renderUI({
-    HTML(paste('Ver', a(repo_sha, href= paste0("https://github.com/npct/pct-shiny/tree/", repo_sha), target='_blank'),
-               'released under a', a('GNU AGP licence', href= "licence.html", target='_blank'),
-               'and funded by the', a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport", target="_blank")
-               ))
-  })
-
 
   output$map = renderLeaflet(
     leaflet() %>%

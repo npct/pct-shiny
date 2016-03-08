@@ -11,16 +11,15 @@ export PATH=$PATH:/home/git/bin
 echo "Check out the latest version into our temp directory"
 mkdir -p /home/git/var-shiny/pct-shiny
 git --work-tree /home/git/var-shiny/pct-shiny --git-dir /home/git/pct-shiny checkout production -f
-git --git-dir /home/git/pct-shiny rev-parse --short HEAD > /home/git/var-shiny/pct-shiny/repo_sha
 
-DATASHA=`cat /home/git/var-shiny/pct-shiny/data_sha`
-echo "The data sha is ${DATASHA}"
+DATAVER=`cat /home/git/var-shiny/pct-shiny/data_sha`
+echo "The data sha is ${DATAVER}"
 
 echo "Git fetch the data"
 git --git-dir /home/git/pct-data fetch https://github.com/npct/pct-data.git
 rm -rf /home/git/var-shiny/pct-data
 mkdir /home/git/var-shiny/pct-data
-git --work-tree /home/git/var-shiny/pct-data --git-dir /home/git/pct-data checkout $DATASHA -f
+git --work-tree /home/git/var-shiny/pct-data --git-dir /home/git/pct-data checkout $DATAVER -f
 
 echo "Update the first server, then the second"
 update-server npt1.vs.mythic-beasts.com
