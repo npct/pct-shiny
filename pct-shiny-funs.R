@@ -94,7 +94,7 @@ tableCommon <- knitr::kable(data.frame(
 
   Value =    c("%s", "%s (%s%%)" , "%s (%s%%)",
                 "%s", "%s", "%s",
-            " %s", "%s Tm")), format="html", col.names=NULL)
+            " %s", "%s T.")), format="html", col.names=NULL)
 
 
 # Popup function for straight line data in html table
@@ -103,7 +103,7 @@ straightPopup <- function(data, scenario){
   if(scenario == 'olc') {
      scenario <- 'base'
      tableInterm <- sprintf(paste0(tableOLC, '<tr>
-                     <td> Distance:\t</td>
+                     <td> Distance:               </td>
                      <td> %s  km</td>
                      </tr>'),
                       data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
@@ -112,7 +112,7 @@ straightPopup <- function(data, scenario){
 
   else {
     tableInterm <- sprintf(paste0(tableCommon, '<tr>
-                    <td> Distance:\t</td>
+                    <td> Distance:               </td>
                     <td> %s  km</td>
                     </tr>'),
                      data$All, data$Bicycle, round(100 * data$Bicycle / data$All),     #baseline & %
@@ -134,15 +134,13 @@ routeTypeLabel[['quietest']] <- 'Quiet'
 routePopup <- function(data, scenario){
 
 blob <- knitr::kable(data.frame(
-  Attribute = c("Route Distance:\t", "Hilliness (av. gradient):\t"),
+  Attribute = c("Route Distance:\t \t", "Hilliness (av. gradient):\t \t"),
   Value =     c("%s  km"            , "%s (%%)"  )), format="html", col.names=NULL)
 
- if ('rqincr' %in% colnames(data)) {routeType <- 'quiet'}
-     else {routeType <- 'fast'}
+ifelse(("rqincr" %in% colnames(data@data)), routeType <-'quiet', routeType <-'fast')
 
-  if(scenario == 'olc') {
+if(scenario == 'olc') {
     scenario <- 'base'
-
 
     tableInterm <- sprintf(paste0(tableOLC,blob),
                           data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
@@ -153,7 +151,6 @@ blob <- knitr::kable(data.frame(
 
   else {
 
-    #provide for quiet route
     tableInterm <- sprintf(paste0(tableCommon,blob),
                     data$All, data$Bicycle, round(100 * data$Bicycle / data$All),      # olc, olc%
                     round(data[[dataFilter(scenario, "slc")]]),round(100*data[[dataFilter(scenario, "slc")]]/ data$All),    # slc, slc%

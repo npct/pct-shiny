@@ -60,7 +60,7 @@ shinyServer(function(input, output, session){
     toPlot$rFast <- readRDS(file.path(dataDir, "rf.Rds" ))
     toPlot$rFast@data <- cbind(toPlot$rFast@data, toPlot$l@data)
     toPlot$rQuiet <- readRDS(file.path(dataDir, "rq.Rds"))
-    toPlot$rQuiet@data <- cbind(toPlot$rQuiet@data,rqincr=toPlot$rFast@data$length/toPlot$rQuiet@data$length, toPlot$l@data)
+    toPlot$rQuiet@data <- cbind(toPlot$rQuiet@data,rqincr=toPlot$rQuiet@data$length/toPlot$rFast@data$length, toPlot$l@data)
 
     toPlot$zones <-  readRDS(file.path(dataDir, "z.Rds"))
     toPlot$cents <-   readRDS(file.path(dataDir, "c.Rds"))
