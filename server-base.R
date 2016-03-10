@@ -124,15 +124,24 @@ shinyServer(function(input, output, session){
       idGroupName <- unlist(strsplit(event$id, "-"))
       id <- idGroupName[1]
       groupName <- idGroupName[2]
-      line <- switch(groupName,
-               'straight_line' = toPlot$l[toPlot$l$id == id,],
-               'faster_route' = toPlot$rFast[toPlot$rFast$id == id,],
-               'quieter_route' = toPlot$rQuiet[toPlot$rQuiet$id == id,],
-               'route_network' = toPlot$rnet[toPlot$rnet$id == id,]
-               )
-      if (!is.null(line))
-        leafletProxy("map") %>% addPolylines(data = line, color = "white",
-                                             opacity = 0.4, layerId = "highlighted")
+      if (groupName != "zones"){
+        line <- switch(groupName,
+                       'straight_line' = toPlot$l[toPlot$l$id == id,],
+                       'faster_route' = toPlot$rFast[toPlot$rFast$id == id,],
+                       'quieter_route' = toPlot$rQuiet[toPlot$rQuiet$id == id,],
+                       'route_network' = toPlot$rnet[toPlot$rnet$id == id,]
+        )
+        if (!is.null(line))
+          leafletProxy("map") %>% addPolylines(data = line, color = "white",
+                                               opacity = 0.4, layerId = "highlighted")
+      }else{
+
+        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,]
+                                            , color = "white"
+                                            , opacity = 0.4
+                                            , layerId = "highlighted")
+
+      }
     })
   })
 
@@ -190,7 +199,8 @@ shinyServer(function(input, output, session){
                   , fillColor = getColourRamp(zcols, toPlot$zones[[zoneData()]])
                   , color = "black"
                   , group = "zones"
-                  , options = pathOptions(clickable=F)) %>%
+                  , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())
+                  , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
       addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centers",
                        popup = zonePopup(toPlot$cents, input$scenario, zoneAttr()))
 
