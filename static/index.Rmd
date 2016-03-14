@@ -1,5 +1,6 @@
 ---
 knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), '../regions_www/index.html')) })
+title: Welcome to the Propensity to Cycle Tool (PCT)
 output:
   html_document:
     includes:
