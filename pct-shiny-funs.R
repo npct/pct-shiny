@@ -89,7 +89,7 @@ tableOLC <- knitr::kable(data.frame(
 tableCommon <- knitr::kable(data.frame(
     Attribute = c("Total commuters:\t", "Cyclists (baseline):\t", "Cyclists (scenario):\t",
   "Change in cyclists:\t", "Change in drivers:\t", "Change in deaths/yr:\t",
-  "Deaths avoided (Â£/yr)", "CO2e saving (t/yr):\t"),
+  "Deaths avoided (£/yr):", "CO2e saving (t/yr):\t"),
 
 
   Value =    c("%s", "%s (%s%%)" , "%s (%s%%)",
