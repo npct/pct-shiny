@@ -76,54 +76,51 @@ dataFilter <- function(scenario, type){
   ifelse(scenario == "olc", "Bicycle", paste(scenario, type, sep = "_"))
 }
 
-tableStart <- '<table><tbody>'
-
-tableEnd <- '</table></tbody>'
-
-# SLC and SIC NOT IN 'olc' scenario
-tableOLC <- knitr::kable(data.frame(
-    Attribute =c("Total commuters:\t", "Cyclists (baseline):\t", "Drivers (baseline):\t"),
-    Value =c("%s" ,"%s (%s%%)" , "%s (%s%%)"  )), format="html", col.names=NULL)
-
-#scenarios table
-tableCommon <- knitr::kable(data.frame(
-    Attribute = c("Total commuters:\t", "Cyclists (baseline):\t", "Cyclists (scenario):\t",
-  "Change in cyclists:\t", "Change in drivers:\t", "Change in deaths/yr:\t",
-  "Deaths avoided (£/yr):", "CO2e saving (t/yr):\t"),
-
-
-  Value =    c("%s", "%s (%s%%)" , "%s (%s%%)",
-                "%s", "%s", "%s",
-            "  %s", "  %s ")), format="html", col.names=NULL)
-
 
 # Popup function for straight line data in html table
 straightPopup <- function(data, scenario){
 
+  popupTable <- NULL
+
   if(scenario == 'olc') {
-     scenario <- 'base'
-     tableInterm <- sprintf(paste0(tableOLC, '<tr>
-                     <td>Distance (km): \t </td>
-                     <td>            %s</td>
-                     </tr>'),
-                      data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
-                      data$Car_driver, round(100 * data$Car_driver / data$All),round(data$dist, 1))
-                      }
+
+    # SLC and SIC NOT IN 'olc' scenario
+    baseTable <- knitr::kable(data.frame(
+      Attribute =c("Total commuters:\t",
+                   "Cyclists (baseline):\t",
+                   "Drivers (baseline):\t",
+                   "Distance:\t"),
+      Value =c("%s" ,"%s (%s%%)" , "%s (%s%%)", "%s"  )),
+      format="html", col.names=NULL)
+
+    scenario <- 'base'
+    popupTable <- sprintf(baseTable,
+                           data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
+                           data$Car_driver, round(100 * data$Car_driver / data$All),round(data$dist, 1))
+  }
 
   else {
-    tableInterm <- sprintf(paste0(tableCommon, '<tr>
-                    <td> Distance (km): \t</td>
-                    <td>         %s</td>
-                    </tr>'),
-                     data$All, data$Bicycle, round(100 * data$Bicycle / data$All),     #baseline & %
-                     round(data[[dataFilter(scenario, "slc")]]),  round(100*data[[dataFilter(scenario, "slc")]]/ data$All),  # slc, slc%
-                     round(data[[dataFilter(scenario, "sic")]]), round(data[[dataFilter(scenario, "sid")]]),  #changes sic, sid
-                     round(data[[dataFilter(scenario, "sideath_heat")]],4), round(data[[dataFilter(scenario, "sivalue_heat")]],1),   #heat, heat value
-                     round(data[[dataFilter(scenario, "sico2")]]/1000,1),  round(data$dist, 1)  )    #co2, distance
-            }
 
-    paste(tableStart,tableInterm,tableEnd)
 
+    #scenarios table
+    scenarioTable <- knitr::kable(data.frame(
+      Attribute = c("Total commuters:\t", "Cyclists (baseline):\t", "Cyclists (scenario):\t",
+                    "Change in cyclists:\t", "Change in drivers:\t", "Change in deaths/yr:\t",
+                    "Deaths avoided (£/yr):", "CO2e saving (t/yr):\t",
+                    "Distance:\t"),
+      Value =    c("%s", "%s (%s%%)" , "%s (%s%%)",
+                   "%s", "%s", "%s",
+                   "  %s", "  %s ", "%s")),
+      format="html", col.names=NULL)
+
+
+    popupTable <- sprintf(scenarioTable,
+                           data$All, data$Bicycle, round(100 * data$Bicycle / data$All),     #baseline & %
+                           round(data[[dataFilter(scenario, "slc")]]),  round(100*data[[dataFilter(scenario, "slc")]]/ data$All),  # slc, slc%
+                           round(data[[dataFilter(scenario, "sic")]]), round(data[[dataFilter(scenario, "sid")]]),  #changes sic, sid
+                           round(data[[dataFilter(scenario, "sideath_heat")]],4), round(data[[dataFilter(scenario, "sivalue_heat")]],1),   #heat, heat value
+                           round(data[[dataFilter(scenario, "sico2")]]/1000,1),  round(data$dist, 1)  )    #co2, distance
+  }
 }
 
 routeTypeLabel <- NULL
@@ -133,52 +130,76 @@ routeTypeLabel[['quietest']] <- 'Quiet'
 # Route popup function
 routePopup <- function(data, scenario){
 
-ifelse(("rqincr" %in% colnames(data@data)), routeType <-'quiet', routeType <-'fast')
+  popupTable<- NULL
 
-    if (routeType=='quiet') {
+  ifelse(("rqincr" %in% colnames(data@data)), routeType <-'quiet', routeType <-'fast')
 
-        blob <- knitr::kable(data.frame(
-            Attribute = c("Route Distance (km):\t", "Hilliness (av. gradient):\t","%% incr. dist. vs fastest:\t"),
-            Value =     c("%s "            , "%s %%" , "%s %%" )), format="html", col.names=NULL)
+  if (routeType=='quiet') {
 
-        tableInterm <- sprintf(paste0(blob),
-                               round(data$length, 1),
-                               round(100*data$av_incline, 1),
-                               (round(100*data$rqincr, 1)-100)
-        )  #both olc& scenario
+    quietRouteTable <- knitr::kable(data.frame(
+      Attribute = c("Route Distance (km):\t",
+                    "Hilliness (av. gradient):\t",
+                    "%% incr. dist. vs fastest:\t"),
+      Value =     c("%s ", "%s %%" , "%s %%" )),
+      format="html", col.names=NULL)
+
+    popupTable <- sprintf(quietRouteTable,
+                           round(data$length, 1),
+                           round(100*data$av_incline, 1),
+                           (round(100*data$rqincr, 1)-100)
+    )  #both olc& scenario
+  }
+
+  if (routeType=='fast') {
+
+
+    # SLC and SIC NOT IN 'olc' scenario
+    fastRouteTable <- knitr::kable(data.frame(
+      Attribute =c("Total commuters:\t",
+                   "Cyclists (baseline):\t",
+                   "Drivers (baseline):\t",
+                   "Route Distance (km):\t",
+                   "Hilliness (av. gradient):\t"),
+      Value =c("%s" ,"%s (%s%%)" , "%s (%s%%)","%s ", "%s %%")), format="html", col.names=NULL)
+
+    if(scenario == 'olc') {
+      scenario <- 'base'
+
+      popupTable <- sprintf(fastRouteTable,
+                             data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
+                             data$Car_driver, round(100 * data$Car_driver/ data$All),
+                             round(data$dist_fast, 1), round(100*data$av_incline, 1) )
+
+    } #olc
+
+    else {
+
+      #scenarios table
+      scenarioFastRouteTable <- knitr::kable(data.frame(
+        Attribute = c("Total commuters:\t", "Cyclists (baseline):\t", "Cyclists (scenario):\t",
+                      "Change in cyclists:\t", "Change in drivers:\t", "Change in deaths/yr:\t",
+                      "Deaths avoided (£/yr):", "CO2e saving (t/yr):\t",
+                      "Route Distance (km):\t",
+                      "Hilliness (av. gradient):\t"),
+
+
+        Value =    c("%s", "%s (%s%%)" , "%s (%s%%)",
+                     "%s", "%s", "%s",
+                     "  %s", "  %s ","%s ", "%s %%")), format="html", col.names=NULL)
+
+
+      popupTable <- sprintf(scenarioFastRouteTable,
+                             data$All, data$Bicycle, round(100 * data$Bicycle / data$All),      # olc, olc%
+                             round(data[[dataFilter(scenario, "slc")]]),round(100*data[[dataFilter(scenario, "slc")]]/ data$All),    # slc, slc%
+                             round(data[[dataFilter(scenario, "sic")]]), round(data[[dataFilter(scenario, "sid")]]),  #change: sic, sid
+                             round(data[[dataFilter(scenario, "sideath_heat")]],1), round(data[[dataFilter(scenario, "sivalue_heat")]],1),   #heat, heat values
+                             round(data[[dataFilter(scenario, "sico2")]]/1000,1), round(data$dist_fast, 1), round(100*data$av_incline, 1)   )
+
     }
 
-    if (routeType=='fast') {
+  }  #fast route
 
-        blob <- knitr::kable(data.frame(
-            Attribute = c("Route Distance (km):\t", "Hilliness (av. gradient):\t"),
-            Value =     c("%s  "            , "%s %%"  )), format="html", col.names=NULL)
-
-
-        if(scenario == 'olc') {
-            scenario <- 'base'
-
-            tableInterm <- sprintf(paste0(tableOLC,blob),
-                                   data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
-                                   data$Car_driver, round(100 * data$Car_driver/ data$All),
-                                   round(data$dist_fast, 1), round(100*data$av_incline, 1) )
-
-        } #olc
-
-        else {
-
-            tableInterm <- sprintf(paste0(tableCommon,blob),
-                                   data$All, data$Bicycle, round(100 * data$Bicycle / data$All),      # olc, olc%
-                                   round(data[[dataFilter(scenario, "slc")]]),round(100*data[[dataFilter(scenario, "slc")]]/ data$All),    # slc, slc%
-                                   round(data[[dataFilter(scenario, "sic")]]), round(data[[dataFilter(scenario, "sid")]]),  #change: sic, sid
-                                   round(data[[dataFilter(scenario, "sideath_heat")]],1), round(data[[dataFilter(scenario, "sivalue_heat")]],1),   #heat, heat values
-                                   round(data[[dataFilter(scenario, "sico2")]]/1000,1), round(data$dist_fast, 1), round(100*data$av_incline, 1)   )
-
-        }
-
-    }  #fast route
-
-    paste(tableStart,tableInterm,tableEnd)
+  popupTable
 
 }
 
@@ -186,84 +207,78 @@ ifelse(("rqincr" %in% colnames(data@data)), routeType <-'quiet', routeType <-'fa
 # Network Route popup function
 networkRoutePopup <- function(data, scenario){
 
-############ % increase in distance vs. fastest route ONLY FOR QUIETEST ??
+  popupTable <- NULL
+
+  ############ % increase in distance vs. fastest route ONLY FOR QUIETEST ??
 
   if(scenario == 'olc') {
 
-    tableInterm <- sprintf (paste0 (knitr::kable(data.frame(
+    popupTable <- sprintf (paste0 (knitr::kable(data.frame(
       Attribute = c("Between-zone cyclists (baseline):\t", "Within-zone cyclists (baseline):\t"),
       Value =     c("%s"                                 , "up to    %s"  )), format="html", col.names=NULL)),
-                    'NA',  data$Bicycle )
+      'NA',  data$Bicycle )
 
-                    }
+  }
 
-      else {
+  else {
 
-          tableInterm <- sprintf (paste0(knitr::kable(data.frame(
-              Attribute = c("Between-zone cyclists (baseline):\t", "Within-zone cyclists (baseline):\t",
-                            "Between-zone cyclists (scenario):\t",  "Within-zone cyclists (scenario):\t"),
+    popupTable <- sprintf (paste0(knitr::kable(data.frame(
+      Attribute = c("Between-zone cyclists (baseline):\t", "Within-zone cyclists (baseline):\t",
+                    "Between-zone cyclists (scenario):\t",  "Within-zone cyclists (scenario):\t"),
 
-             Value =     c("%s", "up to %s", "%s", "up to   %s" )), format="html", col.names=NULL)),
-                        'NA',data$Bicycle, 'NA',round(data[[dataFilter(scenario, "slc")]])   )
-
-
-                    }
+      Value =     c("%s", "up to %s", "%s", "up to   %s" )), format="html", col.names=NULL)),
+      'NA',data$Bicycle, 'NA',round(data[[dataFilter(scenario, "slc")]])   )
 
 
-    paste(
-      tableStart,
-      tableInterm,
-      tableEnd
-    )
+  }
 
+  popupTable
 }
 
 ####ZONE = ANYWHERE INSIDE THE AREA but the centroid
 zonePopup <- function(data, scenario, zone){
+  popupTable <- NULL
 
   zone_filter_name <- scenariosNames[zone]
 
   if(scenario == 'olc') {
 
     t1 <- knitr::kable(data.frame(
-        Attribute = c("Zone:\t ", "Total commuters:\t ","Cyclists (baseline):\t","Drivers (baseline):\t" ),
-        Value =     c("%s", "%s" , "%s (%s%%)"  , "%s (%s%%)")), format="html", col.names=NULL)
+      Attribute = c("Zone:\t ", "Total commuters:\t ","Cyclists (baseline):\t","Drivers (baseline):\t" ),
+      Value =     c("%s", "%s" , "%s (%s%%)"  , "%s (%s%%)")), format="html", col.names=NULL)
 
 
-    tableInterm <-sprintf(t1,
+    popupTable <-sprintf(t1,
                           data$geo_label, data$All,round(data[[dataFilter('olc', zone)]] ),round(100*data[[dataFilter('olc', zone)]] /data$All),
                           data$Car, round(100* data$Car/data$All) )
 
 
-      }
+  }
 
   else {
 
-      t1 <- knitr::kable(data.frame(
-          Attribute = c("Zone:\t",
-                        "Total commuters:\t",
-                        "Cyclists (baseline):\t",
-                        "Cyclists (scenario):\t",
-                        "Change in no. cyclists:\t",
-                        "Change in no. drivers:\t" ),
-          Value =     c("%s", " %s " , "%s (%s%%)"  , "%s (%s%%)", "%s", "   %s")), format="html", col.names=NULL)
+    t1 <- knitr::kable(data.frame(
+      Attribute = c("Zone:\t",
+                    "Total commuters:\t",
+                    "Cyclists (baseline):\t",
+                    "Cyclists (scenario):\t",
+                    "Change in no. cyclists:\t",
+                    "Change in no. drivers:\t" ),
+      Value =     c("%s", " %s " , "%s (%s%%)"  , "%s (%s%%)", "%s", "   %s")), format="html", col.names=NULL)
 
 
-      tableInterm <-sprintf(t1,
-                            data$geo_label,
-                            data$All,
-                            round(data[[dataFilter('olc', zone)]] ),
-                            round(100*data[[dataFilter('olc', zone)]] /data$All),
-                            round(data[[dataFilter(scenario, 'slc')]]),
-                            round(100*data[[dataFilter(scenario, 'slc')]]/data$All),
-                            round(data[[dataFilter(scenario, "sic")]]),
-                            round(data[[dataFilter(scenario, "sid")]])       )
+    popupTable <-sprintf(t1,
+                          data$geo_label,
+                          data$All,
+                          round(data[[dataFilter('olc', zone)]] ),
+                          round(100*data[[dataFilter('olc', zone)]] /data$All),
+                          round(data[[dataFilter(scenario, 'slc')]]),
+                          round(100*data[[dataFilter(scenario, 'slc')]]/data$All),
+                          round(data[[dataFilter(scenario, "sic")]]),
+                          round(data[[dataFilter(scenario, "sid")]])       )
 
   }
 
-
-  paste(tableStart,
-        tableInterm,
-        tableEnd)
+  popupTable
 
 }
