@@ -4,6 +4,11 @@ lineAndColourDF <- data.frame(
   lineColour = c("maroon","turquoise","purple","blue")
 )
 
+subSup <- function(html){
+  html <- sub('_\\{(.*)\\}', "<sub>\\1</sub>", html) # converts _{ab} into <sub>ab</sub>
+  sub('^\\{(.*)\\}', "<sup>\\1</sup>", html) # converts ^{ab} into <sup>ab</sup>
+}
+
 getLineColour <- function(lineType){
   lineAndColourDF$lineColour[lineAndColourDF$lineType == lineType]
 }
@@ -89,7 +94,7 @@ straightPopup <- function(data, scenario){
       Attribute =c("Total commuters:\t",
                    "Cyclists (baseline):\t",
                    "Drivers (baseline):\t",
-                   "Distance:\t"),
+                   "Distance (km):\t"),
       Value =c("%s" ,"%s (%s%%)" , "%s (%s%%)", "%s"  )),
       format="html", col.names=NULL)
 
@@ -106,15 +111,14 @@ straightPopup <- function(data, scenario){
     scenarioTable <- knitr::kable(data.frame(
       Attribute = c("Total commuters:\t", "Cyclists (baseline):\t", "Cyclists (scenario):\t",
                     "Change in cyclists:\t", "Change in drivers:\t", "Change in deaths/yr:\t",
-                    "Deaths avoided (£/yr):", "CO2e saving (t/yr):\t",
-                    "Distance:\t"),
+                    "Deaths avoided (\u00a3/yr):", "CO_{2}e saving (t/yr):\t",
+                    "Distance (km):\t"),
       Value =    c("%s", "%s (%s%%)" , "%s (%s%%)",
                    "%s", "%s", "%s",
                    "  %s", "  %s ", "%s")),
       format="html", col.names=NULL)
 
-
-    popupTable <- sprintf(scenarioTable,
+    popupTable <- sprintf(subSup(scenarioTable),
                            data$All, data$Bicycle, round(100 * data$Bicycle / data$All),     #baseline & %
                            round(data[[dataFilter(scenario, "slc")]]),  round(100*data[[dataFilter(scenario, "slc")]]/ data$All),  # slc, slc%
                            round(data[[dataFilter(scenario, "sic")]]), round(data[[dataFilter(scenario, "sid")]]),  #changes sic, sid
@@ -178,7 +182,7 @@ routePopup <- function(data, scenario){
       scenarioFastRouteTable <- knitr::kable(data.frame(
         Attribute = c("Total commuters:\t", "Cyclists (baseline):\t", "Cyclists (scenario):\t",
                       "Change in cyclists:\t", "Change in drivers:\t", "Change in deaths/yr:\t",
-                      "Deaths avoided (£/yr):", "CO2e saving (t/yr):\t",
+                      "Deaths avoided (\u00a3/yr):", "CO_{2}e saving (t/yr):\t",
                       "Route Distance (km):\t",
                       "Hilliness (av. gradient):\t"),
 
@@ -188,7 +192,7 @@ routePopup <- function(data, scenario){
                      "  %s", "  %s ","%s ", "%s %%")), format="html", col.names=NULL)
 
 
-      popupTable <- sprintf(scenarioFastRouteTable,
+      popupTable <- sprintf(subSup(scenarioFastRouteTable),
                              data$All, data$Bicycle, round(100 * data$Bicycle / data$All),      # olc, olc%
                              round(data[[dataFilter(scenario, "slc")]]),round(100*data[[dataFilter(scenario, "slc")]]/ data$All),    # slc, slc%
                              round(data[[dataFilter(scenario, "sic")]]), round(data[[dataFilter(scenario, "sid")]]),  #change: sic, sid
