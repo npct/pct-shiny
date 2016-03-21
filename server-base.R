@@ -202,10 +202,7 @@ shinyServer(function(input, output, session){
                   , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())
                   , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
       addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centers",
-                       popup = zonePopup(toPlot$cents, input$scenario, zoneAttr())) %>%
-      addLayersControl(overlayGroups = c("centers"),
-                       position = "bottomright",
-                       options = layersControlOptions(collapsed = TRUE))
+                       popup = zonePopup(toPlot$cents, input$scenario, zoneAttr()))
 
     # Change the lines in isolation from the zones - should replicate previous observe
     isolate({
