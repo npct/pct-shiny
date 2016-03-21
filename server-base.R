@@ -136,24 +136,11 @@ shinyServer(function(input, output, session){
                                                opacity = 0.4, layerId = "highlighted")
       }else{
 
-        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,]
-                                            , color = "white"
-                                            , opacity = 0.4
-                                            , layerId = "highlighted") %>%
-          clearGroup(., "straight_line") %>%
-          clearGroup(., "quieter_route") %>%
-          clearGroup(., "faster_route") %>%
-          clearGroup(., "route_network") %>% {
-            switch(input$line_type,
-                   'straight' = plotLines(., toPlot$l, input$nos_lines, straightPopup, "straight_line", getLineColour("straight_line")),
-                   'route'= {
-                     plotLines(., toPlot$rQuiet, input$nos_lines, routePopup, "quieter_route", getLineColour("quieter_route"))
-                     plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route"))
-                   },
-                   'd_route'= plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route")),
-                   'rnet' = plotLines(., toPlot$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
-            )
-          }
+        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
+                                            fill = FALSE,
+                                            color = "white" ,
+                                            opacity = 0.4 ,
+                                            layerId = "highlighted")
       }
     })
   })
