@@ -89,9 +89,9 @@ shinyServer(function(input, output, session){
   findRegion <- function(){
     BB <- mapBB()
     if(is.null(BB)) return(NULL)
-    mapCenter = gCentroid(BB, byid=T)
-    keep <- gContains(regions, mapCenter, byid=T)
-    if(all(drop(!keep))) return(NULL) # return NULL if center is outside the shapefile
+    mapCentre = gCentroid(BB, byid=T)
+    keep <- gContains(regions, mapCentre, byid=T)
+    if(all(drop(!keep))) return(NULL) # return NULL if centre is outside the shapefile
     tolower(regions[drop(keep), ]$Region[1])
   }
 
@@ -126,7 +126,7 @@ shinyServer(function(input, output, session){
       id <- idGroupName[1]
       groupName <- idGroupName[2]
 
-      if (event$group == "centers"){
+      if (event$group == "centres"){
         leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
                                             fill = F,
                                             color = "black" ,
@@ -194,7 +194,7 @@ shinyServer(function(input, output, session){
   # This function updates the zones and the lines
   observe({
     region$current
-    leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centers") %>%
+    leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centres") %>%
       addPolygons(.,  data = toPlot$zones
                   , weight = 2
                   , fillOpacity = transpRate()
@@ -204,9 +204,9 @@ shinyServer(function(input, output, session){
                   , group = "zones"
                   , options = pathOptions(clickable=F)
                   , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centers",
+      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centres",
                        popup = zonePopup(toPlot$cents, input$scenario, zoneAttr()),
-                       layerId = paste0(toPlot$cents[['geo_code']], '-', "centers"))
+                       layerId = paste0(toPlot$cents[['geo_code']], '-', "centres"))
 
   })
 
@@ -311,7 +311,7 @@ shinyServer(function(input, output, session){
                options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
                                    maxZoom = ifelse(input$map_base == "IMD", 14, 18),
                                    reuseTiles = T)) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centers") %>%
+      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centres") %>%
       mapOptions(zoomToLimits = "first")
   )
 
