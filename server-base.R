@@ -204,20 +204,6 @@ shinyServer(function(input, output, session){
       addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centers",
                        popup = zonePopup(toPlot$cents, input$scenario, zoneAttr()))
 
-    # Change the lines in isolation from the zones - should replicate previous observe
-    isolate({
-      leafletProxy("map") %>% {
-        switch(input$line_type,
-               'straight' = plotLines(., toPlot$l, input$nos_lines, straightPopup, "straight_line", getLineColour("straight_line")),
-               'route'= {
-                 plotLines(., toPlot$rQuiet, input$nos_lines, routePopup, "quieter_route", getLineColour("quieter_route"))
-                 plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route"))
-               },
-               'd_route'= plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route")),
-               'rnet' = plotLines(., toPlot$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
-        )
-      }
-    })
   })
 
   transpRate <- reactive({
