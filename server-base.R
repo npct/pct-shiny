@@ -164,6 +164,11 @@ shinyServer(function(input, output, session){
 
   # Plot if lines change
   observe({
+    # Needed to force lines to be redrawn when scenario, zone or base map changes
+    input$scenario
+    input$map_base
+    region$current
+
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
       clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
       removeShape(., "highlighted")
@@ -184,8 +189,6 @@ shinyServer(function(input, output, session){
     else
       updateSliderInput(session, inputId = "nos_lines", min = 1, max= 100, step = 5,  label = "Number of Lines")
 
-    # Needed to force lines to be redrawn when scenario, zone or base map changes
-    paste(input$scenario, input$map_base, region$current)
   })
 
   # This function updates the zones and the lines
@@ -272,7 +275,7 @@ shinyServer(function(input, output, session){
     toPlot$ldata <<- sorted_l
     if(is.null(sorted_l))
       m
-    else
+    else{
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
                    , weight = normalise(sorted_l[[lineData()]], min = min, max = max)
@@ -280,6 +283,7 @@ shinyServer(function(input, output, session){
                    , group = groupName
                    , popup = popupFn(sorted_l, input$scenario)
                    , layerId = paste0(sorted_l[['id']], '-', groupName))
+    }
   }
 
   mapTileUrl <- reactive({
