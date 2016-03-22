@@ -154,7 +154,6 @@ shinyServer(function(input, output, session){
 
     if(!is.null(newRegion) && helper$dataDir != dataDir && file.exists(dataDir)){
       region$current <- newRegion
-      leafletProxy("map")  %>% clearGroup(., "cents")
       helper$dataDir <<- dataDir
       toPlot <<- loadData(dataDir)
       if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
@@ -310,7 +309,7 @@ shinyServer(function(input, output, session){
                options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
                                    maxZoom = ifelse(input$map_base == "IMD", 14, 18),
                                    reuseTiles = T)) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "cents") %>%
+      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centers") %>%
       mapOptions(zoomToLimits = "first")
   )
 
