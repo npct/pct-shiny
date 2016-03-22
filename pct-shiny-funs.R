@@ -5,6 +5,7 @@ lineAndColourDF <- data.frame(
 )
 
 subSup <- function(html){
+  html <- sub('£', "&pound;", html)
   html <- sub('_\\{(.*)\\}', "<sub>\\1</sub>", html) # converts _{ab} into <sub>ab</sub>
   sub('^\\{(.*)\\}', "<sup>\\1</sup>", html) # converts ^{ab} into <sup>ab</sup>
 }
@@ -111,7 +112,7 @@ straightPopup <- function(data, scenario){
     scenarioTable <- knitr::kable(data.frame(
       Attribute = c("Total commuters:\t", "Cyclists (baseline):\t", "Cyclists (scenario):\t",
                     "Change in cyclists:\t", "Change in drivers:\t", "Change in deaths/yr:\t",
-                    "Deaths avoided (\u00a3/yr):", "CO_{2}e saving (t/yr):\t",
+                    "Deaths avoided (£/yr):", "CO_{2}e saving (t/yr):\t",
                     "Distance (km):\t"),
       Value =    c("%s", "%s (%s%%)" , "%s (%s%%)",
                    "%s", "%s", "%s",
@@ -182,7 +183,7 @@ routePopup <- function(data, scenario){
       scenarioFastRouteTable <- knitr::kable(data.frame(
         Attribute = c("Total commuters:\t", "Cyclists (baseline):\t", "Cyclists (scenario):\t",
                       "Change in cyclists:\t", "Change in drivers:\t", "Change in deaths/yr:\t",
-                      "Deaths avoided (\u00a3/yr):", "CO_{2}e saving (t/yr):\t",
+                      "Deaths avoided (£/yr):", "CO_{2}e saving (t/yr):\t",
                       "Route Distance (km):\t",
                       "Hilliness (av. gradient):\t"),
 
