@@ -19,10 +19,10 @@ library(shiny)
 library(leaflet)
 
 scenarios <- c("Census 2011 Cycling" = "olc",
-               "Government Target" =   "govtarget",
-               "Gender equality" =   "gendereq",
-               "Go Dutch" =          "dutch",
-               "Ebikes (prototype)" = "ebike")
+               "Government Target" = "govtarget",
+               "Gender equality" = "gendereq",
+               "Go Dutch" = "dutch",
+               "Ebikes" = "ebike")
 
 line_types <- c("None" = "none",
                 "Straight Lines" = "straight",
