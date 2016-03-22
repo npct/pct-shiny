@@ -110,6 +110,7 @@ shinyServer(function(input, output, session){
 
   observe({ # For highlighting the clicked line
     event <- input$map_shape_click
+    if (is.null(event)) event <- input$map_marker_click
     if (is.null(event) || event$id == "highlighted")
       return()
     eLatLng <- paste0(event$lat,event$lng)
@@ -124,7 +125,14 @@ shinyServer(function(input, output, session){
       idGroupName <- unlist(strsplit(event$id, "-"))
       id <- idGroupName[1]
       groupName <- idGroupName[2]
-      if (groupName != "zones"){
+
+      if (event$group == "centers"){
+        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
+                                            fill = F,
+                                            color = "black" ,
+                                            opacity = 0.7 ,
+                                            layerId = "highlighted")
+      } else {
         line <- switch(groupName,
                        'straight_line' = toPlot$l[toPlot$l$id == id,],
                        'faster_route' = toPlot$rFast[toPlot$rFast$id == id,],
@@ -134,13 +142,6 @@ shinyServer(function(input, output, session){
         if (!is.null(line))
           leafletProxy("map") %>% addPolylines(data = line, color = "white",
                                                opacity = 0.4, layerId = "highlighted")
-      }else{
-
-        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
-                                            fill = FALSE,
-                                            color = "black" ,
-                                            opacity = 0.7 ,
-                                            layerId = "highlighted")
       }
     })
   })
@@ -201,10 +202,11 @@ shinyServer(function(input, output, session){
                   , fillColor = getColourRamp(zcols, toPlot$zones[[zoneData()]])
                   , color = "black"
                   , group = "zones"
-                  , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())
-                  , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
+                  , options = pathOptions(clickable=F)
+                  , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())) %>%
       addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centers",
-                       popup = zonePopup(toPlot$cents, input$scenario, zoneAttr()))
+                       popup = zonePopup(toPlot$cents, input$scenario, zoneAttr()),
+                       layerId = paste0(toPlot$cents[['geo_code']], '-', "centers"))
 
   })
 
@@ -281,7 +283,7 @@ shinyServer(function(input, output, session){
                    , opacity = 0.8
                    , group = groupName
                    , popup = popupFn(sorted_l, input$scenario)
-                   , layerId = paste0(sorted_l[['id']], '-', groupName))
+                   , layerId = paste0(sorted_l[['id']], '-', groupName)) # needed to stop fast and quite routes having same id
     }
   }
 
