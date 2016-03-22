@@ -325,12 +325,8 @@ shinyServer(function(input, output, session){
     # Set a full form of the scenario as a label
     ylabel <- "Number of Cycle Commuters"
 
-    # Set the labelling of Y-axis to bold
-    par(font.lab = 2)
-    # Set the size of the fonts
-    par(cex = 0.8)
-    # Set the fonts to bold
-    par(font = 2)
+    # Set the labelling of Y-axis and font to bold, alter font size
+    par(font = 2, font.lab = 2, cex = 0.95, mar=c(0.0,5.0,0.0,1.0))
 
     # Barplot the data in vertical manner
     barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)),

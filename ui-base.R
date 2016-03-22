@@ -99,7 +99,7 @@ shinyUI(
                        selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)"), selected = "Commute data", selectize = T),
                        conditionalPanel(
                          condition = "input.map_base != 'c'",
-                         plotOutput("legendCyclingPotential", width = "100%", height = 250)
+                         plotOutput("legendCyclingPotential", width = "100%", height = 200)
                        )
               )
           )
