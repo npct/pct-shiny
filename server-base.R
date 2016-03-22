@@ -318,14 +318,14 @@ shinyServer(function(input, output, session){
     zone_col <- getColourRamp(zcols, m)
 
     # Set a full form of the scenario as a label
-    ylabel <- switch(zoneAttr(),
-                     "slc" = "Scenario Level of Cycling (SLC): N. Commuters",
-                     "sic" = "Scenario Increase in Cycling (SIC): N. Commuters",
-                     "Census 2011: Commuter cyclists"
-    )
+    ylabel <- "Number of Cycling Commuters"
 
     # Set the labelling of Y-axis to bold
     par(font.lab = 2)
+    # Set the size of the fonts
+    par(cex = 0.8)
+    # Set the fonts to bold
+    par(font = 2)
 
     # Barplot the data in vertical manner
     barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)),
