@@ -318,7 +318,7 @@ shinyServer(function(input, output, session){
     zone_col <- getColourRamp(zcols, m)
 
     # Set a full form of the scenario as a label
-    ylabel <- "Number of Cycling Commuters"
+    ylabel <- "Number of Cycle Commuters"
 
     # Set the labelling of Y-axis to bold
     par(font.lab = 2)
