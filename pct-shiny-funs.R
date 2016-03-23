@@ -324,7 +324,7 @@ centroidPopup <- function(data, scenario, zone){
       Value =     c("%s", " %s " , "%s (%s%%)"  , "%s (%s%%)", "%s", "   %s", "%s", "%s")), format="html", col.names=NULL)
 
 
-    popupTable <-sprintf(t1,
+    popupTable <-sprintf(subSup(t1),
                          data$geo_code,
                          data$all,
                          round(data$bicycle, 2),
