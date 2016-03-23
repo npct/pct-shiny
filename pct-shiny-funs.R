@@ -234,8 +234,8 @@ networkRoutePopup <- function(data, scenario){
                     "Between-zone cyclists (scenario):\t",
                     "Within-zone cyclists (scenario):\t"),
 
-      Value =     c("%s", "up to %s", "%s", "up to   %s" )), format="html", col.names=NULL)),
-      data$Bicycle,'NA',round(data[[dataFilter(scenario, "slc")]], 'NA')   )
+      Value =     c("%s", "%s", "%s", "%s" )), format="html", col.names=NULL)),
+      data$Bicycle,'NA',1, 'NA')
   }
 
   popupTable
@@ -304,8 +304,8 @@ centroidPopup <- function(data, scenario, zone){
 
 
     popupTable <-sprintf(t1,
-                         data$geo_label, data$All,round(data[[dataFilter('olc', zone)]] ),round(100*data[[dataFilter('olc', zone)]] /data$All),
-                         data$Car, round(100* data$Car/data$All) )
+                         data$geo_code, data$all,data$bicycle, round(100*data$bicycle / data$all),
+                         data$Car, round(100* data$Car/data$all) )
 
 
   }
