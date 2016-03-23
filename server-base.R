@@ -110,7 +110,6 @@ shinyServer(function(input, output, session){
 
   observe({ # For highlighting the clicked line
     event <- input$map_shape_click
-    if (is.null(event)) event <- input$map_marker_click
     if (is.null(event) || event$id == "highlighted")
       return()
     eLatLng <- paste0(event$lat,event$lng)
@@ -142,6 +141,13 @@ shinyServer(function(input, output, session){
         if (!is.null(line))
           leafletProxy("map") %>% addPolylines(data = line, color = "white",
                                                opacity = 0.4, layerId = "highlighted")
+      }else{
+
+        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
+                                            fill = FALSE,
+                                            color = "black" ,
+                                            opacity = 0.7 ,
+                                            layerId = "highlighted")
       }
     })
   })
@@ -202,11 +208,10 @@ shinyServer(function(input, output, session){
                   , fillColor = getColourRamp(zcols, toPlot$zones[[zoneData()]])
                   , color = "black"
                   , group = "zones"
-                  , options = pathOptions(clickable=F)
-                  , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centres",
-                       popup = zonePopup(toPlot$cents, input$scenario, zoneAttr()),
-                       layerId = paste0(toPlot$cents[['geo_code']], '-', "centres"))
+                  , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())
+                  , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
+      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centers",
+                       popup = zonePopup(toPlot$cents, input$scenario, zoneAttr()))
 
   })
 
@@ -283,7 +288,7 @@ shinyServer(function(input, output, session){
                    , opacity = 0.8
                    , group = groupName
                    , popup = popupFn(sorted_l, input$scenario)
-                   , layerId = paste0(sorted_l[['id']], '-', groupName)) # needed to stop fast and quite routes having same id
+                   , layerId = paste0(sorted_l[['id']], '-', groupName))
     }
   }
 
@@ -325,8 +330,12 @@ shinyServer(function(input, output, session){
     # Set a full form of the scenario as a label
     ylabel <- "Number of Cycle Commuters"
 
-    # Set the labelling of Y-axis and font to bold, alter font size
-    par(font = 2, font.lab = 2, cex = 0.95, mar=c(0.0,5.0,0.0,1.0))
+    # Set the labelling of Y-axis to bold
+    par(font.lab = 2)
+    # Set the size of the fonts
+    par(cex = 0.8)
+    # Set the fonts to bold
+    par(font = 2)
 
     # Barplot the data in vertical manner
     barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)),
