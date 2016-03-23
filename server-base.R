@@ -131,7 +131,16 @@ shinyServer(function(input, output, session){
                                             color = "black" ,
                                             opacity = 0.7 ,
                                             layerId = "highlighted")
-      } else {
+      } else if (event$group == "zones"){
+
+        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
+                                            fill = FALSE,
+                                            color = "black" ,
+                                            opacity = 0.7 ,
+                                            layerId = "highlighted")
+      }
+
+      else {
         line <- switch(groupName,
                        'straight_line' = toPlot$l[toPlot$l$id == id,],
                        'faster_route' = toPlot$rFast[toPlot$rFast$id == id,],
@@ -141,13 +150,6 @@ shinyServer(function(input, output, session){
         if (!is.null(line))
           leafletProxy("map") %>% addPolylines(data = line, color = "white",
                                                opacity = 0.4, layerId = "highlighted")
-      }else{
-
-        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
-                                            fill = FALSE,
-                                            color = "black" ,
-                                            opacity = 0.7 ,
-                                            layerId = "highlighted")
       }
     })
   })
@@ -210,7 +212,7 @@ shinyServer(function(input, output, session){
                   , group = "zones"
                   , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())
                   , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centers",
+      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centres",
                        popup = zonePopup(toPlot$cents, input$scenario, zoneAttr()))
 
   })
