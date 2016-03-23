@@ -219,22 +219,23 @@ networkRoutePopup <- function(data, scenario){
   if(scenario == 'olc') {
 
     popupTable <- sprintf (paste0 (knitr::kable(data.frame(
-      Attribute = c("Between-zone cyclists (baseline):\t", "Within-zone cyclists (baseline):\t"),
-      Value =     c("%s"                                 , "up to    %s"  )), format="html", col.names=NULL)),
-      'NA',  data$Bicycle )
+      Attribute = c("Between-zone cyclists (baseline):\t",
+                    "Within-zone cyclists (baseline):\t"),
+      Value =     c("%s", "up to    %s"  )), format="html", col.names=NULL)),
+      data$Bicycle, 'NA'   )
 
   }
 
   else {
 
     popupTable <- sprintf (paste0(knitr::kable(data.frame(
-      Attribute = c("Between-zone cyclists (baseline):\t", "Within-zone cyclists (baseline):\t",
-                    "Between-zone cyclists (scenario):\t",  "Within-zone cyclists (scenario):\t"),
+      Attribute = c("Between-zone cyclists (baseline):\t",
+                    "Within-zone cyclists (baseline):\t",
+                    "Between-zone cyclists (scenario):\t",
+                    "Within-zone cyclists (scenario):\t"),
 
       Value =     c("%s", "up to %s", "%s", "up to   %s" )), format="html", col.names=NULL)),
-      'NA',data$Bicycle, 'NA',round(data[[dataFilter(scenario, "slc")]])   )
-
-
+      data$Bicycle,'NA',round(data[[dataFilter(scenario, "slc")]], 'NA')   )
   }
 
   popupTable
