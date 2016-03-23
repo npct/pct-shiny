@@ -23,4 +23,6 @@ if(length(cranPkgs[!installed]) > 0) install.packages(cranPkgs[!installed], repo
 # warning("Checking out a the version of the data saved in the data sha")
 # system2("git", c("--git-dir", file.path(dataDirRoot, ".git"), "--work-tree",
 #                  dataDirRoot, "checkout", data_sha), wait=T)
+
+# Run this next line to save update the 'repo_sha' file used by pct-shiny
 # system2("git", c("rev-parse", "--short", "HEAD", ">", file.path(shinyRoot, "repo_sha")), wait=T)
