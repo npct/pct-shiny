@@ -287,3 +287,56 @@ zonePopup <- function(data, scenario, zone){
   popupTable
 
 }
+
+
+####CENTROID
+centroidPopup <- function(data, scenario, zone){
+  popupTable <- NULL
+
+  zone_filter_name <- scenariosNames[zone]
+
+  if(scenario == 'olc') {
+
+    t1 <- knitr::kable(data.frame(
+      Attribute = c("Zone:\t ", "Total commuters:\t ","Cyclists (baseline):\t","Drivers (baseline):\t" ),
+      Value =     c("%s", "%s" , "%s (%s%%)"  , "%s (%s%%)")), format="html", col.names=NULL)
+
+
+    popupTable <-sprintf(t1,
+                         data$geo_label, data$All,round(data[[dataFilter('olc', zone)]] ),round(100*data[[dataFilter('olc', zone)]] /data$All),
+                         data$Car, round(100* data$Car/data$All) )
+
+
+  }
+
+  else {
+
+    t1 <- knitr::kable(data.frame(
+      Attribute = c("Zone:\t",
+                    "Total commuters:\t",
+                    "Cyclists (baseline):\t",
+                    "Cyclists (scenario):\t",
+                    "Change in no. cyclists:\t",
+                    "Change in no. drivers:\t",
+                    "Change in deaths/yr:\t",
+                    "CO_{2}e saving (t/yr):\t"),
+      Value =     c("%s", " %s " , "%s (%s%%)"  , "%s (%s%%)", "%s", "   %s", "%s", "%s")), format="html", col.names=NULL)
+
+
+    popupTable <-sprintf(t1,
+                         data$geo_code,
+                         data$all,
+                         round(data$bicycle, 2),
+                         round(100*data$bicycle / data$all),
+                         round(data[[dataFilter(scenario, 'slc')]]),
+                         round(100*data[[dataFilter(scenario, 'slc')]]/data$all),
+                         round(data[[dataFilter(scenario, "sic")]]),
+                         round(data[[dataFilter(scenario, "sid")]]),
+                         round(data[[dataFilter(scenario, "sideath_heat")]],4),
+                         round(data[[dataFilter(scenario, "sico2")]]/1000,1))
+
+  }
+
+  popupTable
+
+}

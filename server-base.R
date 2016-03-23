@@ -213,7 +213,7 @@ shinyServer(function(input, output, session){
                   , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())
                   , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
       addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centres",
-                       popup = zonePopup(toPlot$cents, input$scenario, zoneAttr()))
+                       popup = centroidPopup(toPlot$cents, input$scenario, zoneAttr()))
 
   })
 
