@@ -112,7 +112,7 @@ straightPopup <- function(data, scenario){
     scenarioTable <- knitr::kable(data.frame(
       Attribute = c("Total commuters:\t", "Cyclists (baseline):\t", "Cyclists (scenario):\t",
                     "Change in cyclists:\t", "Change in drivers:\t", "Change in deaths/yr:\t",
-                    "Deaths avoided (£/yr):", "CO_{2}e saving (t/yr):\t",
+                    "Change in deaths (£/yr):", "Change in CO_{2}e (t/yr):\t",
                     "Distance (km):\t"),
       Value =    c("%s", "%s (%s%%)" , "%s (%s%%)",
                    "%s", "%s", "%s",
@@ -143,16 +143,16 @@ routePopup <- function(data, scenario){
 
     quietRouteTable <- knitr::kable(data.frame(
       Attribute = c("Route Distance (km):\t",
-                    "Hilliness (av. gradient):\t",
-                    "%% incr. dist. vs fastest:\t"),
-      Value =     c("%s ", "%s %%" , "%s %%" )),
+                    "%% Increase in Distance vs. Fast Route:  \t",
+                    "Hilliness (av. gradient):\t"),
+      Value =     c("%s ", "%s%%" , "%s%%" )),
       format="html", col.names=NULL)
 
     popupTable <- sprintf(quietRouteTable,
                            round(data$length, 1),
-                           round(100*data$av_incline, 1),
-                           (round(100*data$rqincr, 1)-100)
-    )  #both olc& scenario
+                          (round((100*data$rqincr-100), 1)),
+                           round(100*data$av_incline, 1))
+    #both olc& scenario
   }
 
   if (routeType=='fast') {
@@ -165,7 +165,7 @@ routePopup <- function(data, scenario){
                    "Drivers (baseline):\t",
                    "Route Distance (km):\t",
                    "Hilliness (av. gradient):\t"),
-      Value =c("%s" ,"%s (%s%%)" , "%s (%s%%)","%s ", "%s %%")), format="html", col.names=NULL)
+      Value =c("%s" ,"%s (%s%%)" , "%s (%s%%)","%s ", "%s%%")), format="html", col.names=NULL)
 
     if(scenario == 'olc') {
       scenario <- 'base'
@@ -183,14 +183,14 @@ routePopup <- function(data, scenario){
       scenarioFastRouteTable <- knitr::kable(data.frame(
         Attribute = c("Total commuters:\t", "Cyclists (baseline):\t", "Cyclists (scenario):\t",
                       "Change in cyclists:\t", "Change in drivers:\t", "Change in deaths/yr:\t",
-                      "Deaths avoided (£/yr):", "CO_{2}e saving (t/yr):\t",
+                      "Change in deaths (£/yr):", "Change in CO_{2}e (t/yr):\t",
                       "Route Distance (km):\t",
                       "Hilliness (av. gradient):\t"),
 
 
         Value =    c("%s", "%s (%s%%)" , "%s (%s%%)",
                      "%s", "%s", "%s",
-                     "  %s", "  %s ","%s ", "%s %%")), format="html", col.names=NULL)
+                     "  %s", "  %s ","%s ", "%s%%")), format="html", col.names=NULL)
 
 
       popupTable <- sprintf(subSup(scenarioFastRouteTable),
@@ -270,7 +270,7 @@ zonePopup <- function(data, scenario, zone){
                     "Cyclists (scenario):\t",
                     "Change in no. cyclists:\t",
                     "Change in no. drivers:\t",
-                    "Deaths avoided (£/yr):\t",
+                    "Change in deaths (£/yr):\t",
                     "CO_{2}e saving (t/yr):\t"),
       Value =     c("%s", " %s " , "%s (%s%%)"  , "%s (%s%%)", "%s", "%s", "%s", "%s")), format="html", col.names=NULL)
 
@@ -325,7 +325,7 @@ centroidPopup <- function(data, scenario, zone){
                     "Change in no. cyclists:\t",
                     "Change in no. drivers:\t",
                     "Change in deaths/yr:\t",
-                    "Deaths avoided (£/yr):\t",
+                    "Change in deaths (£/yr):\t",
                     "CO_{2}e saving (t/yr):\t"),
       Value =     c("%s", " %s " , "%s (%s%%)"  , "%s (%s%%)", "%s", "   %s", "%s", "%s", "%s")), format="html", col.names=NULL)
 
