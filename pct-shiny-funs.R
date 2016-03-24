@@ -235,7 +235,7 @@ networkRoutePopup <- function(data, scenario){
                     "Within-zone cyclists (scenario):\t"),
 
       Value =     c("%s", "%s", "%s", "%s" )), format="html", col.names=NULL)),
-      data$Bicycle,'NA',1, 'NA')
+      data$Bicycle,'NA',round(data[[dataFilter(scenario, 'slc')]]), 'NA')
   }
 
   popupTable
