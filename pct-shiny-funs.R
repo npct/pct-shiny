@@ -271,7 +271,7 @@ zonePopup <- function(data, scenario, zone){
                     "Change in no. cyclists:\t",
                     "Change in no. drivers:\t",
                     "Change in deaths (£/yr):\t",
-                    "CO_{2}e saving (t/yr):\t"),
+                    "Change in CO_{2}e (t/yr):\t"),
       Value =     c("%s", " %s " , "%s (%s%%)"  , "%s (%s%%)", "%s", "%s", "%s", "%s")), format="html", col.names=NULL)
 
 
@@ -326,7 +326,7 @@ centroidPopup <- function(data, scenario, zone){
                     "Change in no. drivers:\t",
                     "Change in deaths/yr:\t",
                     "Change in deaths (£/yr):\t",
-                    "CO_{2}e saving (t/yr):\t"),
+                    "Change in CO_{2}e (t/yr):\t"),
       Value =     c("%s", " %s " , "%s (%s%%)"  , "%s (%s%%)", "%s", "   %s", "%s", "%s", "%s")), format="html", col.names=NULL)
 
 
