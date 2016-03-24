@@ -142,8 +142,8 @@ routePopup <- function(data, scenario){
   if (routeType=='quiet') {
 
     quietRouteTable <- knitr::kable(data.frame(
-      Attribute = c("Route Distance (km):\t",
-                    "%% Increase in Distance vs. Fast Route:  \t",
+      Attribute = c("Route distance (km):\t",
+                    "%% increase in distance vs. Fast route:  \t",
                     "Hilliness (av. gradient):\t"),
       Value =     c("%s ", "%s%%" , "%s%%" )),
       format="html", col.names=NULL)
@@ -163,7 +163,7 @@ routePopup <- function(data, scenario){
       Attribute =c("Total commuters:\t",
                    "Cyclists (baseline):\t",
                    "Drivers (baseline):\t",
-                   "Route Distance (km):\t",
+                   "Route distance (km):\t",
                    "Hilliness (av. gradient):\t"),
       Value =c("%s" ,"%s (%s%%)" , "%s (%s%%)","%s ", "%s%%")), format="html", col.names=NULL)
 
@@ -184,7 +184,7 @@ routePopup <- function(data, scenario){
         Attribute = c("Total commuters:\t", "Cyclists (baseline):\t", "Cyclists (scenario):\t",
                       "Change in cyclists:\t", "Change in drivers:\t", "Change in deaths/yr:\t",
                       "Change in deaths (£/yr):", "Change in CO_{2}e (t/yr):\t",
-                      "Route Distance (km):\t",
+                      "Route distance (km):\t",
                       "Hilliness (av. gradient):\t"),
 
 
