@@ -341,7 +341,7 @@ centroidPopup <- function(data, scenario, zone){
                          round(100*data[[dataFilter(scenario, 'slc')]]/data$all),
                          round(data[[dataFilter(scenario, "sic")]]),
                          round(data[[dataFilter(scenario, "sid")]]),
-                         round(data[[dataFilter(scenario, "sideath_heat")]],4),
+                         format(round(data[[dataFilter(scenario, "sideath_heat")]],4), scientific = F),
                          round(data[[dataFilter(scenario, "sivalue_heat")]],1),
                          round(data[[dataFilter(scenario, "sico2")]]/1000,1))
 
