@@ -270,9 +270,10 @@ zonePopup <- function(data, scenario, zone){
                     "Cyclists (scenario):\t",
                     "Change in no. cyclists:\t",
                     "Change in no. drivers:\t",
+                    "Change in deaths/yr:\t",
                     "Change in deaths (£/yr):\t",
                     "Change in CO_{2}e (t/yr):\t"),
-      Value =     c("%s", " %s " , "%s (%s%%)"  , "%s (%s%%)", "%s", "%s", "%s", "%s")), format="html", col.names=NULL)
+      Value =     c("%s", " %s " , "%s (%s%%)"  , "%s (%s%%)", "%s", "%s", "%s", "%s", "%s")), format="html", col.names=NULL)
 
 
     popupTable <-sprintf(subSup(t1),
@@ -284,6 +285,7 @@ zonePopup <- function(data, scenario, zone){
                           round(100*data[[dataFilter(scenario, 'slc')]]/data$All),
                           round(data[[dataFilter(scenario, "sic")]]),
                           round(data[[dataFilter(scenario, "sid")]]),
+                          round(data[[dataFilter(scenario, "sideath_heat")]],4),
                           round(data[[dataFilter(scenario, "sivalue_heat")]],4),
                           round(data[[dataFilter(scenario, "sico2")]]/1000,1))
 
