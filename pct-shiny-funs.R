@@ -311,7 +311,7 @@ centroidPopup <- function(data, scenario, zone){
 
 
     popupTable <-sprintf(t1,
-                         data$geo_code, data$All, data$Bicycle, round(100*data$Bicycle / data$All),
+                         data$geo_label, data$All, data$Bicycle, round(100*data$Bicycle / data$All),
                          data$Car_driver, round(100* data$Car_driver/data$All) )
 
 
@@ -333,7 +333,7 @@ centroidPopup <- function(data, scenario, zone){
 
 
     popupTable <-sprintf(subSup(t1),
-                         data$geo_code,
+                         data$geo_label,
                          data$All,
                          round(data$Bicycle, 2),
                          round(100*data$Bicycle / data$All),
