@@ -212,17 +212,13 @@ shinyServer(function(input, output, session){
                   , group = "zones"
                   , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())
                   , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centres",
+      addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1, color = "black", group = "centres",
                        popup = centroidPopup(toPlot$cents, input$scenario, zoneAttr()))
 
   })
 
   transpRate <- reactive({
     if (input$map_base == 'roadmap') 0.7 else 0.0
-  })
-
-  circleRadius <- reactive({
-    if (input$map_base == 'roadmap') 2 else 4
   })
 
   # These are redundant as there is currently no option to visualize the scenario increase
@@ -318,7 +314,7 @@ shinyServer(function(input, output, session){
                options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
                                    maxZoom = ifelse(input$map_base == "IMD", 14, 18),
                                    reuseTiles = T)) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centres") %>%
+      addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1, color = "black", group = "centres") %>%
       mapOptions(zoomToLimits = "first")
   )
 

@@ -306,8 +306,8 @@ centroidPopup <- function(data, scenario, zone){
   if(scenario == 'olc') {
 
     t1 <- knitr::kable(data.frame(
-      Attribute = c("Intrazonal trips", "Zone:\t ", "Total commuters:\t ","Cyclists (baseline):\t","Drivers (baseline):\t" ),
-      Value =     c("Value", "%s", "%s" , "%s (%s%%)"  , "%s (%s%%)")), format="html", col.names=NULL)
+      Attribute = c("Intrazonal travel in:\t ", "Total commuters:\t ","Cyclists (baseline):\t","Drivers (baseline):\t" ),
+      Value =     c("%s", "%s" , "%s (%s%%)"  , "%s (%s%%)")), format="html", col.names=NULL)
 
 
     popupTable <-sprintf(t1,
@@ -320,7 +320,7 @@ centroidPopup <- function(data, scenario, zone){
   else {
 
     t1 <- knitr::kable(data.frame(
-      Attribute = c("Zone:\t",
+      Attribute = c("Intrazonal travel in:\t",
                     "Total commuters:\t",
                     "Cyclists (baseline):\t",
                     "Cyclists (scenario):\t",
