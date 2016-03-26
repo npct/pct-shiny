@@ -261,12 +261,12 @@ networkRoutePopup <- function(data, scenario){
 <table>
   <tbody>
     <tr>
-      <td> Interzone cyclists: &nbsp; </td>
+      <td> Potential interzone cycle trips: &nbsp; </td>
       <td>", data$Bicycle, "</td>
     </tr>
     <tr>
-      <td> Intrazone cyclists: &nbsp;</td>
-      <td> up to ", data$Bicycle_upto, "</td>
+      <td> Potential intrazone cycle trips (up to): &nbsp;</td>
+      <td> ", data$Bicycle_upto, "</td>
     </tr>
   </tbody>
 </table>
@@ -278,20 +278,20 @@ networkRoutePopup <- function(data, scenario){
 <table>
   <tbody>
     <tr>
-      <td> Interzone cyclists (scenario): &nbsp; </td>
+      <td> Potential interzone cycle trips (baseline): &nbsp; </td>
       <td>", data$Bicycle, "</td>
     </tr>
     <tr>
-      <td> Intrazone cyclists (scenario): &nbsp;</td>
+      <td> Intrazone cyclists (baseline potential): &nbsp;</td>
       <td>", data$Bicycle_upto, "</td>
     </tr>
     <tr>
-      <td> Change in interzone cyclists: &nbsp; </td>
-      <td>", round(data[[dataFilter(scenario, 'slc')]] - data$Bicycle), "</td>
+      <td> Potential interzone cycle trips (scenario): &nbsp; </td>
+      <td>", round(data[[dataFilter(scenario, 'slc')]]), "</td>
     </tr>
     <tr>
-      <td> Change in intrazone cyclists: &nbsp;</td>
-      <td>", round(data[[paste0(dataFilter(scenario, 'slc'), "_upto")]] - data$Bicycle_upto), "</td>
+      <td> Intrazone cyclists (scenario potential): &nbsp;</td>
+      <td>", round(data[[paste0(dataFilter(scenario, 'slc'), "_upto")]]), "</td>
     </tr>
   </tbody>
 </table>
