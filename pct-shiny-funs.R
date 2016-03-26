@@ -219,8 +219,8 @@ networkRoutePopup <- function(data, scenario){
   if(scenario == 'olc') {
 
     popupTable <- sprintf (paste0 (knitr::kable(data.frame(
-      Attribute = c("Between-zone cyclists (baseline):\t",
-                    "Within-zone cyclists (baseline):\t"),
+      Attribute = c("Interzone cyclists (baseline):\t",
+                    "Intrazone cyclists (baseline):\t"),
       Value =     c("%s", "up to    %s"  )), format="html", col.names=NULL)),
       data$Bicycle, data$Bicycle_upto)
 
@@ -229,10 +229,10 @@ networkRoutePopup <- function(data, scenario){
   else {
 
     popupTable <- sprintf (paste0(knitr::kable(data.frame(
-      Attribute = c("Between-zone cyclists (baseline):\t",
-                    "Within-zone cyclists (baseline):\t",
-                    "Between-zone cyclists (scenario):\t",
-                    "Within-zone cyclists (scenario):\t"),
+      Attribute = c("Interzone cyclists (baseline):\t",
+                    "Intrazone cyclists (baseline):\t",
+                    "Interzone cyclists (scenario):\t",
+                    "Intrazone cyclists (scenario):\t"),
 
       Value =     c("%s", "%s", "%s", "%s" )), format="html", col.names=NULL)),
       data$Bicycle,
