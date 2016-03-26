@@ -101,8 +101,12 @@ straightPopup <- function(data, scenario){
 
     scenario <- 'base'
     popupTable <- sprintf(baseTable,
-                           data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
-                           data$Car_driver, round(100 * data$Car_driver / data$All),round(data$dist, 1))
+                          data$All,
+                          data$Bicycle,
+                          round(100 * data$Bicycle / data$All),
+                          data$Car_driver,
+                          round(100 * data$Car_driver / data$All),
+                          round(data$dist, 1))
   }
 
   else {
@@ -120,11 +124,17 @@ straightPopup <- function(data, scenario){
       format="html", col.names=NULL)
 
     popupTable <- sprintf(subSup(scenarioTable),
-                           data$All, data$Bicycle, round(100 * data$Bicycle / data$All),     #baseline & %
-                           round(data[[dataFilter(scenario, "slc")]]),  round(100*data[[dataFilter(scenario, "slc")]]/ data$All),  # slc, slc%
-                           round(data[[dataFilter(scenario, "sic")]]), round(data[[dataFilter(scenario, "sid")]]),  #changes sic, sid
-                           round(1000 * data[[dataFilter(scenario, "sideath_heat")]]), round(data[[dataFilter(scenario, "sivalue_heat")]] / 1000),   #heat, heat value
-                           round(data[[dataFilter(scenario, "sico2")]]/1000,1),  round(data$dist, 1)  )    #co2, distance
+                          data$All,
+                          data$Bicycle,
+                          round(100 * data$Bicycle / data$All),     #baseline & %
+                          round(data[[dataFilter(scenario, "slc")]]),
+                          round(100*data[[dataFilter(scenario, "slc")]] / data$All),  # slc, slc%
+                          round(data[[dataFilter(scenario, "sic")]]),
+                          round(data[[dataFilter(scenario, "sid")]]),  #changes sic, sid
+                          round(1000 * data[[dataFilter(scenario, "sideath_heat")]]),
+                          round(data[[dataFilter(scenario, "sivalue_heat")]] / 1000),   #heat, heat value
+                          round(data[[dataFilter(scenario, "sico2")]]/1000,1),
+                          round(data$dist, 1))    #co2, distance
   }
 }
 
@@ -171,9 +181,13 @@ routePopup <- function(data, scenario){
       scenario <- 'base'
 
       popupTable <- sprintf(fastRouteTable,
-                             data$All, data$Bicycle, round(100 * data$Bicycle / data$All),
-                             data$Car_driver, round(100 * data$Car_driver/ data$All),
-                             round(data$dist_fast, 1), round(100*data$av_incline, 1) )
+                            data$All,
+                            data$Bicycle,
+                            round(100 * data$Bicycle / data$All),
+                            data$Car_driver, round(100 * data$Car_driver/ data$All),
+                            round(data$dist_fast, 1),
+                            round(100*data$av_incline, 1)
+                            )
 
     } #olc
 
@@ -194,11 +208,19 @@ routePopup <- function(data, scenario){
 
 
       popupTable <- sprintf(subSup(scenarioFastRouteTable),
-                             data$All, data$Bicycle, round(100 * data$Bicycle / data$All),      # olc, olc%
-                             round(data[[dataFilter(scenario, "slc")]]),round(100*data[[dataFilter(scenario, "slc")]]/ data$All),    # slc, slc%
-                             round(data[[dataFilter(scenario, "sic")]]), round(data[[dataFilter(scenario, "sid")]]),  #change: sic, sid
-                             round(1000 * data[[dataFilter(scenario, "sideath_heat")]]), round(data[[dataFilter(scenario, "sivalue_heat")]] / 1000),   #heat, heat values
-                             round(data[[dataFilter(scenario, "sico2")]]/1000,1), round(data$dist_fast, 1), round(100*data$av_incline, 1)   )
+                            data$All,
+                            data$Bicycle,
+                            round(100 * data$Bicycle / data$All),      # olc, olc%
+                            round(data[[dataFilter(scenario, "slc")]]),
+                            round(100*data[[dataFilter(scenario, "slc")]]/ data$All),    # slc, slc%
+                            round(data[[dataFilter(scenario, "sic")]]),
+                            round(data[[dataFilter(scenario, "sid")]]),  #change: sic, sid
+                            round(1000 * data[[dataFilter(scenario, "sideath_heat")]]),
+                            round(data[[dataFilter(scenario, "sivalue_heat")]] / 1000),
+                            round(data[[dataFilter(scenario, "sico2")]]/1000,1),
+                            round(data$dist_fast, 1),
+                            round(100*data$av_incline, 1)
+                            )
 
     }
 
@@ -260,8 +282,13 @@ zonePopup <- function(data, scenario, zone){
 
 
     popupTable <-sprintf(t1,
-                          data$geo_label, data$All,round(data[[dataFilter('olc', zone)]] ),round(100*data[[dataFilter('olc', zone)]] /data$All),
-                          data$Car, round(100* data$Car/data$All) )
+                         data$geo_label,
+                         data$All,
+                         round(data[[dataFilter('olc', zone)]] ),
+                         round(100*data[[dataFilter('olc', zone)]] /data$All),
+                         data$Car,
+                         round(100* data$Car/data$All)
+                         )
 
 
   }
@@ -316,8 +343,13 @@ centroidPopup <- function(data, scenario, zone){
 
 
     popupTable <-sprintf(t1,
-                         data$geo_label, data$All, data$Bicycle, round(100*data$Bicycle / data$All),
-                         data$Car_driver, round(100* data$Car_driver/data$All) )
+                         data$geo_label,
+                         data$All,
+                         data$Bicycle,
+                         round(100*data$Bicycle / data$All),
+                         data$Car_driver,
+                         round(100* data$Car_driver/data$All)
+                         )
 
 
   }
