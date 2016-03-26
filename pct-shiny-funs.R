@@ -111,8 +111,8 @@ straightPopup <- function(data, scenario){
     #scenarios table
     scenarioTable <- knitr::kable(data.frame(
       Attribute = c("Total commuters:\t", "Cyclists (baseline):\t", "Cyclists (scenario):\t",
-                    "Change in cyclists:\t", "Change in drivers:\t", "Change in deaths/yr:\t",
-                    "Change in deaths (£/yr):", "Change in CO_{2}e (t/yr):\t",
+                    "Change in cyclists:\t", "Change in drivers:\t", "Deaths avoided (per 1000/yr):\t",
+                    "Value of lives saved (£1000/yr):", "Change in CO_{2}e (t/yr):\t",
                     "Distance (km):\t"),
       Value =    c("%s", "%s (%s%%)" , "%s (%s%%)",
                    "%s", "%s", "%s",
@@ -123,7 +123,7 @@ straightPopup <- function(data, scenario){
                            data$All, data$Bicycle, round(100 * data$Bicycle / data$All),     #baseline & %
                            round(data[[dataFilter(scenario, "slc")]]),  round(100*data[[dataFilter(scenario, "slc")]]/ data$All),  # slc, slc%
                            round(data[[dataFilter(scenario, "sic")]]), round(data[[dataFilter(scenario, "sid")]]),  #changes sic, sid
-                           round(data[[dataFilter(scenario, "sideath_heat")]],4), round(data[[dataFilter(scenario, "sivalue_heat")]],1),   #heat, heat value
+                           round(1000 * data[[dataFilter(scenario, "sideath_heat")]]), round(data[[dataFilter(scenario, "sivalue_heat")]] / 1000),   #heat, heat value
                            round(data[[dataFilter(scenario, "sico2")]]/1000,1),  round(data$dist, 1)  )    #co2, distance
   }
 }
@@ -182,8 +182,8 @@ routePopup <- function(data, scenario){
       #scenarios table
       scenarioFastRouteTable <- knitr::kable(data.frame(
         Attribute = c("Total commuters:\t", "Cyclists (baseline):\t", "Cyclists (scenario):\t",
-                      "Change in cyclists:\t", "Change in drivers:\t", "Change in deaths/yr:\t",
-                      "Change in deaths (£/yr):", "Change in CO_{2}e (t/yr):\t",
+                      "Change in cyclists:\t", "Change in drivers:\t", "Deaths avoided (per 1000/yr):\t",
+                      "Value of lives saved (£1000/yr):", "Change in CO_{2}e (t/yr):\t",
                       "Route distance (km):\t",
                       "Hilliness (av. gradient):\t"),
 
@@ -197,7 +197,7 @@ routePopup <- function(data, scenario){
                              data$All, data$Bicycle, round(100 * data$Bicycle / data$All),      # olc, olc%
                              round(data[[dataFilter(scenario, "slc")]]),round(100*data[[dataFilter(scenario, "slc")]]/ data$All),    # slc, slc%
                              round(data[[dataFilter(scenario, "sic")]]), round(data[[dataFilter(scenario, "sid")]]),  #change: sic, sid
-                             round(data[[dataFilter(scenario, "sideath_heat")]],1), round(data[[dataFilter(scenario, "sivalue_heat")]],1),   #heat, heat values
+                             round(1000 * data[[dataFilter(scenario, "sideath_heat")]]), round(data[[dataFilter(scenario, "sivalue_heat")]] / 1000),   #heat, heat values
                              round(data[[dataFilter(scenario, "sico2")]]/1000,1), round(data$dist_fast, 1), round(100*data$av_incline, 1)   )
 
     }
@@ -275,8 +275,8 @@ zonePopup <- function(data, scenario, zone){
                     "Cyclists (scenario):\t",
                     "Change in no. cyclists:\t",
                     "Change in no. drivers:\t",
-                    "Change in deaths/yr:\t",
-                    "Change in deaths (£/yr):\t",
+                    "Deaths avoided (per 1000/yr):\t",
+                    "Value of lives saved (£1000/yr):\t",
                     "Change in CO_{2}e (t/yr):\t"),
       Value =     c("%s", " %s " , "%s (%s%%)"  , "%s (%s%%)", "%s", "%s", "%s", "%s", "%s")), format="html", col.names=NULL)
 
@@ -290,7 +290,7 @@ zonePopup <- function(data, scenario, zone){
                           round(100*data[[dataFilter(scenario, 'slc')]]/data$All),
                           round(data[[dataFilter(scenario, "sic")]]),
                           round(data[[dataFilter(scenario, "sid")]]),
-                          round(data[[dataFilter(scenario, "sideath_heat")]],4),
+                          round(1000 * data[[dataFilter(scenario, "sideath_heat")]]),
                           round(data[[dataFilter(scenario, "sivalue_heat")]],4),
                           round(data[[dataFilter(scenario, "sico2")]]/1000,1))
 
@@ -331,8 +331,8 @@ centroidPopup <- function(data, scenario, zone){
                     "Cyclists (scenario):\t",
                     "Change in no. cyclists:\t",
                     "Change in no. drivers:\t",
-                    "Change in deaths/yr:\t",
-                    "Change in deaths (£/yr):\t",
+                    "Deaths avoided (per 1000/yr):\t",
+                    "Value of lives saved (£1000/yr):\t",
                     "Change in CO_{2}e (t/yr):\t"),
       Value =     c("%s", " %s " , "%s (%s%%)"  , "%s (%s%%)", "%s", "   %s", "%s", "%s", "%s")), format="html", col.names=NULL)
 
@@ -346,8 +346,8 @@ centroidPopup <- function(data, scenario, zone){
                          round(100*data[[dataFilter(scenario, 'slc')]]/data$All),
                          round(data[[dataFilter(scenario, "sic")]]),
                          round(data[[dataFilter(scenario, "sid")]]),
-                         format(round(data[[dataFilter(scenario, "sideath_heat")]],4), scientific = F),
-                         round(data[[dataFilter(scenario, "sivalue_heat")]],1),
+                         format(round(1000 * data[[dataFilter(scenario, "sideath_heat")]]), scientific = F),
+                         round(data[[dataFilter(scenario, "sivalue_heat")]] / 1000),
                          round(data[[dataFilter(scenario, "sico2")]]/1000,1))
 
 
