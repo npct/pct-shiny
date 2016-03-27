@@ -2,6 +2,10 @@
   font-size: 10px;
 }
 
+.navbar-nav>li {
+    float: left;
+}
+
 div.outer {
   position: fixed;
   top: 41px;
@@ -22,6 +26,12 @@ div.outer {
 .selectize-input input,
 option {
   font-size: 11px;
+}
+
+select::-ms-expand {
+  width:12px;
+  border:none;
+  background:#fff;
 }
 
 select.form-control {

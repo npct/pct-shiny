@@ -18,6 +18,11 @@ installed <- cranPkgs %in% installed.packages()
 # install packages that are missing
 if(length(cranPkgs[!installed]) > 0) install.packages(cranPkgs[!installed], repos='https://cran.rstudio.com/')
 
-system2("git", c("--git-dir", file.path(dataDirRoot, ".git"), "--work-tree",
-                 dataDirRoot, "checkout", data_sha), wait=T)
-system2("git", c("rev-parse", "--short", "HEAD", ">", file.path(shinyRoot, "repo_sha")), wait=T)
+# The following lines checkout the version of the data saved in data_sha.
+# Uncomment to auto checkout pct-data.
+# warning("Checking out a the version of the data saved in the data sha")
+# system2("git", c("--git-dir", file.path(dataDirRoot, ".git"), "--work-tree",
+#                  dataDirRoot, "checkout", data_sha), wait=T)
+
+# Run this next line from the root directory to save update the 'repo_sha' file used by pct-shiny
+# system2("git", c("rev-parse", "--short", "HEAD", ">", file.path("repo_sha")), wait=T)

@@ -89,9 +89,9 @@ shinyServer(function(input, output, session){
   findRegion <- function(){
     BB <- mapBB()
     if(is.null(BB)) return(NULL)
-    mapCenter = gCentroid(BB, byid=T)
-    keep <- gContains(regions, mapCenter, byid=T)
-    if(all(drop(!keep))) return(NULL) # return NULL if center is outside the shapefile
+    mapCentre = gCentroid(BB, byid=T)
+    keep <- gContains(regions, mapCentre, byid=T)
+    if(all(drop(!keep))) return(NULL) # return NULL if centre is outside the shapefile
     tolower(regions[drop(keep), ]$Region[1])
   }
 
@@ -124,7 +124,23 @@ shinyServer(function(input, output, session){
       idGroupName <- unlist(strsplit(event$id, "-"))
       id <- idGroupName[1]
       groupName <- idGroupName[2]
-      if (groupName != "zones"){
+
+      if (event$group == "centres"){
+        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
+                                            fill = F,
+                                            color = "black" ,
+                                            opacity = 0.7 ,
+                                            layerId = "highlighted")
+      } else if (event$group == "zones"){
+
+        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
+                                            fill = FALSE,
+                                            color = "black" ,
+                                            opacity = 0.7 ,
+                                            layerId = "highlighted")
+      }
+
+      else {
         line <- switch(groupName,
                        'straight_line' = toPlot$l[toPlot$l$id == id,],
                        'faster_route' = toPlot$rFast[toPlot$rFast$id == id,],
@@ -134,13 +150,6 @@ shinyServer(function(input, output, session){
         if (!is.null(line))
           leafletProxy("map") %>% addPolylines(data = line, color = "white",
                                                opacity = 0.4, layerId = "highlighted")
-      }else{
-
-        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,]
-                                            , color = "white"
-                                            , opacity = 0.4
-                                            , layerId = "highlighted")
-
       }
     })
   })
@@ -154,7 +163,6 @@ shinyServer(function(input, output, session){
 
     if(!is.null(newRegion) && helper$dataDir != dataDir && file.exists(dataDir)){
       region$current <- newRegion
-      leafletProxy("map")  %>% clearGroup(., "cents")
       helper$dataDir <<- dataDir
       toPlot <<- loadData(dataDir)
       if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
@@ -164,6 +172,11 @@ shinyServer(function(input, output, session){
 
   # Plot if lines change
   observe({
+    # Needed to force lines to be redrawn when scenario, zone or base map changes
+    input$scenario
+    input$map_base
+    region$current
+
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
       clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
       removeShape(., "highlighted")
@@ -180,18 +193,16 @@ shinyServer(function(input, output, session){
       )
     }
     if(input$line_type == 'rnet')
-      updateSliderInput(session, inputId = "nos_lines", min = 25, max= 50, step = 25, label = "Percent (%) of Network")
+      updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 20, label = "Percent (%) of Network")
     else
-      updateSliderInput(session, inputId = "nos_lines", max= 100, step = 5,  label = "Number of Lines")
+      updateSliderInput(session, inputId = "nos_lines", min = 1, max= 100, step = 5,  label = "Number of Lines")
 
-    # Needed to force lines to be redrawn when scenario, zone or base map changes
-    paste(input$scenario, input$map_base, region$current)
   })
 
   # This function updates the zones and the lines
   observe({
     region$current
-    leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centers") %>%
+    leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centres") %>%
       addPolygons(.,  data = toPlot$zones
                   , weight = 2
                   , fillOpacity = transpRate()
@@ -201,31 +212,13 @@ shinyServer(function(input, output, session){
                   , group = "zones"
                   , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())
                   , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "centers",
-                       popup = zonePopup(toPlot$cents, input$scenario, zoneAttr()))
+      addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1, color = "black", group = "centres",
+                       popup = centroidPopup(toPlot$cents, input$scenario, zoneAttr()))
 
-    # Change the lines in isolation from the zones - should replicate previous observe
-    isolate({
-      leafletProxy("map") %>% {
-        switch(input$line_type,
-               'straight' = plotLines(., toPlot$l, input$nos_lines, straightPopup, "straight_line", getLineColour("straight_line")),
-               'route'= {
-                 plotLines(., toPlot$rQuiet, input$nos_lines, routePopup, "quieter_route", getLineColour("quieter_route"))
-                 plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route"))
-               },
-               'd_route'= plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route")),
-               'rnet' = plotLines(., toPlot$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
-        )
-      }
-    })
   })
 
   transpRate <- reactive({
     if (input$map_base == 'roadmap') 0.7 else 0.0
-  })
-
-  circleRadius <- reactive({
-    if (input$map_base == 'roadmap') 2 else 4
   })
 
   # These are redundant as there is currently no option to visualize the scenario increase
@@ -286,7 +279,7 @@ shinyServer(function(input, output, session){
     toPlot$ldata <<- sorted_l
     if(is.null(sorted_l))
       m
-    else
+    else{
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
                    , weight = normalise(sorted_l[[lineData()]], min = min, max = max)
@@ -294,6 +287,7 @@ shinyServer(function(input, output, session){
                    , group = groupName
                    , popup = popupFn(sorted_l, input$scenario)
                    , layerId = paste0(sorted_l[['id']], '-', groupName))
+    }
   }
 
   mapTileUrl <- reactive({
@@ -320,7 +314,7 @@ shinyServer(function(input, output, session){
                options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
                                    maxZoom = ifelse(input$map_base == "IMD", 14, 18),
                                    reuseTiles = T)) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = circleRadius(), color = "black", group = "cents") %>%
+      addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1, color = "black", group = "centres") %>%
       mapOptions(zoomToLimits = "first")
   )
 
@@ -332,14 +326,10 @@ shinyServer(function(input, output, session){
     zone_col <- getColourRamp(zcols, m)
 
     # Set a full form of the scenario as a label
-    ylabel <- switch(zoneAttr(),
-                     "slc" = "Scenario Level of Cycling (SLC): N. Commuters",
-                     "sic" = "Scenario Increase in Cycling (SIC): N. Commuters",
-                     "Census 2011: Commuter cyclists"
-    )
+    ylabel <- "Number of Cycle Commuters"
 
-    # Set the labelling of Y-axis to bold
-    par(font.lab = 2)
+    # Set the labelling of Y-axis and font to bold, alter font size
+    par(font = 2, font.lab = 2, cex = 0.95, mar=c(0.0,5.0,0.0,1.0))
 
     # Barplot the data in vertical manner
     barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)),

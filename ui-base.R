@@ -19,10 +19,10 @@ library(shiny)
 library(leaflet)
 
 scenarios <- c("Census 2011 Cycling" = "olc",
-               "Government Target" =   "govtarget",
-               "Gender equality" =   "gendereq",
-               "Go Dutch" =          "dutch",
-               "Ebikes (prototype)" = "ebike")
+               "Government Target" = "govtarget",
+               "Gender equality" = "gendereq",
+               "Go Dutch" = "dutch",
+               "Ebikes" = "ebike")
 
 line_types <- c("None" = "none",
                 "Straight Lines" = "straight",
@@ -42,7 +42,7 @@ shinyUI(
     title = "National Propensity to Cycle Tool (Prototype)",
     id="nav",
     tabPanel(
-      "Interactive map",
+      "Map",
       div(
         class="outer",
         tags$head(
@@ -73,7 +73,7 @@ shinyUI(
                        checkboxInput("freeze", "Freeze Lines", value = TRUE)
               ),
               tags$div(title="Flows to show",
-                       sliderInput("nos_lines", label = "Number of Lines", 1, 100, value = 10, ticks = F)
+                       sliderInput("nos_lines", label = "Number of Lines", 1, 100, value = 30, ticks = F)
               )
             ),
             tags$div(title="Change base of the map",
@@ -99,7 +99,7 @@ shinyUI(
                        selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)"), selected = "Commute data", selectize = T),
                        conditionalPanel(
                          condition = "input.map_base != 'c'",
-                         plotOutput("legendCyclingPotential", width = "100%", height = 300)
+                         plotOutput("legendCyclingPotential", width = "100%", height = 200)
                        )
               )
           )
@@ -109,7 +109,7 @@ shinyUI(
           condition = "input.map_base == 'IMD'",
           absolutePanel(
             cursor = "default", id = "legend", class = "panel panel-default",
-            bottom = 200, right = 5, height = 20, width = 215,
+            bottom = 235, left = 5, height = 20, width = 225, draggable = TRUE,
             style = "opacity: 0.7",
             tags$div(title="Show/Hide map legend",
                      a(id = "toggleMapLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
@@ -127,14 +127,14 @@ shinyUI(
         )
       )
     ),
-    tabPanel("Lines Data",
+    tabPanel("Lines",
              br(),
              br(),
              helpText("This tab shows the underlying data of the Cycling Flows (straight or otherwise)"),
              uiOutput("warningMessage"),
              DT::dataTableOutput("linesDatatable")
     ),
-    tabPanel("Zones Data",
+    tabPanel("Zones",
              br(),
              br(),
              helpText(HTML("This tab shows the underlying data of the Zones </br>
@@ -148,10 +148,7 @@ shinyUI(
              htmlOutput("moutput")
     ),
     tabPanel("About",
-             includeHTML(file.path("static", "more-info.html"))
-    ),
-    tabPanel("How to use it",
-             includeMarkdown(file.path("static", "helpmd.md"))
+             includeHTML(file.path("static", "about_in_shiny.html"))
     ),
     tabPanel("FAQs",
              includeHTML(file.path("static", "FAQs.html"))

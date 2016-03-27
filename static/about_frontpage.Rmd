@@ -6,11 +6,11 @@ output:
     includes:
       in_header: header-other.html
       after_body: doc_afix.html
-bibliography: ../references.bib
+bibliography: references.bib
 ---
 
 ```{r bibs, eval=FALSE, echo=FALSE}
-download.file("https://www.zotero.org/api/groups/418217/collections/TUEXXIV4/items/top?limit=100&format=bibtex&v=1", destfile = "references.bib")
+download.file("https://www.zotero.org/api/groups/418217/collections/TUEXXIV4/items/top?limit=100&format=bibtex&v=1", destfile = "static/references.bib")
 ```
 
 This is the online home of the open source transport planning system, the Propensity to Cycle Tool (PCT). The PCT is released under the [AGP Licence](http://pct.bike/kent/licence.html): it is free to use, copy and modify, e.g. to create versions for new cities and states.
