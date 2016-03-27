@@ -42,7 +42,7 @@ shinyUI(
     title = "National Propensity to Cycle Tool (Prototype)",
     id="nav",
     tabPanel(
-      "Interactive map",
+      "Map",
       div(
         class="outer",
         tags$head(
@@ -127,14 +127,14 @@ shinyUI(
         )
       )
     ),
-    tabPanel("Lines Data",
+    tabPanel("Lines",
              br(),
              br(),
              helpText("This tab shows the underlying data of the Cycling Flows (straight or otherwise)"),
              uiOutput("warningMessage"),
              DT::dataTableOutput("linesDatatable")
     ),
-    tabPanel("Zones Data",
+    tabPanel("Zones",
              br(),
              br(),
              helpText(HTML("This tab shows the underlying data of the Zones </br>
@@ -148,10 +148,7 @@ shinyUI(
              htmlOutput("moutput")
     ),
     tabPanel("About",
-             includeHTML(file.path("static", "more-info.html"))
-    ),
-    tabPanel("How to use it",
-             includeMarkdown(file.path("static", "helpmd.md"))
+             includeHTML(file.path("static", "about_in_shiny.html"))
     ),
     tabPanel("FAQs",
              includeHTML(file.path("static", "FAQs.html"))
