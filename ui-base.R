@@ -42,7 +42,7 @@ shinyUI(
     title = "National Propensity to Cycle Tool (Prototype)",
     id="nav",
     tabPanel(
-      "Interactive map",
+      "Map",
       div(
         class="outer",
         tags$head(
@@ -148,7 +148,7 @@ shinyUI(
              htmlOutput("moutput")
     ),
     tabPanel("About",
-             includeHTML(file.path("static", "more-info.html"))
+             includeHTML(file.path("static", "about_in_shiny.html"))
     ),
     tabPanel("FAQs",
              includeHTML(file.path("static", "FAQs.html"))
