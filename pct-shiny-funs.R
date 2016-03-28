@@ -352,7 +352,7 @@ zonePopup <- function(data, scenario, zone){
       <td>", round(data[[dataFilter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
-      <td> Lives saved/yr (in &pound;1000s): &nbsp; </td>
+      <td> Change in deaths/yr (in &pound;1000s): &nbsp; </td>
       <td>", round(-data[[dataFilter(scenario, "sideath_heat")]],3), " (", round(data[[dataFilter(scenario, "sivalue_heat")]] / 1000), ")</td>
     </tr>
     <tr>
