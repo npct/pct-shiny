@@ -128,7 +128,7 @@ shinyServer(function(input, output, session){
       if (event$group == "centres"){
         leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
                                             fill = F,
-                                            color = "black" ,
+                                            color = getLineColour("centres") ,
                                             opacity = 0.7 ,
                                             layerId = "highlighted")
       } else if (event$group == "zones"){
@@ -191,6 +191,12 @@ shinyServer(function(input, output, session){
              'd_route'= plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route")),
              'rnet' = plotLines(., toPlot$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
       )
+      # if any of the lines is selected by the user, display the centroids
+      if (input$line_type != 'none'){
+        leafletProxy("map") %>% showGroup("centres")
+      }else{ # otherwise, hide the centroids
+        leafletProxy("map") %>% hideGroup("centres")
+      }
     }
     if(input$line_type == 'rnet')
       updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 20, label = "Percent (%) of Network")
@@ -212,7 +218,7 @@ shinyServer(function(input, output, session){
                   , group = "zones"
                   , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())
                   , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1, color = "black", group = "centres",
+      addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1, color = getLineColour("centres"), group = "centres",
                        popup = centroidPopup(toPlot$cents, input$scenario, zoneAttr()))
 
   })
@@ -314,7 +320,7 @@ shinyServer(function(input, output, session){
                options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
                                    maxZoom = ifelse(input$map_base == "IMD", 14, 18),
                                    reuseTiles = T)) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1, color = "black", group = "centres") %>%
+      addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1, color = getLineColour("centres"), group = "centres") %>%
       mapOptions(zoomToLimits = "first")
   )
 
