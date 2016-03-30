@@ -1,7 +1,7 @@
 # Data Frame which contains the links of lines and their colours
 lineAndColourDF <- data.frame(
-  lineType = c("straight_line", "quieter_route", "faster_route", "route_network"),
-  lineColour = c("maroon","turquoise","purple","blue")
+  lineType = c("straight_line", "quieter_route", "faster_route", "route_network", "centres"),
+  lineColour = c("maroon","turquoise","purple","blue", "maroon")
 )
 
 getLineColour <- function(lineType){
