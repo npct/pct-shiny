@@ -264,10 +264,6 @@ networkRoutePopup <- function(data, scenario){
       <td> Interzone potential (trips/day): &nbsp; </td>
       <td>", data$Bicycle, "</td>
     </tr>
-    <tr>
-      <td> Intrazone potential (max trips/day): &nbsp;</td>
-      <td> ", data$Bicycle_upto, "</td>
-    </tr>
   </tbody>
 </table>
 ")
