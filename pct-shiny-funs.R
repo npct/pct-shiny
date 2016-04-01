@@ -264,10 +264,6 @@ networkRoutePopup <- function(data, scenario){
       <td> Interzone potential (trips/day): &nbsp; </td>
       <td>", data$Bicycle, "</td>
     </tr>
-    <tr>
-      <td> Intrazone potential (max trips/day): &nbsp;</td>
-      <td> ", data$Bicycle_upto, "</td>
-    </tr>
   </tbody>
 </table>
 ")
@@ -282,16 +278,8 @@ networkRoutePopup <- function(data, scenario){
       <td>", data$Bicycle, "</td>
     </tr>
     <tr>
-      <td> Intrazone potential (baseline max trips/day): &nbsp;</td>
-      <td>", data$Bicycle_upto, "</td>
-    </tr>
-    <tr>
       <td> Interzone potential (scenario trips/day): &nbsp; </td>
       <td>", round(data[[dataFilter(scenario, 'slc')]]), "</td>
-    </tr>
-    <tr>
-      <td> Intrazone potential (scenario max trips/day): &nbsp;</td>
-      <td>", round(data[[paste0(dataFilter(scenario, 'slc'), "_upto")]]), "</td>
     </tr>
   </tbody>
 </table>
