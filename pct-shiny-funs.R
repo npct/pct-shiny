@@ -229,7 +229,7 @@ routePopup <- function(data, scenario){
 ")
     }
   } else {
-
+    # Create a local variable to distinguish baseline with scenarios
     quietRouteLabel <- "Scenarios (all)"
     if(scenario == 'olc')
       quietRouteLabel <- "Census 2011 cycling (baseline)"
@@ -436,8 +436,6 @@ centroidPopup <- function(data, scenario, zone){
       <td> Change in drivers: </td>
       <td>", round(data[[dataFilter(scenario, "sid")]]), "</td>
     </tr>
-
-
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
       <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 2), " (&pound;",
