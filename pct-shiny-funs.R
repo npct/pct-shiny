@@ -375,15 +375,15 @@ centroidPopup <- function(data, scenario, zone){
 <table>
   <thead>
     <tr>
-      <th>Within zone flows</th>
+      <th> Within zone flows </th>
     </tr>
     <tr>
-      <th>Census 2011 cycling (baseline)</th>
+      <th> Census 2011 cycling (baseline) </th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td> Intrazonal travel in: </td>
+      <td> Zone: </td>
       <td>", data$geo_label, "</td>
     </tr>
     <tr>
@@ -416,7 +416,7 @@ centroidPopup <- function(data, scenario, zone){
   </thead>
   <tbody>
     <tr>
-      <td> Intrazonal travel in: </td>
+      <td> Zone: </td>
       <td>", data$geo_label, "</td>
     </tr>
     <tr>
