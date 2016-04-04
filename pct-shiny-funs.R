@@ -134,8 +134,8 @@ straightPopup <- function(data, scenario){
       </td>
     </tr>
     <tr>
-      <td> Change in CO<sub>2</sub>e (t/yr):</td>
-      <td>", round(data[[dataFilter(scenario, "sico2")]],1), "</td>
+      <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
+      <td>", round(data[[dataFilter(scenario, "sico2")]] / 1000,1), "</td>
     </tr>
     <tr>
       <td> Distance (km):</td>
@@ -213,8 +213,8 @@ routePopup <- function(data, scenario){
     </td>
     </tr>
     <tr>
-      <td> Change in CO<sub>2</sub>e (t/yr):</td>
-      <td>", round(data[[dataFilter(scenario, "sico2")]],1), "</td>
+      <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
+      <td>", round(data[[dataFilter(scenario, "sico2")]] / 1000,1), "</td>
     </tr>
     <tr>
       <td> Route distance (km):</td>
@@ -359,8 +359,8 @@ zonePopup <- function(data, scenario, zone){
             round(data[[dataFilter(scenario, "sivalue_heat")]]), ")</td>
     </tr>
     <tr>
-      <td> Change in CO<sub>2</sub>e (t/yr):</td>
-      <td>", round(data[[dataFilter(scenario, "sico2")]],1), "</td>
+      <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
+      <td>", round(data[[dataFilter(scenario, "sico2")]] / 1000,1), "</td>
     </tr>
   </tbody>
 </table>")
@@ -444,8 +444,8 @@ centroidPopup <- function(data, scenario, zone){
            round(data[[dataFilter(scenario, "sivalue_heat")]]), ") </td>
     </tr>
     <tr>
-      <td> Change in CO<sub>2</sub>e (t/yr):</td>
-      <td>", round(data[[dataFilter(scenario, "sico2")]],1), "</td>
+      <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
+      <td>", round(data[[dataFilter(scenario, "sico2")]] / 1000,1), "</td>
     </tr>
   </tbody>
 </table>")
