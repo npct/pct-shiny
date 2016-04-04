@@ -129,7 +129,7 @@ straightPopup <- function(data, scenario){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 2), " (&pound;" ,
+      <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 3), " (&pound;" ,
             round(data[[dataFilter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
@@ -208,7 +208,7 @@ routePopup <- function(data, scenario){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 2), " (&pound;" ,
+      <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 3), " (&pound;" ,
           round(data[[dataFilter(scenario, "sivalue_heat")]]), ")
     </td>
     </tr>
@@ -355,7 +355,7 @@ zonePopup <- function(data, scenario, zone){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 2), " (&pound;",
+      <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 3), " (&pound;",
             round(data[[dataFilter(scenario, "sivalue_heat")]]), ")</td>
     </tr>
     <tr>
@@ -438,7 +438,7 @@ centroidPopup <- function(data, scenario, zone){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 2), " (&pound;",
+      <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 3), " (&pound;",
            round(data[[dataFilter(scenario, "sivalue_heat")]]), ") </td>
     </tr>
     <tr>
