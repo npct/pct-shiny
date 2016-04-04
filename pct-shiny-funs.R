@@ -384,7 +384,7 @@ centroidPopup <- function(data, scenario, zone){
   <tbody>
     <tr>
       <td> Intrazonal travel in: </td>
-      <td>", data$geo_code, "</td>
+      <td>", data$geo_label, "</td>
     </tr>
     <tr>
       <td> Total commuters: </td>
@@ -417,7 +417,7 @@ centroidPopup <- function(data, scenario, zone){
   <tbody>
     <tr>
       <td> Intrazonal travel in: </td>
-      <td>", data$geo_code, "</td>
+      <td>", data$geo_label, "</td>
     </tr>
     <tr>
       <td> Total comuters: </td>
