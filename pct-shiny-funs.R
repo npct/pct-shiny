@@ -234,11 +234,11 @@ routePopup <- function(data, scenario){
 <table>
   <tbody>
     <tr>
-      <td> Route distance (km):: </td>
+      <td> Route distance (km): </td>
       <td>", round(data$length, 1), "</td>
     </tr>
     <tr>
-      <td> Increased distance vs. Fast route: &nbsp; </td>
+    <td> % increase in distance vs. Fast route: &nbsp; </td>
       <td>", round((100*data$rqincr-100), 1), "%</td>
     </tr>
     <tr>
