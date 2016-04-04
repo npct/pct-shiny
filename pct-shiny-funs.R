@@ -112,7 +112,7 @@ straightPopup <- function(data, scenario){
   <th> Scenarios (all) </th>
   <tbody>
     <tr>
-      <td> Total comuters: </td>
+      <td> Total commuters: </td>
       <td>", data$All, "</td>
     </tr>
     <tr>
@@ -128,12 +128,10 @@ straightPopup <- function(data, scenario){
       <td>", round(data[[dataFilter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
-      <td> Deaths avoided (per 1000/yr): &nbsp; </td>
-      <td>", round(1000 * data[[dataFilter(scenario, "sideath_heat")]]), "</td>
-    </tr>
-    <tr>
-      <td> Lives saved (&pound;1000/yr): </td>
-      <td>", round(data[[dataFilter(scenario, "sivalue_heat")]] / 1000), "</td>
+      <td> Change in deaths/yr: &nbsp; </td>
+      <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 2), " (&pound;" ,
+            round(data[[dataFilter(scenario, "sivalue_heat")]]), ")
+      </td>
     </tr>
     <tr>
       <td> Change in CO<sub>2</sub>e (t/yr):</td>
