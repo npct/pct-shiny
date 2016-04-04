@@ -421,7 +421,7 @@ centroidPopup <- function(data, scenario, zone){
       <td>", data$geo_label, "</td>
     </tr>
     <tr>
-      <td> Total comuters: </td>
+      <td> Total commuters: </td>
       <td>", data$All, "</td>
     </tr>
     <tr>
