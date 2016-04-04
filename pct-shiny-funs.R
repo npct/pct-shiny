@@ -81,6 +81,7 @@ straightPopup <- function(data, scenario){
   if(scenario == 'olc') {
     paste0("
 <table>
+ 	<th> Census 2011 cycling (baseline) </th>
   <tbody>
     <tr>
       <td> Total commuters: </td>
@@ -108,6 +109,7 @@ straightPopup <- function(data, scenario){
     # Please align HTML!
     paste0("
 <table>
+  <th> Scenarios (all) </th>
   <tbody>
     <tr>
       <td> Total comuters: </td>
@@ -158,6 +160,7 @@ routePopup <- function(data, scenario){
     if(scenario == 'olc') {
       paste0("
 <table>
+  <th> Census 2011 cycling (baseline) </th>
   <tbody>
     <tr>
       <td> Total commuters: </td>
@@ -187,6 +190,7 @@ routePopup <- function(data, scenario){
 
       paste0("
 <table>
+  <th> Scenarios (all) </th>
   <tbody>
     <tr>
       <td> Total comuters: </td>
@@ -230,8 +234,14 @@ routePopup <- function(data, scenario){
     }
   } else {
 
+    quietRouteLabel <- "Scenarios (all)"
+    if(scenario == 'olc')
+      quietRouteLabel <- "Census 2011 cycling (baseline)"
+
+
     paste0("
 <table>
+  <th> ", quietRouteLabel, " </th>
   <tbody>
     <tr>
       <td> Route distance (km): </td>
@@ -259,6 +269,7 @@ networkRoutePopup <- function(data, scenario){
   if(scenario == 'olc') {
     paste0("
 <table>
+  <th> Census 2011 cycling (baseline)</th>
   <tbody>
     <tr>
       <td> Interzone potential (trips/day): &nbsp; </td>
@@ -272,6 +283,7 @@ networkRoutePopup <- function(data, scenario){
 
     paste0("
 <table>
+  <th> Scenarios (all) </th>
   <tbody>
     <tr>
       <td> Interzone potential (baseline trips/day): &nbsp; </td>
@@ -294,6 +306,7 @@ zonePopup <- function(data, scenario, zone){
   if(scenario == 'olc') {
     paste0("
 <table>
+  <th> Census 2011 cycling (baseline)</th>
   <tbody>
     <tr>
       <td> Zone: </td>
@@ -316,8 +329,9 @@ zonePopup <- function(data, scenario, zone){
 
   } else {
 
-  paste0("
+    paste0("
 <table>
+  <th> Scenarios (all) </th>
   <tbody>
     <tr>
       <td> Zone: </td>
@@ -359,6 +373,14 @@ centroidPopup <- function(data, scenario, zone){
   if(scenario == 'olc') {
     paste0("
 <table>
+  <thead>
+    <tr>
+      <th>Within zone flows</th>
+    </tr>
+    <tr>
+      <th>Census 2011 cycling (baseline)</th>
+    </tr>
+  </thead>
   <tbody>
     <tr>
       <td> Intrazonal travel in: </td>
@@ -384,6 +406,14 @@ centroidPopup <- function(data, scenario, zone){
 
     paste0("
 <table>
+  <thead>
+    <tr>
+      <th>Within zone flows</th>
+    </tr>
+    <tr>
+      <th>Scenarios (all)</th>
+    </tr>
+  </thead>
   <tbody>
     <tr>
       <td> Intrazonal travel in: </td>
