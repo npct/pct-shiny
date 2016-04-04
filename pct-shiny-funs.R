@@ -272,7 +272,7 @@ networkRoutePopup <- function(data, scenario){
   <th> Census 2011 cycling (baseline)</th>
   <tbody>
     <tr>
-      <td> Interzone potential (trips/day): &nbsp; </td>
+      <td> Within-zone cyclists (baseline): &nbsp; </td>
       <td>", data$Bicycle, "</td>
     </tr>
   </tbody>
@@ -286,11 +286,11 @@ networkRoutePopup <- function(data, scenario){
   <th> Scenarios (all) </th>
   <tbody>
     <tr>
-      <td> Interzone potential (baseline trips/day): &nbsp; </td>
+      <td> Within-zone cyclists (baseline): &nbsp; </td>
       <td>", data$Bicycle, "</td>
     </tr>
     <tr>
-      <td> Interzone potential (scenario trips/day): &nbsp; </td>
+      <td> Within-zone cyclists (scenario): &nbsp; </td>
       <td>", round(data[[dataFilter(scenario, 'slc')]]), "</td>
     </tr>
   </tbody>
