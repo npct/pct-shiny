@@ -80,7 +80,7 @@ dataFilter <- function(scenario, type){
 straightPopup <- function(data, scenario){
   if(scenario == 'olc') {
     paste0("
-<table>
+<table class = 'htab'>
  	<th> Census 2011 cycling (baseline) </th>
   <tbody>
     <tr>
@@ -108,7 +108,7 @@ straightPopup <- function(data, scenario){
     # scenarios table
     # Please align HTML!
     paste0("
-<table>
+<table class = 'htab'>
   <th> Scenarios (all) </th>
   <tbody>
     <tr>
@@ -157,7 +157,7 @@ routePopup <- function(data, scenario){
   if (routeType=='fast') {
     if(scenario == 'olc') {
       paste0("
-<table>
+<table class = 'htab'>
   <th> Census 2011 cycling (baseline) </th>
   <tbody>
     <tr>
@@ -187,7 +187,7 @@ routePopup <- function(data, scenario){
     } else {
 
       paste0("
-<table>
+<table class = 'htab'>
   <th> Scenarios (all) </th>
   <tbody>
     <tr>
@@ -236,7 +236,7 @@ routePopup <- function(data, scenario){
 
 
     paste0("
-<table>
+<table class = 'htab'>
   <th> ", quietRouteLabel, " </th>
   <tbody>
     <tr>
@@ -264,7 +264,7 @@ networkRoutePopup <- function(data, scenario){
 
   if(scenario == 'olc') {
     paste0("
-<table>
+<table class = 'htab'>
   <th> Census 2011 cycling (baseline)</th>
   <tbody>
     <tr>
@@ -278,7 +278,7 @@ networkRoutePopup <- function(data, scenario){
   } else {
 
     paste0("
-<table>
+<table class = 'htab'>
   <th> Scenarios (all) </th>
   <tbody>
     <tr>
@@ -301,7 +301,7 @@ zonePopup <- function(data, scenario, zone){
 
   if(scenario == 'olc') {
     paste0("
-<table>
+<table class = 'htab'>
   <th> Census 2011 cycling (baseline)</th>
   <tbody>
     <tr>
@@ -326,7 +326,7 @@ zonePopup <- function(data, scenario, zone){
   } else {
 
     paste0("
-<table>
+<table class = 'htab'>
   <th> Scenarios (all) </th>
   <tbody>
     <tr>
@@ -373,7 +373,7 @@ centroidPopup <- function(data, scenario, zone){
 
   if(scenario == 'olc') {
     paste0("
-<table>
+<table class = 'htab'>
   <thead>
     <tr>
       <th> Within zone flows </th>
@@ -406,7 +406,7 @@ centroidPopup <- function(data, scenario, zone){
   } else {
 
     paste0("
-<table>
+<table class = 'htab'>
   <thead>
     <tr>
       <th>Within zone flows</th>
