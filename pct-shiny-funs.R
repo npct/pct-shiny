@@ -178,7 +178,7 @@ routePopup <- function(data, scenario){
     </tr>
     <tr>
       <td> Hilliness (av. gradient): &nbsp; </td>
-      <td>", round(100*data$av_incline, 1), "%</td>
+      <td>", round(100*data$av_incline, 1), "&#176;</td>
     </tr>
   </tbody>
 </table>
@@ -222,7 +222,7 @@ routePopup <- function(data, scenario){
     </tr>
     <tr>
       <td> Hilliness (av. gradient):</td>
-      <td>", round(100*data$av_incline, 1), "%</td>
+      <td>", round(100*data$av_incline, 1), "&#176;</td>
     </tr>
   </tbody>
 </table>
@@ -249,7 +249,7 @@ routePopup <- function(data, scenario){
     </tr>
     <tr>
       <td> Hilliness (av. gradient): &nbsp; </td>
-      <td>", round(100*data$av_incline, 1), "%</td>
+      <td>", round(100*data$av_incline, 1), "&#176;</td>
     </tr>
   </tbody>
 </table>
