@@ -240,3 +240,54 @@ and
 R -e "install.packages(c('DT', 'devtools', 'shinyBS', 'shinyjs', 'dplyr', 'plyr', 'stringr', 'Hmisc'), repos='https://cran.rstudio.com/')"
 R -e "devtools::install_github('rCharts', 'ramnathv')"
 ```
+
+# Wordpress on npt2
+
+## Use https://wiki.debian.org/WordPress
+
+Follow instructions exactly from the blog, first installing
+
+```
+apt-get istall wordpress curl apache2 mysql-server
+```
+
+then setting up wp in apache
+
+```
+vim /etc/apache2/sites-available/wp.conf
+```
+
+Enable the site
+
+```
+a2ensite wp
+```
+
+Add the config to `/etc/wordpress/config-default.php` and create the database for wordpress using the `~/wp.sql` method.
+
+## Change default port
+
+Then we changed the default apache port to 8080
+first in `/etc/apache2/ports.conf` to `Listen 8080`
+and in `/etc/apache2/sites-enabled/000-default.conf` changing the first line to
+
+`<VirtualHost *: 8080>`
+
+# Haproxy
+
+To set up in haproxy
+in the frontend http-in section add
+
+```
+        acl is_wp path_beg /wp
+        use_backend wp_server if is_wp
+```
+
+and add the backend
+
+```
+backend wp_server
+        server wp 46.235.226.231:8080
+```
+
+Finally in the wordpress admin section change the site URL
