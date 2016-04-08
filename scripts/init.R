@@ -12,7 +12,8 @@ installed <- cranPkgs %in% installed.packages()
 # install packages that are missing
 if(length(cranPkgs[!installed]) > 0) install.packages(cranPkgs[!installed], repos='https://cran.rstudio.com/')
 
-# Delete the data_sha file to stop auto checkout
+# Delete the data_sha file to stop auto checkout, e.g. with:
+# file.remove("data_sha")
 data_sha_file <- file.path(shinyRoot, "data_sha")
 if (file.exists(data_sha_file)){
   data_sha <- readLines(data_sha_file)
