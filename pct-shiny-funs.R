@@ -80,7 +80,8 @@ dataFilter <- function(scenario, type){
 straightPopup <- function(data, scenario){
   if(scenario == 'olc') {
     paste0("
-<table>
+<table class = 'htab'>
+ 	<th> Census 2011 cycling (baseline) </th>
   <tbody>
     <tr>
       <td> Total commuters: </td>
@@ -107,10 +108,11 @@ straightPopup <- function(data, scenario){
     # scenarios table
     # Please align HTML!
     paste0("
-<table>
+<table class = 'htab'>
+  <th> Scenarios (all) </th>
   <tbody>
     <tr>
-      <td> Total comuters: </td>
+      <td> Total commuters: </td>
       <td>", data$All, "</td>
     </tr>
     <tr>
@@ -126,16 +128,14 @@ straightPopup <- function(data, scenario){
       <td>", round(data[[dataFilter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
-      <td> Deaths avoided (per 1000/yr): &nbsp; </td>
-      <td>", round(1000 * data[[dataFilter(scenario, "sideath_heat")]]), "</td>
+      <td> Change in deaths/yr: &nbsp; </td>
+      <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 3), " (&pound;" ,
+            round(data[[dataFilter(scenario, "sivalue_heat")]]), ")
+      </td>
     </tr>
     <tr>
-      <td> Lives saved (&pound;1000/yr): </td>
-      <td>", round(data[[dataFilter(scenario, "sivalue_heat")]] / 1000), "</td>
-    </tr>
-    <tr>
-      <td> Change in CO<sub>2</sub>e (t/yr):</td>
-      <td>", round(data[[dataFilter(scenario, "sico2")]]/1000,1), "</td>
+      <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
+      <td>", round(data[[dataFilter(scenario, "sico2")]] / 1000,1), "</td>
     </tr>
     <tr>
       <td> Distance (km):</td>
@@ -157,7 +157,8 @@ routePopup <- function(data, scenario){
   if (routeType=='fast') {
     if(scenario == 'olc') {
       paste0("
-<table>
+<table class = 'htab'>
+  <th> Census 2011 cycling (baseline) </th>
   <tbody>
     <tr>
       <td> Total commuters: </td>
@@ -177,7 +178,7 @@ routePopup <- function(data, scenario){
     </tr>
     <tr>
       <td> Hilliness (av. gradient): &nbsp; </td>
-      <td>", round(100*data$av_incline, 1), "</td>
+      <td>", round(100*data$av_incline, 1), "&#176;</td>
     </tr>
   </tbody>
 </table>
@@ -186,10 +187,11 @@ routePopup <- function(data, scenario){
     } else {
 
       paste0("
-<table>
+<table class = 'htab'>
+  <th> Scenarios (all) </th>
   <tbody>
     <tr>
-      <td> Total comuters: </td>
+      <td> Total commuters: </td>
       <td>", data$All, "</td>
     </tr>
     <tr>
@@ -205,16 +207,14 @@ routePopup <- function(data, scenario){
       <td>", round(data[[dataFilter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
-      <td> Deaths avoided (per 1000/yr): &nbsp; </td>
-      <td>", round(1000 * data[[dataFilter(scenario, "sideath_heat")]]), "</td>
+      <td> Change in deaths/yr: &nbsp; </td>
+      <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 3), " (&pound;" ,
+          round(data[[dataFilter(scenario, "sivalue_heat")]]), ")
+    </td>
     </tr>
     <tr>
-      <td> Lives saved (&pound;1000/yr): </td>
-      <td>", round(data[[dataFilter(scenario, "sivalue_heat")]] / 1000), "</td>
-    </tr>
-    <tr>
-      <td> Change in CO<sub>2</sub>e (t/yr):</td>
-      <td>", round(data[[dataFilter(scenario, "sico2")]]/1000,1), "</td>
+      <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
+      <td>", round(data[[dataFilter(scenario, "sico2")]] / 1000,1), "</td>
     </tr>
     <tr>
       <td> Route distance (km):</td>
@@ -222,28 +222,34 @@ routePopup <- function(data, scenario){
     </tr>
     <tr>
       <td> Hilliness (av. gradient):</td>
-      <td>", round(100*data$av_incline, 1), "</td>
+      <td>", round(100*data$av_incline, 1), "&#176;</td>
     </tr>
   </tbody>
 </table>
 ")
     }
   } else {
+    # Create a local variable to distinguish baseline with scenarios
+    quietRouteLabel <- "Scenarios (all)"
+    if(scenario == 'olc')
+      quietRouteLabel <- "Census 2011 cycling (baseline)"
+
 
     paste0("
-<table>
+<table class = 'htab'>
+  <th> ", quietRouteLabel, " </th>
   <tbody>
     <tr>
-      <td> Route distance (km):: </td>
+      <td> Route distance (km): </td>
       <td>", round(data$length, 1), "</td>
     </tr>
     <tr>
-      <td> Increased distance vs. Fast route: &nbsp; </td>
+    <td> % increase in distance vs. Fast route: &nbsp; </td>
       <td>", round((100*data$rqincr-100), 1), "%</td>
     </tr>
     <tr>
       <td> Hilliness (av. gradient): &nbsp; </td>
-      <td>", round(100*data$av_incline, 1), "</td>
+      <td>", round(100*data$av_incline, 1), "&#176;</td>
     </tr>
   </tbody>
 </table>
@@ -258,10 +264,11 @@ networkRoutePopup <- function(data, scenario){
 
   if(scenario == 'olc') {
     paste0("
-<table>
+<table class = 'htab'>
+  <th> Census 2011 cycling (baseline)</th>
   <tbody>
     <tr>
-      <td> Interzone potential (trips/day): &nbsp; </td>
+      <td> Between-zone cyclists (baseline): &nbsp; </td>
       <td>", data$Bicycle, "</td>
     </tr>
   </tbody>
@@ -271,14 +278,15 @@ networkRoutePopup <- function(data, scenario){
   } else {
 
     paste0("
-<table>
+<table class = 'htab'>
+  <th> Scenarios (all) </th>
   <tbody>
     <tr>
-      <td> Interzone potential (baseline trips/day): &nbsp; </td>
+      <td> Between-zone cyclists (baseline): &nbsp; </td>
       <td>", data$Bicycle, "</td>
     </tr>
     <tr>
-      <td> Interzone potential (scenario trips/day): &nbsp; </td>
+      <td> Between-zone cyclists (scenario): &nbsp; </td>
       <td>", round(data[[dataFilter(scenario, 'slc')]]), "</td>
     </tr>
   </tbody>
@@ -293,7 +301,8 @@ zonePopup <- function(data, scenario, zone){
 
   if(scenario == 'olc') {
     paste0("
-<table>
+<table class = 'htab'>
+  <th> Census 2011 cycling (baseline)</th>
   <tbody>
     <tr>
       <td> Zone: </td>
@@ -316,8 +325,9 @@ zonePopup <- function(data, scenario, zone){
 
   } else {
 
-  paste0("
-<table>
+    paste0("
+<table class = 'htab'>
+  <th> Scenarios (all) </th>
   <tbody>
     <tr>
       <td> Zone: </td>
@@ -336,16 +346,21 @@ zonePopup <- function(data, scenario, zone){
       <td>", round(data[[dataFilter(scenario, 'slc')]]), " (", round(100*data[[dataFilter(scenario, "slc")]] / data$All), "%) </td>
     </tr>
     <tr>
+      <td> Change in cyclists: </td>
+      <td>", (round(round(data[[dataFilter(scenario, 'slc')]]) - round(data[[dataFilter('olc', zone)]]))) , "</td>
+    </tr>
+    <tr>
       <td> Change in drivers: </td>
       <td>", round(data[[dataFilter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
-      <td> Change in deaths/yr (in &pound;1000s): &nbsp; </td>
-      <td>", round(-data[[dataFilter(scenario, "sideath_heat")]],3), " (", round(data[[dataFilter(scenario, "sivalue_heat")]] / 1000), ")</td>
+      <td> Change in deaths/yr: &nbsp; </td>
+      <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 3), " (&pound;",
+            round(data[[dataFilter(scenario, "sivalue_heat")]]), ")</td>
     </tr>
     <tr>
-      <td> Change in CO<sub>2</sub>e (t/yr):</td>
-      <td>", round(data[[dataFilter(scenario, "sico2")]]/1000,1), "</td>
+      <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
+      <td>", round(data[[dataFilter(scenario, "sico2")]] / 1000,1), "</td>
     </tr>
   </tbody>
 </table>")
@@ -358,11 +373,19 @@ centroidPopup <- function(data, scenario, zone){
 
   if(scenario == 'olc') {
     paste0("
-<table>
+<table class = 'htab'>
+  <thead>
+    <tr>
+      <th> Within zone flows </th>
+    </tr>
+    <tr>
+      <th> Census 2011 cycling (baseline) </th>
+    </tr>
+  </thead>
   <tbody>
     <tr>
-      <td> Intrazonal travel in: </td>
-      <td>", data$geo_code, "</td>
+      <td> Zone: </td>
+      <td>", data$geo_label, "</td>
     </tr>
     <tr>
       <td> Total commuters: </td>
@@ -383,14 +406,22 @@ centroidPopup <- function(data, scenario, zone){
   } else {
 
     paste0("
-<table>
-  <tbody>
+<table class = 'htab'>
+  <thead>
     <tr>
-      <td> Intrazonal travel in: </td>
-      <td>", data$geo_code, "</td>
+      <th>Within zone flows</th>
     </tr>
     <tr>
-      <td> Total comuters: </td>
+      <th>Scenarios (all)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td> Zone: </td>
+      <td>", data$geo_label, "</td>
+    </tr>
+    <tr>
+      <td> Total commuters: </td>
       <td>", data$All, "</td>
     </tr>
     <tr>
@@ -406,16 +437,13 @@ centroidPopup <- function(data, scenario, zone){
       <td>", round(data[[dataFilter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
-      <td> Deaths avoided (per 1000/yr): &nbsp; </td>
-      <td>", round(1000 * data[[dataFilter(scenario, "sideath_heat")]]), "</td>
+      <td> Change in deaths/yr: &nbsp; </td>
+      <td>", round(data[[dataFilter(scenario, "sideath_heat")]], 3), " (&pound;",
+           round(data[[dataFilter(scenario, "sivalue_heat")]]), ") </td>
     </tr>
     <tr>
-      <td> Lives saved (&pound;1000/yr): </td>
-      <td>", round(data[[dataFilter(scenario, "sivalue_heat")]] / 1000), "</td>
-    </tr>
-    <tr>
-      <td> Change in CO<sub>2</sub>e (t/yr):</td>
-      <td>", round(data[[dataFilter(scenario, "sico2")]]/1000,1), "</td>
+      <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
+      <td>", round(data[[dataFilter(scenario, "sico2")]] / 1000,1), "</td>
     </tr>
   </tbody>
 </table>")
