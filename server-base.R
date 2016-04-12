@@ -33,7 +33,9 @@ onProduction <- grepl('^/var/shiny/pct-shiny', getwd())
 if(!onProduction){
   source(file.path(shinyRoot, "scripts", "init.R"), local = T)
 }
-repo_sha <- as.character(readLines(file.path(shinyRoot, "repo_sha")))
+if(file.exists(file.path(shinyRoot, "repo_sha")))
+  repo_sha <- as.character(readLines(file.path(shinyRoot, "repo_sha"))) else
+    repo_sha <- NA
 lapply(c(cranPkgs), library, character.only = TRUE)
 
 # Functions
