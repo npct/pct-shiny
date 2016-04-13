@@ -284,6 +284,11 @@ shinyServer(function(input, output, session){
       min <- 5
       max <- 12
     }
+
+    lineOpacity <- 0.8
+    if (groupName == 'quieter_route' || groupName == 'faster_route')
+      lineOpacity <- 0.5
+
     sorted_l <- sortLines(lines, lineData(), nos)
     toPlot$ldata <<- sorted_l
     if(is.null(sorted_l))
@@ -292,7 +297,7 @@ shinyServer(function(input, output, session){
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
                    , weight = normalise(sorted_l[[lineData()]], min = min, max = max)
-                   , opacity = 0.8
+                   , opacity = lineOpacity
                    , group = groupName
                    , popup = popupFn(sorted_l, input$scenario)
                    , layerId = paste0(sorted_l[['id']], '-', groupName))
