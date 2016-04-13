@@ -33,9 +33,11 @@ line_types <- c("None" = "none",
 attrsZone <- c("Scenario Level of Cycling (SLC)"    = "slc",
                "Scenario Increase in Cycling (SIC)" = "sic")
 
-map_base_attrs <- c("Roadmap"   = "roadmap",
+map_base_attrs <- c("Roadmap (B+W)"   = "roadmap",
+                    "Roadmap (OpenCycleMap)" = "opencyclemap",
                     "Satellite" = "satellite",
-                    "IMD" = "IMD")
+                    "Index of Deprivation" = "IMD",
+                    "Hilliness" = "hilliness")
 
 shinyUI(
   navbarPage(
