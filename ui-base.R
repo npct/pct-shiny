@@ -33,7 +33,7 @@ line_types <- c("None" = "none",
 attrsZone <- c("Scenario Level of Cycling (SLC)"    = "slc",
                "Scenario Increase in Cycling (SIC)" = "sic")
 
-map_base_attrs <- c("Roadmap (B+W)"   = "roadmap",
+map_base_attrs <- c("Roadmap (Black & White)"   = "roadmap",
                     "Roadmap (OpenCycleMap)" = "opencyclemap",
                     "Satellite" = "satellite",
                     "Index of Deprivation" = "IMD",
@@ -78,13 +78,11 @@ shinyUI(
                        checkboxInput("freeze", "Freeze Lines", value = TRUE)
               ),
               tags$div(title="Flows to show",
-                       sliderInput("nos_lines", label = "Number of Lines", 1, 100, value = 30, ticks = F)
+                       sliderInput("nos_lines", label = "N. Lines (most cycled)", 1, 200, value = 30, ticks = F)
               )
             ),
             tags$div(title="Change base of the map",
-                     tags$div(class = "rbox",
-                              selectInput("map_base", "Map Base:", map_base_attrs)
-                     )
+                        selectInput("map_base", "Map Base:", map_base_attrs, selectize = F)
             ),
             conditionalPanel(
               condition = "input.line_type != 'none'",

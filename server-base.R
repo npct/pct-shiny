@@ -203,7 +203,7 @@ shinyServer(function(input, output, session){
     if(input$line_type == 'rnet')
       updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 20, label = "Percent (%) of Network")
     else
-      updateSliderInput(session, inputId = "nos_lines", min = 1, max= 100, step = 5,  label = "Number of Lines")
+      updateSliderInput(session, inputId = "nos_lines", min = 1, max = 200, step = 5,  label = "N. Lines (most cycled)")
 
   })
 
@@ -308,7 +308,9 @@ shinyServer(function(input, output, session){
     switch(input$map_base,
            'roadmap' = "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
            'satellite' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-           'IMD' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png"
+           'IMD' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png",
+           'opencyclemap' = "https://c.tile.thunderforest.com/cycle/{z}/{x}/{y}.png",
+           'hilliness' = "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png"
     )
   })
   output$citeHtml <- renderUI({
