@@ -281,8 +281,8 @@ shinyServer(function(input, output, session){
       min <- 1
       max <- 20
     } else {
-      min <- 3
-      max <- 6
+      min <- 5
+      max <- 12
     }
     sorted_l <- sortLines(lines, lineData(), nos)
     toPlot$ldata <<- sorted_l
