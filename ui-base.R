@@ -61,7 +61,7 @@ shinyUI(
           ),
           div(
             id = "input_panel",
-            tags$div(title="Scenario details can be seen in the Help tab",
+            tags$div(title="Scenario (see FAQ tab)",
                      selectInput("scenario", "Scenario:", scenarios, selectize = F)
             ),
             tags$div(title="Shows the cycling flow between the centres of zones",
