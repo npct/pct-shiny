@@ -220,7 +220,8 @@ shinyServer(function(input, output, session){
                   , group = "zones"
                   , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())
                   , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1, color = getLineColour("centres"), group = "centres",
+      addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1,
+                       color = getLineColour("centres"), group = "centres", opacity = 0.5,
                        popup = centroidPopup(toPlot$cents, input$scenario, zoneAttr()))
 
   })
@@ -322,7 +323,9 @@ shinyServer(function(input, output, session){
                options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
                                    maxZoom = ifelse(input$map_base == "IMD", 14, 18),
                                    reuseTiles = T)) %>%
-      addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1, color = getLineColour("centres"), group = "centres") %>%
+
+      addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1,
+                       color = getLineColour("centres"), group = "centres", opacity = 0.5) %>%
       mapOptions(zoomToLimits = "first")
   )
 
