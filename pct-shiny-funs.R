@@ -1,3 +1,9 @@
+# Data Frame which contains the full and short forms of scenarios
+scNameDF <- data.frame(
+  scFName = c("Census 2011 Cycling", "Government Target", "Gender equality", "Go Dutch", "Ebikes"),
+  scSName = c("olc","govtarget","gendereq","dutch", "ebike")
+)
+
 # Data Frame which contains the links of lines and their colours
 lineAndColourDF <- data.frame(
   lineType = c("straight_line", "quieter_route", "faster_route", "route_network", "centres"),
@@ -6,6 +12,10 @@ lineAndColourDF <- data.frame(
 
 getLineColour <- function(lineType){
   lineAndColourDF$lineColour[lineAndColourDF$lineType == lineType]
+}
+
+getScenarioName <- function(scName){
+  scNameDF$scFName[scNameDF$scSName == scName]
 }
 
 numericLineColNames <- c(
@@ -109,7 +119,7 @@ straightPopup <- function(data, scenario){
     # Please align HTML!
     paste0("
 <table class = 'htab'>
-  <th> Scenarios (all) </th>
+  <th> Scenario: ", getScenarioName(scenario), "</th>
   <tbody>
     <tr>
       <td> Total commuters: </td>
@@ -188,7 +198,7 @@ routePopup <- function(data, scenario){
 
       paste0("
 <table class = 'htab'>
-  <th> Scenarios (all) </th>
+  <th>  Scenario: ", getScenarioName(scenario), " </th>
   <tbody>
     <tr>
       <td> Total commuters: </td>
@@ -230,7 +240,7 @@ routePopup <- function(data, scenario){
     }
   } else {
     # Create a local variable to distinguish baseline with scenarios
-    quietRouteLabel <- "Scenarios (all)"
+    quietRouteLabel <- paste("Scenario: ", getScenarioName(scenario))
     if(scenario == 'olc')
       quietRouteLabel <- "Census 2011 cycling (baseline)"
 
@@ -279,7 +289,7 @@ networkRoutePopup <- function(data, scenario){
 
     paste0("
 <table class = 'htab'>
-  <th> Scenarios (all) </th>
+  <th>  Scenario: ", getScenarioName(scenario), "</th>
   <tbody>
     <tr>
       <td> Between-zone cyclists (baseline): &nbsp; </td>
@@ -327,7 +337,7 @@ zonePopup <- function(data, scenario, zone){
 
     paste0("
 <table class = 'htab'>
-  <th> Scenarios (all) </th>
+  <th>  Scenario: ", getScenarioName(scenario), " </th>
   <tbody>
     <tr>
       <td> Zone: </td>
@@ -412,7 +422,7 @@ centroidPopup <- function(data, scenario, zone){
       <th>Within zone flows</th>
     </tr>
     <tr>
-      <th>Scenarios (all)</th>
+      <th> Scenario: ", getScenarioName(scenario), "</th>
     </tr>
   </thead>
   <tbody>
