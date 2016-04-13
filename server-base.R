@@ -226,7 +226,7 @@ shinyServer(function(input, output, session){
   })
 
   transpRate <- reactive({
-    if (input$map_base == 'roadmap') 0.7 else 0.0
+    if (!input$transparent_zones && input$map_base == 'roadmap') 0.7 else 0.0
   })
 
   # These are redundant as there is currently no option to visualize the scenario increase
