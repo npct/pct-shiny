@@ -131,7 +131,7 @@ shinyServer(function(input, output, session){
         leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
                                             fill = F,
                                             color = getLineColour("centres") ,
-                                            opacity = 0.7 ,
+                                            opacity = 0.7,
                                             layerId = "highlighted")
       } else if (event$group == "zones"){
 
