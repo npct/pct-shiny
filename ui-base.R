@@ -69,7 +69,7 @@ shinyUI(
             ),
             conditionalPanel(
               condition = "input.line_type != 'none'",
-              tags$div(title="Untick to allow lines to update when you move the map",
+              tags$div(title="Untick to update lines when you move the map",
                        checkboxInput("freeze", "Freeze Lines", value = TRUE)
               ),
               tags$div(title="Flows to show",
