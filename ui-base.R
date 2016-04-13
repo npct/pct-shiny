@@ -81,7 +81,7 @@ shinyUI(
             ),
             tags$div(title="Change base of the map",
                      tags$div(class = "rbox",
-                              radioButtons("map_base", "Map Base:", map_base_attrs)
+                              selectInput("map_base", "Map Base:", map_base_attrs)
                      )
             ),
             conditionalPanel(
