@@ -33,7 +33,7 @@ line_types <- c("None" = "none",
 attrsZone <- c("Scenario Level of Cycling (SLC)"    = "slc",
                "Scenario Increase in Cycling (SIC)" = "sic")
 
-map_base_attrs <- c("Roadmap (B+W)"   = "roadmap",
+map_base_attrs <- c("Roadmap (Black & White)"   = "roadmap",
                     "Roadmap (OpenCycleMap)" = "opencyclemap",
                     "Satellite" = "satellite",
                     "Index of Deprivation" = "IMD",
