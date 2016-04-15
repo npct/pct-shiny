@@ -178,6 +178,7 @@ shinyServer(function(input, output, session){
     input$scenario
     input$map_base
     region$current
+    input$transparent_zones
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
       clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
@@ -227,7 +228,7 @@ shinyServer(function(input, output, session){
   })
 
   transpRate <- reactive({
-    if (input$map_base == 'satellite') 0 else 0.5
+    if (input$transparent_zones | input$map_base == 'satellite') 0 else 0.7
   })
 
   # These are redundant as there is currently no option to visualize the scenario increase
