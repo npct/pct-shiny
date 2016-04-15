@@ -178,6 +178,7 @@ shinyServer(function(input, output, session){
     input$scenario
     input$map_base
     region$current
+    input$transparent_zones
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
       clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
