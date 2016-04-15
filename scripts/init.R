@@ -4,7 +4,7 @@ if(!dir.exists(dataDirRoot)) {
                         'https://github.com/npct/pct-data.git', dataDirRoot))
 } else { # Update the data repo
   print("Fetching data")
-  system2('git', c("--git-dir=", file.path(dataDirRoot, ".git"), "--work-tree=",
+  system2('git', c("--git-dir", file.path(dataDirRoot, ".git"), "--work-tree",
                    dataDirRoot, "fetch"), wait = F)
 }
 
