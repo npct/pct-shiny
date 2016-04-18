@@ -273,6 +273,9 @@ routePopup <- function(data, scenario){
   <th> ", quietRouteLabel, " </th>
   <tbody>
     <tr>
+        <td>", id[1] , " - ", id[2], "</td>
+    </tr>
+    <tr>
       <td> Route distance (km): </td>
       <td>", round(data$length, 1), "</td>
     </tr>
