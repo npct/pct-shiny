@@ -89,18 +89,13 @@ dataFilter <- function(scenario, type){
 # Popup function for straight line data in html table
 straightPopup <- function(data, scenario){
 
-  # Get ID which contains both source and target destination
-  # Split the list into two parts
-  # id[1] contains source and id[2] contains target
-  id <- (unlist(strsplit(data$id, " ")))
-
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
  	<th> Census 2011 cycling (baseline) </th>
   <tbody>
     <tr>
-      <td>", id[1] , " - ", id[2], "</td>
+      <td>", data$origin , " - ", data$dest, "</td>
     </tr>
     <tr>
       <td> Total commuters: </td>
@@ -131,7 +126,7 @@ straightPopup <- function(data, scenario){
   <th> Scenario: ", getScenarioName(scenario), "</th>
   <tbody>
     <tr>
-      <td>", id[1] , " - ", id[2], "</td>
+      <td>", data$origin , " - ", data$dest, "</td>
     </tr>
     <tr>
       <td> Total commuters: </td>
@@ -174,10 +169,6 @@ routeTypeLabel[['quietest']] <- 'Quiet'
 
 # Route popup function
 routePopup <- function(data, scenario){
-  # Get ID which contains both source and target destination
-  # Split the list into two parts
-  # id[1] contains source and id[2] contains target
-  id <- (unlist(strsplit(data$id, " ")))
 
   ifelse(("rqincr" %in% colnames(data@data)), routeType <-'quiet', routeType <-'fast')
 
@@ -188,7 +179,7 @@ routePopup <- function(data, scenario){
   <th> Census 2011 cycling (baseline) </th>
   <tbody>
     <tr>
-      <td>", id[1] , " - ", id[2], "</td>
+      <td>", data$origin , " - ", data$dest, "</td>
     </tr>
     <tr>
       <td> Total commuters: </td>
@@ -221,7 +212,7 @@ routePopup <- function(data, scenario){
   <th>  Scenario: ", getScenarioName(scenario), " </th>
   <tbody>
     <tr>
-        <td>", id[1] , " - ", id[2], "</td>
+        <td>", data$origin , " - ", data$dest, "</td>
     </tr>
     <tr>
       <td> Total commuters: </td>
@@ -273,7 +264,7 @@ routePopup <- function(data, scenario){
   <th> ", quietRouteLabel, " </th>
   <tbody>
     <tr>
-        <td>", id[1] , " - ", id[2], "</td>
+        <td>", data$origin , " - ", data$dest, "</td>
     </tr>
     <tr>
       <td> Route distance (km): </td>
