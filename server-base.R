@@ -60,17 +60,19 @@ shinyServer(function(input, output, session){
   loadData <- function(dataDir){
     toPlot
     toPlot$l <- readRDS(file.path(dataDir, "l.Rds"))
+    toPlot$zones <-  readRDS(file.path(dataDir, "z.Rds"))
+    toPlot$cents <-   readRDS(file.path(dataDir, "c.Rds"))
+
+    toPlot$l@data$origin <- toPlot$l@data[["Area.of.residence"]]
+    toPlot$l@data$dest <- toPlot$l@data[["Area.of.workplace"]]
+
+    toPlot$rnet <- readRDS(file.path(dataDir, "rnet.Rds"))
+    toPlot$rnet$id <- 1:nrow(toPlot$rnet)
 
     toPlot$rFast <- readRDS(file.path(dataDir, "rf.Rds" ))
     toPlot$rFast@data <- cbind(toPlot$rFast@data, toPlot$l@data)
     toPlot$rQuiet <- readRDS(file.path(dataDir, "rq.Rds"))
     toPlot$rQuiet@data <- cbind(toPlot$rQuiet@data,rqincr=toPlot$rQuiet@data$length/toPlot$rFast@data$length, toPlot$l@data)
-
-    toPlot$zones <-  readRDS(file.path(dataDir, "z.Rds"))
-    toPlot$cents <-   readRDS(file.path(dataDir, "c.Rds"))
-
-    toPlot$rnet <- readRDS(file.path(dataDir, "rnet.Rds"))
-    toPlot$rnet$id <- 1:nrow(toPlot$rnet)
 
     toPlot
   }
