@@ -66,6 +66,28 @@ shinyServer(function(input, output, session){
     toPlot$l@data$origin <- toPlot$l@data[["Area.of.residence"]]
     toPlot$l@data$dest <- toPlot$l@data[["Area.of.workplace"]]
 
+    td1 <- subset(toPlot$l@data, select = "origin")
+    td1$geo_code <- td1$origin
+    td2 <- subset(toPlot$zones@data, select = c("geo_label", "geo_code"))
+    td3 <- merge(td1, td2, by = "geo_code")
+    td3 <- plyr::arrange(td3, geo_code)
+
+    toPlot$l@data <- plyr::arrange(toPlot$l@data, Area.of.residence)
+
+    toPlot$l@data$origin <- td3$geo_label[toPlot$l@data[["Area.of.residence"]] == td3$geo_code]
+
+    td1 <- subset(toPlot$l@data, select = "dest")
+    td1$geo_code <- td1$dest
+    td2 <- subset(toPlot$zones@data, select = c("geo_label", "geo_code"))
+    td3 <- merge(td1, td2, by = "geo_code")
+    td3 <- plyr::arrange(td3, geo_code)
+
+    toPlot$l@data <- plyr::arrange(toPlot$l@data, Area.of.workplace)
+
+    toPlot$l@data$dest <- td3$geo_label[toPlot$l@data[["Area.of.workplace"]] == td3$geo_code]
+
+    toPlot$l@data <- plyr::arrange(toPlot$l@data, id)
+
     toPlot$rnet <- readRDS(file.path(dataDir, "rnet.Rds"))
     toPlot$rnet$id <- 1:nrow(toPlot$rnet)
 
