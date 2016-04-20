@@ -209,6 +209,14 @@ shinyServer(function(input, output, session){
       removeShape(., "highlighted")
 
     leafletProxy("map") %>% {
+
+      # if any of the lines is selected by the user, display the centroids
+      if (input$line_type != 'none'){
+        leafletProxy("map") %>% showGroup("centres")
+      }else{ # otherwise, hide the centroids
+        leafletProxy("map") %>% hideGroup("centres")
+      }
+
       switch(input$line_type,
              'straight' = plotLines(., toPlot$l, input$nos_lines, straightPopup, "straight_line", getLineColour("straight_line")),
              'route'= {
@@ -218,12 +226,6 @@ shinyServer(function(input, output, session){
              'd_route'= plotLines(., toPlot$rFast, input$nos_lines, routePopup,"faster_route",  getLineColour("faster_route")),
              'rnet' = plotLines(., toPlot$rnet, input$nos_lines, networkRoutePopup, "route_network", getLineColour("route_network"))
       )
-      # if any of the lines is selected by the user, display the centroids
-      if (input$line_type != 'none'){
-        leafletProxy("map") %>% showGroup("centres")
-      }else{ # otherwise, hide the centroids
-        leafletProxy("map") %>% hideGroup("centres")
-      }
     }
     if(input$line_type == 'rnet')
       updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 20, label = "Percent (%) of Network")
