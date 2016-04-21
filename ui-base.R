@@ -111,7 +111,7 @@ shinyUI(
         conditionalPanel(
           condition = "input.map_base == 'IMD'",
           absolutePanel(
-            cursor = "default", id = "legend", class = "panel panel-default",
+            cursor = "auto", id = "legend", class = "panel panel-default",
             bottom = 235, left = 5, height = 20, width = 225, draggable = TRUE,
             style = "opacity: 0.7",
             tags$div(title="Show/Hide map legend",
