@@ -69,9 +69,6 @@ shinyUI(
             tags$div(title="Shows the cycling flow between the centres of zones",
                      selectInput("line_type", "Cycling Flows", line_types, selected = "none", selectize = F)
             ),
-            tags$div(title="Shows the cycling flow between the centres of zones",
-                     checkboxInput("transparent_zones", "Zone Transparency", value = FALSE)
-            ),
             conditionalPanel(
               condition = "input.line_type != 'none'",
               tags$div(title="Untick to update lines when you move the map",
