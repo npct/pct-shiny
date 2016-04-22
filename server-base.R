@@ -104,6 +104,7 @@ shinyServer(function(input, output, session){
   # Select and sort lines within a bounding box - given by flowsBB()
   sortLines <- function(lines, sortBy, nos){
     poly <- flowsBB()
+    if(is.null(poly)) return(NULL)
     poly <- spTransform(poly, CRS(proj4string(lines)))
     keep <- gContains(poly, lines,byid=TRUE )
     if(all(!keep)) return(NULL)
