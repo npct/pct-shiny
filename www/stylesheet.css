@@ -38,6 +38,27 @@ select.form-control {
   font-size: 11px;
 }
 
+select {
+  border: 1px solid #999;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+/* only apply this to firefox: */
+@-moz-document url-prefix() {
+  /* Normally you can just apply this to all 'select's not just a classs selector */
+  select.form-control {
+    /* This removes the native down arrow: */
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: "";
+    /* Add a new down arrow, probably shouldn't hotlink: */
+    background-image: url("https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-chevron-down-16.png");
+    background-position: right 8px center;
+    background-repeat: no-repeat;
+  }
+}
+
 label {
   font-size: 12px;
 }
