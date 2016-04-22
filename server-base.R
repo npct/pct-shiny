@@ -238,6 +238,8 @@ shinyServer(function(input, output, session){
   # This function updates the zones and the lines
   observe({
     region$current
+    showZonePopup <- (input$line_type == 'none')
+    popup <- if(showZonePopup) zonePopup(toPlot$zones, input$scenario, zoneAttr())
     leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centres") %>%
       addPolygons(.,  data = toPlot$zones
                   , weight = 2
@@ -246,7 +248,8 @@ shinyServer(function(input, output, session){
                   , fillColor = getColourRamp(zcols, toPlot$zones[[zoneData()]])
                   , color = "black"
                   , group = "zones"
-                  , popup = zonePopup(toPlot$zones, input$scenario, zoneAttr())
+                  , popup = popup
+                  , options = pathOptions(clickable = showZonePopup)
                   , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
       addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1,
                        color = getLineColour("centres"), group = "centres", opacity = 0.5,
