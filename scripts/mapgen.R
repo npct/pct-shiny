@@ -12,24 +12,35 @@ if(!exists("ukmsoas")) # MSOA zones
 if(!exists("centsa")) # Population-weighted centroids
   centsa <- readOGR("../pct-bigdata/cents-scenarios.geojson", layer = "OGRGeoJSON")
 centsa$geo_code <- as.character(centsa$geo_code)
-regions = geojson_read("../pct-bigdata/regions.geojson", what = "sp")
+regions = geojson_read("../pct-bigdata/regions.geojson", what = "sp", stringsAsFactors = F)
 
+regions$pcycle = NA
+regions$Region_cap = R.utils::capitalize(regions$Region)
 for(i in 1:length(regions)){
   print(i)
   region_shape = regions[i,]
   cents <- centsa[region_shape,]
   zones <- ukmsoas[ukmsoas@data$geo_code %in% cents$geo_code, ]
-  r$pcycle <- round(100 * sum(zones$Bicycle) / sum(zones$All))
+  regions$pcycle[i] <- round(100 * sum(zones$Bicycle) / sum(zones$All), 1)
 
-  r$url <- paste0(".", i)
-  r$url_text <- as.character(a(i, href = r$url))
-  r$url_text <- gsub('">', '" target ="_top">', r$url_text)
+  regions$url[i] <- paste0("http://pct.bike/", regions$Region_cap[i])
+  regions$url_text[i] <- as.character(a(regions$Region_cap[i], href = regions$url[i]))
+  regions$url_text[i] <- gsub('">', '" target ="_top">', regions$url_text[i])
 }
-popup <- paste0(region$url_text, ", ", region$pcycle, "% cycling ")
-m <- leaflet() %>% addTiles() %>% addPolygons(data = region, popup = popup)
-m
-saveWidget(m, file = file.path(regions_www, "map.html"))
+popup <- paste0(regions$url_text, ", ", regions$pcycle, "% cycle to work")
 
+library(leaflet)
+qpal <- colorBin("RdYlGn", regions$pcycle, bins = c(0, 3, 5, 10), pretty = TRUE)
+
+m <- leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
+  addPolygons(data = regions, popup = regions$url_txt, weight = 1,
+              fillColor = ~qpal(regions$pcycle), fillOpacity = 0.5, color = "black") %>%
+  addLegend(pal = qpal, values = regions$pcycle, title = "% Cycling\nto work", opacity = 0.5)
+
+
+m
+old = setwd("regions_www/")
+saveWidget(m, file = "map.html")
 
 # # V1: builds all zones for a single geography
 # pkgs <- c("leaflet", "htmlwidgets", "geojsonio")
