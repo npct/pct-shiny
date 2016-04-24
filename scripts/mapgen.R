@@ -1,4 +1,36 @@
 # mapgen generates the basemap html script
+source("../pct-load/set-up.R")
+
+# V2: builds all operational zones
+library(rgeos)
+library(maptools)
+library(shiny)
+
+# load national results at zone level
+if(!exists("ukmsoas")) # MSOA zones
+  ukmsoas <- readRDS("../pct-bigdata/ukmsoas-scenarios.Rds")
+if(!exists("centsa")) # Population-weighted centroids
+  centsa <- readOGR("../pct-bigdata/cents-scenarios.geojson", layer = "OGRGeoJSON")
+centsa$geo_code <- as.character(centsa$geo_code)
+regions = geojson_read("../pct-bigdata/regions.geojson", what = "sp")
+
+for(i in 1:length(regions)){
+  print(i)
+  region_shape = regions[i,]
+  cents <- centsa[region_shape,]
+  zones <- ukmsoas[ukmsoas@data$geo_code %in% cents$geo_code, ]
+  r$pcycle <- round(100 * sum(zones$Bicycle) / sum(zones$All))
+
+  r$url <- paste0(".", i)
+  r$url_text <- as.character(a(i, href = r$url))
+  r$url_text <- gsub('">', '" target ="_top">', r$url_text)
+}
+popup <- paste0(region$url_text, ", ", region$pcycle, "% cycling ")
+m <- leaflet() %>% addTiles() %>% addPolygons(data = region, popup = popup)
+m
+saveWidget(m, file = file.path(regions_www, "map.html"))
+
+
 # # V1: builds all zones for a single geography
 # pkgs <- c("leaflet", "htmlwidgets", "geojsonio")
 # lapply(pkgs, library, character.only = T)
@@ -8,45 +40,3 @@
 # file.remove("regions.geojson")
 # names(regions)
 # m <- leaflet() %>% addTiles() %>% addPolygons(data = regions, popup = regions$url_text)
-
-# V2: builds all operational zones
-library(rgeos)
-library(maptools)
-library(shiny)
-
-pct_data <- file.path("..", "pct-data")
-regions_www <- "regions_www"
-exclude <- c("gm", "Bedford", "master", "norfolk",
-             "liverpool-city-region2", "tiverton", "nottingham", "birmingham") # regions to exclude from map
-folders <- list.dirs(path= regions_www, recursive = FALSE, full.names = F)
-folders <- folders[-which(folders %in% exclude)]
-# extract zone info and simplify
-for(i in folders){
-  if(file.exists(file.path(regions_www, i, "server.R"))){
-    print(i)
-    r <- readRDS(file.path(pct_data, i, "z.Rds"))
-    r <- gBuffer(r, width = 0)
-    spChFIDs(r) <- i
-    df <- data.frame(Name = i)
-    r <- SpatialPolygonsDataFrame(r, df, match.ID = F)
-    row.names(r) <- i
-    plot(r)
-    l <- readRDS(file.path(pct_data, i, "l.Rds"))
-    r$pcycle <- round(100 * sum(l$Bicycle) / sum(l$All))
-
-    r$url <- paste0(".", i)
-    r$url_text <- as.character(a(i, href = r$url))
-    r$url_text <- gsub('">', '" target ="_top">', r$url_text)
-
-    if(exists("region")){
-      proj4string(r) <- proj4string(region)
-      region <- spRbind(region, r)
-    }else{
-      region <- r
-    }
-  }
-}
-popup <- paste0(region$url_text, ", ", region$pcycle, "% cycling ")
-m <- leaflet() %>% addTiles() %>% addPolygons(data = region, popup = popup)
-m
-saveWidget(m, file = file.path(regions_www, "map.html"))
