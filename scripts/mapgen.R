@@ -5,6 +5,7 @@ source("../pct-load/set-up.R")
 library(rgeos)
 library(maptools)
 library(shiny)
+library(htmlwidgets)
 
 # load national results at zone level
 if(!exists("ukmsoas")) # MSOA zones
@@ -17,6 +18,9 @@ regions = geojson_read("../pct-bigdata/regions.geojson", what = "sp", stringsAsF
 i = 1
 regions$pcycle = NA
 regions$Region_cap = R.utils::capitalize(regions$Region)
+
+proj4string(regions)=CRS("+init=epsg:4326 +proj=longlat")
+proj4string(centsa)=CRS("+init=epsg:4326 +proj=longlat")
 for(i in 1:length(regions)){
   print(i)
   region_shape = regions[i,]
@@ -24,7 +28,7 @@ for(i in 1:length(regions)){
   zones <- ukmsoas[ukmsoas@data$geo_code %in% cents$geo_code, ]
   regions$pcycle[i] <- round(100 * sum(zones$Bicycle) / sum(zones$All), 1)
 
-  regions$url[i] <- paste0("http://pct.bike/", regions$Region[i])
+  regions$url[i] <- paste0("./", regions$Region[i])
   regions$url_text[i] <- as.character(a(regions$Region_cap[i], href = regions$url[i]))
   regions$url_text[i] <- gsub('">', '" target ="_top">', regions$url_text[i])
 }
