@@ -253,8 +253,22 @@ shinyServer(function(input, output, session){
                   , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
       addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1,
                        color = getLineColour("centres"), group = "centres", opacity = 0.5,
-                       popup = centroidPopup(toPlot$cents, input$scenario, zoneAttr()))
+                       popup = centroidPopup(toPlot$cents, input$scenario, zoneAttr())) %>%
+      # Hide and Show line layers, so that they are displayed as the top layer in the map.
+      # Leaflet's function bringToBack() or bringToFront() (see http://leafletjs.com/reference.html#path)
+      # don't seem to exist for R
 
+      {
+        switch(input$line_type,
+             'straight' = hideGroup(., "straight_line") %>% showGroup(., "straight_line"),
+             'route'= {
+               hideGroup(., "quieter_route") %>% showGroup(., "quieter_route")
+               hideGroup(., "faster_route") %>% showGroup(., "faster_route")
+             },
+             'd_route' = hideGroup(., "faster_route") %>% showGroup(., "faster_route"),
+             'rnet' = hideGroup(., "route_network") %>% showGroup(., "route_network")
+          )
+      }
   })
 
   transpRate <- reactive({
