@@ -14,6 +14,7 @@ if(!exists("centsa")) # Population-weighted centroids
 centsa$geo_code <- as.character(centsa$geo_code)
 regions = geojson_read("../pct-bigdata/regions.geojson", what = "sp", stringsAsFactors = F)
 
+i = 1
 regions$pcycle = NA
 regions$Region_cap = R.utils::capitalize(regions$Region)
 for(i in 1:length(regions)){
@@ -23,7 +24,7 @@ for(i in 1:length(regions)){
   zones <- ukmsoas[ukmsoas@data$geo_code %in% cents$geo_code, ]
   regions$pcycle[i] <- round(100 * sum(zones$Bicycle) / sum(zones$All), 1)
 
-  regions$url[i] <- paste0("http://pct.bike/", regions$Region_cap[i])
+  regions$url[i] <- paste0("http://pct.bike/", regions$Region[i])
   regions$url_text[i] <- as.character(a(regions$Region_cap[i], href = regions$url[i]))
   regions$url_text[i] <- gsub('">', '" target ="_top">', regions$url_text[i])
 }
@@ -33,7 +34,7 @@ library(leaflet)
 qpal <- colorBin("RdYlGn", regions$pcycle, bins = c(0, 3, 5, 10), pretty = TRUE)
 
 m <- leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
-  addPolygons(data = regions, popup = regions$url_txt, weight = 1,
+  addPolygons(data = regions, popup = popup, weight = 1,
               fillColor = ~qpal(regions$pcycle), fillOpacity = 0.5, color = "black") %>%
   addLegend(pal = qpal, values = regions$pcycle, title = "% Cycling\nto work", opacity = 0.5)
 
@@ -41,7 +42,7 @@ m <- leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
 m
 old = setwd("regions_www/")
 saveWidget(m, file = "map.html")
-
+setwd(old)
 # # V1: builds all zones for a single geography
 # pkgs <- c("leaflet", "htmlwidgets", "geojsonio")
 # lapply(pkgs, library, character.only = T)
