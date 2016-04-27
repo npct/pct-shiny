@@ -271,8 +271,8 @@ routePopup <- function(data, scenario){
       <td>", round(data$length, 1), "</td>
     </tr>
     <tr>
-    <td> % increase in distance vs. Fast route: &nbsp; </td>
-      <td>", round((100*data$rqincr-100), 1), "%</td>
+    <td> Distance compared w. fastest route (%): &nbsp; </td>
+      <td>", round((100*data$rqincr-100), 1), "</td>
     </tr>
     <tr>
       <td> Hilliness (av. gradient, %): &nbsp; </td>
