@@ -96,6 +96,9 @@ shinyServer(function(input, output, session){
     toPlot$rQuiet <- readRDS(file.path(dataDir, "rq.Rds"))
     toPlot$rQuiet@data <- cbind(toPlot$rQuiet@data,rqincr=toPlot$rQuiet@data$length/toPlot$rFast@data$length, toPlot$l@data)
 
+    toPlot$rQuiet@data <- subset(toPlot$rQuiet@data, select = unique(names(toPlot$rQuiet@data)))
+    toPlot$rFast@data <- subset(toPlot$rFast@data, select = unique(names(toPlot$rFast@data)))
+
     toPlot
   }
 
@@ -459,8 +462,14 @@ shinyServer(function(input, output, session){
     # the argument 'file'.
     content = function(file) {
       # Bug in writeOGR that there can be no "." in the file name
+      output <- switch(input$line_type,
+                       'straight' = toPlot$l,
+                       'route'    = toPlot$rQuiet,
+                       'd_route'  = toPlot$rFast,
+                       'rnet'     = toPlot$rne
+      )
       fileNoDot <- unlist(strsplit(file, ".", fixed = T))[1]
-      writeOGR(toPlot$ldata, dsn = fileNoDot, layer = "", driver='GeoJSON', overwrite_layer= T)
+      writeOGR(output, dsn = fileNoDot, layer = "", driver='GeoJSON', overwrite_layer= T)
       file.rename(fileNoDot, file)
     }
   )
