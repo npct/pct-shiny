@@ -154,7 +154,7 @@ shinyUI(
              includeHTML(file.path("static", "about_in_shiny.html"))
     ),
     tabPanel("FAQs",
-             includeHTML(file.path("static", "FAQs.html"))
+             includeHTML(file.path("static", "Manual.html"))
     )
   )
 )
