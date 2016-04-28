@@ -15,6 +15,19 @@ if(!exists("centsa")) # Population-weighted centroids
 centsa$geo_code <- as.character(centsa$geo_code)
 regions = geojson_read("../pct-bigdata/regions.geojson", what = "sp", stringsAsFactors = F)
 
+las = readRDS("../pct-bigdata/las-geo-mode.Rds")
+las_cents = gCentroid(las, byid = T)
+las_cents = SpatialPointsDataFrame(las_cents, las@data)
+
+library(sp)
+names(las_cents)[4] = "All"
+region_tcycle = aggregate(las_cents["Bicycle"], regions, sum, na.rm = T)
+region_t = aggregate(las_cents["All"], regions, sum, na.rm = T)
+qtm(region_t, "All")
+regions$pcycle2 = region_tcycle$Bicycle / region_t$All * 100
+plot(regions$pcycle, regions$pcycle2)
+summary(regions$pcycle - regions$pcycle2)
+
 i = 1
 regions$pcycle = NA
 regions$Region_cap = R.utils::capitalize(regions$Region)
@@ -32,14 +45,14 @@ for(i in 1:length(regions)){
   regions$url_text[i] <- as.character(a(regions$Region_cap[i], href = regions$url[i]))
   regions$url_text[i] <- gsub('">', '" target ="_top">', regions$url_text[i])
 }
-popup <- paste0(regions$url_text, ", ", regions$pcycle, "% cycle to work")
+popup <- paste0(regions$url_text, ", ", round(regions$pcycle2, 1), "% cycle to work")
 
 library(leaflet)
-qpal <- colorBin("RdYlGn", regions$pcycle, bins = c(0, 3, 5, 10), pretty = TRUE)
+qpal <- colorBin("RdYlGn", regions$pcycle2, bins = c(0, 3, 5, 10), pretty = TRUE)
 
 m <- leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
   addPolygons(data = regions, popup = popup, weight = 1,
-              fillColor = ~qpal(regions$pcycle), fillOpacity = 0.5, color = "black") %>%
+              fillColor = ~qpal(regions$pcycle2), fillOpacity = 0.5, color = "black") %>%
   addLegend(pal = qpal, values = regions$pcycle, title = "% Cycling\nto work", opacity = 0.5)
 
 
