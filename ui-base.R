@@ -153,7 +153,7 @@ shinyUI(
     tabPanel("About",
              includeHTML(file.path("static", "about_in_shiny.html"))
     ),
-    tabPanel("FAQs",
+    tabPanel("Manual",
              includeHTML(file.path("static", "Manual.html"))
     )
   )
