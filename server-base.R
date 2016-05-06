@@ -232,9 +232,9 @@ shinyServer(function(input, output, session){
       )
     }
     if(input$line_type == 'rnet')
-      updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 20, label = "Percent (%) of Network")
+      updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 1, label = "Percent (%) of Network")
     else
-      updateSliderInput(session, inputId = "nos_lines", min = 1, max = 200, step = 5,  label = "N. Lines (most cycled)")
+      updateSliderInput(session, inputId = "nos_lines", min = 1, max = 200, step = 1,  label = "N. Lines (most cycled)")
 
   })
 
