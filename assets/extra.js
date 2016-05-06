@@ -12,11 +12,27 @@ $( window ).load(function() {
   $('#toggleLegend').click(function(){ togglePanel('#zone_legend', this); });
   $('#toggleMapLegend').click(function(){ togglePanel('#map_legend', this); });
   $('select').addClass("form-control");
+  var urlUpdater = function(lMap, oldRegion){
+    var grp = lMap.layerManager.getLayerGroup("regionName");
+    var currentRegion;
+    if(grp && grp.getLayers()[0]) {
+      currentRegion = grp.getLayers()[0].options.layerId;
+    }
+    if(!!oldRegion && !!currentRegion && oldRegion != currentRegion){
+      var newUrl = (window.history.state == "changed") ? currentRegion : "../" + currentRegion
+      window.history.pushState("changed", currentRegion, newUrl);
+      setTimeout(urlUpdater, 500, lMap, currentRegion);
+    } else {
+      setTimeout(urlUpdater, 500, lMap, currentRegion || oldRegion);
+    }
+  };
+
   var initMap = function(){
     if($(map).data('leaflet-map')){
       // lMap is the leaflet map object see http://leafletjs.com/reference.html
       var lMap = $(map).data('leaflet-map');
       L.control.scale().addTo(lMap);
+      urlUpdater(lMap, undefined);
     }
     else {
       setTimeout(initMap, 100);

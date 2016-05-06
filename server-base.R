@@ -243,7 +243,7 @@ shinyServer(function(input, output, session){
     region$current
     showZonePopup <- (input$line_type == 'none')
     popup <- if(showZonePopup) zonePopup(toPlot$zones, input$scenario, zoneAttr())
-    leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centres") %>%
+    leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centres") %>% clearGroup(., "regionName") %>%
       addPolygons(.,  data = toPlot$zones
                   , weight = 2
                   , fillOpacity = transpRate()
@@ -257,6 +257,7 @@ shinyServer(function(input, output, session){
       addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1,
                        color = getLineColour("centres"), group = "centres", opacity = 0.5,
                        popup = centroidPopup(toPlot$cents, input$scenario, zoneAttr())) %>%
+      addCircleMarkers(., radius=0, lat=0, lng=0, group = "regionName", fillOpacity= 0, layerId = region$current) %>%
       # Hide and Show line layers, so that they are displayed as the top layer in the map.
       # Leaflet's function bringToBack() or bringToFront() (see http://leafletjs.com/reference.html#path)
       # don't seem to exist for R
