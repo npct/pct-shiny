@@ -154,16 +154,17 @@ shinyServer(function(input, output, session){
       idGroupName <- unlist(strsplit(event$id, "-"))
       id <- idGroupName[1]
       groupName <- idGroupName[2]
-
+      leafletProxy("map") %>% removeShape('highlighted')
       if (event$group == "centres"){
         leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
+                                            weight = 2,
                                             fill = F,
                                             color = getLineColour("centres") ,
                                             opacity = 0.7,
                                             layerId = "highlighted")
       } else if (event$group == "zones"){
-
         leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
+                                            weight = 2,
                                             fill = FALSE,
                                             color = "black" ,
                                             opacity = 0.7 ,
@@ -206,7 +207,6 @@ shinyServer(function(input, output, session){
     input$scenario
     input$map_base
     region$current
-    input$transparent_zones
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
       clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
@@ -245,7 +245,7 @@ shinyServer(function(input, output, session){
     popup <- if(showZonePopup) zonePopup(toPlot$zones, input$scenario, zoneAttr())
     leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centres") %>%
       addPolygons(.,  data = toPlot$zones
-                  , weight = 2
+                  , weight = 1.5
                   , fillOpacity = transpRate()
                   , opacity = 0.2
                   , fillColor = getColourRamp(zcols, toPlot$zones[[zoneData()]])
@@ -275,7 +275,7 @@ shinyServer(function(input, output, session){
   })
 
   transpRate <- reactive({
-    if (input$transparent_zones | input$map_base == 'satellite') 0 else 0.7
+    if (input$map_base == 'satellite') 0 else 0.4
   })
 
   # These are redundant as there is currently no option to visualize the scenario increase
