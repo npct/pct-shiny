@@ -415,6 +415,18 @@
         <p>By experimenting with the 'Freeze lines' option and zooming into specific areas of interest, the level of cycling at more local levels can be explored. And by setting the basemap to 'Satellite' when zoomed into specific parts of the road network, the space available to create new cycle paths and car-free zones can be explored.</p>
         <p>Overall, there are many ways that the tool can be used to improve cycling provision. It is likely that more features will be added in future versions (if you have any suggestions, please <a href="mailto:npct@npct.org.uk">get in touch</a>). The table below explains the various options in the interactive map.</p>
       </div>
+      <p><a href="javascript:toggleElement(&#39;a5&#39;)">6. How can I create custom scenarios?</a></p>
+      <div id="a4" style="display:none">
+        <p>To create custom scenarios you need to 'build' new input data for the PCT and have a version of the
+        tool running on your computer (not on a remote server). The steps to install working versions of
+        the PCT and the build scripts on your computer are well described in the README files associated
+        with the pct-load and pct-shiny GitHub repositories. These can be seen from the NPCT team's GitHub page:
+        <a href="https://github.com/npct">github.com/npct</a>.
+        </p>
+        <p>To create custom scenarios, the key dataset to modify is 'l.Rds', a SpatialLinesDataFrame (an R object class) that exists in each region. By modifying the values of the variables associated with each line in this dataset (e.g. as a funcion of distance and hilliness), new scenarios can be created.</p>
+
+        <p>We plan to add more documentation to ease the creation of locally specific scenarios and the deployment of the PCT for use in other countries and cities in which OD data is available.</p>
+      </div>
     </div>
 
     <!-- dynamically load mathjax for compatibility with self-contained -->
