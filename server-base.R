@@ -25,7 +25,7 @@ zcols <- c("darkslategrey", "yellow")
 # expect pct-data as a sibling of pct-shiny
 dataDirRoot <- file.path(shinyRoot, '..', 'pct-data')
 # packages required
-cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT")
+cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT", "shinyjs")
 
 onProduction <- grepl('^/var/shiny/pct-shiny', getwd())
 
@@ -474,4 +474,18 @@ shinyServer(function(input, output, session){
       file.rename(fileNoDot, file)
     }
   )
+
+  shinyjs::onclick("togglePanel", shinyjs::toggle(id = "input_panel", anim = FALSE))
+  shinyjs::onclick("toggleLegend", shinyjs::toggle(id = "zone_legend", anim = FALSE))
+  shinyjs::onclick("toggleMapLegend", shinyjs::toggle(id = "map_legend", anim = FALSE))
+
+
+  observe({
+    input$map_base
+    if (input$map_base == 'IMD'){
+      shinyjs::hide("zone_legend")
+    }
+    else
+      shinyjs::show("zone_legend")
+  })
 })
