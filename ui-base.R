@@ -17,6 +17,7 @@
 
 library(shiny)
 library(leaflet)
+library(shinyjs)
 
 scenarios <- c("Census 2011 Cycling" = "olc",
                "Government Target" = "govtarget",
@@ -45,6 +46,7 @@ shinyUI(
     id="nav",
     tabPanel(
       "Map",
+      useShinyjs(),
       div(
         class="outer",
         tags$head(
