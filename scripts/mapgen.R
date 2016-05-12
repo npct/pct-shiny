@@ -45,25 +45,30 @@ for(i in 1:length(regions)){
   cents <- centsa[region_shape,]
   zones <- ukmsoas[ukmsoas@data$geo_code %in% cents$geo_code, ]
   regions$pcycle[i] <- round(100 * sum(zones$Bicycle) / sum(zones$All), 1)
+  regions$pcycle_godutch[i] <- round(100 * sum(zones$dutch_slc) / sum(zones$All), 1)
 
   regions$url[i] <- paste0("./", regions$Region[i])
   regions$url_text[i] <- as.character(a(regions$Region_cap[i], href = regions$url[i]))
   regions$url_text[i] <- gsub('">', '" target ="_top">', regions$url_text[i])
 }
-popup <- paste0(regions$url_text, ", ", round(regions$pcycle, 1), "% cycle to work")
+popup <- paste0(regions$url_text, ", ", round(regions$pcycle, 1), "% cycle to work in 2011 Census<br>",
+                round(regions$pcycle_godutch, 1), "% cycle to work in Go Dutch scenario<br>")
 
 library(leaflet)
-qpal <- colorBin("RdYlGn", regions$pcycle, bins = c(0, 3, 6, 50), pretty = TRUE)
+qpal <- colorBin("RdYlGn", regions$pcycle, bins = c(0, 3, 6, 12, 20, 30), pretty = TRUE)
 
 m <- leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
   addPolygons(data = regions, popup = popup, weight = 1,
-              fillColor = ~qpal(regions$pcycle), fillOpacity = 0.5, color = "black") %>%
-  addLegend(pal = qpal, values = regions$pcycle, title = "% Cycling\nto work", opacity = 0.5)
+              fillColor = ~qpal(regions$pcycle), fillOpacity = 0.5, color = "black", group = "2011 Census") %>%
+  addPolygons(data = regions, popup = popup, weight = 1,
+              fillColor = ~qpal(regions$pcycle_godutch), fillOpacity = 0.5, color = "black", group = "Go Dutch") %>%
+  addLegend(pal = qpal, values = regions$pcycle, title = "% Cycling\nto work", opacity = 0.5) %>%
+  addLayersControl(baseGroups = c("2011 Census", "Go Dutch"), options = layersControlOptions(autoZIndex = T, collapse = F))
 
 
 m
 old = setwd("regions_www/")
-saveWidget(m, file = "map.html")
+saveWidget(m, file = "map-test.html")
 setwd(old)
 # # V1: builds all zones for a single geography
 # pkgs <- c("leaflet", "htmlwidgets", "geojsonio")
