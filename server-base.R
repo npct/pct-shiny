@@ -456,7 +456,15 @@ shinyServer(function(input, output, session){
     # This function returns a string which tells the client
     # browser what name to use when saving the file.
     filename = function() {
-      paste(input$line_type, "lines", "geojson", sep = ".")
+      # Create a more useful file name depending on the selected line
+      fname <- switch(input$line_type,
+                      'straight' = "straight_lines",
+                      'route'    = "quiet_routes",
+                      'd_route'  = "fast_routes",
+                      'rnet'     = "route_network"
+      )
+
+      paste(fname, "geojson", sep = ".")
     },
 
     # This function should write data to a file given to it by
@@ -479,7 +487,6 @@ shinyServer(function(input, output, session){
   shinyjs::onclick("toggleLegend", shinyjs::toggle(id = "zone_legend", anim = FALSE))
   shinyjs::onclick("toggleMapLegend", shinyjs::toggle(id = "map_legend", anim = FALSE))
 
-
   observe({
     input$map_base
     if (input$map_base == 'IMD'){
@@ -488,4 +495,5 @@ shinyServer(function(input, output, session){
     else
       shinyjs::show("zone_legend")
   })
+
 })
