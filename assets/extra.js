@@ -1,5 +1,5 @@
 $( window ).load(function() {
-  var togglePanel = function(panelId, link){
+  /*var togglePanel = function(panelId, link){
     var panel = $(panelId);
     panel.toggle();
     if(panel.is(":visible")){
@@ -11,6 +11,7 @@ $( window ).load(function() {
   $('#togglePanel').click(function(){ togglePanel('#input_panel', this); });
   $('#toggleLegend').click(function(){ togglePanel('#zone_legend', this); });
   $('#toggleMapLegend').click(function(){ togglePanel('#map_legend', this); });
+  */
   $('select').addClass("form-control");
   var urlUpdater = function(lMap, oldRegion){
     var grp = lMap.layerManager.getLayerGroup("regionName");
