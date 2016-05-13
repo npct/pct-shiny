@@ -63,6 +63,11 @@ shinyServer(function(input, output, session){
     toPlot$zones <-  readRDS(file.path(dataDir, "z.Rds"))
     toPlot$cents <-   readRDS(file.path(dataDir, "c.Rds"))
 
+    # TODO
+    # Remove when next gen of data
+    # using https://github.com/npct/pct-load/commit/b26693de
+    # has been built
+
     toPlot$l@data$origin <- toPlot$l@data[["Area.of.residence"]]
     toPlot$l@data$dest <- toPlot$l@data[["Area.of.workplace"]]
 
@@ -86,19 +91,20 @@ shinyServer(function(input, output, session){
 
     toPlot$l@data$dest <- td3$geo_label[toPlot$l@data[["Area.of.workplace"]] == td3$geo_code]
 
+    # Rm to here
+
+    # toPlot$l@data$dest = toPlot$l@data$geo_code_d
+    # toPlot$l@data$origin = toPlot$l@data$geo_code_o
+
     toPlot$l@data <- plyr::arrange(toPlot$l@data, id)
 
     toPlot$rnet <- readRDS(file.path(dataDir, "rnet.Rds"))
     toPlot$rnet$id <- 1:nrow(toPlot$rnet)
 
     toPlot$rFast <- readRDS(file.path(dataDir, "rf.Rds" ))
-    toPlot$rFast@data <- cbind(toPlot$rFast@data, toPlot$l@data)
+    toPlot$rFast@data <- cbind(toPlot$rFast@data[!(names(toPlot$rFast) %in% names(toPlot$l))], toPlot$l@data)
     toPlot$rQuiet <- readRDS(file.path(dataDir, "rq.Rds"))
-    toPlot$rQuiet@data <- cbind(toPlot$rQuiet@data,rqincr=toPlot$rQuiet@data$length/toPlot$rFast@data$length, toPlot$l@data)
-
-    toPlot$rQuiet@data <- subset(toPlot$rQuiet@data, select = unique(names(toPlot$rQuiet@data)))
-    toPlot$rFast@data <- subset(toPlot$rFast@data, select = unique(names(toPlot$rFast@data)))
-
+    toPlot$rQuiet@data <- cbind(toPlot$rQuiet@data[!(names(toPlot$rQuiet) %in% names(toPlot$l))], toPlot$l@data)
     toPlot
   }
 
