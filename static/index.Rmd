@@ -3,12 +3,15 @@ knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = e
 title: Welcome to the Propensity to Cycle Tool (PCT)
 output:
   html_document:
+    self_contained: no
     includes:
       in_header: header.html
       after_body: doc_afix.html
 ---
 
-<!--If editing this page use index.Rmd which compiles into index.html-->
+<!--Don't edit index.html directly! Edit index.Rmd which compiles into index.html
+https://github.com/npct/pct-shiny/blob/master/static/index.Rmd
+-->
 
 Created by the Propensity to Cycle Tool team.
 
@@ -23,3 +26,12 @@ The cycling trips can be allocated to the road network, based on the fastest cyc
 Users can select different overall cycling scenarios, such as ‘Go Dutch’ or ‘Ebikes’, and can then see what this might mean for cycling levels in each small area and along the network. The model estimates cycling potential based upon trip distances and hilliness. Therefore, it highlights the greatest unmet potential in areas that currently have high numbers of short trips in relatively flat areas but where people are not currently cycling.
 
 Currently the PCT only shows commuting trips but additional layers are planned.  See [the about page](about.html) for more information.
+
+```{r, echo=FALSE, out.width="50%"}
+knitr::include_graphics(c("https://cloud.githubusercontent.com/assets/11028720/15267746/2f8358a4-19c2-11e6-9f3e-d6d994fe9e93.jpg",
+                          "https://cloud.githubusercontent.com/assets/11028720/15267747/2f84df30-19c2-11e6-9bc4-e600b9a3220f.png",
+                          "https://cloud.githubusercontent.com/assets/11028720/15267745/2f827c2c-19c2-11e6-8d17-16f8e28c801a.png",
+                          "https://cloud.githubusercontent.com/assets/11818218/15267757/5596f0f0-19c2-11e6-95d8-f39d2c4cc6e7.jpg",
+                          "https://upload.wikimedia.org/wikipedia/en/1/11/Department_for_Transport.svg"))
+```
+
