@@ -27,10 +27,12 @@ Users can select different overall cycling scenarios, such as ‘Go Dutch’ or 
 Currently the PCT only shows commuting trips but additional layers are planned.  See [the about page](about.html) for more information.
 
 ```{r, echo=FALSE, out.width="33%"}
-knitr::include_graphics(c("https://cloud.githubusercontent.com/assets/11028720/15267746/2f8358a4-19c2-11e6-9f3e-d6d994fe9e93.jpg",
-                          "https://cloud.githubusercontent.com/assets/11028720/15267747/2f84df30-19c2-11e6-9bc4-e600b9a3220f.png",
-                          "https://cloud.githubusercontent.com/assets/11028720/15267745/2f827c2c-19c2-11e6-8d17-16f8e28c801a.png",
+knitr::include_graphics(c(
                           "https://upload.wikimedia.org/wikipedia/en/1/11/Department_for_Transport.svg",
-                          "https://cloud.githubusercontent.com/assets/11818218/15267757/5596f0f0-19c2-11e6-95d8-f39d2c4cc6e7.jpg"))
+                          "https://cloud.githubusercontent.com/assets/11028720/15267746/2f8358a4-19c2-11e6-9f3e-d6d994fe9e93.jpg",
+                          "https://cloud.githubusercontent.com/assets/11028720/15267745/2f827c2c-19c2-11e6-8d17-16f8e28c801a.png",
+                          "https://cloud.githubusercontent.com/assets/11818218/15267757/5596f0f0-19c2-11e6-95d8-f39d2c4cc6e7.jpg",
+                          "https://cloud.githubusercontent.com/assets/11028720/15267747/2f84df30-19c2-11e6-9bc4-e600b9a3220f.png"
+                          ))
 ```
 
