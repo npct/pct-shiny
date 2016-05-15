@@ -63,36 +63,6 @@ shinyServer(function(input, output, session){
     toPlot$zones <-  readRDS(file.path(dataDir, "z.Rds"))
     toPlot$cents <-   readRDS(file.path(dataDir, "c.Rds"))
 
-    # TODO
-    # Remove when next gen of data
-    # using https://github.com/npct/pct-load/commit/b26693de
-    # has been built
-
-    toPlot$l@data$origin <- toPlot$l@data[["Area.of.residence"]]
-    toPlot$l@data$dest <- toPlot$l@data[["Area.of.workplace"]]
-
-    td1 <- subset(toPlot$l@data, select = "origin")
-    td1$geo_code <- td1$origin
-    td2 <- subset(toPlot$zones@data, select = c("geo_label", "geo_code"))
-    td3 <- merge(td1, td2, by = "geo_code")
-    td3 <- plyr::arrange(td3, geo_code)
-
-    toPlot$l@data <- plyr::arrange(toPlot$l@data, Area.of.residence)
-
-    toPlot$l@data$origin <- td3$geo_label[toPlot$l@data[["Area.of.residence"]] == td3$geo_code]
-
-    td1 <- subset(toPlot$l@data, select = "dest")
-    td1$geo_code <- td1$dest
-    td2 <- subset(toPlot$zones@data, select = c("geo_label", "geo_code"))
-    td3 <- merge(td1, td2, by = "geo_code")
-    td3 <- plyr::arrange(td3, geo_code)
-
-    toPlot$l@data <- plyr::arrange(toPlot$l@data, Area.of.workplace)
-
-    toPlot$l@data$dest <- td3$geo_label[toPlot$l@data[["Area.of.workplace"]] == td3$geo_code]
-
-    # Rm to here
-
     # toPlot$l@data$dest = toPlot$l@data$geo_code_d
     # toPlot$l@data$origin = toPlot$l@data$geo_code_o
 
