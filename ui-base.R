@@ -135,7 +135,9 @@ shinyUI(
     tabPanel("Lines",
              br(),
              br(),
-             helpText("This tab shows the underlying data of the Cycling Flows (straight or otherwise)"),
+             helpText("This tab shows the underlying data of the Cycling Flows.",
+                      a("Download the data.", href = paste0("https://github.com/npct/pct-data/tree/master/", NULL))) # note: replace NULL with region
+             ,
              uiOutput("warningMessage"),
              DT::dataTableOutput("linesDatatable")
     ),
