@@ -127,7 +127,7 @@ straightPopup <- function(data, scenario){
   <th> Scenario: ", getScenarioName(scenario), "</th>
   <tbody>
     <tr>
-      <td>", data$origin , " - ", data$dest, "</td>
+      <td>", data$geo_label_o , " - ", data$geo_label_d, "</td>
     </tr>
     <tr>
       <td> Total commuters: </td>
@@ -180,7 +180,7 @@ routePopup <- function(data, scenario){
   <th> Census 2011 cycling (baseline) </th>
   <tbody>
     <tr>
-      <td>", data$origin , " - ", data$dest, "</td>
+      <td>", data$geo_label_o , " - ", data$geo_label_d, "</td>
     </tr>
     <tr>
       <td> Total commuters: </td>
@@ -213,7 +213,7 @@ routePopup <- function(data, scenario){
   <th>  Scenario: ", getScenarioName(scenario), " </th>
   <tbody>
     <tr>
-        <td>", data$origin , " - ", data$dest, "</td>
+        <td>", data$geo_label_o , " - ", data$geo_label_d, "</td>
     </tr>
     <tr>
       <td> Total commuters: </td>
@@ -265,7 +265,7 @@ routePopup <- function(data, scenario){
   <th> ", quietRouteLabel, " </th>
   <tbody>
     <tr>
-        <td>", data$origin , " - ", data$dest, "</td>
+        <td>", data$geo_label_o , " - ", data$geo_label_d, "</td>
     </tr>
     <tr>
       <td> Route distance (km): </td>
