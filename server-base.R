@@ -27,15 +27,16 @@ dataDirRoot <- file.path(shinyRoot, '..', 'pct-data')
 # packages required
 cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT", "shinyjs")
 
+repo_sha <- as.character(readLines(file.path(shinyRoot, "repo_sha")))
+data_sha <- as.character(readLines(file.path(shinyRoot, "data_sha")))
+
 onProduction <- grepl('^/var/shiny/pct-shiny', getwd())
 
 # Run the following lines to check out the current version of the data (see sha)
+
 if(!onProduction){
   source(file.path(shinyRoot, "scripts", "init.R"), local = T)
 }
-if(file.exists(file.path(shinyRoot, "repo_sha")))
-  repo_sha <- as.character(readLines(file.path(shinyRoot, "repo_sha"))) else
-    repo_sha <- NA
 lapply(c(cranPkgs), library, character.only = TRUE)
 
 # Functions
@@ -345,6 +346,36 @@ shinyServer(function(input, output, session){
     ))
   })
 
+  output$zoneDataLinks <- renderUI({
+    base_url = paste("https://github.com/npct/pct-data/raw", data_sha, region$current, sep = "/")
+    HTML(paste(
+      a("rdata",
+        href= paste(base_url, "z.Rds", sep = "/"), target='_blank'),
+      a("geojson",
+        href= paste(base_url, "z.geojson", sep = "/"), target='_blank'),
+      a("csv",
+        href= paste(base_url, "area-data.csv", sep = "/"), target='_blank')
+    ))
+  })
+  output$lineDataLinks <- renderUI({
+    base_url = paste("https://github.com/npct/pct-data/raw", data_sha, region$current, sep = "/")
+    HTML(paste("Stright lines",
+      a("rdata",
+        href= paste(base_url, "l.Rds", sep = "/"), target='_blank'),
+      a("csv",
+        href= paste(base_url, "line-data.csv", sep = "/"), target='_blank'),
+      br(),
+      "Fast routes",
+      a("rdata",
+        href= paste(base_url, "rf.Rds", sep = "/"), target='_blank'),
+      "Quiet routes",
+      a("rdata",
+        href= paste(base_url, "rq.Rds", sep = "/"), target='_blank'),
+      "Route Newtork",
+      a("rdata",
+        href= paste(base_url, "rnet.Rds", sep = "/"), target='_blank')
+    ))
+  })
 
   output$map = renderLeaflet(
     leaflet() %>%
@@ -427,37 +458,6 @@ shinyServer(function(input, output, session){
     DT::datatable(zonesToPlot, options = list(pageLength = 10), colnames = zoneColNames) %>%
       formatRound(columns = names(numericZoneColNames), digits=2)
   })
-  output$downloadData <- downloadHandler(
-
-    # This function returns a string which tells the client
-    # browser what name to use when saving the file.
-    filename = function() {
-      # Create a more useful file name depending on the selected line
-      fname <- switch(input$line_type,
-                      'straight' = "straight_lines",
-                      'route'    = "quiet_routes",
-                      'd_route'  = "fast_routes",
-                      'rnet'     = "route_network"
-      )
-
-      paste(fname, "geojson", sep = ".")
-    },
-
-    # This function should write data to a file given to it by
-    # the argument 'file'.
-    content = function(file) {
-      # Bug in writeOGR that there can be no "." in the file name
-      output <- switch(input$line_type,
-                       'straight' = toPlot$l,
-                       'route'    = toPlot$rQuiet,
-                       'd_route'  = toPlot$rFast,
-                       'rnet'     = toPlot$rne
-      )
-      fileNoDot <- unlist(strsplit(file, ".", fixed = T))[1]
-      writeOGR(output, dsn = fileNoDot, layer = "", driver='GeoJSON', overwrite_layer= T)
-      file.rename(fileNoDot, file)
-    }
-  )
 
   shinyjs::onclick("togglePanel", shinyjs::toggle(id = "input_panel", anim = FALSE))
   shinyjs::onclick("toggleLegend", shinyjs::toggle(id = "zone_legend", anim = FALSE))
