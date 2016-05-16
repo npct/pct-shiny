@@ -101,7 +101,7 @@ shinyUI(
           ),
           div(id = "zone_legend",
               tags$div(title="Scenario-specific quartiles of cycling level",
-                       selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)"), selected = "Commute data", selectize = T),
+                       selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)", "All"), selected = "Commute data", selectize = T),
                        conditionalPanel(
                          condition = "input.map_base != 'c'",
                          plotOutput("legendCyclingPotential", width = "100%", height = 200)
