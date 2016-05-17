@@ -347,33 +347,33 @@ shinyServer(function(input, output, session){
   })
 
   output$zoneDataLinks <- renderUI({
-    base_url = paste("https://github.com/npct/pct-data/raw", data_sha, region$current, sep = "/")
+    base_url = paste("https://cdn.rawgit.com/npct/pct-data", data_sha, region$current, sep = "/")
     HTML(paste(
       a("rdata",
-        href= paste(base_url, "z.Rds", sep = "/"), target='_blank'),
+        href= paste(base_url, "z.Rds", sep = "/"), target='_blank', download = "zones.Rds"),
       a("geojson",
-        href= paste(base_url, "z.geojson", sep = "/"), target='_blank'),
+        href= paste(base_url, "z.geojson", sep = "/"), target='_blank', download = "zones.geojson"),
       a("csv",
-        href= paste(base_url, "area-data.csv", sep = "/"), target='_blank')
+        href= paste(base_url, "area-data.csv", sep = "/"), target='_blank', download = "zones.csv")
     ))
   })
   output$lineDataLinks <- renderUI({
-    base_url = paste("https://github.com/npct/pct-data/raw", data_sha, region$current, sep = "/")
+    base_url = paste("https://cdn.rawgit.com/npct/pct-data", data_sha, region$current, sep = "/")
     HTML(paste("Stright lines",
       a("rdata",
-        href= paste(base_url, "l.Rds", sep = "/"), target='_blank'),
+        href= paste(base_url, "l.Rds", sep = "/"), target='_blank', download="lines.Rds"),
       a("csv",
-        href= paste(base_url, "line-data.csv", sep = "/"), target='_blank'),
+        href= paste(base_url, "line-data.csv", sep = "/"), target='_blank', download="lines.csv"),
       br(),
       "Fast routes",
       a("rdata",
-        href= paste(base_url, "rf.Rds", sep = "/"), target='_blank'),
+        href= paste(base_url, "rf.Rds", sep = "/"), target='_blank', download = "routes_fast.Rds"),
       "Quiet routes",
       a("rdata",
-        href= paste(base_url, "rq.Rds", sep = "/"), target='_blank'),
+        href= paste(base_url, "rq.Rds", sep = "/"), target='_blank', download = "routes_quiet.Rds"),
       "Route Newtork",
       a("rdata",
-        href= paste(base_url, "rnet.Rds", sep = "/"), target='_blank')
+        href= paste(base_url, "rnet.Rds", sep = "/"), target='_blank', download = "route_network.Rds")
     ))
   })
 
