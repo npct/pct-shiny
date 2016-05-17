@@ -47,7 +47,14 @@ regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 # shinyServer #
 # # # # # # # #
 shinyServer(function(input, output, session){
+  region <- reactiveValues(current = startingCity)
+  # For all plotting data
+  toPlot <- NULL
+  # For any other persistent values
+  helper <- NULL
 
+  helper$eLatLng <- ""
+  helper$dataDir <- file.path(dataDirRoot, startingCity)
 
   # To set initialize toPlot
   loadData <- function(dataDir){
@@ -68,24 +75,10 @@ shinyServer(function(input, output, session){
     toPlot$rFast@data <- cbind(toPlot$rFast@data[!(names(toPlot$rFast) %in% names(toPlot$l))], toPlot$l@data)
     toPlot$rQuiet <- readRDS(file.path(dataDir, "rq.Rds"))
     toPlot$rQuiet@data <- cbind(toPlot$rQuiet@data[!(names(toPlot$rQuiet) %in% names(toPlot$l))], toPlot$l@data)
-    # cat(summary(toPlot$l@data), "\n")
     toPlot
   }
 
-  observe <- ({
-
-    region <- reactiveValues(current = startingCity)
-    # For all plotting data
-    toPlot <- NULL
-    # For any other persistent values
-    helper <- NULL
-
-    helper$eLatLng <- ""
-    helper$dataDir <- file.path(dataDirRoot, startingCity)
-    #
-#     cat("Do I come here? \n")
-    toPlot <- loadData(helper$dataDir)
-  })
+  toPlot <- loadData(helper$dataDir)
 
   # Select and sort lines within a bounding box - given by flowsBB()
   sortLines <- function(lines, sortBy, nos){
@@ -172,16 +165,7 @@ shinyServer(function(input, output, session){
   observe({
     if(file.exists(file.path(helper$dataDir, 'isolated'))) return()
     newRegion <- findRegion()
-
-    if (!is.null(newRegion) && newRegion == 'greater-manchester'){
-      if (input$triptype == 'All'){
-        dataDir <- file.path(dataDirRoot, paste0("greater-manchester-NC"))
-      }else{
-        dataDir <- file.path(dataDirRoot, newRegion)
-      }
-    }else{
-      dataDir <- file.path(dataDirRoot, newRegion)
-    }
+    dataDir <- file.path(dataDirRoot, newRegion)
 
     if(!is.null(newRegion) && helper$dataDir != dataDir && file.exists(dataDir)){
       region$current <- newRegion
@@ -199,9 +183,6 @@ shinyServer(function(input, output, session){
     input$map_base
     region$current
     input$transparent_zones
-    input$triptype
-
-    # cat("In plotLines: ", ncol(toPlot$l@data), "\n")
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
       clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
@@ -381,7 +362,6 @@ shinyServer(function(input, output, session){
   )
 
   output$legendCyclingPotential <- renderPlot({
-    input$triptype
     # Create quantiles out of the zone data
     m <- quantile(toPlot$zones@data[[zoneData()]], probs=seq.int(0,1, length.out=4))
 
@@ -423,7 +403,6 @@ shinyServer(function(input, output, session){
   })
 
   output$linesDatatable <- DT::renderDataTable({
-    input$triptype
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plotLinesData()){
       # Set the warning message that no lines have been selected by the user
@@ -441,7 +420,6 @@ shinyServer(function(input, output, session){
   })
 
   output$zonesDataTable <- DT::renderDataTable({
-    input$triptype
     if(is.null(toPlot$zones@data)){
       return()
     }
@@ -492,30 +470,6 @@ shinyServer(function(input, output, session){
     }
     else
       shinyjs::show("zone_legend")
-  })
-
-
-
-  observe({
-    input$triptype
-
-    if (region$current == 'greater-manchester'){
-
-      if (input$triptype == 'All'){
-        # cat("All trips gm\n")
-        helper$dataDir <<- file.path(dataDirRoot, paste0("greater-manchester-NC"))
-
-      }else{
-        # cat("Commting trips gm\n")
-        helper$dataDir <<- file.path(dataDirRoot, startingCity)
-
-      }
-      # cat(helper$dataDir, "\n")
-      toPlot <<- loadData(helper$dataDir)
-
-      # cat(ncol(toPlot$l@data), "\n")
-    }
-
   })
 
 })
