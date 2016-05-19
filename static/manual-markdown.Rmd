@@ -4,24 +4,13 @@ title: "User Manual"
 author: "PCT Team"
 output:
   html_document:
-    includes:
-      in_header: header-other.html
-      after_body: doc_afix.html
+    # toc: true
+    # toc_float: true
+    self_contained: no
+    # includes:
+      # in_header: header-other.html
+      # after_body: doc_afix.html
 ---
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-<!--Warning: do not edit the manual.html document directly. Edit manual.Rmd-->
-
-<script>function toggleElement(id) { if(document.getElementById(id).style.display == 'none') { document.getElementById(id).style.display = ''; } else { document.getElementById(id).style.display = 'none'; } }</script> <style><!-- td { border: 0px; } tr.row2 td { padding-top: 100px; } tr.caption td { padding-top: 30px; } --></style>
-
-<div class="col-xs-12 col-sm-11 col-md-10 col-lg-9">
-
-<div class="fluid-row" id="header">
-
-</div>
 
 Welcome to the **User Manual** for the Propensity to Cycle Tool (PCT).
 
@@ -433,3 +422,14 @@ We plan to add more documentation to ease the creation of locally specific scena
 </div>
 
 <script>(function () { var script = document.createElement("script"); script.type = "text/javascript"; script.src = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"; document.getElementsByTagName("head")[0].appendChild(script); })();</script>
+
+```{r, echo=FALSE, eval=FALSE}
+# change image links
+f = readLines("regions_www/manual.html")
+f = gsub(pattern = "/home/robin/npct/pct-shiny/www/assets/", replacement = "./assets/", f)
+sel_head = which(f == "</head>")
+f = f[-c(1:sel_head)]
+f_head = readLines("static/header-manual.html")
+f = c(f_head, f)
+writeLines(f, "static/user-manual.html")
+```
