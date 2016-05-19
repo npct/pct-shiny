@@ -186,7 +186,7 @@ shinyServer(function(input, output, session){
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
       clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
-      removeShape(., "highlighted")
+      removeShape(., "highlighted") %>% removeShape(., "mouse-over")
 
     leafletProxy("map") %>% {
 
@@ -240,14 +240,14 @@ shinyServer(function(input, output, session){
 
       {
         switch(input$line_type,
-             'straight' = hideGroup(., "straight_line") %>% showGroup(., "straight_line"),
-             'route'= {
-               hideGroup(., "quieter_route") %>% showGroup(., "quieter_route")
-               hideGroup(., "faster_route") %>% showGroup(., "faster_route")
-             },
-             'd_route' = hideGroup(., "faster_route") %>% showGroup(., "faster_route"),
-             'rnet' = hideGroup(., "route_network") %>% showGroup(., "route_network")
-          )
+               'straight' = hideGroup(., "straight_line") %>% showGroup(., "straight_line"),
+               'route'= {
+                 hideGroup(., "quieter_route") %>% showGroup(., "quieter_route")
+                 hideGroup(., "faster_route") %>% showGroup(., "faster_route")
+               },
+               'd_route' = hideGroup(., "faster_route") %>% showGroup(., "faster_route"),
+               'rnet' = hideGroup(., "route_network") %>% showGroup(., "route_network")
+        )
       }
   })
 
@@ -470,6 +470,28 @@ shinyServer(function(input, output, session){
     }
     else
       shinyjs::show("zone_legend")
+  })
+
+  observe({
+    mouseover_event <- input$map_shape_mouseover
+    if (is.null(mouseover_event))
+      return()
+    isolate({
+      idGroupName <- unlist(strsplit(mouseover_event$id, "-"))
+      id <- idGroupName[1]
+      groupName <- idGroupName[2]
+      if (groupName == "zones"){
+        output$zoneInfo <- renderText(zonePopup(toPlot$zones[toPlot$z$geo_code == id,], input$scenario, zoneAttr()))
+
+        leafletProxy("map") %>% removeShape("mouse-over")
+        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
+                                            fill = FALSE,
+                                            color = "black" ,
+                                            opacity = 0.7 ,
+                                            layerId = "mouse-over")
+      }
+    })
+
   })
 
 })
