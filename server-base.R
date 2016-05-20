@@ -30,16 +30,19 @@ cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT"
 onProduction <- grepl('^/var/shiny/pct-shiny', getwd())
 
 # Run the following lines to check out the current version of the data (see sha)
+
+data_sha <- as.character(readLines(file.path(shinyRoot, "data_sha")))
+
 if(!onProduction){
   source(file.path(shinyRoot, "scripts", "init.R"), local = T)
 }
-if(file.exists(file.path(shinyRoot, "repo_sha")))
-  repo_sha <- as.character(readLines(file.path(shinyRoot, "repo_sha"))) else
-    repo_sha <- NA
+
+repo_sha <- as.character(readLines(file.path(shinyRoot, "repo_sha")))
+
 lapply(c(cranPkgs), library, character.only = TRUE)
 
 # Functions
-source(file.path(shinyRoot, "pct-shiny-funs.R"))
+source(file.path(shinyRoot, "pct-shiny-funs.R"), local = T)
 regions <- readOGR(dsn = file.path(shinyRoot, "regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 
@@ -345,6 +348,24 @@ shinyServer(function(input, output, session){
     ))
   })
 
+  output$zoneDataLinks <- renderUI({
+    HTML(
+      makeDownloadLink("z", "zones", region$current)
+    )
+  })
+
+  output$lineDataLinks <- renderUI({
+    HTML(paste("Stright lines",
+      makeDownloadLink("l", "lines", region$current),
+      br(),
+      "Fast routes",
+      makeDownloadLink("rf", "fast_routes", region$current),
+      "Quiet routes",
+      makeDownloadLink("rq", "quiet_routes", region$current),
+      "Route Newtork",
+      makeDownloadLink("rnet", "route_network", region$current)
+    ))
+  })
 
   output$map = renderLeaflet(
     leaflet() %>%
@@ -427,37 +448,6 @@ shinyServer(function(input, output, session){
     DT::datatable(zonesToPlot, options = list(pageLength = 10), colnames = zoneColNames) %>%
       formatRound(columns = names(numericZoneColNames), digits=2)
   })
-  output$downloadData <- downloadHandler(
-
-    # This function returns a string which tells the client
-    # browser what name to use when saving the file.
-    filename = function() {
-      # Create a more useful file name depending on the selected line
-      fname <- switch(input$line_type,
-                      'straight' = "straight_lines",
-                      'route'    = "quiet_routes",
-                      'd_route'  = "fast_routes",
-                      'rnet'     = "route_network"
-      )
-
-      paste(fname, "geojson", sep = ".")
-    },
-
-    # This function should write data to a file given to it by
-    # the argument 'file'.
-    content = function(file) {
-      # Bug in writeOGR that there can be no "." in the file name
-      output <- switch(input$line_type,
-                       'straight' = toPlot$l,
-                       'route'    = toPlot$rQuiet,
-                       'd_route'  = toPlot$rFast,
-                       'rnet'     = toPlot$rne
-      )
-      fileNoDot <- unlist(strsplit(file, ".", fixed = T))[1]
-      writeOGR(output, dsn = fileNoDot, layer = "", driver='GeoJSON', overwrite_layer= T)
-      file.rename(fileNoDot, file)
-    }
-  )
 
   shinyjs::onclick("togglePanel", shinyjs::toggle(id = "input_panel", anim = FALSE))
   shinyjs::onclick("toggleLegend", shinyjs::toggle(id = "zone_legend", anim = FALSE))
