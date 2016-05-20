@@ -42,7 +42,7 @@ repo_sha <- as.character(readLines(file.path(shinyRoot, "repo_sha")))
 lapply(c(cranPkgs), library, character.only = TRUE)
 
 # Functions
-source(file.path(shinyRoot, "pct-shiny-funs.R"))
+source(file.path(shinyRoot, "pct-shiny-funs.R"), local = T)
 regions <- readOGR(dsn = file.path(shinyRoot, "regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 
@@ -349,33 +349,21 @@ shinyServer(function(input, output, session){
   })
 
   output$zoneDataLinks <- renderUI({
-    base_url = paste("https://cdn.rawgit.com/npct/pct-data", data_sha, region$current, sep = "/")
-    HTML(paste(
-      a("rdata",
-        href= paste(base_url, "z.Rds", sep = "/"), target='_blank', download = "zones.Rds"),
-      a("geojson",
-        href= paste(base_url, "z.geojson", sep = "/"), target='_blank', download = "zones.geojson"),
-      a("csv",
-        href= paste(base_url, "area-data.csv", sep = "/"), target='_blank', download = "zones.csv")
-    ))
+    HTML(
+      makeDownloadLink("z", "zones", region$current)
+    )
   })
+
   output$lineDataLinks <- renderUI({
-    base_url = paste("https://cdn.rawgit.com/npct/pct-data", data_sha, region$current, sep = "/")
     HTML(paste("Stright lines",
-      a("rdata",
-        href= paste(base_url, "l.Rds", sep = "/"), target='_blank', download="lines.Rds"),
-      a("csv",
-        href= paste(base_url, "line-data.csv", sep = "/"), target='_blank', download="lines.csv"),
+      makeDownloadLink("l", "lines", region$current),
       br(),
       "Fast routes",
-      a("rdata",
-        href= paste(base_url, "rf.Rds", sep = "/"), target='_blank', download = "routes_fast.Rds"),
+      makeDownloadLink("rf", "fast_routes", region$current),
       "Quiet routes",
-      a("rdata",
-        href= paste(base_url, "rq.Rds", sep = "/"), target='_blank', download = "routes_quiet.Rds"),
+      makeDownloadLink("rq", "quiet_routes", region$current),
       "Route Newtork",
-      a("rdata",
-        href= paste(base_url, "rnet.Rds", sep = "/"), target='_blank', download = "route_network.Rds")
+      makeDownloadLink("rnet", "route_network", region$current)
     ))
   })
 
