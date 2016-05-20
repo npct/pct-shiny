@@ -384,6 +384,7 @@ shinyServer(function(input, output, session){
   )
 
   output$legendCyclingPotential <- renderPlot({
+    region$current
     # Create quantiles out of the zone data
     m <- quantile(toPlot$zones@data[[zoneData()]], probs=seq.int(0,1, length.out=4))
 
