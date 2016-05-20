@@ -22,7 +22,7 @@ $( window ).load(function() {
       currentRegion = grp.getLayers()[0].options.layerId;
     }
     if(!!oldRegion && !!currentRegion && oldRegion != currentRegion){
-      var newUrl = (window.history.state == "changed") ? currentRegion : "../" + currentRegion
+      var newUrl = (window.history.state == "changed") ? currentRegion : "../" + currentRegion;
       window.history.pushState("changed", currentRegion, newUrl);
       setTimeout(urlUpdater, 500, lMap, currentRegion);
     } else {
