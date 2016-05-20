@@ -38,7 +38,8 @@ map_base_attrs <- c("Roadmap (Black & White)"   = "roadmap",
                     "Roadmap (OpenCycleMap)" = "opencyclemap",
                     "Satellite" = "satellite",
                     "Index of Deprivation" = "IMD",
-                    "Hilliness" = "hilliness")
+                    "Hilliness" = "hilliness",
+                    "Thunderbird" = "thunderbird")
 
 shinyUI(
   navbarPage(
