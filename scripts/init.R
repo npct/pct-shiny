@@ -13,7 +13,15 @@ installed <- cranPkgs %in% installed.packages()
 if(length(cranPkgs[!installed]) > 0) install.packages(cranPkgs[!installed], repos='https://cran.rstudio.com/')
 
 warning("Checking out a the version of the data saved in the data sha")
+
 # Comment the following line to stop auto checkout
 system2("git", c("--git-dir", file.path(dataDirRoot, ".git"), "--work-tree",
-                   dataDirRoot, "checkout", data_sha), wait=T)
-system2("git", c("rev-parse", "--short", "HEAD", ">", file.path(shinyRoot, "repo_sha")), wait=T)
+               dataDirRoot, "checkout", data_sha), wait=T)
+
+# Use shell command for Windows as it's failing with system2 for Windows (giving status 128)
+if (.Platform$OS.type == "windows"){
+  shell("git rev-parse --short HEAD > repo_sha")
+}else{
+  system2("git", c("rev-parse", "--short", "HEAD", ">", file.path(shinyRoot, "repo_sha")), wait=T)
+}
+
