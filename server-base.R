@@ -243,14 +243,14 @@ shinyServer(function(input, output, session){
 
       {
         switch(input$line_type,
-             'straight' = hideGroup(., "straight_line") %>% showGroup(., "straight_line"),
-             'route'= {
-               hideGroup(., "quieter_route") %>% showGroup(., "quieter_route")
-               hideGroup(., "faster_route") %>% showGroup(., "faster_route")
-             },
-             'd_route' = hideGroup(., "faster_route") %>% showGroup(., "faster_route"),
-             'rnet' = hideGroup(., "route_network") %>% showGroup(., "route_network")
-          )
+               'straight' = hideGroup(., "straight_line") %>% showGroup(., "straight_line"),
+               'route'= {
+                 hideGroup(., "quieter_route") %>% showGroup(., "quieter_route")
+                 hideGroup(., "faster_route") %>% showGroup(., "faster_route")
+               },
+               'd_route' = hideGroup(., "faster_route") %>% showGroup(., "faster_route"),
+               'rnet' = hideGroup(., "route_network") %>% showGroup(., "route_network")
+        )
       }
   })
 
@@ -357,14 +357,14 @@ shinyServer(function(input, output, session){
 
   output$lineDataLinks <- renderUI({
     HTML(paste("Stright lines",
-      makeDownloadLink("l", "lines", region$current),
-      br(),
-      "Fast routes",
-      makeDownloadLink("rf", "fast_routes", region$current),
-      "Quiet routes",
-      makeDownloadLink("rq", "quiet_routes", region$current),
-      "Route Newtork",
-      makeDownloadLink("rnet", "route_network", region$current)
+               makeDownloadLink("l", "lines", region$current),
+               br(),
+               "Fast routes",
+               makeDownloadLink("rf", "fast_routes", region$current),
+               "Quiet routes",
+               makeDownloadLink("rq", "quiet_routes", region$current),
+               "Route Newtork",
+               makeDownloadLink("rnet", "route_network", region$current)
     ))
   })
 
@@ -375,9 +375,16 @@ shinyServer(function(input, output, session){
                Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
                Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
-                                   maxZoom = ifelse(input$map_base == "IMD", 14, 18),
-                                   reuseTiles = T)) %>%
+                                   maxZoom = ifelse(input$map_base == "IMD", 14, 18), reuseTiles = T)) %>%
+      {
+        if (input$map_base == 'IMD'){
+            addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
+              options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
+            addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
+              options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
+        }else .
 
+      } %>%
       addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1,
                        color = getLineColour("centres"), group = "centres", opacity = 0.5) %>%
       mapOptions(zoomToLimits = "first")
