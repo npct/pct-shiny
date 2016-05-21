@@ -423,13 +423,15 @@ We plan to add more documentation to ease the creation of locally specific scena
 
 <script>(function () { var script = document.createElement("script"); script.type = "text/javascript"; script.src = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"; document.getElementsByTagName("head")[0].appendChild(script); })();</script>
 
-```{r, echo=FALSE, eval=FALSE}
+```{r, echo=FALSE, warning=FALSE}
 # change image links
-f = readLines("regions_www/manual.html")
-f = gsub(pattern = "/home/robin/npct/pct-shiny/www/assets/", replacement = "./assets/", f)
+f = readLines("../regions_www/manual.html")
+f = gsub(pattern = '(?<=<img src=")(.*)(?=www/assets/help/)', replacement = "", f, perl = T)
+
+# make work in pct-shiny (requires rejig of css)
 sel_head = which(f == "</head>")
 f = f[-c(1:sel_head)]
-f_head = readLines("static/header-manual.html")
+f_head = readLines("../static/header-manual.html")
 f = c(f_head, f)
-writeLines(f, "static/user-manual.html")
+writeLines(f, "../static/user-manual.html")
 ```
