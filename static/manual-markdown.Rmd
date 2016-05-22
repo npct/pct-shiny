@@ -7,10 +7,20 @@ output:
     # toc: true
     # toc_float: true
     self_contained: no
-    # includes:
-      # in_header: header-other.html
+    includes:
+      # in_header: header-manual.html
       # after_body: doc_afix.html
 ---
+
+<script>
+  function toggleElement(id) {
+if(document.getElementById(id).style.display == 'none') {
+  document.getElementById(id).style.display = '';
+} else {
+  document.getElementById(id).style.display = 'none';
+}
+  }
+</script>
 
 Welcome to the **User Manual** for the Propensity to Cycle Tool (PCT).
 
@@ -426,10 +436,15 @@ We plan to add more documentation to ease the creation of locally specific scena
 ```{r, echo=FALSE, eval=FALSE}
 # change image links
 f = readLines("regions_www/manual.html")
-f = gsub(pattern = '(?<=<img src=")(.*)(?=assets/help/)', replacement = "./", f, perl = T)
+f = gsub(pattern = '(?<=<img src=")(.*)(?=assets/help/)',
+         replacement = "../www/", f, perl = T)
+# f = gsub(pattern = 'manual_files', replacement = "index_files", f, perl = T)
 
 # write to website with relative filepaths
 writeLines(f, "regions_www/manual.html")
+
+# delete superfluous directories
+# unlink("regions_www/manual_files/", recursive = T)
 
 # make work in pct-shiny (requires rejig of css)
 sel_head = which(f == "</head>")
