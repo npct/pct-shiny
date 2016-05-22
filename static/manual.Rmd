@@ -159,7 +159,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown<
 
 <td style="vertical-align: top;">
 
-<span style="font-weight: bold; text-decoration: underline;">Quiet Route</span> The light blue line represents the 'Quitest' cycling route calculated by CycleStreets between the population weighted centroid of two zones. Once selected the following information is displayed:
+<span style="font-weight: bold; text-decoration: underline;">Quiet Route</span> The light blue line represents the 'Quietest' cycling route calculated by CycleStreets between the population weighted centroid of two zones. Once selected the following information is displayed:
 
 1.  Total commutes 2011: The total number of commuting trips between these two zones
 2.  Cycling 2011: Reported cycle commutes between these two zones
@@ -330,7 +330,7 @@ People in the Netherlands make 26.7% of trips by bicycle, fifteen times higher t
 
 </div>
 
-In both countries, the probability of cycling falls rapidly as trip distance increases. Interestingly, the shape of this distance decay relationship is generally similar between the two countries (Figure 3). In other words, the Dutch achieve their higher cycling levels by boosting the relative probability that trips of all distances will be made by bicycle. This indicates that the potential to increase cycling levels in England exists for longer trips (≥ 10km) as well as for the shorter trips that are more often targeted in cycling interventions, perhaps through improved infrastructure or a more widespread adoption of ebikes. The only noticeable difference between England and the Netherlands is that the Dutch are relatively more likely to cycle short trips ≤ 1.5 miles than the English. Plausibly, this reflects trips being cycled in the Netherlands that are more often walked in England.
+In both countries, the probability of cycling falls rapidly as trip distance increases. Interestingly, the shape of this distance decay relationship is generally similar between the two countries (Figure 3). In other words, the Dutch achieve their higher cycling levels by boosting the relative probability that trips of all distances will be made by bicycle. This indicates that the potential to increase cycling levels in England exists for longer trips (≥ 10km) as well as for the shorter trips that are more often targeted in cycling interventions, perhaps through improved infrastructure or a more widespread adoption of electric cycles. The only noticeable difference between England and the Netherlands is that the Dutch are relatively more likely to cycle short trips ≤ 1.5 miles than the English. Plausibly, this reflects trips being cycled in the Netherlands that are more often walked in England.
 
 <div style="margin: 0 auto; text-align: center">
 
@@ -426,19 +426,51 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 To create custom scenarios you need to 'build' new input data for the PCT and have a version of the tool running on your computer (not on a remote server). The steps to install working versions of the PCT and the build scripts on your computer are well described in the README files associated with the pct-load and pct-shiny GitHub repositories. These can be seen from the NPCT team's GitHub page: [github.com/npct](https://github.com/npct).
 
-To create custom scenarios, the key dataset to modify is 'l.Rds', a SpatialLinesDataFrame (an R object class) that exists in each region. By modifying the values of the variables associated with each line in this dataset (e.g. as a funcion of distance and hilliness), new scenarios can be created.
+To create custom scenarios, the key dataset to modify is 'l.Rds', a SpatialLinesDataFrame (an R object class) that exists in each region. In the *root directory* of the RStudio project for the `pct-load` folder (which can be opened by opening [`pct-load.Rproj`](https://github.com/npct/pct-load/blob/master/pct-load.Rproj)), this could be loaded for kent, for example, with the folowing commands, resulting in the follow plot:
 
-We plan to add more documentation to ease the creation of locally specific scenarios and the deployment of the PCT for use in other countries and cities in which OD data is available.
+```{r}
+library(sp) # load spatial library 
+```
+
+```{r, eval=FALSE}
+# Load the OD-based 'desire lines' for Kent
+l = readRDS("../pct-data/kent/l.Rds")
+plot(l) # plot the result
+```
+
+```{r kent-l1, echo=FALSE, message=FALSE}
+l = readRDS("../../pct-data/kent/l.Rds")
+plot(l)
+```
+
+By modifying the values of the variables associated with each line (e.g. `l$Bicycle`, representing the current level of cycling) in this dataset, new scenarios can be created. Let's change the Government Target scenario so that the level of cycling is proportional to the inverse of distance, minus the average hilliness of the fastest route. This contrived example could be acheived with the following command:
+
+```{r}
+l$govtarget_slc =       # modify the scenario level of cycling for Government Target
+  0.5 / l$dist_fast -   # set proportional to the inverse of distance
+  l$avslope / 100       # minus the average gradient (percent)
+```
+
+Now this can be plotted as follows:
+
+```{r kent-l2}
+plot(l, lwd = l$govtarget_slc)
+```
+
+We plan to add more documentation to ease the creation of locally specific scenarios and the deployment of the PCT for use in other custom regions, cities and countries where OD data is available.
 
 </div>
 
 </div>
 
 ```{r, echo=FALSE, eval=FALSE}
+# copy figures into assets folder
+m = "cp -v regions_www/manual_files/figure-html/* www/assets/"
+system(m)
 # change image links
 f = readLines("regions_www/manual.html")
-
 f = gsub(pattern = 'manual_files', replacement = "index_files", f, perl = T)
+f = gsub(pattern = "index_files/figure-html/", replacement = "./shiny_www/assets/", f)
 
 # write to website with relative filepaths
 writeLines(f, "regions_www/manual.html")
