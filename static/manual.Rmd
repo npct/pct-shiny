@@ -451,5 +451,5 @@ sel_head = which(f == "</head>")
 f = f[-c(1:sel_head)]
 f_head = readLines("static/header-manual.html")
 f = c(f_head, f)
-writeLines(f, "static/user-manual.html")
+writeLines(f, "static/manual.html")
 ```
