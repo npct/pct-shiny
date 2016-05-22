@@ -432,11 +432,6 @@ We plan to add more documentation to ease the creation of locally specific scena
 
 </div>
 
-<<<<<<< HEAD
-<script>(function () { var script = document.createElement("script"); script.type = "text/javascript"; script.src = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"; document.getElementsByTagName("head")[0].appendChild(script); })();</script>
-=======
-<script>(function () { var script = document.createElement("script"); script.type = "text/javascript"; script.src = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"; document.getElementsByTagName("head")[0].appendChild(script); })();</script>
-
 ```{r, echo=FALSE, eval=FALSE}
 # change image links
 f = readLines("regions_www/manual.html")
@@ -457,4 +452,3 @@ f_head = readLines("static/header-manual.html")
 f = c(f_head, f)
 writeLines(f, "static/user-manual.html")
 ```
->>>>>>> master
