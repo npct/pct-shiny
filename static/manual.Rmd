@@ -59,7 +59,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 </td>
 
-<td style="vertical-align: top; width: 535px;">![Scenario Selection](./assets/help/scenario-selection.png)  
+<td style="vertical-align: top; width: 535px;">![Scenario Selection](./shiny_www/assets/help/scenario-selection.png)  
 </td>
 
 </tr>
@@ -74,7 +74,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 </td>
 
-<td style="vertical-align: top; width: 535px;">![Zone Attribute](./assets/help/zone-attribute.png)  
+<td style="vertical-align: top; width: 535px;">![Zone Attribute](./shiny_www/assets/help/zone-attribute.png)  
 </td>
 
 </tr>
@@ -89,7 +89,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 </td>
 
-<td style="vertical-align: top; width: 535px;">![Cycling Flows](./assets/help/cycling-flows.png)  
+<td style="vertical-align: top; width: 535px;">![Cycling Flows](./shiny_www/assets/help/cycling-flows.png)  
 </td>
 
 </tr>
@@ -105,7 +105,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 </td>
 
-<td style="vertical-align: top; width: 535px;">![Fixed Lines](./assets/help/freeze-lines.png)  
+<td style="vertical-align: top; width: 535px;">![Fixed Lines](./shiny_www/assets/help/freeze-lines.png)  
 </td>
 
 </tr>
@@ -121,7 +121,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 </td>
 
-<td style="vertical-align: top; width: 535px;">![Line Attribute](./assets/help/line-attribute.png)  
+<td style="vertical-align: top; width: 535px;">![Line Attribute](./shiny_www/assets/help/line-attribute.png)  
 </td>
 
 </tr>
@@ -131,7 +131,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 <td style="vertical-align: top; width: 1054px;"><span style="font-weight: bold; text-decoration: underline;">Flows to Show</span>  
 When viewing flows, this slider selects how many of the of the top 50 are shown</td>
 
-<td style="vertical-align: top; width: 535px;">![Number of Lines to Show](./assets/help/number-of-lines.png)  
+<td style="vertical-align: top; width: 535px;">![Number of Lines to Show](./shiny_www/assets/help/number-of-lines.png)  
 </td>
 
 </tr>
@@ -150,7 +150,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown<
 
 <span style="font-weight: bold; text-decoration: underline;"></span></td>
 
-<td style="vertical-align: top; width: 535px;">![Direct Route](./assets/help/direct-route.png)  
+<td style="vertical-align: top; width: 535px;">![Direct Route](./shiny_www/assets/help/direct-route.png)  
 </td>
 
 </tr>
@@ -169,7 +169,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown<
 
 </td>
 
-<td style="vertical-align: top;">![Quiet Route](./assets/help/quiet-route.png)  
+<td style="vertical-align: top;">![Quiet Route](./shiny_www/assets/help/quiet-route.png)  
 </td>
 
 </tr>
@@ -188,7 +188,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown<
 
 </td>
 
-<td style="vertical-align: top;">![Straight Line](./assets/help/straight-line-popup.png)  
+<td style="vertical-align: top;">![Straight Line](./shiny_www/assets/help/straight-line-popup.png)  
 </td>
 
 </tr>
@@ -206,7 +206,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown<
 
 </td>
 
-<td style="vertical-align: top;">![Zone](./assets/help/zone-popup.png)  
+<td style="vertical-align: top;">![Zone](./shiny_www/assets/help/zone-popup.png)  
 </td>
 
 </tr>
@@ -215,7 +215,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown<
 
 <td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;">Zone Attribute Legend</span> The legend shows quartiles for the displayed zone attribute according to the scenario selected.</td>
 
-<td style="vertical-align: top;">![Legend](./assets/help/legend.png)</td>
+<td style="vertical-align: top;">![Legend](./shiny_www/assets/help/legend.png)</td>
 
 </tr>
 
@@ -239,7 +239,7 @@ Hilliness is certainly an important predictor of cycling levels in England, with
 
 <tr>
 
-<td align="center" valign="center">[![](./assets/FAQs/Fig0.png)](./assets/FAQs/Fig0.png "Figure 1: Proportion of trips cycled in England, according to the hilliness of the local area")   
+<td align="center" valign="center">[![](./shiny_www/assets/FAQs/Fig0.png)](./shiny_www/assets/FAQs/Fig0.png "Figure 1: Proportion of trips cycled in England, according to the hilliness of the local area")   
 </td>
 
 </tr>
@@ -266,7 +266,7 @@ It is also true that the Netherlands is a flatter country than England. As illus
 
 <tr>
 
-<td align="center" valign="center">[![](./assets/FAQs/Fig1.png)](./assets/FAQs/Fig1.png "Figure 2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England.") </td>
+<td align="center" valign="center">[![](./shiny_www/assets/FAQs/Fig1.png)](./shiny_www/assets/FAQs/Fig1.png "Figure 2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England.") </td>
 
 </tr>
 
@@ -300,7 +300,7 @@ People in the Netherlands make 26.7% of trips by bicycle, fifteen times higher t
 
 <tr>
 
-<td align="center" valign="center">[![](./assets/FAQs/Fig2.png)](./assets/FAQs/Fig2.png "Figure 1: Proportion of trips cycled in England and Netherlands stratified by age and sex")   
+<td align="center" valign="center">[![](./shiny_www/assets/FAQs/Fig2.png)](./shiny_www/assets/FAQs/Fig2.png "Figure 1: Proportion of trips cycled in England and Netherlands stratified by age and sex")   
 </td>
 
 </tr>
@@ -313,8 +313,8 @@ People in the Netherlands make 26.7% of trips by bicycle, fifteen times higher t
 
 <tr class="row2">
 
-<td align="center" valign="center">[![](./assets/FAQs/Fig3.png)  
-](./assets/FAQs/Fig3.png "Figure 2: Ratio of cycle mode share in the Netherlands versus England, stratified by age and sex")</td>
+<td align="center" valign="center">[![](./shiny_www/assets/FAQs/Fig3.png)  
+](./shiny_www/assets/FAQs/Fig3.png "Figure 2: Ratio of cycle mode share in the Netherlands versus England, stratified by age and sex")</td>
 
 </tr>
 
@@ -340,7 +340,7 @@ In both countries, the probability of cycling falls rapidly as trip distance inc
 
 <tr>
 
-<td align="center" valign="center">[![](./assets/FAQs/Fig4.png)](./assets/FAQs/Fig4.png "Figure 3: 'Distance decay' curves in England and the Netherlands, showing the probability that a trip of a given distance will be cycled relative to a trip of 2 miles")   
+<td align="center" valign="center">[![](./shiny_www/assets/FAQs/Fig4.png)](./shiny_www/assets/FAQs/Fig4.png "Figure 3: 'Distance decay' curves in England and the Netherlands, showing the probability that a trip of a given distance will be cycled relative to a trip of 2 miles")   
 </td>
 
 </tr>
@@ -379,7 +379,7 @@ This hits women’s and older men’s cycling twice: they are less likely than m
 
 <tr>
 
-<td align="center" valign="center">[![](./assets/FAQs/Route.png)](./assets/FAQs/Route.png "Direct and Quiet Routes between two zones.")   
+<td align="center" valign="center">[![](./shiny_www/assets/FAQs/Route.png)](./shiny_www/assets/FAQs/Route.png "Direct and Quiet Routes between two zones.")   
 </td>
 
 </tr>
@@ -437,12 +437,13 @@ We plan to add more documentation to ease the creation of locally specific scena
 ```{r, echo=FALSE, eval=FALSE}
 # change image links
 f = readLines("regions_www/manual.html")
-f = gsub(pattern = '(?<=<img src=")(.*)(?=assets/help/)',
-         replacement = "./", f, perl = T)
-# f = gsub(pattern = 'manual_files', replacement = "index_files", f, perl = T)
+
+f = gsub(pattern = 'manual_files', replacement = "index_files", f, perl = T)
 
 # write to website with relative filepaths
 writeLines(f, "regions_www/manual.html")
+f = gsub(pattern = '(?<=<img src=")(.*)(?=assets/help/)',
+         replacement = "./", f, perl = T)
 
 # delete superfluous directories
 unlink("regions_www/manual_files/", recursive = T)
