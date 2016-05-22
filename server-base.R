@@ -30,16 +30,19 @@ cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT"
 onProduction <- grepl('^/var/shiny/pct-shiny', getwd())
 
 # Run the following lines to check out the current version of the data (see sha)
+
+data_sha <- as.character(readLines(file.path(shinyRoot, "data_sha")))
+
 if(!onProduction){
   source(file.path(shinyRoot, "scripts", "init.R"), local = T)
 }
-if(file.exists(file.path(shinyRoot, "repo_sha")))
-  repo_sha <- as.character(readLines(file.path(shinyRoot, "repo_sha"))) else
-    repo_sha <- NA
+
+repo_sha <- as.character(readLines(file.path(shinyRoot, "repo_sha")))
+
 lapply(c(cranPkgs), library, character.only = TRUE)
 
 # Functions
-source(file.path(shinyRoot, "pct-shiny-funs.R"))
+source(file.path(shinyRoot, "pct-shiny-funs.R"), local = T)
 regions <- readOGR(dsn = file.path(shinyRoot, "regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 
@@ -240,14 +243,14 @@ shinyServer(function(input, output, session){
 
       {
         switch(input$line_type,
-             'straight' = hideGroup(., "straight_line") %>% showGroup(., "straight_line"),
-             'route'= {
-               hideGroup(., "quieter_route") %>% showGroup(., "quieter_route")
-               hideGroup(., "faster_route") %>% showGroup(., "faster_route")
-             },
-             'd_route' = hideGroup(., "faster_route") %>% showGroup(., "faster_route"),
-             'rnet' = hideGroup(., "route_network") %>% showGroup(., "route_network")
-          )
+               'straight' = hideGroup(., "straight_line") %>% showGroup(., "straight_line"),
+               'route'= {
+                 hideGroup(., "quieter_route") %>% showGroup(., "quieter_route")
+                 hideGroup(., "faster_route") %>% showGroup(., "faster_route")
+               },
+               'd_route' = hideGroup(., "faster_route") %>% showGroup(., "faster_route"),
+               'rnet' = hideGroup(., "route_network") %>% showGroup(., "route_network")
+        )
       }
   })
 
@@ -335,7 +338,8 @@ shinyServer(function(input, output, session){
            'satellite' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
            'IMD' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png",
            'opencyclemap' = "https://c.tile.thunderforest.com/cycle/{z}/{x}/{y}.png",
-           'hilliness' = "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png"
+           'hilliness' = "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png",
+           'thunderbird' = "http://{s}.tile.thunderforest.com/pioneer/{z}/{x}/{y}.png"
     )
   })
   output$citeHtml <- renderUI({
@@ -345,6 +349,24 @@ shinyServer(function(input, output, session){
     ))
   })
 
+  output$zoneDataLinks <- renderUI({
+    HTML(
+      makeDownloadLink("z", "zones", region$current)
+    )
+  })
+
+  output$lineDataLinks <- renderUI({
+    HTML(paste("Stright lines",
+               makeDownloadLink("l", "lines", region$current),
+               br(),
+               "Fast routes",
+               makeDownloadLink("rf", "fast_routes", region$current),
+               "Quiet routes",
+               makeDownloadLink("rq", "quiet_routes", region$current),
+               "Route Newtork",
+               makeDownloadLink("rnet", "route_network", region$current)
+    ))
+  })
 
   output$map = renderLeaflet(
     leaflet() %>%
@@ -353,15 +375,23 @@ shinyServer(function(input, output, session){
                Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
                Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
-                                   maxZoom = ifelse(input$map_base == "IMD", 14, 18),
-                                   reuseTiles = T)) %>%
+                                   maxZoom = ifelse(input$map_base == "IMD", 14, 18), reuseTiles = T)) %>%
+      {
+        if (input$map_base == 'IMD'){
+            addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
+              options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
+            addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
+              options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
+        }else .
 
+      } %>%
       addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1,
                        color = getLineColour("centres"), group = "centres", opacity = 0.5) %>%
       mapOptions(zoomToLimits = "first")
   )
 
   output$legendCyclingPotential <- renderPlot({
+    region$current
     # Create quantiles out of the zone data
     m <- quantile(toPlot$zones@data[[zoneData()]], probs=seq.int(0,1, length.out=4))
 
@@ -427,37 +457,6 @@ shinyServer(function(input, output, session){
     DT::datatable(zonesToPlot, options = list(pageLength = 10), colnames = zoneColNames) %>%
       formatRound(columns = names(numericZoneColNames), digits=2)
   })
-  output$downloadData <- downloadHandler(
-
-    # This function returns a string which tells the client
-    # browser what name to use when saving the file.
-    filename = function() {
-      # Create a more useful file name depending on the selected line
-      fname <- switch(input$line_type,
-                      'straight' = "straight_lines",
-                      'route'    = "quiet_routes",
-                      'd_route'  = "fast_routes",
-                      'rnet'     = "route_network"
-      )
-
-      paste(fname, "geojson", sep = ".")
-    },
-
-    # This function should write data to a file given to it by
-    # the argument 'file'.
-    content = function(file) {
-      # Bug in writeOGR that there can be no "." in the file name
-      output <- switch(input$line_type,
-                       'straight' = toPlot$l,
-                       'route'    = toPlot$rQuiet,
-                       'd_route'  = toPlot$rFast,
-                       'rnet'     = toPlot$rne
-      )
-      fileNoDot <- unlist(strsplit(file, ".", fixed = T))[1]
-      writeOGR(output, dsn = fileNoDot, layer = "", driver='GeoJSON', overwrite_layer= T)
-      file.rename(fileNoDot, file)
-    }
-  )
 
   shinyjs::onclick("togglePanel", shinyjs::toggle(id = "input_panel", anim = FALSE))
   shinyjs::onclick("toggleLegend", shinyjs::toggle(id = "zone_legend", anim = FALSE))

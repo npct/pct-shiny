@@ -1,17 +1,19 @@
 $( window ).load(function() {
-  /*var togglePanel = function(panelId, link){
+  var togglePanel = function(panelId, link){
     var panel = $(panelId);
-    panel.toggle();
+    // Commment toggling as the toggle function is being handled by shinyjs
+    //panel.toggle();
     if(panel.is(":visible")){
-      $(link).html('<span class="glyphicon glyphicon-circle-arrow-up">Hide</span>');
-    }else{
       $(link).html('<span class="glyphicon glyphicon-circle-arrow-down">Show</span>');
+    }else{
+      $(link).html('<span class="glyphicon glyphicon-circle-arrow-up">Hide</span>');
     }
   };
+
   $('#togglePanel').click(function(){ togglePanel('#input_panel', this); });
   $('#toggleLegend').click(function(){ togglePanel('#zone_legend', this); });
   $('#toggleMapLegend').click(function(){ togglePanel('#map_legend', this); });
-  */
+
   $('select').addClass("form-control");
   var urlUpdater = function(lMap, oldRegion){
     var grp = lMap.layerManager.getLayerGroup("regionName");
@@ -20,7 +22,7 @@ $( window ).load(function() {
       currentRegion = grp.getLayers()[0].options.layerId;
     }
     if(!!oldRegion && !!currentRegion && oldRegion != currentRegion){
-      var newUrl = (window.history.state == "changed") ? currentRegion : "../" + currentRegion
+      var newUrl = (window.history.state == "changed") ? currentRegion : "../" + currentRegion;
       window.history.pushState("changed", currentRegion, newUrl);
       setTimeout(urlUpdater, 500, lMap, currentRegion);
     } else {

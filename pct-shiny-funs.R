@@ -14,6 +14,20 @@ getLineColour <- function(lineType){
   lineAndColourDF$lineColour[lineAndColourDF$lineType == lineType]
 }
 
+makeDownloadLink <- function(file, downloadName, region){
+  formats <- c('Rds', 'geojson', 'csv')
+  base_url = paste("https://cdn.rawgit.com/npct/pct-data", data_sha, region, sep = "/")
+  all_links <- ""
+  for(i in 1:length(formats)){
+    format <- formats[i]
+    all_links <- paste(
+      all_links, a(format,
+                   href= paste0(base_url, "/", file, ".", format), target='_blank', download = paste0(downloadName, ".", format))
+    )
+  }
+  all_links
+}
+
 getScenarioName <- function(scName){
   scNameDF$scFName[scNameDF$scSName == scName]
 }

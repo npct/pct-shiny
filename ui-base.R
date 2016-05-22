@@ -38,7 +38,8 @@ map_base_attrs <- c("Roadmap (Black & White)"   = "roadmap",
                     "Roadmap (OpenCycleMap)" = "opencyclemap",
                     "Satellite" = "satellite",
                     "Index of Deprivation" = "IMD",
-                    "Hilliness" = "hilliness")
+                    "Hilliness" = "hilliness",
+                    "Thunderbird" = "thunderbird")
 
 shinyUI(
   navbarPage(
@@ -85,10 +86,6 @@ shinyUI(
             ),
             tags$div(title="Change base of the map",
                         selectInput("map_base", "Map Base:", map_base_attrs, selectize = F)
-            ),
-            conditionalPanel(
-              condition = "input.line_type != 'none'",
-              tags$div(downloadButton('downloadData', 'geojson'))
             )
           )
         ),
@@ -135,19 +132,20 @@ shinyUI(
     tabPanel("Lines",
              br(),
              br(),
-             helpText("This tab shows the underlying data of the Cycling Flows.",
-                      a("Download the data.", href = paste0("https://github.com/npct/pct-data/tree/master/", NULL))) # note: replace NULL with region
-             ,
+             helpText("This tab shows the underlying data of the Cycling Flows. You can download this data in",
+                      htmlOutput("lineDataLinks")),
              uiOutput("warningMessage"),
              DT::dataTableOutput("linesDatatable")
     ),
     tabPanel("Zones",
              br(),
              br(),
-             helpText(HTML("This tab shows the underlying data of the Zones </br>
-                             <strong>Data Source: </strong> We are using the 2011 Census data for England and Wales.
-                             It contains origin-destination data on workplace flows. For more information, please see the
-                             <a target='_blank' href = \"https://www.nomisweb.co.uk/census/2011/wu03ew\">source</a>")),
+             helpText(
+               HTML("This tab shows the underlying data of the Zones </br>
+                    <strong>Data Source: </strong> We are using the 2011 Census data for England and Wales.
+                    It contains origin-destination data on workplace flows. For more information, please see the
+                    <a target='_blank' href = \"https://www.nomisweb.co.uk/census/2011/wu03ew\">source</a>.
+                    You can download the data:"), htmlOutput("zoneDataLinks")),
              DT::dataTableOutput("zonesDataTable")
 
     ),
