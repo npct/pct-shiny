@@ -424,7 +424,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 <p>To create custom scenarios, the key dataset to modify is ‘l.Rds’, a SpatialLinesDataFrame (an R object class) that exists in each region. In the <em>root directory</em> of the RStudio project for the <code>pct-load</code> folder (which can be opened by opening <a href="https://github.com/npct/pct-load/blob/master/pct-load.Rproj"><code>pct-load.Rproj</code></a>), this could be loaded for kent, for example, with the folowing commands, resulting in the follow plot:</p>
 <pre class="r"><code>library(sp) # load spatial library </code></pre>
 <pre class="r"><code># Load the OD-based &#39;desire lines&#39; for Kent
-l = readRDS(&quot;../pct-data/kent/l.Rds&quot;)
+l = readRDS(&quot;../pct-data/l.Rds&quot;)
 plot(l) # plot the result</code></pre>
 <p><img src="./assets/kent-l1-1.png" width="672" /></p>
 <p>By modifying the values of the variables associated with each line (e.g. <code>l$Bicycle</code>, representing the current level of cycling) in this dataset, new scenarios can be created. Let’s change the Government Target scenario so that the level of cycling is proportional to the inverse of distance, minus the average hilliness of the fastest route. This contrived example could be acheived with the following command:</p>

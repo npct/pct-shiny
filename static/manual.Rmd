@@ -469,21 +469,22 @@ m = "cp -v regions_www/manual_files/figure-html/* www/assets/"
 system(m)
 # change image links
 f = readLines("regions_www/manual.html")
-
+f = gsub(pattern = "shiny_www", replacement = "kent", x = f) # point to kent for now
 f = gsub(pattern = 'manual_files', replacement = "index_files", f, perl = T)
-f = gsub(pattern = "index_files/figure-html/", replacement = "./shiny_www/assets/", f)
+f = gsub(pattern = "index_files/figure-html/", replacement = "./kent/assets/", f)
 
 # write to website with relative filepaths
 writeLines(f, "regions_www/manual.html")
-f = gsub(pattern = '(?<=<img src=")(.*)(?=assets/)',
-         replacement = "./", f, perl = T)
+# f = gsub(pattern = '(?<=<img src=")(.*)(?=assets/)',
+#          replacement = "./", f, perl = T)
 
 # delete superfluous directories
 unlink("regions_www/manual_files/", recursive = T)
 
 # make work in pct-shiny (requires rejig of css)
 sel_head = which(f == "</head>")
-f = gsub(pattern = "shiny_www", replacement = "www", x = f)
+f = gsub(pattern = "kent/", replacement = "", x = f)
+f = gsub(pattern = "shiny_www/", replacement = "", x = f)
 f = f[-c(1:sel_head)]
 f_head = readLines("static/header-manual.html")
 f = c(f_head, f)

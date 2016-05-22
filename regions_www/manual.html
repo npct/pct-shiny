@@ -430,14 +430,14 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 <pre class="r"><code># Load the OD-based &#39;desire lines&#39; for Kent
 l = readRDS(&quot;../pct-data/kent/l.Rds&quot;)
 plot(l) # plot the result</code></pre>
-<p><img src="./shiny_www/assets/kent-l1-1.png" width="672" /></p>
+<p><img src="./kent/assets/kent-l1-1.png" width="672" /></p>
 <p>By modifying the values of the variables associated with each line (e.g. <code>l$Bicycle</code>, representing the current level of cycling) in this dataset, new scenarios can be created. Let’s change the Government Target scenario so that the level of cycling is proportional to the inverse of distance, minus the average hilliness of the fastest route. This contrived example could be acheived with the following command:</p>
 <pre class="r"><code>l$govtarget_slc =       # modify the scenario level of cycling for Government Target
   0.5 / l$dist_fast -   # set proportional to the inverse of distance
   l$avslope / 100       # minus the average gradient (percent)</code></pre>
 <p>Now this can be plotted as follows:</p>
 <pre class="r"><code>plot(l, lwd = l$govtarget_slc)</code></pre>
-<p><img src="./shiny_www/assets/kent-l2-1.png" width="672" /></p>
+<p><img src="./kent/assets/kent-l2-1.png" width="672" /></p>
 <p>We plan to add more documentation to ease the creation of locally specific scenarios and the deployment of the PCT for use in other custom regions, cities and countries where OD data is available.</p>
 </div>
 </div>
