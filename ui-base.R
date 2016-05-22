@@ -53,7 +53,7 @@ shinyUI(
         tags$head(
           includeScript("assets/google-analytics.js"),
           includeScript("assets/extra.js"),
-          includeCSS("www/stylesheet.css")
+          includeCSS("regions_www/stylesheet.css")
         ),
         br(),
         leafletOutput("map", width="100%", height="95%"),
@@ -156,7 +156,7 @@ shinyUI(
              includeHTML(file.path("static", "about_in_shiny.html"))
     ),
     tabPanel("Manual",
-             includeHTML(file.path("static", "Manual.html"))
+             includeHTML(file.path("static", "user-manual.html"))
     )
   )
 )
