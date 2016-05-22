@@ -51,9 +51,9 @@ shinyUI(
       div(
         class="outer",
         tags$head(
-          includeScript("assets/google-analytics.js"),
-          includeScript("assets/extra.js"),
-          includeCSS("regions_www/stylesheet.css")
+          includeScript("www/assets/google-analytics.js"),
+          includeScript("www/assets/extra.js"),
+          includeCSS("www/stylesheet.css")
         ),
         br(),
         leafletOutput("map", width="100%", height="95%"),
