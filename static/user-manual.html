@@ -67,16 +67,6 @@
 }
 </style>
     <title>User manual (in development)</title>
-
-    <script>
-      function toggleElement(id) {
-        if(document.getElementById(id).style.display == 'none') {
-          document.getElementById(id).style.display = '';
-        } else {
-          document.getElementById(id).style.display = 'none';
-        }
-      }
-    </script>
     <style>
     <!--
       td {
@@ -144,6 +134,15 @@ $(document).ready(function () {
 </div>
 
 
+<script>
+  function toggleElement(id) {
+if(document.getElementById(id).style.display == 'none') {
+  document.getElementById(id).style.display = '';
+} else {
+  document.getElementById(id).style.display = 'none';
+}
+  }
+</script>
 <p>Welcome to the <strong>User Manual</strong> for the Propensity to Cycle Tool (PCT).</p>
 <p>Last built on 2016-05-21.</p>
 <p>This is work in progress and is being developed as part of a suite of training materials during 2016. To request more information or provide feedback, please <a href="mailto:npct@npct.org.uk?Subject=Manual">email us at npct@npct.org.uk</a> or report issues on our <a href="https://github.com/npct/pct-shiny/issues">GitHub issue tracker</a>. Contributions to the project are welcome. This file, for instance, can be edited online at <a href="https://github.com/npct/pct-shiny/edit/master/static/Manual.html">github.com/npct/pct-shiny</a>.</p>
