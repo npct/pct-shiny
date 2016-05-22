@@ -4,6 +4,7 @@ title: "User Manual"
 author: "PCT Team"
 output:
   html_document:
+    self_contained: false
     includes:
       in_header: header-other.html
       after_body: doc_afix.html
