@@ -450,7 +450,7 @@ unlink("regions_www/manual_files/", recursive = T)
 
 # make work in pct-shiny (requires rejig of css)
 sel_head = which(f == "</head>")
-f = gsub(pattern = "shiny_www", replacement = "www", x = f)
+f = gsub(pattern = "shiny_www", replacement = ".", x = f)
 f = f[-c(1:sel_head)]
 f_head = readLines("static/header-manual.html")
 f = c(f_head, f)
