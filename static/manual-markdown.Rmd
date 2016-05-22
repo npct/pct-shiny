@@ -4,27 +4,28 @@ title: "User Manual"
 author: "PCT Team"
 output:
   html_document:
-    # toc: true
-    # toc_float: true
-    self_contained: no
     includes:
-      # in_header: header-manual.html
-      # after_body: doc_afix.html
+      in_header: header-other.html
+      after_body: doc_afix.html
 ---
 
-<script>
-  function toggleElement(id) {
-if(document.getElementById(id).style.display == 'none') {
-  document.getElementById(id).style.display = '';
-} else {
-  document.getElementById(id).style.display = 'none';
-}
-  }
-</script>
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<!--Warning: do not edit the manual.html document directly. Edit manual.Rmd-->
+
+<script>function toggleElement(id) { if(document.getElementById(id).style.display == 'none') { document.getElementById(id).style.display = ''; } else { document.getElementById(id).style.display = 'none'; } }</script> <style><!-- td { border: 0px; } tr.row2 td { padding-top: 100px; } tr.caption td { padding-top: 30px; } --></style>
+
+<div class="col-xs-12 col-sm-11 col-md-10 col-lg-9">
+
+<div class="fluid-row" id="header">
+
+</div>
 
 Welcome to the **User Manual** for the Propensity to Cycle Tool (PCT).
 
-Last built on `r Sys.Date()`.
+This was last built on `r Sys.Date()`.
 
 This is work in progress and is being developed as part of a suite of training materials during 2016. To request more information or provide feedback, please [email us at npct@npct.org.uk](mailto:npct@npct.org.uk?Subject=Manual) or report issues on our [GitHub issue tracker](https://github.com/npct/pct-shiny/issues). Contributions to the project are welcome. This file, for instance, can be edited online at [github.com/npct/pct-shiny](https://github.com/npct/pct-shiny/edit/master/static/Manual.html).
 
@@ -236,7 +237,7 @@ Hilliness is certainly an important predictor of cycling levels in England, with
 
 <tr>
 
-<td align="center" valign="center">[![](./assets/help/Fig0.png)](./assets/help/Fig0.png "Figure 1: Proportion of trips cycled in England, according to the hilliness of the local area")   
+<td align="center" valign="center">[![](./assets/FAQs/Fig0.png)](./assets/FAQs/Fig0.png "Figure 1: Proportion of trips cycled in England, according to the hilliness of the local area")   
 </td>
 
 </tr>
@@ -263,7 +264,7 @@ It is also true that the Netherlands is a flatter country than England. As illus
 
 <tr>
 
-<td align="center" valign="center">[![](./assets/help/Fig1.png)](./assets/help/Fig1.png "Figure 2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England.") </td>
+<td align="center" valign="center">[![](./assets/FAQs/Fig1.png)](./assets/FAQs/Fig1.png "Figure 2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England.") </td>
 
 </tr>
 
@@ -297,7 +298,7 @@ People in the Netherlands make 26.7% of trips by bicycle, fifteen times higher t
 
 <tr>
 
-<td align="center" valign="center">[![](./assets/help/Fig2.png)](./assets/help/Fig2.png "Figure 1: Proportion of trips cycled in England and Netherlands stratified by age and sex")   
+<td align="center" valign="center">[![](./assets/FAQs/Fig2.png)](./assets/FAQs/Fig2.png "Figure 1: Proportion of trips cycled in England and Netherlands stratified by age and sex")   
 </td>
 
 </tr>
@@ -310,8 +311,8 @@ People in the Netherlands make 26.7% of trips by bicycle, fifteen times higher t
 
 <tr class="row2">
 
-<td align="center" valign="center">[![](./assets/help/Fig3.png)  
-](./assets/help/Fig3.png "Figure 2: Ratio of cycle mode share in the Netherlands versus England, stratified by age and sex")</td>
+<td align="center" valign="center">[![](./assets/FAQs/Fig3.png)  
+](./assets/FAQs/Fig3.png "Figure 2: Ratio of cycle mode share in the Netherlands versus England, stratified by age and sex")</td>
 
 </tr>
 
@@ -337,7 +338,7 @@ In both countries, the probability of cycling falls rapidly as trip distance inc
 
 <tr>
 
-<td align="center" valign="center">[![](./assets/help/Fig4.png)](./assets/help/Fig4.png "Figure 3: 'Distance decay' curves in England and the Netherlands, showing the probability that a trip of a given distance will be cycled relative to a trip of 2 miles")   
+<td align="center" valign="center">[![](./assets/FAQs/Fig4.png)](./assets/FAQs/Fig4.png "Figure 3: 'Distance decay' curves in England and the Netherlands, showing the probability that a trip of a given distance will be cycled relative to a trip of 2 miles")   
 </td>
 
 </tr>
@@ -376,7 +377,7 @@ This hits women’s and older men’s cycling twice: they are less likely than m
 
 <tr>
 
-<td align="center" valign="center">[![](./assets/help/Route.png)](./assets/help/Route.png "Direct and Quiet Routes between two zones.")   
+<td align="center" valign="center">[![](./assets/FAQs/Route.png)](./assets/FAQs/Route.png "Direct and Quiet Routes between two zones.")   
 </td>
 
 </tr>
@@ -432,24 +433,3 @@ We plan to add more documentation to ease the creation of locally specific scena
 </div>
 
 <script>(function () { var script = document.createElement("script"); script.type = "text/javascript"; script.src = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"; document.getElementsByTagName("head")[0].appendChild(script); })();</script>
-
-```{r, echo=FALSE, eval=FALSE}
-# change image links
-f = readLines("regions_www/manual.html")
-f = gsub(pattern = '(?<=<img src=")(.*)(?=assets/help/)',
-         replacement = "../www/", f, perl = T)
-# f = gsub(pattern = 'manual_files', replacement = "index_files", f, perl = T)
-
-# write to website with relative filepaths
-writeLines(f, "regions_www/manual.html")
-
-# delete superfluous directories
-# unlink("regions_www/manual_files/", recursive = T)
-
-# make work in pct-shiny (requires rejig of css)
-sel_head = which(f == "</head>")
-f = f[-c(1:sel_head)]
-f_head = readLines("static/header-manual.html")
-f = c(f_head, f)
-writeLines(f, "static/user-manual.html")
-```
