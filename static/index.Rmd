@@ -3,7 +3,7 @@ knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = e
 title: Welcome to the Propensity to Cycle Tool (PCT)
 output:
   html_document:
-    self_contained: false
+    self_contained: true
     includes:
       in_header: header.html
       after_body: doc_afix.html
