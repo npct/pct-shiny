@@ -437,14 +437,14 @@ We plan to add more documentation to ease the creation of locally specific scena
 # change image links
 f = readLines("regions_www/manual.html")
 f = gsub(pattern = '(?<=<img src=")(.*)(?=assets/help/)',
-         replacement = "./", f, perl = T)
+         replacement = "../regions_www/", f, perl = T)
 # f = gsub(pattern = 'manual_files', replacement = "index_files", f, perl = T)
 
 # write to website with relative filepaths
 writeLines(f, "regions_www/manual.html")
 
 # delete superfluous directories
-# unlink("regions_www/manual_files/", recursive = T)
+ unlink("regions_www/manual_files/", recursive = T)
 
 # make work in pct-shiny (requires rejig of css)
 sel_head = which(f == "</head>")
