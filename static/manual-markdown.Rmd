@@ -437,7 +437,7 @@ We plan to add more documentation to ease the creation of locally specific scena
 # change image links
 f = readLines("regions_www/manual.html")
 f = gsub(pattern = '(?<=<img src=")(.*)(?=assets/help/)',
-         replacement = "../www/", f, perl = T)
+         replacement = "./", f, perl = T)
 # f = gsub(pattern = 'manual_files', replacement = "index_files", f, perl = T)
 
 # write to website with relative filepaths
