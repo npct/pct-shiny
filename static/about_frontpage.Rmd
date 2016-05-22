@@ -9,6 +9,8 @@ output:
 bibliography: references.bib
 ---
 
+<!--Don't edit this file directly. Edit the .Rmd version-->
+
 ```{r bibs, eval=FALSE, echo=FALSE}
 download.file("https://www.zotero.org/api/groups/418217/collections/TUEXXIV4/items/top?limit=100&format=bibtex&v=1", destfile = "static/references.bib")
 ```

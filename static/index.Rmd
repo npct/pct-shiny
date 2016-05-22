@@ -9,9 +9,8 @@ output:
       after_body: doc_afix.html
 ---
 
-<!--Don't edit index.html directly! Edit index.Rmd which compiles into index.html
-https://github.com/npct/pct-shiny/blob/master/static/index.Rmd
--->
+<!--Don't edit this file directly. Edit the .Rmd version which compiles into index.html:
+https://github.com/npct/pct-shiny/blob/master/static/index.Rmd -->
 
 Created by the Propensity to Cycle Tool team.
 
