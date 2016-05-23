@@ -73,7 +73,7 @@ shinyUI(
                      selectInput("line_type", "Cycling Flows", line_types, selected = "none", selectize = F)
             ),
             tags$div(title="Shows the cycling flow between the centres of zones",
-                     checkboxInput("transparent_zones", "Zone Transparency", value = FALSE)
+                     checkboxInput("show_zones", "Show Zones", value = T)
             ),
             conditionalPanel(
               condition = "input.line_type != 'none'",
