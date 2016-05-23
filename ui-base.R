@@ -31,8 +31,10 @@ line_types <- c("None" = "none",
                 "Fast & Quiet Routes" = "route",
                 "Route Network" = "rnet")
 
-attrsZone <- c("Scenario Level of Cycling (SLC)"    = "slc",
-               "Scenario Increase in Cycling (SIC)" = "sic")
+attrsZone <- c("Level of Cycling"    = "slc",
+               "Increase in Cycling" = "sic",
+               "HEAT Value"          = "slvalue_heat",
+               "CO2 reduction"       = "sico2")
 
 map_base_attrs <- c("Roadmap (Black & White)"   = "roadmap",
                     "Roadmap (OpenCycleMap)" = "opencyclemap",
@@ -82,6 +84,12 @@ shinyUI(
               ),
               tags$div(title="Flows to show",
                        sliderInput("nos_lines", label = "N. Lines (most cycled)", 1, 200, value = 30, ticks = F)
+              ),
+              conditionalPanel(
+                condition = "input.line_type != 'rnet' && input.scenario != 'olc'",
+                tags$div(title="Order the top flows by",
+                         selectInput("line_order", "Order flows by", attrsZone, selected = "slc", selectize = F)
+                )
               )
             ),
             tags$div(title="Change base of the map",
