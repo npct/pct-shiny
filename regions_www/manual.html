@@ -147,7 +147,7 @@ And run the R code at the end of the file to generate the html files-->
 
 </div>
 <p>Welcome to the <strong>User Manual</strong> for the Propensity to Cycle Tool (PCT).</p>
-<p>This was last built on 2016-05-22.</p>
+<p>This was last built on 2016-05-23.</p>
 <p>This is work in progress and is being developed as part of a suite of training materials during 2016. To request more information or provide feedback, please <a href="mailto:npct@npct.org.uk?Subject=Manual">email us at npct@npct.org.uk</a> or report issues on our <a href="https://github.com/npct/pct-shiny/issues">GitHub issue tracker</a>. Contributions to the project are welcome. This file, for instance, can be edited online at <a href="https://github.com/npct/pct-shiny/edit/master/static/manual.Rmd">github.com/npct/pct-shiny</a>.</p>
 <p>The NPCT has a <a href="http://pct.bike/wp/">blog</a>, where more <a href="http://pct.bike/wp/?cat=6">training materials</a> including short videos, are being posted.</p>
 <p><a href="javascript:toggleElement(&#39;helptable&#39;)">1. How should the tool be used?</a></p>
@@ -422,8 +422,12 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 <p>By experimenting with the ‘Freeze lines’ option and zooming into specific areas of interest, the level of cycling at more local levels can be explored. And by setting the basemap to ‘Satellite’ when zoomed into specific parts of the road network, the space available to create new cycle paths and car-free zones can be explored.</p>
 <p>Overall, there are many ways that the tool can be used to improve cycling provision. It is likely that more features will be added in future versions (if you have any suggestions, please <a href="mailto:npct@npct.org.uk">get in touch</a>). The table below explains the various options in the interactive map.</p>
 </div>
-<p><a href="javascript:toggleElement(&#39;a5&#39;)">6. How can I create custom scenarios?</a></p>
+<p><a href="javascript:toggleElement(&#39;a5&#39;)">6. How to download and use the data from the PCT?</a></p>
 <div id="a5" style="display:none">
+<p>This section is work in progress.</p>
+</div>
+<p><a href="javascript:toggleElement(&#39;a7&#39;)">7. How to create custom scenarios?</a></p>
+<div id="a7" style="display:none">
 <p>To create custom scenarios you need to ‘build’ new input data for the PCT and have a version of the tool running on your computer (not on a remote server). The steps to install working versions of the PCT and the build scripts on your computer are well described in the README files associated with the pct-load and pct-shiny GitHub repositories. These can be seen from the NPCT team’s GitHub page: <a href="https://github.com/npct">github.com/npct</a>.</p>
 <p>To create custom scenarios, the key dataset to modify is ‘l.Rds’, a SpatialLinesDataFrame (an R object class) that exists in each region. In the <em>root directory</em> of the RStudio project for the <code>pct-load</code> folder (which can be opened by opening <a href="https://github.com/npct/pct-load/blob/master/pct-load.Rproj"><code>pct-load.Rproj</code></a>), this could be loaded for kent, for example, with the folowing commands, resulting in the follow plot:</p>
 <pre class="r"><code>library(sp) # load spatial library </code></pre>
@@ -439,6 +443,10 @@ plot(l) # plot the result</code></pre>
 <pre class="r"><code>plot(l, lwd = l$govtarget_slc)</code></pre>
 <p><img src="./kent/assets/kent-l2-1.png" width="672" /></p>
 <p>We plan to add more documentation to ease the creation of locally specific scenarios and the deployment of the PCT for use in other custom regions, cities and countries where OD data is available.</p>
+</div>
+<p><a href="javascript:toggleElement(&#39;a8&#39;)">8. How can the PCT be used to build a business case for cycling?</a></p>
+<div id="a8" style="display:none">
+<p>This section is work in progress.</p>
 </div>
 </div>
 

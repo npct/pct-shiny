@@ -420,9 +420,17 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 </div>
 
-[6\. How can I create custom scenarios?](javascript:toggleElement('a5'))
+[6\. How to download and use the data from the PCT?](javascript:toggleElement('a5'))
 
 <div id="a5" style="display:none">
+
+This section is work in progress.
+
+</div>
+
+[7\. How to create custom scenarios?](javascript:toggleElement('a7'))
+
+<div id="a7" style="display:none">
 
 To create custom scenarios you need to 'build' new input data for the PCT and have a version of the tool running on your computer (not on a remote server). The steps to install working versions of the PCT and the build scripts on your computer are well described in the README files associated with the pct-load and pct-shiny GitHub repositories. These can be seen from the NPCT team's GitHub page: [github.com/npct](https://github.com/npct).
 
@@ -458,6 +466,14 @@ plot(l, lwd = l$govtarget_slc)
 ```
 
 We plan to add more documentation to ease the creation of locally specific scenarios and the deployment of the PCT for use in other custom regions, cities and countries where OD data is available.
+
+</div>
+
+[8\. How can the PCT be used to build a business case for cycling?](javascript:toggleElement('a8'))
+
+<div id="a8" style="display:none">
+
+This section is work in progress.
 
 </div>
 
