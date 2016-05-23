@@ -469,13 +469,13 @@ We plan to add more documentation to ease the creation of locally specific scena
 
 </div>
 
-[8\. How can the PCT be used to build a business case for cycling?](javascript:toggleElement('a8'))
+<!-- [8\. How can the PCT be used to build a business case for cycling?](javascript:toggleElement('a8'))
 
 <div id="a8" style="display:none">
 
 This section is work in progress.
 
-</div>
+</div> -->
 
 </div>
 
