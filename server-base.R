@@ -356,7 +356,7 @@ shinyServer(function(input, output, session){
   })
 
   output$lineDataLinks <- renderUI({
-    HTML(paste("Stright lines",
+    HTML(paste("Straight lines",
                makeDownloadLink("l", "lines", region$current),
                br(),
                "Fast routes",
