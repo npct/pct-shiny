@@ -20,7 +20,7 @@ system2("git", c("--git-dir", file.path(dataDirRoot, ".git"), "--work-tree",
 
 # Use shell command for Windows as it's failing with system2 for Windows (giving status 128)
 if (.Platform$OS.type == "windows"){
-  shell("git rev-parse --short HEAD > repo_sha")
+  shell(paste0("git rev-parse --short HEAD > ", file.path(shinyRoot, "repo_sha")), wait = T)
 }else{
   system2("git", c("rev-parse", "--short", "HEAD", ">", file.path(shinyRoot, "repo_sha")), wait=T)
 }
