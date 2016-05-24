@@ -91,7 +91,8 @@ shinyServer(function(input, output, session){
     keep <- gContains(poly, lines,byid=TRUE )
     if(all(!keep)) return(NULL)
     linesInBb <- lines[drop(keep), ]
-    linesInBb[ tail(order(linesInBb[[sortBy]]), nos), ]
+    # Sort by the absolute values
+    linesInBb[ tail(order(abs(linesInBb[[sortBy]])), nos), ]
   }
 
   # Finds the Local Authority shown inside the map bounds
