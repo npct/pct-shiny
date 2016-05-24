@@ -85,6 +85,8 @@ scenariosNames <- c(
 
 # Normalise the data ready for plotting
 normalise <- function(values, min = 0, max = 1){
+  # Consider absolute values
+  values <- abs(values)
   if(length(values) == 1) return(( max + min)/2.0)
   min + max * (values - min(values))/diff(range(values))
 }
