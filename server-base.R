@@ -260,7 +260,7 @@ shinyServer(function(input, output, session){
 
   # These are redundant as there is currently no option to visualize the scenario increase
   lineAttr <- reactive({
-    if(input$scenario == 'olc') 'olc' else 'slc'
+    if(input$scenario == 'olc') 'olc' else input$line_order
   })
   zoneAttr <- reactive({
     if(input$scenario == 'olc') 'olc' else 'slc'
