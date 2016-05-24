@@ -1,4 +1,3 @@
-#     This is UI base that runs on every connected client
 #
 #     Copyright (C) 2016 Nikolai Berkoff, Ali Abbas and Robin Lovelace
 #
@@ -75,7 +74,10 @@ shinyUI(
                      selectInput("line_type", "Cycling Flows", line_types, selected = "none", selectize = F)
             ),
             tags$div(title="Shows the cycling flow between the centres of zones",
-                     checkboxInput("show_zones", "Show Zones", value = T)
+                      conditionalPanel(
+                        condition = "input.map_base != 'satellite'",
+                        checkboxInput("show_zones", "Show Zones", value = T)
+                     )
             ),
             conditionalPanel(
               condition = "input.line_type != 'none'",
