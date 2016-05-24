@@ -29,17 +29,16 @@ cranPkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT"
 
 onProduction <- grepl('^/var/shiny/pct-shiny', getwd())
 
-# Run the following lines to check out the current version of the data (see sha)
-
 data_sha <- as.character(readLines(file.path(shinyRoot, "data_sha")))
 
 if(!onProduction){
-  source(file.path(shinyRoot, "scripts", "init.R"), local = T)
+  source(file.path(shinyRoot, "scripts", "init.R"))
+  initDevEnv(dataDirRoot, data_sha, cranPkgs, shinyRoot)
 }
 
 repo_sha <- as.character(readLines(file.path(shinyRoot, "repo_sha")))
 
-lapply(c(cranPkgs), library, character.only = TRUE)
+lapply(cranPkgs, library, character.only = T)
 
 # Functions
 source(file.path(shinyRoot, "pct-shiny-funs.R"), local = T)
@@ -50,38 +49,32 @@ regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 # shinyServer #
 # # # # # # # #
 shinyServer(function(input, output, session){
-  region <- reactiveValues(current = startingCity)
+    # To set initialize toPlot
+  observe({
+    region$current
+    toPlot$l <<- readRDS(file.path(region$dataDir, "l.Rds"))
+    toPlot$zones <<-  readRDS(file.path(region$dataDir, "z.Rds"))
+    toPlot$cents <<-   readRDS(file.path(region$dataDir, "c.Rds"))
+
+    toPlot$l@data <<- plyr::arrange(toPlot$l@data, id)
+
+    toPlot$rnet <<- readRDS(file.path(region$dataDir, "rnet.Rds"))
+    toPlot$rnet$id <<- 1:nrow(toPlot$rnet)
+
+    toPlot$rFast <<- readRDS(file.path(region$dataDir, "rf.Rds" ))
+    toPlot$rFast@data <<- cbind(toPlot$rFast@data[!(names(toPlot$rFast) %in% names(toPlot$l))], toPlot$l@data)
+    toPlot$rQuiet <<- readRDS(file.path(region$dataDir, "rq.Rds"))
+    toPlot$rQuiet@data <<- cbind(toPlot$rQuiet@data[!(names(toPlot$rQuiet) %in% names(toPlot$l))], toPlot$l@data)
+  })
+
+  region <- reactiveValues(current = startingCity, dataDir = file.path(dataDirRoot, startingCity) )
+
   # For all plotting data
   toPlot <- NULL
   # For any other persistent values
   helper <- NULL
 
   helper$eLatLng <- ""
-  helper$dataDir <- file.path(dataDirRoot, startingCity)
-
-  # To set initialize toPlot
-  loadData <- function(dataDir){
-    toPlot
-    toPlot$l <- readRDS(file.path(dataDir, "l.Rds"))
-    toPlot$zones <-  readRDS(file.path(dataDir, "z.Rds"))
-    toPlot$cents <-   readRDS(file.path(dataDir, "c.Rds"))
-
-    # toPlot$l@data$dest = toPlot$l@data$geo_code_d
-    # toPlot$l@data$origin = toPlot$l@data$geo_code_o
-
-    toPlot$l@data <- plyr::arrange(toPlot$l@data, id)
-
-    toPlot$rnet <- readRDS(file.path(dataDir, "rnet.Rds"))
-    toPlot$rnet$id <- 1:nrow(toPlot$rnet)
-
-    toPlot$rFast <- readRDS(file.path(dataDir, "rf.Rds" ))
-    toPlot$rFast@data <- cbind(toPlot$rFast@data[!(names(toPlot$rFast) %in% names(toPlot$l))], toPlot$l@data)
-    toPlot$rQuiet <- readRDS(file.path(dataDir, "rq.Rds"))
-    toPlot$rQuiet@data <- cbind(toPlot$rQuiet@data[!(names(toPlot$rQuiet) %in% names(toPlot$l))], toPlot$l@data)
-    toPlot
-  }
-
-  toPlot <- loadData(helper$dataDir)
 
   # Select and sort lines within a bounding box - given by flowsBB()
   sortLines <- function(lines, sortBy, nos){
@@ -136,21 +129,18 @@ shinyServer(function(input, output, session){
       groupName <- idGroupName[2]
 
       if (event$group == "centres"){
-        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
-                                            fill = F,
-                                            color = getLineColour("centres") ,
-                                            opacity = 0.7,
-                                            layerId = "highlighted")
+        addPolygons(leafletProxy("map"), data = toPlot$zones[toPlot$z$geo_code == id,],
+                    fill = F,
+                    color = getLineColour("centres") ,
+                    opacity = 0.7,
+                    layerId = "highlighted")
       } else if (event$group == "zones"){
-
-        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
-                                            fill = FALSE,
-                                            color = "black" ,
-                                            opacity = 0.7 ,
-                                            layerId = "highlighted")
-      }
-
-      else {
+        addPolygons(leafletProxy("map"), data = toPlot$zones[toPlot$z$geo_code == id,],
+                    fill = FALSE,
+                    color = "black",
+                    opacity = 0.7 ,
+                    layerId = "highlighted")
+      } else {
         line <- switch(groupName,
                        'straight_line' = toPlot$l[toPlot$l$id == id,],
                        'faster_route' = toPlot$rFast[toPlot$rFast$id == id,],
@@ -158,8 +148,8 @@ shinyServer(function(input, output, session){
                        'route_network' = toPlot$rnet[toPlot$rnet$id == id,]
         )
         if (!is.null(line))
-          leafletProxy("map") %>% addPolylines(data = line, color = "white",
-                                               opacity = 0.4, layerId = "highlighted")
+          addPolylines(leafletProxy("map"), data = line, color = "white",
+                       opacity = 0.4, layerId = "highlighted")
       }
     })
   })
@@ -167,14 +157,12 @@ shinyServer(function(input, output, session){
   # Updates the Local Authority if the map is moved
   # over another region with data
   observe({
-    if(file.exists(file.path(helper$dataDir, 'isolated'))) return()
+    if(file.exists(file.path(region$dataDir, 'isolated'))) return()
     newRegion <- findRegion()
-    dataDir <- file.path(dataDirRoot, newRegion)
-
-    if(!is.null(newRegion) && helper$dataDir != dataDir && file.exists(dataDir)){
+    newDataDir <- file.path(dataDirRoot, newRegion)
+    if(!is.null(newRegion) && region$dataDir != newDataDir && file.exists(newDataDir) && !file.exists(file.path(newDataDir, 'isolated'))){
       region$current <- newRegion
-      helper$dataDir <<- dataDir
-      toPlot <<- loadData(dataDir)
+      region$dataDir <- newDataDir
       if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
         updateCheckboxInput(session, "freeze", value = F)
     }
@@ -263,6 +251,7 @@ shinyServer(function(input, output, session){
   lineAttr <- reactive({
     if(input$scenario == 'olc') 'olc' else input$line_order
   })
+
   zoneAttr <- reactive({
     if(input$scenario == 'olc') 'olc' else 'slc'
   })
@@ -305,7 +294,7 @@ shinyServer(function(input, output, session){
   })
 
   plotLines <- function(m, lines, nos, popupFn, groupName, color){
-    if(groupName=="route_network"){
+    if (groupName == "route_network") {
       nos <- nos / 100 * nrow(lines)
       min <- 1
       max <- 20
@@ -463,12 +452,9 @@ shinyServer(function(input, output, session){
   shinyjs::onclick("toggleMapLegend", shinyjs::toggle(id = "map_legend", anim = FALSE))
 
   observe({
-    input$map_base
-    if (input$map_base == 'IMD'){
+    if (input$map_base == 'IMD')
       shinyjs::hide("zone_legend")
-    }
     else
       shinyjs::show("zone_legend")
   })
-
 })
