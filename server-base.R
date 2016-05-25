@@ -256,7 +256,7 @@ shinyServer(function(input, output, session){
   })
 
   transpRate <- reactive({
-    if (input$show_zones && input$map_base != 'satellite') 0.5 else 0.0
+    if (input$show_zones) 0.5 else 0.0
   })
 
   # These are redundant as there is currently no option to visualize the scenario increase
