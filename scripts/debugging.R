@@ -3,8 +3,8 @@ dataDir <- file.path("../pct-data/tiverton/")
 # check files in pct-shiny
 list.files(dataDir) # are all files there?
 
-# file.copy(paste0("pct-data/", startingCity, "/model-output.html"), startingCity)
-# dir.create(paste0(startingCity, "/www"))
+# file.copy(paste0("pct-data/", starting_city, "/model-output.html"), starting_city)
+# dir.create(paste0(starting_city, "/www"))
 
 # To set initialize toPlot
   toPlot <- NULL

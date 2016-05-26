@@ -1,4 +1,4 @@
-initDevEnv <- function(dataDirRoot, data_sha, cranPkgs, shinyRoot) {
+init_dev_env <- function(dataDirRoot, data_sha, cranPkgs, shiny_root) {
   # Clone the data repo if it do not exist
   if(!dir.exists(dataDirRoot)) {
     system2('git', args=c('clone', '--depth=1',
@@ -19,7 +19,7 @@ initDevEnv <- function(dataDirRoot, data_sha, cranPkgs, shinyRoot) {
   system2("git", c("--git-dir", file.path(dataDirRoot, ".git"), "--work-tree",
                    dataDirRoot, "checkout", data_sha), wait=T)
 
-  gitArgs <- c("rev-parse", "--short", "HEAD", ">", file.path(shinyRoot, "repo_sha"))
+  gitArgs <- c("rev-parse", "--short", "HEAD", ">", file.path(shiny_root, "repo_sha"))
 
   # Use shell command for Windows as it's failing with system2 for Windows (giving status 128)
   if (.Platform$OS.type == "windows"){
