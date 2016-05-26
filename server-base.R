@@ -116,7 +116,7 @@ shinyServer(function(input, output, session){
 
   observe({ # For highlighting the clicked line
     event <- input$map_shape_click
-    if (is.null(event) || event$id == "highlighted")
+    if (is.null(event) || event$id == "highlighted" || event$id == "mouse-over")
       return()
     eLatLng <- paste0(event$lat,event$lng)
 
@@ -138,12 +138,12 @@ shinyServer(function(input, output, session){
                                             opacity = 0.7,
                                             layerId = "highlighted")
       } else if (event$group == "zones"){
-
-        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
-                                            fill = FALSE,
-                                            color = "black" ,
-                                            opacity = 0.7 ,
-                                            layerId = "highlighted")
+#
+#         leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
+#                                             fill = FALSE,
+#                                             color = "black" ,
+#                                             opacity = 0.7 ,
+#                                             layerId = "highlighted")
       }
 
       else {
@@ -217,8 +217,8 @@ shinyServer(function(input, output, session){
   # This function updates the zones and the lines
   observe({
     region$current
-    showZonePopup <- (input$line_type == 'none')
-    popup <- if(showZonePopup) zonePopup(toPlot$zones, input$scenario, zoneAttr())
+    # showZonePopup <- (input$line_type == 'none')
+    # popup <- if(showZonePopup) zonePopup(toPlot$zones, input$scenario, zoneAttr())
     leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centres") %>% clearGroup(., "regionName") %>%
       addPolygons(.,  data = toPlot$zones
                   , weight = 2
@@ -227,7 +227,7 @@ shinyServer(function(input, output, session){
                   , fillColor = getColourRamp(zcols, toPlot$zones[[zoneData()]])
                   , color = "black"
                   , group = "zones"
-                  , popup = popup
+                  # , popup = popup
                   , options = pathOptions(clickable = showZonePopup)
                   , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
       addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1,
