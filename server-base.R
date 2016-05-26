@@ -120,7 +120,7 @@ shinyServer(function(input, output, session){
 
   observe({ # For highlighting the clicked line
     event <- input$map_shape_click
-    if (is.null(event) || event$id == "highlighted")
+    if (is.null(event) || event$id == "highlighted" || event$id == "mouse-over")
       return()
     eLatLng <- paste0(event$lat,event$lng)
 
@@ -142,12 +142,12 @@ shinyServer(function(input, output, session){
                                             opacity = 0.7,
                                             layerId = "highlighted")
       } else if (event$group == "zones"){
-
-        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
-                                            fill = FALSE,
-                                            color = "black" ,
-                                            opacity = 0.7 ,
-                                            layerId = "highlighted")
+#
+#         leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
+#                                             fill = FALSE,
+#                                             color = "black" ,
+#                                             opacity = 0.7 ,
+#                                             layerId = "highlighted")
       }
 
       else {
@@ -190,7 +190,7 @@ shinyServer(function(input, output, session){
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
       clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
-      removeShape(., "highlighted")
+      removeShape(., "highlighted") %>% removeShape(., "mouse-over")
 
     leafletProxy("map") %>% {
 
@@ -222,7 +222,7 @@ shinyServer(function(input, output, session){
   observe({
     region$current
     showZonePopup <- (input$line_type == 'none')
-    popup <- if(showZonePopup) zonePopup(toPlot$zones, input$scenario, zoneAttr())
+    # popup <- if(showZonePopup) zonePopup(toPlot$zones, input$scenario, zoneAttr())
     leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centres") %>% clearGroup(., "regionName") %>%
       addPolygons(.,  data = toPlot$zones
                   , weight = 2
@@ -231,7 +231,7 @@ shinyServer(function(input, output, session){
                   , fillColor = getColourRamp(zcols, toPlot$zones[[zoneData()]])
                   , color = "black"
                   , group = "zones"
-                  , popup = popup
+                  # , popup = popup
                   , options = pathOptions(clickable = showZonePopup)
                   , layerId = paste0(toPlot$zones[['geo_code']], '-', "zones")) %>%
       addCircleMarkers(., data = toPlot$cents, radius = toPlot$cents$All / mean(toPlot$cents$All) * 2 + 1,
@@ -469,6 +469,28 @@ shinyServer(function(input, output, session){
     }
     else
       shinyjs::show("zone_legend")
+  })
+
+  observe({
+    mouseover_event <- input$map_shape_mouseover
+    if (is.null(mouseover_event))
+      return()
+    isolate({
+      idGroupName <- unlist(strsplit(mouseover_event$id, "-"))
+      id <- idGroupName[1]
+      groupName <- idGroupName[2]
+      if (groupName == "zones"){
+        output$zoneInfo <- renderText(zonePopup(toPlot$zones[toPlot$z$geo_code == id,], input$scenario, zoneAttr()))
+
+        leafletProxy("map") %>% removeShape("mouse-over")
+        leafletProxy("map") %>% addPolygons(data = toPlot$zones[toPlot$z$geo_code == id,],
+                                            fill = FALSE,
+                                            color = "black" ,
+                                            opacity = 0.7 ,
+                                            layerId = "mouse-over")
+      }
+    })
+
   })
 
 })

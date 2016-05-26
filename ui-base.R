@@ -113,6 +113,15 @@ shinyUI(
               )
           )
         ),
+        conditionalPanel(
+          condition = "input.line_type == 'none'",
+          absolutePanel(
+            right = 5, bottom = 200, width = 200, class = "floater",
+            h4("Zone Info"),
+            tags$style(type='text/css', '#zoneInfo {font-weight:bold; background-color: white; color: black;}'),
+            uiOutput("zoneInfo")
+          )
+        ),
 
         conditionalPanel(
           condition = "input.map_base == 'IMD'",
