@@ -23,7 +23,7 @@ init_dev_env <- function(dataDirRoot, data_sha, cranPkgs, shiny_root) {
 
   # Use shell command for Windows as it's failing with system2 for Windows (giving status 128)
   if (.Platform$OS.type == "windows"){
-    shell(paste("git", gitArgs, collapse = ' '), wait = T)
+    shell(paste(append("git", gitArgs), collapse = " "), wait = T)
   } else {
     system2("git", gitArgs, wait = T)
   }
