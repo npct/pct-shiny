@@ -455,7 +455,7 @@ shinyServer(function(input, output, session){
     m <- quantile(to_plot$zones@data[[zone_data()]], probs=seq.int(0,1, length.out=4))
 
     # Create a zone colour based on the value of data
-    zone_col <- getColourRamp(zcols, m)
+    zone_col <- get_colour_ramp(zcols, m)
 
     # Set a full form of the scenario as a label
     ylabel <- "Number of Cycle Commuters"
