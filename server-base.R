@@ -448,26 +448,6 @@ shinyServer(function(input, output, session){
       formatRound(columns = names(numeric_zone_col_names), digits=2)
   })
 
-
-  output$legend_cycling_potential <- renderPlot({
-    region$current
-    # Create quantiles out of the zone data
-    m <- quantile(to_plot$zones@data[[zone_data()]], probs=seq.int(0,1, length.out=4))
-
-    # Create a zone colour based on the value of data
-    zone_col <- get_colour_ramp(zcols, m)
-
-    # Set a full form of the scenario as a label
-    ylabel <- "Number of Cycle Commuters"
-
-    # Set the labelling of Y-axis and font to bold, alter font size
-    par(font = 2, font.lab = 2, cex = 0.95, mar=c(0.0,5.0,0.0,1.0))
-
-    # Barplot the data in vertical manner
-    barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)),
-            col = zone_col, horiz=TRUE, xlab = "", ylab = ylabel, space = 0, axes = FALSE)
-  })
-
   shinyjs::onclick("togglePanel", shinyjs::toggle(id = "input_panel", anim = FALSE))
   shinyjs::onclick("toggleLegend", shinyjs::toggle(id = "zone_legend", anim = FALSE))
   shinyjs::onclick("toggleMapLegend", shinyjs::toggle(id = "map_legend", anim = FALSE))
