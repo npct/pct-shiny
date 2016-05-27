@@ -14,6 +14,15 @@ get_line_colour <- function(line_type){
   line_and_colour_df$line_colour[line_and_colour_df$line_type == line_type]
 }
 
+
+# Generate a series of colours based on the input range
+get_colour_ramp <- function(colors, values) {
+  v <- normalise(values)
+  x <- colorRamp(colors)(v)
+  x[is.na(x)] <- 1
+  rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
+}
+
 make_download_link <- function(file, download_name, region){
   formats <- c('Rds', 'geojson', 'csv')
   base_url = paste("https://cdn.rawgit.com/npct/pct-data", data_sha, region, sep = "/")
