@@ -209,6 +209,7 @@ shinyServer(function(input, output, session){
   # This function updates the zones and the lines
   observe({
     region$current
+    input$map_base
     show_zone_popup <- (input$line_type == 'none')
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr())
     leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centres") %>% clearGroup(., "regionName") %>%
