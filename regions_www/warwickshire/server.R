@@ -1,3 +1,3 @@
-startingCity <- "warwickshire"
-shinyRoot <- file.path("..", "..")
-source(file.path(shinyRoot, "server-base.R"), local = T)
+starting_city <- "warwickshire"
+shiny_root <- file.path("..", "..")
+source(file.path(shiny_root, "server-base.R"), local = T)
