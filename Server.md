@@ -69,7 +69,7 @@ Install shiny server
 Now shiny server, https://www.rstudio.com/products/shiny/download-server/
 ```
  apt-get install gdebi-core
- wget https://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.4.1.759-amd64.deb
+ wget https://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.4.2.786-amd64.deb
 ```
 
 Installing this fails because it depends on libssl0.9.8 (hopefully will be fixed in https://github.com/rstudio/shiny-server/issues/156), fortunately it actually doesn't
