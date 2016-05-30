@@ -6,11 +6,17 @@
 
 set +e
 
+if [[ $(hostname -s) = "npct0" ]]; then
+  BRANCH="master"
+else
+  BRANCH="production"
+fi
+
 export PATH=$PATH:/home/git/bin
 
 echo "Check out the latest version into our temp directory"
 mkdir -p /home/git/var-shiny/pct-shiny
-git --work-tree /home/git/var-shiny/pct-shiny --git-dir /home/git/pct-shiny checkout production -f
+git --work-tree /home/git/var-shiny/pct-shiny --git-dir /home/git/pct-shiny checkout ${BRANCH} -f
 git --git-dir /home/git/pct-shiny rev-parse --short HEAD > /home/git/var-shiny/pct-shiny/repo_sha
 
 DATASHA=`cat /home/git/var-shiny/pct-shiny/data_sha`
@@ -22,6 +28,12 @@ rm -rf /home/git/var-shiny/pct-data
 mkdir /home/git/var-shiny/pct-data
 git --work-tree /home/git/var-shiny/pct-data --git-dir /home/git/pct-data checkout $DATASHA -f
 
-echo "Update the first server, then the second"
-update-server npt1.vs.mythic-beasts.com
-update-server npt2.vs.mythic-beasts.com
+if [[ $(hostname -s) = "npct0" ]]; then
+  ssh -a -l root -i /home/git/.ssh/id_rsa_cp npct0
+  ssh -a -l root -i /home/git/.ssh/id_rsa_chown npct0
+  ssh -a -l root -i /home/git/.ssh/id_rsa_restart_server npct0
+else
+  echo "Update the first server, then the second"
+  update-server npt1.vs.mythic-beasts.com
+  update-server npt2.vs.mythic-beasts.com
+fi
