@@ -62,7 +62,7 @@ popup <- paste0(regions$url_text, ". Percent cycling to work per scenario:<br> "
                 round(regions$govtarget_slc, 1), "% cycle in Government Target<br>",
                 round(regions$gendereq_slc, 1), "% cycle in Gender Equality<br>",
                 round(regions$dutch_slc, 1), "% cycle to work in Go Dutch<br>",
-                round(regions$gendereq_slc, 1), "% cycle in Ebike scenario<br>")
+                round(regions$ebike_slc, 1), "% cycle in Ebike scenario<br>")
 library(leaflet)
 qpal <- colorBin("RdYlGn", regions$pcycle, bins = c(0, 3, 6, 12, 20, 40), pretty = TRUE)
 
