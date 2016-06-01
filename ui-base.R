@@ -31,7 +31,7 @@ line_types <- c("None" = "none",
                 "Fast & Quiet Routes" = "route",
                 "Route Network" = "rnet")
 
-attrsZone <- c("Level of Cycling"    = "slc",
+attrs_zone <- c("Level of Cycling"    = "slc",
                "Increase in Cycling" = "sic",
                "HEAT Value"          = "slvalue_heat",
                "CO2 reduction"       = "sico2")
@@ -87,7 +87,7 @@ shinyUI(
               conditionalPanel(
                 condition = "input.line_type != 'rnet' && input.scenario != 'olc'",
                 tags$div(title="Order the top flows by",
-                         selectInput("line_order", "Order flows by", attrsZone, selected = "slc", selectize = F)
+                         selectInput("line_order", "Order flows by", attrs_zone, selected = "slc", selectize = F)
                 )
               )
             ),
@@ -108,7 +108,7 @@ shinyUI(
                        selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)", "All"), selected = "Commute data", selectize = T),
                        conditionalPanel(
                          condition = "input.map_base != 'c'",
-                         plotOutput("legendCyclingPotential", width = "100%", height = 200)
+                         plotOutput("legend_cycling_potential", width = "100%", height = 200)
                        )
               )
           )
@@ -125,14 +125,14 @@ shinyUI(
             ),
             div(id = "map_legend",
                 tags$div(title="Index of Multiple Deprivation",
-                   plotOutput("IMDLegend", width = "100%", height = 180)
+                   plotOutput("imd_Legend", width = "100%", height = 180)
 
                 )
             )
           )
         ),
         tags$div(id="cite",
-                 htmlOutput("citeHtml")
+                 htmlOutput("cite_html")
         )
       )
     ),
@@ -140,9 +140,9 @@ shinyUI(
              br(),
              br(),
              helpText("This tab shows the underlying data of the Cycling Flows. You can download this data in",
-                      htmlOutput("lineDataLinks")),
-             uiOutput("warningMessage"),
-             DT::dataTableOutput("linesDatatable")
+                      htmlOutput("line_data_links")),
+             uiOutput("warning_message"),
+             DT::dataTableOutput("lines_datatable")
     ),
     tabPanel("Zones",
              br(),
@@ -152,12 +152,12 @@ shinyUI(
                     <strong>Data Source: </strong> We are using the 2011 Census data for England and Wales.
                     It contains origin-destination data on workplace flows. For more information, please see the
                     <a target='_blank' href = \"https://www.nomisweb.co.uk/census/2011/wu03ew\">source</a>.
-                    You can download the data:"), htmlOutput("zoneDataLinks")),
-             DT::dataTableOutput("zonesDataTable")
+                    You can download the data:"), htmlOutput("zone_data_links")),
+             DT::dataTableOutput("zones_data_table")
 
     ),
     tabPanel("Model Output",
-             htmlOutput("moutput")
+             htmlOutput("m_output")
     ),
     tabPanel("About",
              includeHTML(file.path("static", "about_in_shiny.html"))
