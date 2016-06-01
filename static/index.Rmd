@@ -1,6 +1,7 @@
 ---
 knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), '../regions_www/index.html')) })
 title: Welcome to the Propensity to Cycle Tool (PCT)
+bibliography: references.bib
 output:
   html_document:
     self_contained: false
@@ -16,8 +17,9 @@ Created by the Propensity to Cycle Tool team.
 
 Last updated: `r format(Sys.Date(), format = '%Y-%m-%d')`.
 
-Welcome to the National Propensity to Cycle Tool (PCT), an online and interactive planning support tool to provide an evidence base to inform investment in cycling. To run the tool for England (PCT-England), click on a region in the map to the left.
+Welcome to the National Propensity to Cycle Tool (PCT), an online and interactive planning support tool to provide an evidence base to inform investment in cycling. For more information about the tool please refer to the [Manual](http://pct.bike/manual.html), an [academic paper](http://arxiv.org/abs/1509.04425) about the PCT, the [about page](http://pct.bike/about.html) or the [PCT blog](http://pct.bike/wp/)
 
+To run the tool for England (PCT-England), click on a region in the map to the left.
 The tool shows cycling levels at area, 'desire line' and route network levels based on the 2011 Census for commuting and for various scenarios, illustrating where cycling has the greatest potential to grow.
 
 The cycling trips can be allocated to the road network, based on the fastest cycling route. The purpose of the route allocation is to see on which routes the most provision might be necessary as cycling grows rather than to show where people currently cycle. We recognise that many people currently choose longer routes to avoid busy roads. But for cycling to reach its potential safe direct routes are needed. The Route Network layer is therefore intended to show where (on which routes) investment is most needed rather than where people currently cycle.
