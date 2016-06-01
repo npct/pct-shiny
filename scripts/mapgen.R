@@ -83,7 +83,7 @@ m <- leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
 
 m
 old = setwd("regions_www/")
-saveWidget(m, file = "map.html")
+saveWidget(m, file = "map-test.html")
 setwd(old)
 # # V1: builds all zones for a single geography
 # pkgs <- c("leaflet", "htmlwidgets", "geojsonio")
