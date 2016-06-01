@@ -1,9 +1,6 @@
 # mapgen generates the basemap html script
 source("../pct-load/set-up.R")
 
-# devtools::install_github("berndbischl/BBmisc")
-library(BBmisc)
-
 # V2: builds all operational zones
 library(rgeos)
 library(maptools)
@@ -18,9 +15,9 @@ if(!exists("centsa")) # Population-weighted centroids
 centsa$geo_code <- as.character(centsa$geo_code)
 regions = geojson_read("../pct-bigdata/regions.geojson", what = "sp", stringsAsFactors = F)
 
-# las = readRDS("../pct-bigdata/las-geo-mode.Rds")
-# las_cents = gCentroid(las, byid = T)
-# las_cents = SpatialPointsDataFrame(las_cents, las@data)
+las = readRDS("../pct-bigdata/las-geo-mode.Rds")
+las_cents = gCentroid(las, byid = T)
+las_cents = SpatialPointsDataFrame(las_cents, las@data)
 
 # # modifying regional data for presenting
 # library(sp)
@@ -36,7 +33,7 @@ i = 1
 regions$pcycle = NA
 regions$Region_cap = gsub(pattern = "-", replacement = " ", x = regions$Region)
 # devtools::install_github("berndbischl/BBmisc")
-regions$Region_cap = capitalizeStrings(regions$Region_cap, all.words = T)
+regions$Region_cap = BBmisc::capitalizeStrings(regions$Region_cap, all.words = T)
 regions$Region_cap = gsub(pattern = "And", replacement = "and", x = regions$Region_cap)
 regions$Region_cap = gsub(pattern = "Of", replacement = "of", x = regions$Region_cap)
 
@@ -48,42 +45,30 @@ for(i in 1:length(regions)){
   cents <- centsa[region_shape,]
   zones <- ukmsoas[ukmsoas@data$geo_code %in% cents$geo_code, ]
   regions$pcycle[i] <- round(100 * sum(zones$Bicycle) / sum(zones$All), 1)
-  regions$govtarget_slc[i] <- round(100 * sum(zones$govtarget_slc) / sum(zones$All), 1)
-  regions$gendereq_slc[i] <- round(100 * sum(zones$gendereq_slc) / sum(zones$All), 1)
-  regions$dutch_slc[i] <- round(100 * sum(zones$dutch_slc) / sum(zones$All), 1)
-  regions$ebike_slc[i] <- round(100 * sum(zones$ebike_slc) / sum(zones$All), 1)
+  regions$pcycle_godutch[i] <- round(100 * sum(zones$dutch_slc) / sum(zones$All), 1)
 
   regions$url[i] <- paste0("./", regions$Region[i])
   regions$url_text[i] <- as.character(a(regions$Region_cap[i], href = regions$url[i]))
   regions$url_text[i] <- gsub('">', '" target ="_top">', regions$url_text[i])
 }
-popup <- paste0(regions$url_text, ". Percent cycling to work per scenario:<br> ",
-                round(regions$pcycle, 1), "% cycle in 2011 Census<br>",
-                round(regions$govtarget_slc, 1), "% cycle in Government Target<br>",
-                round(regions$gendereq_slc, 1), "% cycle in Gender Equality<br>",
-                round(regions$dutch_slc, 1), "% cycle to work in Go Dutch<br>",
-                round(regions$gendereq_slc, 1), "% cycle in Ebike scenario<br>")
+popup <- paste0(regions$url_text, ", ", round(regions$pcycle, 1), "% cycle to work in 2011 Census<br>",
+                round(regions$pcycle_godutch, 1), "% cycle to work in Go Dutch scenario<br>")
+
 library(leaflet)
-qpal <- colorBin("RdYlGn", regions$pcycle, bins = c(0, 3, 6, 12, 20, 40), pretty = TRUE)
+qpal <- colorBin("RdYlGn", regions$pcycle, bins = c(0, 3, 6, 12, 20, 30), pretty = TRUE)
 
 m <- leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
   addPolygons(data = regions, popup = popup, weight = 1,
               fillColor = ~qpal(regions$pcycle), fillOpacity = 0.5, color = "black", group = "2011 Census") %>%
   addPolygons(data = regions, popup = popup, weight = 1,
-              fillColor = ~qpal(regions$govtarget_slc), fillOpacity = 0.5, color = "black", group = "Government Target") %>%
-  addPolygons(data = regions, popup = popup, weight = 1,
-              fillColor = ~qpal(regions$gendereq_slc), fillOpacity = 0.5, color = "black", group = "Gender Equality") %>%
-  addPolygons(data = regions, popup = popup, weight = 1,
-              fillColor = ~qpal(regions$dutch_slc), fillOpacity = 0.5, color = "black", group = "Go Dutch") %>%
-  addPolygons(data = regions, popup = popup, weight = 1,
-              fillColor = ~qpal(regions$ebike_slc), fillOpacity = 0.5, color = "black", group = "Ebikes") %>%
+              fillColor = ~qpal(regions$pcycle_godutch), fillOpacity = 0.5, color = "black", group = "Go Dutch") %>%
   addLegend(pal = qpal, values = regions$pcycle, title = "% Cycling\nto work", opacity = 0.5) %>%
-  addLayersControl(baseGroups = c("2011 Census", "Government Target", "Gender Equality", "Go Dutch", "Ebikes"), options = layersControlOptions(autoZIndex = T, collapse = F))
+  addLayersControl(baseGroups = c("2011 Census", "Go Dutch"), options = layersControlOptions(autoZIndex = T, collapse = F))
 
 
 m
 old = setwd("regions_www/")
-saveWidget(m, file = "map.html")
+saveWidget(m, file = "map-test.html")
 setwd(old)
 # # V1: builds all zones for a single geography
 # pkgs <- c("leaflet", "htmlwidgets", "geojsonio")
