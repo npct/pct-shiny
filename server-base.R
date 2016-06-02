@@ -377,7 +377,10 @@ shinyServer(function(input, output, session){
       } %>%
       addCircleMarkers(., data = to_plot$cents, radius = to_plot$cents$All / mean(to_plot$cents$All) * 2 + 1,
                        color = get_line_colour("centres"), group = "centres", opacity = 0.5) %>%
-      mapOptions(zoomToLimits = "first")
+      mapOptions(zoomToLimits = "first")  %>%
+      addLayersControl(position = "bottomleft",
+                       overlayGroups = "centres",
+                       options = layersControlOptions(collapsed = FALSE, autoZIndex = TRUE))
   )
 
   output$legend_cycling_potential <- renderPlot({
