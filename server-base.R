@@ -78,6 +78,7 @@ shinyServer(function(input, output, session){
 
   # Select and sort lines within a bounding box - given by flows_bb()
   sort_lines <- function(lines, sort_by, nos){
+    if(!sort_by %in% names(lines)) return(NULL)
     poly <- flows_bb()
     if(is.null(poly)) return(NULL)
     poly <- spTransform(poly, CRS(proj4string(lines)))
