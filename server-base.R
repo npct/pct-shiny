@@ -189,14 +189,6 @@ shinyServer(function(input, output, session){
       removeShape(., "highlighted")
 
     leafletProxy("map") %>% {
-
-      # if any of the lines is selected by the user, display the centroids
-      if (input$line_type != 'none'){
-        leafletProxy("map") %>% showGroup("centres")
-      }else{ # otherwise, hide the centroids
-        leafletProxy("map") %>% hideGroup("centres")
-      }
-
       switch(input$line_type,
              'straight' = plot_lines(., to_plot$l, input$nos_lines, straight_popup, "straight_line", get_line_colour("straight_line")),
              'route'= {
@@ -213,14 +205,27 @@ shinyServer(function(input, output, session){
       updateSliderInput(session, inputId = "nos_lines", min = 1, max = 200, step = 1,  label = "N. Lines (most cycled)")
 
   })
+  get_zone_multiplier <- function(zoom){ zoom^4/8200 }
 
   # This function updates the zones and the lines
+  observe({
+    if(is.null(input$map_zoom) ) return()
+    region$replot
+    input$map_base
+    zoom_multiplier <- get_zone_multiplier(input$map_zoom)
+    clearGroup(leafletProxy("map"), "centres")
+    if(input$map_zoom < 9 || input$line_type == 'none') return()
+    addCircleMarkers(leafletProxy("map"), data = to_plot$cents, radius = (to_plot$cents$All* zoom_multiplier) / mean(to_plot$cents$All) ,
+                       color = get_line_colour("centres"), group = "centres", opacity = 0.5,
+                       popup = centroid_popup(to_plot$cents, input$scenario, zone_attr()))
+  })
+
   observe({
     region$replot
     input$map_base
     show_zone_popup <- (input$line_type == 'none')
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr())
-    leafletProxy("map")  %>%  clearGroup(., "zones") %>% clearGroup(., "centres") %>% clearGroup(., "region_name") %>%
+    leafletProxy("map")  %>% clearGroup(., "zones") %>% clearGroup(., "region_name") %>%
       addPolygons(.,  data = to_plot$zones
                   , weight = 2
                   , fillOpacity = transp_rate()
@@ -231,14 +236,11 @@ shinyServer(function(input, output, session){
                   , popup = popup
                   , options = pathOptions(clickable = show_zone_popup)
                   , layerId = paste0(to_plot$zones[['geo_code']], '-', "zones")) %>%
-      addCircleMarkers(., data = to_plot$cents, radius = to_plot$cents$All / mean(to_plot$cents$All) * 2 + 1,
-                       color = get_line_colour("centres"), group = "centres", opacity = 0.5,
-                       popup = centroid_popup(to_plot$cents, input$scenario, zone_attr())) %>%
       addCircleMarkers(., radius=0, lat=0, lng=0, group = "region_name", fillOpacity= 0, layerId = region$current) %>%
       # Hide and Show line layers, so that they are displayed as the top layer in the map.
       # Leaflet's function bringToBack() or bringToFront() (see http://leafletjs.com/reference.html#path)
       # don't seem to exist for R
-
+      hideGroup(., "centres") %>% showGroup(., "centres") %>%
       {
         switch(input$line_type,
                'straight' = hideGroup(., "straight_line") %>% showGroup(., "straight_line"),
@@ -384,8 +386,7 @@ shinyServer(function(input, output, session){
         }else .
 
       } %>%
-      addCircleMarkers(., data = to_plot$cents, radius = to_plot$cents$All / mean(to_plot$cents$All) * 2 + 1,
-                       color = get_line_colour("centres"), group = "centres", opacity = 0.5) %>%
+      addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
       mapOptions(zoomToLimits = "first")
   )
 
