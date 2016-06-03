@@ -90,13 +90,19 @@ shinyServer(function(input, output, session){
   }
 
   # Finds the Local Authority shown inside the map bounds
-  find_region <- function(){
+  find_region <- function(current_region){
     bb <- map_bb()
     if(is.null(bb)) return(NULL)
-    map_centre = gCentroid(bb, byid=T)
-    keep <- gContains(regions, map_centre, byid=T)
-    if(all(drop(!keep))) return(NULL) # return NULL if centre is outside the shapefile
-    tolower(regions[drop(keep), ]$Region[1])
+    regions_bb_intersects <- gIntersects(bb, regions, byid=T)
+    # return NULL if centre is outside the shapefile
+    if(all(drop(!regions_bb_intersects))) return(NULL)
+
+    current_region_visible <- current_region %in% tolower(regions[drop(regions_bb_intersects), ]$Region)
+    if(current_region_visible) return(NULL)
+
+    regions_map_center_in <- gContains(regions, gCentroid(bb, byid=T), byid=T)
+    if(all(drop(!regions_map_center_in))) return(NULL)
+    tolower(regions[drop(regions_map_center_in), ]$Region[1])
   }
 
   attrs_zone <- c("Scenario Level of Cycling (SLC)" =    "slc",
@@ -159,7 +165,7 @@ shinyServer(function(input, output, session){
   # over another region with data
   observe({
     if(file.exists(file.path(region$data_dir, 'isolated'))) return()
-    new_region <- find_region()
+    new_region <- find_region(region$current)
     new_data_dir <- file.path(data_dir_root, new_region)
     if(!is.null(new_region) && region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
       region$current <- new_region
