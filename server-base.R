@@ -65,9 +65,10 @@ shinyServer(function(input, output, session){
     to_plot$r_fast@data <<- cbind(to_plot$r_fast@data[!(names(to_plot$r_fast) %in% names(to_plot$l))], to_plot$l@data)
     to_plot$r_quiet <<- readRDS(file.path(region$data_dir, "rq.Rds"))
     to_plot$r_quiet@data <<- cbind(to_plot$r_quiet@data[!(names(to_plot$r_quiet) %in% names(to_plot$l))], to_plot$l@data)
+    isolate(region$replot <- !region$replot)
   })
 
-  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city) )
+  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), replot = F )
 
   # For all plotting data
   to_plot <- NULL
@@ -180,7 +181,7 @@ shinyServer(function(input, output, session){
     # Needed to force lines to be redrawn when scenario, zone or base map changes
     input$scenario
     input$map_base
-    region$current
+    region$replot
     input$show_zones
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
@@ -215,7 +216,7 @@ shinyServer(function(input, output, session){
 
   # This function updates the zones and the lines
   observe({
-    region$current
+    region$replot
     input$map_base
     show_zone_popup <- (input$line_type == 'none')
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr())
@@ -389,7 +390,7 @@ shinyServer(function(input, output, session){
   )
 
   output$legend_cycling_potential <- renderPlot({
-    region$current
+    region$replot
     # Create quantiles out of the zone data
     m <- quantile(to_plot$zones@data[[zone_data()]], probs=seq.int(0,1, length.out=4))
 
