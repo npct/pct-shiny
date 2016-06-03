@@ -249,9 +249,10 @@ shinyServer(function(input, output, session){
     if (input$show_zones) 0.5 else 0.0
   })
 
-  # These are redundant as there is currently no option to visualize the scenario increase
   line_attr <- reactive({
-    if(input$scenario == 'olc') 'olc' else input$line_order
+    if(input$scenario == 'olc') 'olc'
+    else if (input$line_type != 'rnet') input$line_order
+    else 'slc'
   })
 
   zone_attr <- reactive({
