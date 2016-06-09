@@ -17,7 +17,7 @@ Created by the Propensity to Cycle Tool team.
 
 Last updated: `r format(Sys.Date(), format = '%Y-%m-%d')`.
 
-Welcome to the National Propensity to Cycle Tool (PCT), an online and interactive planning support tool to provide an evidence base to inform investment in cycling. For more information about the tool please refer to the [Manual](http://pct.bike/manual.html), an [academic paper](http://arxiv.org/abs/1509.04425) about the PCT, the [about page](http://pct.bike/about.html) or the [PCT blog](http://pct.bike/wp/)
+Welcome to the National Propensity to Cycle Tool (PCT), an online and interactive planning support tool to provide an evidence base to inform investment in cycling. For more information about the tool please refer to the [Manual](http://pct.bike/manual.html), an [academic paper](http://arxiv.org/abs/1509.04425) about the PCT or the [about page](http://pct.bike/about.html).
 
 To run the tool for England (PCT-England), click on a region in the map to the left.
 The tool shows cycling levels at area, 'desire line' and route network levels based on the 2011 Census for commuting and for various scenarios, illustrating where cycling has the greatest potential to grow.
