@@ -65,6 +65,8 @@ shinyServer(function(input, output, session){
     to_plot$r_fast@data <<- cbind(to_plot$r_fast@data[!(names(to_plot$r_fast) %in% names(to_plot$l))], to_plot$l@data)
     to_plot$r_quiet <<- readRDS(file.path(region$data_dir, "rq.Rds"))
     to_plot$r_quiet@data <<- cbind(to_plot$r_quiet@data[!(names(to_plot$r_quiet) %in% names(to_plot$l))], to_plot$l@data)
+    # Add rqincr column to the quiet data
+    to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
     isolate(region$replot <- !region$replot)
   })
 
