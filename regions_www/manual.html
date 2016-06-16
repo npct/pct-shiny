@@ -147,14 +147,14 @@ Running the R code at the bottom generates the html files-->
 
 </div>
 <p>Welcome to the <strong>User Manual</strong> for the Propensity to Cycle Tool (PCT).</p>
-<p>This was last built on 2016-06-03.</p>
-<p>This is work in progress and is being developed as part of a suite of training materials during 2016. To request more information or provide feedback, please <a href="mailto:pct@pct.bike?Subject=Manual">email us at pct@pct.bike</a> or report issues on our <a href="https://github.com/npct/pct-shiny/issues">GitHub issue tracker</a>. Contributions to the project are welcome. This file, for instance, can be edited online at <a href="https://github.com/npct/pct-shiny/edit/master/static/manual.Rmd">github.com/npct/pct-shiny</a>.</p>
-<p>The NPCT has a <a href="http://pct.bike/wp/">blog</a>, where more <a href="http://pct.bike/wp/?cat=6">training materials</a> including short videos, are being posted.</p>
+<p>This was last built on 2016-06-16.</p>
+<p>This is work in progress and is being developed as part of a suite of training materials during 2016. To request more information or provide feedback, please <a href="mailto:pct@pct.bike?Subject=Manual">email us at pct@pct.bike</a> or report issues on our <a target="_blank" href="https://github.com/npct/pct-shiny/issues">GitHub issue tracker</a>. Contributions to the project are welcome. This file, for instance, can be edited online at <a target="_blank" href="https://github.com/npct/pct-shiny/edit/master/static/manual.Rmd">github.com/npct/pct-shiny</a>.</p>
+<!-- The NPCT has a [blog](http://pct.bike/wp/), where more [training materials](http://pct.bike/wp/?cat=6) including short videos, are being posted. -->
 <p><a href="javascript:toggleElement(&#39;helptable&#39;)">1. How should the tool be used?</a></p>
 <div id="helptable" style="display:none">
 <p>The tool can be used in many different ways depending on the aims of the user. The tool is primarily designed to be used interactively. By switching between different scenarios, for example, one can see how the distribution of cycling can be expected to change as cycling grows. By switching between line types, you can see whether or not ‘desire lines’ of high demand are supplied with quiet and direct routes.</p>
 <p>By experimenting with the ‘Freeze lines’ option and zooming into specific areas of interest, the level of cycling at more local levels can be explored. By setting the basemap to ‘Satellite’ and zooming in, space available create space for cycling can be seen.</p>
-<p>The PCT works on a region-by-region basis. The url corresponds to the region you are looking at, which can be selected from the <a href="http://pct.bike">home page</a>. <a href="http://pct.bike/west-yorkshire/">pct.bike/west-yorkshire/</a>, for example, shows West Yorkshire. If you move the map’s extent outside the region’s boundary, the PCT will jump to a new region.</p>
+<p>The PCT works on a region-by-region basis. The url corresponds to the region you are looking at, which can be selected from the <a target="_blank" href="http://pct.bike">home page</a>. <a target="_blank" href="http://pct.bike/west-yorkshire/">pct.bike/west-yorkshire/</a>, for example, shows West Yorkshire. If you move the map’s extent outside the region’s boundary, the PCT will jump to a new region.</p>
 <p>Overall, there are many ways that the tool can be used to improve cycling provision. It is likely that more features will be added in future versions The table below explains the various options in the interactive map.</p>
 <table class="table table-hover table-responsive">
 <tbody>
@@ -163,7 +163,7 @@ Running the R code at the bottom generates the html files-->
 <p><span style="font-weight: bold; text-decoration: underline;">Scenario:</span></p>
 <ol style="list-style-type: decimal">
 <li>Census 2011 Reported Cycle Commuting</li>
-<li>Government Target: this scenario is based on the UK government’s proposed target (as set out in its draft <a href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/364791/141015_Cycling_Delivery_Plan.pdf">Cycling Delivery Plan</a>) to double cycling in England. Taking population increases and trip rate decreases into account, the target implies doubling the proportion of trips made by cycling nationwide. Trips that have a large distances or that already have a high rate of cycling will see cycling increase less than two-fold; trips with a below average current rate of cycling but high potential (based on the distance) will see cycling increase more than two-fold.</li>
+<li>Government Target: this scenario is based on the UK government’s proposed target (as set out in its draft <a target="_blank" href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/364791/141015_Cycling_Delivery_Plan.pdf">Cycling Delivery Plan</a>) to double cycling in England. Taking population increases and trip rate decreases into account, the target implies doubling the proportion of trips made by cycling nationwide. Trips that have a large distances or that already have a high rate of cycling will see cycling increase less than two-fold; trips with a below average current rate of cycling but high potential (based on the distance) will see cycling increase more than two-fold.</li>
 <li>Gender equality: Women have the same cycling rate as men</li>
 <li>Go Dutch: Cycling propensity at the levels seen in the Netherlands</li>
 <li>Electric bicycles: Willingness to cycle longer trips increases with widespread use of electric bicycles</li>
@@ -191,8 +191,8 @@ Running the R code at the bottom generates the html files-->
 <p><span style="font-weight: bold; text-decoration: underline;">Cycling Flows</span></p>
 <ol style="list-style-type: decimal">
 <li>Straight Lines between the population weighted centroids of Census Medium Super Output Areas</li>
-<li>‘Fastest’ Route using <a href="http://www.cyclestreets.net/journey/help/howitworks/">Cycle Streets Routing</a></li>
-<li>‘Fastest’ and ‘Quietest’ Routes using Cycle Streets Routing</li>
+<li><p>‘Fastest’ Route using <a target="_blank" href="http://www.cyclestreets.net/journey/help/howitworks/">Cycle Streets Routing</a></p></li>
+<li><p>‘Fastest’ and ‘Quietest’ Routes using Cycle Streets Routing</p></li>
 </ol>
 </td>
 <td style="vertical-align: top; width: 535px;">
@@ -285,7 +285,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 <li>Zone: Zone name according to the Census</li>
 <li>Scenario Level of Cycling: the model predicted rate of cycling in the given area for the chosen scenario</li>
 <li>Scenario Increase in Cycling: the corresponding number of additional cycle commuters over and above Census 2011</li>
-<li>Hilliness: Shows the average hilliness of the zone from <a href="http://srtm.csi.cgiar.org/">digital elevation model</a> data supplied by NASA.</li>
+<li>Hilliness: Shows the average hilliness of the zone from CycleStreets.net.</li>
 </ol>
 </td>
 <td style="vertical-align: top;">
@@ -391,7 +391,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 </div>
 <p><a href="javascript:toggleElement(&#39;a3&#39;)">4. Why focus on the direct routes?</a></p>
 <div id="a3" style="display:none">
-<p>We give users the option of seeing either the ‘direct’ or the ‘direct’ the ‘quietest’ routes on the map. Which might people use? These routes come from the journey planner Cyclestreets.net, which helps people plan their cycling route. <a href="http://www.cyclestreets.net">Cyclestreets.net</a> shows three types of route, ‘direct’, ‘balanced’, and ‘quietest’. Many cyclists currently choose to take a quieter route at the cost of extra time because often the shortest route involves sharing with motor traffic on busy roads. However, even the quieter routes can still involve negotiating busy roads at times. The aim of the NPCT is not to predict exactly where people are currently cycling. Rather we are trying to prioritise where to put new infrastructure.</p>
+<p>We give users the option of seeing either the ‘direct’ or the ‘direct’ the ‘quietest’ routes on the map. Which might people use? These routes come from the journey planner Cyclestreets.net, which helps people plan their cycling route. <a target="_blank" href="http://www.cyclestreets.net/journey/help/howitworks/">CycleStreets.net</a> shows three types of route, ‘direct’, ‘balanced’, and ‘quietest’. Many cyclists currently choose to take a quieter route at the cost of extra time because often the shortest route involves sharing with motor traffic on busy roads. However, even the quieter routes can still involve negotiating busy roads at times. The aim of the NPCT is not to predict exactly where people are currently cycling. Rather we are trying to prioritise where to put new infrastructure.</p>
 <p>For many people, cycling with busy traffic is hugely off-putting. A systematic review carried out for this project found this particularly puts off women, and probably also older people and those riding with children.</p>
 <p>So are the quietest routes for those groups, and the direct routes for others? No, because this project also shows that propensity to cycle declines more rapidly with distance for women and older people. If a quieter route creates a detour such that a 2 mile trip becomes effectively a 3 mile trip, younger men’s propensity to cycle the route will decrease 11%. But for younger women, the decline is 19%, and for older adults (60+) the propensity would decrease by 35%.</p>
 <p>This hits women’s and older men’s cycling twice: they are less likely than men to want to cycle the direct route, but then are also less likely to be willing to cycle an effectively longer alternative route. It’s likely to be part of the reason for disparities in cycling by age and gender.</p>
@@ -429,8 +429,8 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 </div>
 <p><a href="javascript:toggleElement(&#39;a7&#39;)">7. How to create custom scenarios?</a></p>
 <div id="a7" style="display:none">
-<p>To create custom scenarios you need to ‘build’ new input data for the PCT and have a version of the tool running on your computer (not on a remote server). The steps to install working versions of the PCT and the build scripts on your computer are well described in the README files associated with the pct-load and pct-shiny GitHub repositories. These can be seen from the NPCT team’s GitHub page: <a href="https://github.com/npct">github.com/npct</a>.</p>
-<p>To create custom scenarios, the key dataset to modify is ‘l.Rds’, a SpatialLinesDataFrame (an R object class) that exists in each region. In the <em>root directory</em> of the RStudio project for the <code>pct-load</code> folder (which can be opened by opening <a href="https://github.com/npct/pct-load/blob/master/pct-load.Rproj"><code>pct-load.Rproj</code></a>), this could be loaded for kent, for example, with the folowing commands, resulting in the follow plot:</p>
+<p>To create custom scenarios you need to ‘build’ new input data for the PCT and have a version of the tool running on your computer (not on a remote server). The steps to install working versions of the PCT and the build scripts on your computer are well described in the README files associated with the pct-load and pct-shiny GitHub repositories. These can be seen from the NPCT team’s GitHub page: <a target="_blank" href="https://github.com/npct">github.com/npct</a>.</p>
+<p>To create custom scenarios, the key dataset to modify is ‘l.Rds’, a SpatialLinesDataFrame (an R object class) that exists in each region. In the <em>root directory</em> of the RStudio project for the <code>pct-load</code> folder (which can be opened by opening the <code>pct-load.Rproj</code> file), this could be loaded for kent, for example, with the folowing commands, resulting in the follow plot:</p>
 <pre class="r"><code>library(sp) # load spatial library </code></pre>
 <pre class="r"><code># Load the OD-based &#39;desire lines&#39; for Kent
 l = readRDS(&quot;../pct-data/kent/l.Rds&quot;)

@@ -30,9 +30,9 @@ Welcome to the **User Manual** for the Propensity to Cycle Tool (PCT).
 This was last built on `r Sys.Date()`.
 
 This is work in progress and is being developed as part of a suite of training materials during 2016. To request more information or provide feedback, please [email us at pct@pct.bike](mailto:pct@pct.bike?Subject=Manual) or report issues on our
-<a  target="_blank" href="https://github.com/npct/pct-shiny/issues">GitHub issue tracker</a>.
+<a target="_blank" href="https://github.com/npct/pct-shiny/issues">GitHub issue tracker</a>.
 Contributions to the project are welcome. This file, for instance, can be edited online at
-<a href="https://github.com/npct/pct-shiny/edit/master/static/manual.Rmd">github.com/npct/pct-shiny</a>.
+<a target="_blank" href="https://github.com/npct/pct-shiny/edit/master/static/manual.Rmd">github.com/npct/pct-shiny</a>.
 
 <!-- The NPCT has a [blog](http://pct.bike/wp/), where more [training materials](http://pct.bike/wp/?cat=6) including short videos, are being posted. -->
 
@@ -45,7 +45,7 @@ The tool can be used in many different ways depending on the aims of the user. T
 By experimenting with the 'Freeze lines' option and zooming into specific areas of interest, the level of cycling at more local levels can be explored. By setting the basemap to 'Satellite' and zooming in, space available create space for cycling can be seen.
 
 The PCT works on a region-by-region basis. The url corresponds to the region you are looking at, which can be selected from the
- <a href="http://pct.bike">home page</a>. <a href="http://pct.bike/west-yorkshire/">pct.bike/west-yorkshire/</a>,
+ <a target="_blank" href="http://pct.bike">home page</a>. <a target="_blank" href="http://pct.bike/west-yorkshire/">pct.bike/west-yorkshire/</a>,
 for example, shows West Yorkshire. If you move the map's extent outside the region's boundary, the PCT will jump to a new region.
 
 Overall, there are many ways that the tool can be used to improve cycling provision. It is likely that more features will be added in future versions The table below explains the various options in the interactive map.
@@ -60,7 +60,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 1.  Census 2011 Reported Cycle Commuting
 2.  Government Target: this scenario is based on the UK government's proposed target (as set out in its draft
-<a href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/364791/141015_Cycling_Delivery_Plan.pdf">Cycling Delivery Plan</a>) to double cycling in England. Taking population increases and trip rate decreases into account, the target implies doubling the proportion of trips made by cycling nationwide. Trips that have a large distances or that already have a high rate of cycling will see cycling increase less than two-fold; trips with a below average current rate of cycling but high potential (based on the distance) will see cycling increase more than two-fold.
+<a target="_blank" href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/364791/141015_Cycling_Delivery_Plan.pdf">Cycling Delivery Plan</a>) to double cycling in England. Taking population increases and trip rate decreases into account, the target implies doubling the proportion of trips made by cycling nationwide. Trips that have a large distances or that already have a high rate of cycling will see cycling increase less than two-fold; trips with a below average current rate of cycling but high potential (based on the distance) will see cycling increase more than two-fold.
 3.  Gender equality: Women have the same cycling rate as men
 4.  Go Dutch: Cycling propensity at the levels seen in the Netherlands
 5.  Electric bicycles: Willingness to cycle longer trips increases with widespread use of electric bicycles
@@ -93,7 +93,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 1.  Straight Lines between the population weighted centroids of Census Medium Super Output Areas
 2.  'Fastest' Route using 
-<a href="http://www.cyclestreets.net/journey/help/howitworks/">Cycle Streets Routing</a>
+<a target="_blank" href="http://www.cyclestreets.net/journey/help/howitworks/">Cycle Streets Routing</a>
 
 3.  'Fastest' and 'Quietest' Routes using Cycle Streets Routing
 
@@ -374,7 +374,7 @@ In both countries, the probability of cycling falls rapidly as trip distance inc
 <div id="a3" style="display:none">
 
 We give users the option of seeing either the 'direct' or the 'direct' the 'quietest' routes on the map. Which might people use? These routes come from the journey planner Cyclestreets.net, which helps people plan their cycling route.
-<a href="http://www.cyclestreets.net/journey/help/howitworks/">CycleStreets.net</a>
+<a target="_blank" href="http://www.cyclestreets.net/journey/help/howitworks/">CycleStreets.net</a>
 shows three types of route, 'direct', 'balanced', and 'quietest'. Many cyclists currently choose to take a quieter route at the cost of extra time because often the shortest route involves sharing with motor traffic on busy roads. However, even the quieter routes can still involve negotiating busy roads at times. The aim of the NPCT is not to predict exactly where people are currently cycling. Rather we are trying to prioritise where to put new infrastructure.
 
 For many people, cycling with busy traffic is hugely off-putting. A systematic review carried out for this project found this particularly puts off women, and probably also older people and those riding with children.
@@ -445,7 +445,7 @@ This section is work in progress.
 <div id="a7" style="display:none">
 
 To create custom scenarios you need to 'build' new input data for the PCT and have a version of the tool running on your computer (not on a remote server). The steps to install working versions of the PCT and the build scripts on your computer are well described in the README files associated with the pct-load and pct-shiny GitHub repositories. These can be seen from the NPCT team's GitHub page: 
-<a href="https://github.com/npct">github.com/npct</a>.
+<a target="_blank" href="https://github.com/npct">github.com/npct</a>.
 
 To create custom scenarios, the key dataset to modify is 'l.Rds', a SpatialLinesDataFrame (an R object class) that exists in each region. In the *root directory* of the RStudio project for the `pct-load` folder (which can be opened by opening the `pct-load.Rproj` file), this could be loaded for kent, for example, with the folowing commands, resulting in the follow plot:
 
