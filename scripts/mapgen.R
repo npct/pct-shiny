@@ -42,11 +42,15 @@ regions$Region_cap = gsub(pattern = "Of", replacement = "of", x = regions$Region
 
 proj4string(regions)=CRS("+init=epsg:4326 +proj=longlat")
 proj4string(centsa)=CRS("+init=epsg:4326 +proj=longlat")
+i = 1
 for(i in 1:length(regions)){
   print(i)
   region_shape = regions[i,]
-  cents <- centsa[region_shape,]
-  zones <- ukmsoas[ukmsoas@data$geo_code %in% cents$geo_code, ]
+  region_name = region_shape$Region
+
+  zones = readRDS(paste0("../pct-data/", region_name, "/z.Rds"))
+  # cents <- centsa[region_shape,]
+  # zones <- ukmsoas[ukmsoas@data$geo_code %in% cents$geo_code, ]
   regions$pcycle[i] <- round(100 * sum(zones$Bicycle) / sum(zones$All), 1)
   regions$govtarget_slc[i] <- round(100 * sum(zones$govtarget_slc) / sum(zones$All), 1)
   regions$gendereq_slc[i] <- round(100 * sum(zones$gendereq_slc) / sum(zones$All), 1)
@@ -57,12 +61,12 @@ for(i in 1:length(regions)){
   regions$url_text[i] <- as.character(a(regions$Region_cap[i], href = regions$url[i]))
   regions$url_text[i] <- gsub('">', '" target ="_top">', regions$url_text[i])
 }
-popup <- paste0(regions$url_text, ". Percent cycling to work per scenario:<br> ",
-                round(regions$pcycle, 1), "% cycle in 2011 Census<br>",
-                round(regions$govtarget_slc, 1), "% cycle in Government Target<br>",
-                round(regions$gendereq_slc, 1), "% cycle in Gender Equality<br>",
-                round(regions$dutch_slc, 1), "% cycle to work in Go Dutch<br>",
-                round(regions$ebike_slc, 1), "% cycle in Ebike scenario<br>")
+popup <- paste0(regions$url_text, ".<br>Cycling to work per scenario:<br> ",
+                round(regions$pcycle, 1), "% in 2011 Census<br>",
+                round(regions$govtarget_slc, 1), "% in Government Target<br>",
+                round(regions$gendereq_slc, 1), "% in Gender Equality<br>",
+                round(regions$dutch_slc, 1), "% in Go Dutch<br>",
+                round(regions$ebike_slc, 1), "% in Ebike<br>")
 library(leaflet)
 qpal <- colorBin("RdYlGn", regions$pcycle, bins = c(0, 3, 6, 12, 20, 40), pretty = TRUE)
 
@@ -83,7 +87,7 @@ m <- leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
 
 m
 old = setwd("regions_www/")
-saveWidget(m, file = "map-test.html")
+saveWidget(m, file = "map.html")
 setwd(old)
 # # V1: builds all zones for a single geography
 # pkgs <- c("leaflet", "htmlwidgets", "geojsonio")
