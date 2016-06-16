@@ -106,6 +106,9 @@ data_filter <- function(scenario, type){
 # Popup function for straight line data in html table
 straight_popup <- function(data, scenario){
 
+  # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
+  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
+
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -163,7 +166,7 @@ straight_popup <- function(data, scenario){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td>", round(data[[data_filter(scenario, "sideath_heat")]], 3), " (&pound;" ,
+      <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3), " (&pound;" ,
             round(data[[data_filter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
@@ -188,6 +191,9 @@ route_type_label[['quietest']] <- 'Quiet'
 route_popup <- function(data, scenario){
 
   ifelse(("rqincr" %in% colnames(data@data)), route_type <-'quiet', route_type <-'fast')
+
+  # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
+  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
 
   if (route_type=='fast') {
     if(scenario == 'olc') {
@@ -249,8 +255,8 @@ route_popup <- function(data, scenario){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td>", round(data[[data_filter(scenario, "sideath_heat")]], 3), " (&pound;" ,
-          round(data[[data_filter(scenario, "sivalue_heat")]]), ")
+      <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
+             " (&pound;" , round(data[[data_filter(scenario, "sivalue_heat")]]), ")
     </td>
     </tr>
     <tr>
@@ -343,6 +349,9 @@ network_route_popup <- function(data, scenario){
 zone_popup <- function(data, scenario, zone){
   zone_filter_name <- scenarios_names[zone]
 
+  # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
+  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
+
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -399,8 +408,9 @@ zone_popup <- function(data, scenario, zone){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td>", round(data[[data_filter(scenario, "sideath_heat")]], 3), " (&pound;",
-            round(data[[data_filter(scenario, "sivalue_heat")]]), ")</td>
+      <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3), " (&pound;" ,
+          round(data[[data_filter(scenario, "sivalue_heat")]]), ")
+      </td>
     </tr>
     <tr>
       <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
