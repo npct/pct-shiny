@@ -364,8 +364,10 @@ shinyServer(function(input, output, session){
                br(),
                "Fast routes",
                make_download_link("rf", "fast_routes", region$current),
+               br(),
                "Quiet routes",
                make_download_link("rq", "quiet_routes", region$current),
+               br(),
                "Route Newtork",
                make_download_link("rnet", "route_network", region$current)
     ))

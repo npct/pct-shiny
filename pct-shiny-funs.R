@@ -33,48 +33,47 @@ get_scenario_name <- function(sc_name){
 }
 
 numeric_line_col_names <- c(
-  "Average Slope"                     = "avslope",
-  "Straight Line Distance (km)"       = "dist",
-  "Cirquity"                          = "cirquity",
-  "Fastest Route Distance (km)"       = "dist_fast",
-  "Quietest Route Distance (km)"      = "dist_quiet",
-  "Cycling Observed (%)"              = "clc",
-  "Cyclists at Government target"     = "govtarget_slc",
-  "Increase at Government target"     = "govtarget_sic",
-  "Cyclists at gender equality"       = "gendereq_slc",
-  "Increase at gender equality"       = "gendereq_sic",
-  "Cyclists at Dutch levels"          = "dutch_slc",
-  "Increase at Dutch levels"          = "dutch_sic",
-  "Cyclists at Ebikes scenario"       = "ebike_slc",
-  "Increase at Ebikes scenario"       = "ebike_sic"
+  "No. cyclists in Government Target"            = "govtarget_slc",
+  "Change in deaths/year in Government Target"   = "govtarget_sideath_heat",
+  "Change in CO2/year (kg) in Government Target" = "govtarget_sico2",
+  "No. cyclists in Gender Equality"              = "gendereq_slc",
+  "Change in deaths/year in Gender Equality"     = "gendereq_sideath_heat",
+  "Change in CO2/year (kg) in Gender Equality"   = "gendereq_sico2",
+  "No. cyclists in Go Dutch"                     = "dutch_slc",
+  "Change in deaths/year in Go Dutch"            = "dutch_sideath_heat",
+  "Change in CO2/year (kg) in Go Dutch"          = "dutch_sico2",
+  "No. cyclists in Ebikes"                       = "ebike_slc",
+  "Change in deaths/year in Ebikes"              = "ebike_sideath_heat",
+  "Change in CO2/year (kg) in Ebikes"            = "ebike_sico2"
 )
 
 line_col_names <- c(
   "Start and end zones"               = "id",
-  "All commutes"                      = "All",
-  "Rail"                              = "Rail",
-  "Bus"                               = "Bus",
-  "Car"                               = "Car_driver",
-  "Bicycle"                           = "Bicycle",
+  "Total no. commuters"               = "All",
+  "No. car drivers in Census 2011"    = "Car_driver",
+  "No. cyclists in Census 2011"       = "Bicycle",
   numeric_line_col_names
 )
 
 numeric_zone_col_names <- c(
-  "Average slope"                     = "avslope",
-  "Cyclists in census"                = "Bicycle",
-  "Cyclists at govenment target"      = "govtarget_slc",
-  "Increase at govenment target"      = "govtarget_sic",
-  "Cyclists at gender equality"       = "gendereq_slc",
-  "Increase at gender equality"       = "gendereq_sic",
-  "Cyclists at Dutch levels"          = "dutch_slc",
-  "Increase at Dutch levels"          = "dutch_sic",
-  "Cyclists at Ebike scenario"        = "ebike_slc",
-  "Increase at Ebike scenario"        = "ebike_sic"
+  "No. cyclists in Census 2011"                  = "Bicycle",
+  "No. cyclists in Government Target"            = "govtarget_slc",
+  "Change in deaths/year in Government Target"   = "govtarget_sideath_heat",
+  "Change in CO2/year (kg) in Government Target" = "govtarget_sico2",
+  "No. cyclists in Gender Equality"              = "gendereq_slc",
+  "Change in deaths/year in Gender Equality"     = "gendereq_sideath_heat",
+  "Change in CO2/year (kg) in Gender Equality"   = "gendereq_sico2",
+  "No. cyclists in Go Dutch"                     = "dutch_slc",
+  "Change in deaths/year in Go Dutch"            = "dutch_sideath_heat",
+  "Change in CO2/year (kg) in Go Dutch"          = "dutch_sico2",
+  "No. cyclists in Ebikes"                       = "ebike_slc",
+  "Change in deaths/year in Ebikes"              = "ebike_sideath_heat",
+  "Change in CO2/year (kg) in Ebikes"            = "ebike_sico2"
 )
 
 zone_col_names <- c(
-  "Geo code"                          = "geo_code",
-  "Geo label"                         = "geo_label",
+  "Zone code"                          = "geo_code",
+  "Zone name"                          = "geo_label",
   numeric_zone_col_names
 )
 
