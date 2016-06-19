@@ -425,6 +425,10 @@ zone_popup <- function(data, scenario, zone){
 centroid_popup <- function(data, scenario, zone){
   zone_filter_name <- scenarios_names[zone]
 
+  # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
+  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
+
+
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -492,8 +496,9 @@ centroid_popup <- function(data, scenario, zone){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td>", round(data[[data_filter(scenario, "sideath_heat")]], 3), " (&pound;",
-           round(data[[data_filter(scenario, "sivalue_heat")]]), ") </td>
+           <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3), " (&pound;" ,
+           round(data[[data_filter(scenario, "sivalue_heat")]]), ")
+      </td>
     </tr>
     <tr>
       <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
