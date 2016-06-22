@@ -33,47 +33,48 @@ get_scenario_name <- function(sc_name){
 }
 
 numeric_line_col_names <- c(
-  "No. cyclists in Government Target"            = "govtarget_slc",
-  "Change in deaths/year in Government Target"   = "govtarget_sideath_heat",
-  "Change in CO2/year (kg) in Government Target" = "govtarget_sico2",
-  "No. cyclists in Gender Equality"              = "gendereq_slc",
-  "Change in deaths/year in Gender Equality"     = "gendereq_sideath_heat",
-  "Change in CO2/year (kg) in Gender Equality"   = "gendereq_sico2",
-  "No. cyclists in Go Dutch"                     = "dutch_slc",
-  "Change in deaths/year in Go Dutch"            = "dutch_sideath_heat",
-  "Change in CO2/year (kg) in Go Dutch"          = "dutch_sico2",
-  "No. cyclists in Ebikes"                       = "ebike_slc",
-  "Change in deaths/year in Ebikes"              = "ebike_sideath_heat",
-  "Change in CO2/year (kg) in Ebikes"            = "ebike_sico2"
+  "Average Slope"                     = "avslope",
+  "Straight Line Distance (km)"       = "dist",
+  "Cirquity"                          = "cirquity",
+  "Fastest Route Distance (km)"       = "dist_fast",
+  "Quietest Route Distance (km)"      = "dist_quiet",
+  "Cycling Observed (%)"              = "clc",
+  "Cyclists at Government target"     = "govtarget_slc",
+  "Increase at Government target"     = "govtarget_sic",
+  "Cyclists at gender equality"       = "gendereq_slc",
+  "Increase at gender equality"       = "gendereq_sic",
+  "Cyclists at Dutch levels"          = "dutch_slc",
+  "Increase at Dutch levels"          = "dutch_sic",
+  "Cyclists at Ebikes scenario"       = "ebike_slc",
+  "Increase at Ebikes scenario"       = "ebike_sic"
 )
 
 line_col_names <- c(
   "Start and end zones"               = "id",
-  "Total no. commuters"               = "All",
-  "No. car drivers in Census 2011"    = "Car_driver",
-  "No. cyclists in Census 2011"       = "Bicycle",
+  "All commutes"                      = "All",
+  "Rail"                              = "Rail",
+  "Bus"                               = "Bus",
+  "Car"                               = "Car_driver",
+  "Bicycle"                           = "Bicycle",
   numeric_line_col_names
 )
 
 numeric_zone_col_names <- c(
-  "No. cyclists in Census 2011"                  = "Bicycle",
-  "No. cyclists in Government Target"            = "govtarget_slc",
-  "Change in deaths/year in Government Target"   = "govtarget_sideath_heat",
-  "Change in CO2/year (kg) in Government Target" = "govtarget_sico2",
-  "No. cyclists in Gender Equality"              = "gendereq_slc",
-  "Change in deaths/year in Gender Equality"     = "gendereq_sideath_heat",
-  "Change in CO2/year (kg) in Gender Equality"   = "gendereq_sico2",
-  "No. cyclists in Go Dutch"                     = "dutch_slc",
-  "Change in deaths/year in Go Dutch"            = "dutch_sideath_heat",
-  "Change in CO2/year (kg) in Go Dutch"          = "dutch_sico2",
-  "No. cyclists in Ebikes"                       = "ebike_slc",
-  "Change in deaths/year in Ebikes"              = "ebike_sideath_heat",
-  "Change in CO2/year (kg) in Ebikes"            = "ebike_sico2"
+  "Average slope"                     = "avslope",
+  "Cyclists in census"                = "Bicycle",
+  "Cyclists at govenment target"      = "govtarget_slc",
+  "Increase at govenment target"      = "govtarget_sic",
+  "Cyclists at gender equality"       = "gendereq_slc",
+  "Increase at gender equality"       = "gendereq_sic",
+  "Cyclists at Dutch levels"          = "dutch_slc",
+  "Increase at Dutch levels"          = "dutch_sic",
+  "Cyclists at Ebike scenario"        = "ebike_slc",
+  "Increase at Ebike scenario"        = "ebike_sic"
 )
 
 zone_col_names <- c(
-  "Zone code"                          = "geo_code",
-  "Zone name"                          = "geo_label",
+  "Geo code"                          = "geo_code",
+  "Geo label"                         = "geo_label",
   numeric_zone_col_names
 )
 
@@ -424,10 +425,6 @@ zone_popup <- function(data, scenario, zone){
 centroid_popup <- function(data, scenario, zone){
   zone_filter_name <- scenarios_names[zone]
 
-  # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
-  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
-
-
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -495,9 +492,8 @@ centroid_popup <- function(data, scenario, zone){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-           <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3), " (&pound;" ,
-           round(data[[data_filter(scenario, "sivalue_heat")]]), ")
-      </td>
+      <td>", round(data[[data_filter(scenario, "sideath_heat")]], 3), " (&pound;",
+           round(data[[data_filter(scenario, "sivalue_heat")]]), ") </td>
     </tr>
     <tr>
       <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
