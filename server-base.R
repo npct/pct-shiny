@@ -215,17 +215,16 @@ shinyServer(function(input, output, session){
     region$replot
     input$map_base
     zoom_multiplier <- get_zone_multiplier(input$map_zoom)
-    clearGroup(leafletProxy("map"), "centres")
-    if(input$map_zoom < 9 || input$line_type == 'none') return()
-    addCircleMarkers(leafletProxy("map"), data = to_plot$cents, radius = (to_plot$cents$All* zoom_multiplier) / mean(to_plot$cents$All) ,
-                       color = get_line_colour("centres"), group = "centres", opacity = 0.5,
-                       popup = centroid_popup(to_plot$cents, input$scenario, zone_attr()))
+    if(input$map_zoom < 11 || isolate(input$line_type) == 'none')
+      hideGroup(leafletProxy("map"), "centres")
+    else
+      showGroup(leafletProxy("map"), "centres")
   })
 
   observe({
     region$replot
     input$map_base
-    show_zone_popup <- (input$line_type == 'none')
+    show_zone_popup <- isolate({input$line_type == 'none'})
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr())
     leafletProxy("map")  %>% clearGroup(., "zones") %>% clearGroup(., "region_name") %>%
       addPolygons(.,  data = to_plot$zones
@@ -239,12 +238,15 @@ shinyServer(function(input, output, session){
                   , options = pathOptions(clickable = show_zone_popup)
                   , layerId = paste0(to_plot$zones[['geo_code']], '-', "zones")) %>%
       addCircleMarkers(., radius=0, lat=0, lng=0, group = "region_name", fillOpacity= 0, layerId = region$current) %>%
+      addCircleMarkers(., data = to_plot$cents, radius = to_plot$cents$All / mean(to_plot$cents$All) * 2 + 1,
+                       color = get_line_colour("centres"), group = "centres", opacity = 0.5,
+                       popup = centroid_popup(to_plot$cents, input$scenario, zone_attr())) %>%
       # Hide and Show line layers, so that they are displayed as the top layer in the map.
       # Leaflet's function bringToBack() or bringToFront() (see http://leafletjs.com/reference.html#path)
       # don't seem to exist for R
       hideGroup(., "centres") %>% showGroup(., "centres") %>%
       {
-        switch(input$line_type,
+        switch(isolate(input$line_type),
                'straight' = hideGroup(., "straight_line") %>% showGroup(., "straight_line"),
                'route'= {
                  hideGroup(., "quieter_route") %>% showGroup(., "quieter_route")
@@ -364,8 +366,10 @@ shinyServer(function(input, output, session){
                br(),
                "Fast routes",
                make_download_link("rf", "fast_routes", region$current),
+               br(),
                "Quiet routes",
                make_download_link("rq", "quiet_routes", region$current),
+               br(),
                "Route Newtork",
                make_download_link("rnet", "route_network", region$current)
     ))
