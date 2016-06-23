@@ -215,7 +215,7 @@ shinyServer(function(input, output, session){
     region$replot
     input$map_base
     zoom_multiplier <- get_zone_multiplier(input$map_zoom)
-    if(input$map_zoom < 11 || isolate(input$line_type) == 'none')
+    if(input$map_zoom < 11 || input$line_type == 'none')
       hideGroup(leafletProxy("map"), "centres")
     else
       showGroup(leafletProxy("map"), "centres")
