@@ -215,7 +215,7 @@ shinyServer(function(input, output, session){
     region$replot
     input$map_base
     zoom_multiplier <- get_zone_multiplier(input$map_zoom)
-    if(input$map_zoom < 11 || isolate(input$line_type) == 'none')
+    if(input$map_zoom < 11 || input$line_type == 'none')
       hideGroup(leafletProxy("map"), "centres")
     else
       showGroup(leafletProxy("map"), "centres")
@@ -244,7 +244,8 @@ shinyServer(function(input, output, session){
       # Hide and Show line layers, so that they are displayed as the top layer in the map.
       # Leaflet's function bringToBack() or bringToFront() (see http://leafletjs.com/reference.html#path)
       # don't seem to exist for R
-      hideGroup(., "centres") %>% showGroup(., "centres") %>%
+      # By default hide the centroids
+      hideGroup(., "centres") %>%
       {
         switch(isolate(input$line_type),
                'straight' = hideGroup(., "straight_line") %>% showGroup(., "straight_line"),
@@ -256,6 +257,10 @@ shinyServer(function(input, output, session){
                'rnet' = hideGroup(., "route_network") %>% showGroup(., "route_network")
         )
       }
+
+      # Display centroids when zoom level is greater than 11 and lines are selected
+      if (isolate(input$map_zoom) >= 11 && isolate(input$line_type) != 'none')
+        showGroup(leafletProxy("map"), "centres")
   })
 
   transp_rate <- reactive({
