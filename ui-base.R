@@ -139,22 +139,28 @@ shinyUI(
     tabPanel("Lines",
              br(),
              br(),
-             helpText("This tab shows the underlying data of the Cycling Flows. You can download this data in",
-                      htmlOutput("line_data_links")),
+             HTML("This tab shows a selection of the Census 2011 and scenario data generated
+                  for selected between-zone lines in the chosen region (see Model Output tab
+                  for details of the lines included). The full csv dataset contains further
+                  details concerning mode share in Census 2011; the cycling, walking and driving
+                  levels in each scenario; and the associated health and carbon impacts. You can
+                  download the full csv dataset for the lines here, alongside geographic and
+                  attribute data to be read by R (.Rds) or GIS programs such as QGIS (.geojson):"),
+             htmlOutput("line_data_links"),
              uiOutput("warning_message"),
              DT::dataTableOutput("lines_datatable")
     ),
     tabPanel("Zones",
              br(),
              br(),
-             helpText(
-               HTML("This tab shows the underlying data of the Zones </br>
-                    <strong>Data Source: </strong> We are using the 2011 Census data for England and Wales.
-                    It contains origin-destination data on workplace flows. For more information, please see the
-                    <a target='_blank' href = \"https://www.nomisweb.co.uk/census/2011/wu03ew\">source</a>.
-                    You can download the data:"), htmlOutput("zone_data_links")),
+             HTML("This tab shows a selection of the Census 2011 and scenario data generated
+                    for all zones in the chosen region. The full csv dataset contains further
+                    details concerning mode share in Census 2011; the cycling, walking and driving
+                    levels in each scenario; and the associated health and carbon impacts.
+                    You can download the full csv dataset for the zones here, alongside geographic
+                    and attribute data to be read by R (.Rds) or GIS programs such as QGIS (.geojson):"),
+             htmlOutput("zone_data_links"),
              DT::dataTableOutput("zones_data_table")
-
     ),
     tabPanel("Model Output",
              htmlOutput("m_output")
