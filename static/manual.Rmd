@@ -436,7 +436,30 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 <div id="a5" style="display:none">
 
-This section is work in progress.
+<!-- This section is work in progress. -->
+
+The data underlying the PCT can be downloaded by clicking on the the Lines tab. Data can be downloaded in 3 formats: 
+
+- `.Rds`: This includes geographical and attribute data in R's native file format. After the file has been downloaded, `.Rds` files can be loaded using the R function `readRDS()`.
+
+- `.geojson`: This is an open data format for geographical and attribute data. `.geojson` files can be opened using the open source software [QGIS](http://www.qgis.org/en/site/), which can be installed for free.
+
+- `.csv`: This is a standard format for tabular data and can be opened in standard spreadsheet programs such as [LibreOffice Calc](https://www.libreoffice.org/discover/calc/) and Microsoft Excel.
+
+The PCT's native file format is `.Rds` because it is fast and light. Loading these into into R is illustrated below for the lines data (called 'l.Rds') for West Yorkshire:
+
+```{r, eval=FALSE}
+desire_lines = readRDS("l.Rds")
+```
+
+```{r, eval=FALSE}
+library(sp) # load sp package for spatial data
+plot(desire_lines)
+```
+
+
+
+For more information about using the geographic data in QGIS, please refer to the official [QGIS Training Manual](http://docs.qgis.org/2.8/en/docs/training_manual/index.html). 
 
 </div>
 

@@ -147,7 +147,7 @@ Running the R code at the bottom generates the html files-->
 
 </div>
 <p>Welcome to the <strong>User Manual</strong> for the Propensity to Cycle Tool (PCT).</p>
-<p>This was last built on 2016-06-16.</p>
+<p>This was last built on 2016-06-28.</p>
 <p>This is work in progress and is being developed as part of a suite of training materials during 2016. To request more information or provide feedback, please <a href="mailto:pct@pct.bike?Subject=Manual">email us at pct@pct.bike</a> or report issues on our <a target="_blank" href="https://github.com/npct/pct-shiny/issues">GitHub issue tracker</a>. Contributions to the project are welcome. This file, for instance, can be edited online at <a target="_blank" href="https://github.com/npct/pct-shiny/edit/master/static/manual.Rmd">github.com/npct/pct-shiny</a>.</p>
 <!-- The NPCT has a [blog](http://pct.bike/wp/), where more [training materials](http://pct.bike/wp/?cat=6) including short videos, are being posted. -->
 <p><a href="javascript:toggleElement(&#39;helptable&#39;)">1. How should the tool be used?</a></p>
@@ -425,7 +425,18 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 </div>
 <p><a href="javascript:toggleElement(&#39;a5&#39;)">6. How to download and use the data from the PCT?</a></p>
 <div id="a5" style="display:none">
-<p>This section is work in progress.</p>
+<!-- This section is work in progress. -->
+<p>The data underlying the PCT can be downloaded by clicking on the the Lines tab. Data can be downloaded in 3 formats:</p>
+<ul>
+<li><p><code>.Rds</code>: This includes geographical and attribute data in R’s native file format. After the file has been downloaded, <code>.Rds</code> files can be loaded using the R function <code>readRDS()</code>.</p></li>
+<li><p><code>.geojson</code>: This is an open data format for geographical and attribute data. <code>.geojson</code> files can be opened using the open source software <a href="http://www.qgis.org/en/site/">QGIS</a>, which can be installed for free.</p></li>
+<li><p><code>.csv</code>: This is a standard format for tabular data and can be opened in standard spreadsheet programs such as <a href="https://www.libreoffice.org/discover/calc/">LibreOffice Calc</a> and Microsoft Excel.</p></li>
+</ul>
+<p>The PCT’s native file format is <code>.Rds</code> because it is fast and light. Loading these into into R is illustrated below for the lines data (called ‘l.Rds’) for West Yorkshire:</p>
+<pre class="r"><code>desire_lines = readRDS(&quot;l.Rds&quot;)</code></pre>
+<pre class="r"><code>library(sp) # load sp package for spatial data
+plot(desire_lines)</code></pre>
+<p>For more information about using the geographic data in QGIS, please refer to the official <a href="http://docs.qgis.org/2.8/en/docs/training_manual/index.html">QGIS Training Manual</a>.</p>
 </div>
 <p><a href="javascript:toggleElement(&#39;a7&#39;)">7. How to create custom scenarios?</a></p>
 <div id="a7" style="display:none">
