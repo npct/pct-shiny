@@ -421,7 +421,7 @@ shinyServer(function(input, output, session){
   })
 
 
-  output$imd_Legend <- renderPlot({
+  output$imd_legend <- renderPlot({
     my_lab <- c("Most deprived decile", "2nd", "3rd", "4th", "5th",
                "6th", "7th", "8th", "9th", "Least deprived decile",
                "Data missing", "Data not available")
@@ -469,9 +469,9 @@ shinyServer(function(input, output, session){
       formatRound(columns = names(numeric_zone_col_names), digits=2)
   })
 
-  shinyjs::onclick("togglePanel", shinyjs::toggle(id = "input_panel", anim = FALSE))
-  shinyjs::onclick("toggleLegend", shinyjs::toggle(id = "zone_legend", anim = FALSE))
-  shinyjs::onclick("toggleMapLegend", shinyjs::toggle(id = "map_legend", anim = FALSE))
+  shinyjs::onclick("toggle_panel", shinyjs::toggle(id = "input_panel", anim = FALSE))
+  shinyjs::onclick("toggle_legend", shinyjs::toggle(id = "zone_legend", anim = FALSE))
+  shinyjs::onclick("toggle_map_legend", shinyjs::toggle(id = "map_legend", anim = FALSE))
 
   observe({
     if (input$map_base == 'IMD')

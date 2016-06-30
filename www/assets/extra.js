@@ -10,9 +10,9 @@ $( window ).load(function() {
     }
   };
 
-  $('#togglePanel').click(function(){ togglePanel('#input_panel', this); });
-  $('#toggleLegend').click(function(){ togglePanel('#zone_legend', this); });
-  $('#toggleMapLegend').click(function(){ togglePanel('#map_legend', this); });
+  $('#toggle_panel').click(function(){ togglePanel('#input_panel', this); });
+  $('#toggle_legend').click(function(){ togglePanel('#zone_legend', this); });
+  $('#toggle_map_legend').click(function(){ togglePanel('#map_legend', this); });
 
   $('select').addClass("form-control");
   var urlUpdater = function(lMap, oldRegion){

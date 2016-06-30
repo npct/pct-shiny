@@ -63,7 +63,7 @@ shinyUI(
           fixed = TRUE,  top = 110,  right = 20, width = 180,
           height = "auto",  style = "opacity: 0.9",
           tags$div(title="Show/Hide Panel",
-                   a(id = "togglePanel", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+                   a(id = "toggle_panel", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
           ),
           div(
             id = "input_panel",
@@ -101,7 +101,7 @@ shinyUI(
           top = 100, left = 25, height = 30, width = 100,
           style = "opacity: 0.7",
           tags$div(title="Show/Hide zone legend",
-                   a(id = "toggleLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+                   a(id = "toggle_legend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
           ),
           div(id = "zone_legend",
               tags$div(title="Scenario-specific quartiles of cycling level",
@@ -121,11 +121,11 @@ shinyUI(
             bottom = 235, left = 5, height = 20, width = 225, draggable = TRUE,
             style = "opacity: 0.7",
             tags$div(title="Show/Hide map legend",
-                     a(id = "toggleMapLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+                     a(id = "toggle_map_legend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
             ),
             div(id = "map_legend",
                 tags$div(title="Index of Multiple Deprivation",
-                   plotOutput("imd_Legend", width = "100%", height = 180)
+                   plotOutput("imd_legend", width = "100%", height = 180)
 
                 )
             )
