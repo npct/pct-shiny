@@ -16,7 +16,7 @@ $( window ).load(function() {
 
   $('select').addClass("form-control");
   var urlUpdater = function(lMap, oldRegion){
-    var grp = lMap.layerManager.getLayerGroup("regionName");
+    var grp = lMap.layerManager.getLayerGroup("region_name");
     var currentRegion;
     if(grp && grp.getLayers()[0]) {
       currentRegion = grp.getLayers()[0].options.layerId;
