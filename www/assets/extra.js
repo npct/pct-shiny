@@ -1,5 +1,5 @@
 $( window ).load(function() {
-  var togglePanel = function(panelId, link){
+  var toggle_panel = function(panelId, link){
     var panel = $(panelId);
     // Commment toggling as the toggle function is being handled by shinyjs
     //panel.toggle();
@@ -10,32 +10,32 @@ $( window ).load(function() {
     }
   };
 
-  $('#toggle_panel').click(function(){ togglePanel('#input_panel', this); });
-  $('#toggle_legend').click(function(){ togglePanel('#zone_legend', this); });
-  $('#toggle_map_legend').click(function(){ togglePanel('#map_legend', this); });
+  $('#toggle_panel').click(function(){ toggle_panel('#input_panel', this); });
+  $('#toggle_legend').click(function(){ toggle_panel('#zone_legend', this); });
+  $('#toggle_map_legend').click(function(){ toggle_panel('#map_legend', this); });
 
   $('select').addClass("form-control");
-  var urlUpdater = function(lMap, oldRegion){
-    var grp = lMap.layerManager.getLayerGroup("region_name");
-    var currentRegion;
+  var url_updater = function(l_map, old_region){
+    var grp = l_map.layerManager.getLayerGroup("region_name");
+    var current_region;
     if(grp && grp.getLayers()[0]) {
-      currentRegion = grp.getLayers()[0].options.layerId;
+      current_region = grp.getLayers()[0].options.layerId;
     }
-    if(!!oldRegion && !!currentRegion && oldRegion != currentRegion){
-      var newUrl = (window.history.state == "changed") ? currentRegion : "../" + currentRegion;
-      window.history.pushState("changed", currentRegion, newUrl);
-      setTimeout(urlUpdater, 500, lMap, currentRegion);
+    if(!!old_region && !!current_region && old_region != current_region){
+      var new_url = (window.history.state == "changed") ? current_region : "../" + current_region;
+      window.history.pushState("changed", current_region, new_url);
+      setTimeout(url_updater, 500, l_map, current_region);
     } else {
-      setTimeout(urlUpdater, 500, lMap, currentRegion || oldRegion);
+      setTimeout(url_updater, 500, l_map, current_region || old_region);
     }
   };
 
   var initMap = function(){
     if($(map).data('leaflet-map')){
-      // lMap is the leaflet map object see http://leafletjs.com/reference.html
-      var lMap = $(map).data('leaflet-map');
-      L.control.scale().addTo(lMap);
-      urlUpdater(lMap, undefined);
+      // l_map is the leaflet map object see http://leafletjs.com/reference.html
+      var l_map = $(map).data('leaflet-map');
+      L.control.scale().addTo(l_map);
+      url_updater(l_map, undefined);
     }
     else {
       setTimeout(initMap, 100);
