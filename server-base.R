@@ -370,13 +370,13 @@ shinyServer(function(input, output, session){
                make_download_link("l", "lines", region$current),
                br(),
                "Fast routes",
-               make_download_link("rf", "fast_routes", region$current),
+               make_download_link("rf", "fast_routes", region$current, c('Rds', 'geojson')),
                br(),
                "Quiet routes",
-               make_download_link("rq", "quiet_routes", region$current),
+               make_download_link("rq", "quiet_routes", region$current, c('Rds', 'geojson')),
                br(),
                "Route Newtork",
-               make_download_link("rnet", "route_network", region$current)
+               make_download_link("rnet", "route_network", region$current, c('Rds', 'geojson'))
     ))
   })
 

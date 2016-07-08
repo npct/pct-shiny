@@ -14,8 +14,7 @@ get_line_colour <- function(line_type){
   line_and_colour_df$line_colour[line_and_colour_df$line_type == line_type]
 }
 
-make_download_link <- function(file, download_name, region){
-  formats <- c('Rds', 'geojson', 'csv')
+make_download_link <- function(file, download_name, region, formats = c('Rds', 'geojson', 'csv')){
   base_url = paste("https://cdn.rawgit.com/npct/pct-data", data_sha, region, sep = "/")
   all_links <- ""
   for(i in 1:length(formats)){
