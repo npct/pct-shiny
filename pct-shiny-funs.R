@@ -14,8 +14,7 @@ get_line_colour <- function(line_type){
   line_and_colour_df$line_colour[line_and_colour_df$line_type == line_type]
 }
 
-make_download_link <- function(file, download_name, region){
-  formats <- c('Rds', 'geojson', 'csv')
+make_download_link <- function(file, download_name, region, formats = c('Rds', 'geojson', 'csv')){
   base_url = paste("https://cdn.rawgit.com/npct/pct-data", data_sha, region, sep = "/")
   all_links <- ""
   for(i in 1:length(formats)){
@@ -49,14 +48,14 @@ numeric_line_col_names <- c(
 
 line_col_names <- c(
   "Start and end zones"               = "id",
-  "Total no. commuters"               = "All",
-  "No. car drivers in Census 2011"    = "Car_driver",
-  "No. cyclists in Census 2011"       = "Bicycle",
+  "Total no. commuters"               = "all",
+  "No. car drivers in Census 2011"    = "car_driver",
+  "No. cyclists in Census 2011"       = "bicycle",
   numeric_line_col_names
 )
 
 numeric_zone_col_names <- c(
-  "No. cyclists in Census 2011"                  = "Bicycle",
+  "No. cyclists in Census 2011"                  = "bicycle",
   "No. cyclists in Government Target"            = "govtarget_slc",
   "Change in deaths/year in Government Target"   = "govtarget_sideath_heat",
   "Change in CO2/year (kg) in Government Target" = "govtarget_sico2",
@@ -99,7 +98,7 @@ get_colour_ramp <- function(colors, values) {
 }
 
 data_filter <- function(scenario, type){
-  ifelse(scenario == "olc", "Bicycle", paste(scenario, type, sep = "_"))
+  ifelse(scenario == "olc", "bicycle", paste(scenario, type, sep = "_"))
 }
 
 # Popup function for straight line data in html table
@@ -118,15 +117,15 @@ straight_popup <- function(data, scenario){
     </tr>
     <tr>
       <td> Total commuters: </td>
-      <td>", data$All, "</td>
+      <td>", data$all, "</td>
     </tr>
     <tr>
       <td> Cyclists (baseline): &nbsp; </td>
-      <td>",  data$Bicycle, " (", round(100 * data$Bicycle / data$All), "%) </td>
+      <td>",  data$bicycle, " (", round(100 * data$bicycle / data$all), "%) </td>
     </tr>
     <tr>
       <td> Drivers (baseline): &nbsp; </td>
-      <td>", data$Car_driver, " (", round(100 * data$Car_driver / data$All), "%) </td>
+      <td>", data$car_driver, " (", round(100 * data$car_driver / data$all), "%) </td>
     </tr>
     <tr>
       <td> Distance (km): </td>
@@ -149,15 +148,15 @@ straight_popup <- function(data, scenario){
     </tr>
     <tr>
       <td> Total commuters: </td>
-      <td>", data$All, "</td>
+      <td>", data$all, "</td>
     </tr>
     <tr>
       <td> Cyclists (baseline): </td>
-      <td>", data$Bicycle, " (", round(100 * data$Bicycle / data$All), "%) </td>
+      <td>", data$bicycle, " (", round(100 * data$bicycle / data$all), "%) </td>
     </tr>
     <tr>
       <td> Cyclists (scenario): </td>
-      <td>", round(data[[data_filter(scenario, "slc")]]), " (", round(100*data[[data_filter(scenario, "slc")]] / data$All), "%) </td>
+      <td>", round(data[[data_filter(scenario, "slc")]]), " (", round(100*data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
     </tr>
     <tr>
       <td> Change in drivers: </td>
@@ -205,15 +204,15 @@ route_popup <- function(data, scenario){
     </tr>
     <tr>
       <td> Total commuters: </td>
-      <td>", data$All, "</td>
+      <td>", data$all, "</td>
     </tr>
     <tr>
       <td> Cyclists (baseline): &nbsp; </td>
-      <td>",  data$Bicycle, " (", round(100 * data$Bicycle / data$All), "%) </td>
+      <td>",  data$bicycle, " (", round(100 * data$bicycle / data$all), "%) </td>
     </tr>
     <tr>
       <td> Drivers (baseline): &nbsp; </td>
-      <td>", data$Car_driver, " (", round(100 * data$Car_driver / data$All), "%) </td>
+      <td>", data$car_driver, " (", round(100 * data$car_driver / data$all), "%) </td>
     </tr>
     <tr>
       <td> Route Distance (km): </td>
@@ -238,15 +237,15 @@ route_popup <- function(data, scenario){
     </tr>
     <tr>
       <td> Total commuters: </td>
-      <td>", data$All, "</td>
+      <td>", data$all, "</td>
     </tr>
     <tr>
       <td> Cyclists (baseline): </td>
-      <td>", data$Bicycle, " (", round(100 * data$Bicycle / data$All), "%) </td>
+      <td>", data$bicycle, " (", round(100 * data$bicycle / data$all), "%) </td>
     </tr>
     <tr>
       <td> Cyclists (scenario): </td>
-      <td>", round(data[[data_filter(scenario, "slc")]]), " (", round(100*data[[data_filter(scenario, "slc")]] / data$All), "%) </td>
+      <td>", round(data[[data_filter(scenario, "slc")]]), " (", round(100*data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
     </tr>
     <tr>
       <td> Change in drivers: </td>
@@ -318,7 +317,7 @@ network_route_popup <- function(data, scenario){
   <tbody>
     <tr>
       <td> Between-zone cyclists (baseline): &nbsp; </td>
-      <td>", data$Bicycle, "</td>
+      <td>", data$bicycle, "</td>
     </tr>
   </tbody>
 </table>
@@ -332,7 +331,7 @@ network_route_popup <- function(data, scenario){
   <tbody>
     <tr>
       <td> Between-zone cyclists (baseline): &nbsp; </td>
-      <td>", data$Bicycle, "</td>
+      <td>", data$bicycle, "</td>
     </tr>
     <tr>
       <td> Between-zone cyclists (scenario): &nbsp; </td>
@@ -362,15 +361,15 @@ zone_popup <- function(data, scenario, zone){
     </tr>
     <tr>
       <td> Total commuters: </td>
-      <td>", data$All, "</td>
+      <td>", data$all, "</td>
     </tr>
     <tr>
       <td> Cyclists (baseline): &nbsp; </td>
-      <td>",  round(data[[data_filter('olc', zone)]] ), " (", round(100*data[[data_filter('olc', zone)]] /data$All), "%) </td>
+      <td>",  round(data[[data_filter('olc', zone)]] ), " (", round(100*data[[data_filter('olc', zone)]] /data$all), "%) </td>
     </tr>
     <tr>
       <td> Drivers (baseline): &nbsp; </td>
-      <td>", data$Car, " (", round(100* data$Car/data$All), "%) </td>
+      <td>", data$car_driver, " (", round(100* data$car_driver/data$all), "%) </td>
     </tr>
   </tbody>
 </table>")
@@ -387,15 +386,15 @@ zone_popup <- function(data, scenario, zone){
     </tr>
     <tr>
       <td> Total commuters: </td>
-      <td>", data$All, "</td>
+      <td>", data$all, "</td>
     </tr>
     <tr>
       <td> Cyclists (baseline): &nbsp; </td>
-      <td>",  round(data[[data_filter('olc', zone)]] ), " (", round(100*data[[data_filter('olc', zone)]] /data$All), "%) </td>
+      <td>",  round(data[[data_filter('olc', zone)]] ), " (", round(100*data[[data_filter('olc', zone)]] /data$all), "%) </td>
     </tr>
     <tr>
       <td> Cyclists (scenario): </td>
-      <td>", round(data[[data_filter(scenario, 'slc')]]), " (", round(100*data[[data_filter(scenario, "slc")]] / data$All), "%) </td>
+      <td>", round(data[[data_filter(scenario, 'slc')]]), " (", round(100*data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
     </tr>
     <tr>
       <td> Change in cyclists: </td>
@@ -446,15 +445,15 @@ centroid_popup <- function(data, scenario, zone){
     </tr>
     <tr>
       <td> Total commuters: </td>
-      <td>", data$All, "</td>
+      <td>", data$all, "</td>
     </tr>
     <tr>
       <td> Cyclists (baseline): &nbsp; </td>
-      <td>",  data$Bicycle, " (", round(100 * data$Bicycle / data$All), "%) </td>
+      <td>",  data$bicycle, " (", round(100 * data$bicycle / data$all), "%) </td>
     </tr>
     <tr>
       <td> Drivers (baseline): &nbsp; </td>
-      <td>", data$Car_driver, " (", round(100 * data$Car_driver / data$All), "%) </td>
+      <td>", data$car_driver, " (", round(100 * data$car_driver / data$all), "%) </td>
     </tr>
   </tbody>
 </table>
@@ -479,15 +478,15 @@ centroid_popup <- function(data, scenario, zone){
     </tr>
     <tr>
       <td> Total commuters: </td>
-      <td>", data$All, "</td>
+      <td>", data$all, "</td>
     </tr>
     <tr>
       <td> Cyclists (baseline): </td>
-      <td>", data$Bicycle, " (", round(100 * data$Bicycle / data$All), "%) </td>
+      <td>", data$bicycle, " (", round(100 * data$bicycle / data$all), "%) </td>
     </tr>
     <tr>
       <td> Cyclists (scenario): </td>
-      <td>", round(data[[data_filter(scenario, "slc")]]), " (", round(100*data[[data_filter(scenario, "slc")]] / data$All), "%) </td>
+      <td>", round(data[[data_filter(scenario, "slc")]]), " (", round(100*data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
     </tr>
     <tr>
       <td> Change in drivers: </td>

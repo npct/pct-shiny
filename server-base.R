@@ -224,7 +224,7 @@ shinyServer(function(input, output, session){
   observe({
     region$replot
     input$map_base
-    show_zone_popup <- isolate({input$line_type == 'none'})
+    show_zone_popup <- input$line_type == 'none'
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr())
     leafletProxy("map")  %>% clearGroup(., "zones") %>% clearGroup(., "region_name") %>%
       addPolygons(.,  data = to_plot$zones
@@ -238,7 +238,7 @@ shinyServer(function(input, output, session){
                   , options = pathOptions(clickable = show_zone_popup)
                   , layerId = paste0(to_plot$zones[['geo_code']], '-', "zones")) %>%
       addCircleMarkers(., radius=0, lat=0, lng=0, group = "region_name", fillOpacity= 0, layerId = region$current) %>%
-      addCircleMarkers(., data = to_plot$cents, radius = to_plot$cents$All / mean(to_plot$cents$All) * 2 + 1,
+      addCircleMarkers(., data = to_plot$cents, radius = to_plot$cents$all / mean(to_plot$cents$all) * 2 + 1,
                        color = get_line_colour("centres"), group = "centres", opacity = 0.5,
                        popup = centroid_popup(to_plot$cents, input$scenario, zone_attr())) %>%
       # Hide and Show line layers, so that they are displayed as the top layer in the map.
@@ -370,13 +370,13 @@ shinyServer(function(input, output, session){
                make_download_link("l", "lines", region$current),
                br(),
                "Fast routes",
-               make_download_link("rf", "fast_routes", region$current),
+               make_download_link("rf", "fast_routes", region$current, c('Rds', 'geojson')),
                br(),
                "Quiet routes",
-               make_download_link("rq", "quiet_routes", region$current),
+               make_download_link("rq", "quiet_routes", region$current, c('Rds', 'geojson')),
                br(),
                "Route Newtork",
-               make_download_link("rnet", "route_network", region$current)
+               make_download_link("rnet", "route_network", region$current, c('Rds', 'geojson'))
     ))
   })
 
