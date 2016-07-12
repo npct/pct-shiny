@@ -49,13 +49,14 @@ numeric_line_col_names <- c(
 line_col_names <- c(
   "Start and end zones"               = "id",
   "Total no. commuters"               = "all",
-  "No. car drivers in Census 2011"    = "car_driver",
   "No. cyclists in Census 2011"       = "bicycle",
+  "No. car drivers in Census 2011"    = "car_driver",
   numeric_line_col_names
 )
 
 numeric_zone_col_names <- c(
   "No. cyclists in Census 2011"                  = "bicycle",
+  "No. car drivers in Census 2011"               = "car_driver",
   "No. cyclists in Government Target"            = "govtarget_slc",
   "Change in deaths/year in Government Target"   = "govtarget_sideath_heat",
   "Change in CO2/year (kg) in Government Target" = "govtarget_sico2",
