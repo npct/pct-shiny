@@ -456,7 +456,7 @@ shinyServer(function(input, output, session){
 
     # Reuse the lines data stored in the ldata session variable
     lines_to_plot <- to_plot$ldata@data[,unname(line_col_names)]
-    DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names) %>%
+    DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names, rownames = FALSE) %>%
       formatRound(columns = names(numeric_line_col_names), digits=2)
   })
 
@@ -465,7 +465,7 @@ shinyServer(function(input, output, session){
       return()
     }
     zones_to_plot <- to_plot$zones@data[,unname(zone_col_names)]
-    DT::datatable(zones_to_plot, options = list(pageLength = 10), colnames = zone_col_names) %>%
+    DT::datatable(zones_to_plot, options = list(pageLength = 10), colnames = zone_col_names, rownames = FALSE) %>%
       formatRound(columns = names(numeric_zone_col_names), digits=2)
   })
 
