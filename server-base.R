@@ -361,13 +361,23 @@ shinyServer(function(input, output, session){
 
   output$zone_data_links <- renderUI({
     HTML(
-      make_download_link("z", "zones", region$current)
+      paste(
+        make_download_link("z", "zones", region$current),
+        " - ",
+        a("Codebook", href = paste(
+          "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_zones.csv", sep = "/"),
+          title="This explains the vairable names in the downloadable data")
+      )
     )
   })
 
   output$line_data_links <- renderUI({
     HTML(paste("Straight lines",
                make_download_link("l", "lines", region$current),
+               " - ",
+               a("Codebook", href = paste(
+                 "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_lines.csv", sep = "/"),
+                 title="This explains the vairable names in the downloadable data"),
                br(),
                "Fast routes",
                make_download_link("rf", "fast_routes", region$current, c('Rds', 'geojson')),

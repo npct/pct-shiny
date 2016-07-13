@@ -1,0 +1,55 @@
+Variable name,Variable Description
+geo_code,Zone code
+geo_label,Zone name
+all,Total no. commuters
+light_rail,No. light rail users in Census 2011
+train,No. train users in Census 2011
+bus,No. bus users in Census 2011
+taxi,No. taxi users in Census 2011
+motorbike,No. motorbikers in Census 2011
+car_driver,No. car drivers in Census 2011
+car_passenger,No. car passengers in Census 2011
+bicycle,No. cyclists in Census 2011
+foot,No. pedestrians in Census 2011
+other,No. other transport users in Census 2011
+govtarget_slc,No. cyclists in Government Target
+govtarget_sic,Increase no. cyclists in Government Target vs. Census 2011
+govtarget_slw,No. pedestrians in Government Target
+govtarget_sld,No. car drivers in Government Target
+gendereq_slc,No. cyclists in Gender Equality
+gendereq_sic,Increase no. cyclists in Gender Equality vs. Census 2011
+gendereq_slw,No. pedestrians in Gender Equality
+gendereq_sld,No. car drivers in Gender Equality
+dutch_slc,No. cyclists in Go Dutch
+dutch_sic,Increase no. cyclists in Go Dutch vs. Census 2011
+dutch_slw,No. pedestrians in Go Dutch
+dutch_sld,No. car drivers in Go Dutch
+ebikes_slc,No. cyclists in Ebikes
+ebikes_sic,Increase no. cyclists in Ebikes vs. Census 2011
+ebikes_slw,No. pedestrians in Ebikes
+ebikes_sld,No. car drivers in Ebikes
+govtarget_sldeath_heat,Change in deaths/year in Government Target versus 'no cycling'
+govtarget_slvalue_heat,Value (£) of change in deaths in Government Target versus 'no cycling' 
+govtarget_sideath_heat,Change in deaths/year in Government Target versus Census 2011
+govtarget_sivalue_heat,Value (£) of change in deaths in Government Target versus Census 2011
+gendereq_sldeath_heat,Change in deaths/year in Gender Equality versus 'no cycling'
+gendereq_slvalue_heat,Value (£) of change in deaths in Gender Equality versus 'no cycling' 
+gendereq_sideath_heat,Change in deaths/year in Gender Equality versus Census 2011
+gendereq_sivalue_heat,Value (£) of change in deaths in Gender Equality versus Census 2011
+dutch_sldeath_heat,Change in deaths/year in Go Dutch versus 'no cycling'
+dutch_slvalue_heat,Value (£) of change in deaths in Go Dutch versus 'no cycling' 
+dutch_sideath_heat,Change in deaths/year in Go Dutch versus Census 2011
+dutch_sivalue_heat,Value (£) of change in deaths in Go Dutch versus Census 2011
+ebikes_sldeath_heat,Change in deaths/year in Ebikes versus 'no cycling'
+ebikes_slvalue_heat,Value (£) of change in deaths in Ebikes versus 'no cycling' 
+ebikes_sideath_heat,Change in deaths/year in Ebikes versus Census 2011
+ebikes_sivalue_heat,Value (£) of change in deaths in Ebikes versus Census 2011
+govtarget_slco2,Change in CO2/year (kg) in Government Target versus 'no cycling'
+govtarget_sico2,Change in CO2/year (kg) in Government Target versus Census 2011
+gendereq_slco2,Change in CO2/year (kg) in Gender Equality versus 'no cycling'
+gendereq_sico2,Change in CO2/year (kg) in Gender Equality versus Census 2011
+dutch_slco2,Change in CO2/year (kg) in Go Dutch versus 'no cycling'
+dutch_sico2,Change in CO2/year (kg) in Go Dutch versus Census 2011
+ebikes_slco2,Change in CO2/year (kg) in Ebikes versus 'no cycling'
+ebikes_sico2,Change in CO2/year (kg) in Ebikes versus Census 2011
+avslope,Average gradient of the between-zone routes used by commuters living in the zone (%)
