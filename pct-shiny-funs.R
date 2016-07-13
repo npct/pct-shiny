@@ -55,8 +55,6 @@ line_col_names <- c(
 )
 
 numeric_zone_col_names <- c(
-  "No. cyclists in Census 2011"                  = "bicycle",
-  "No. car drivers in Census 2011"               = "car_driver",
   "No. cyclists in Government Target"            = "govtarget_slc",
   "Change in deaths/year in Government Target"   = "govtarget_sideath_heat",
   "Change in CO2/year (kg) in Government Target" = "govtarget_sico2",
@@ -74,6 +72,9 @@ numeric_zone_col_names <- c(
 zone_col_names <- c(
   "Zone code"                          = "geo_code",
   "Zone name"                          = "geo_label",
+  "Total no. commuters"                = "all",
+  "No. cyclists in Census 2011"        = "bicycle",
+  "No. car drivers in Census 2011"     = "car_driver",
   numeric_zone_col_names
 )
 
