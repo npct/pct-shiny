@@ -42,6 +42,8 @@ map_base_attrs <- c("Roadmap (Black & White)"   = "roadmap",
                     "Index of Deprivation" = "IMD",
                     "Hilliness" = "hilliness")
 
+on_production <- grepl('^/var/shiny/pct-shiny', getwd())
+
 shinyUI(
   navbarPage(
     title = "National Propensity to Cycle Tool (Prototype)",
@@ -52,7 +54,7 @@ shinyUI(
       div(
         class="outer",
         tags$head(
-          includeScript("www/assets/google-analytics.js"),
+          if(on_production) includeScript("www/assets/google-analytics.js"),
           includeScript("www/assets/extra.js"),
           includeCSS("www/stylesheet.css")
         ),

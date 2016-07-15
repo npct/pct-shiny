@@ -1,4 +1,8 @@
 $( window ).load(function() {
+  if(typeof ga === "undefined"){
+    ga = function(){};
+  }
+
   var toggle_panel = function(panelId, link){
     var panel = $(panelId);
     // Commment toggling as the toggle function is being handled by shinyjs
@@ -38,10 +42,9 @@ $( window ).load(function() {
       url_updater(l_map, undefined);
 
       $('select, input').each(function() {
-        send_ga = function(e){
+        $(this).change(function(e){
           ga('send', 'event', 'controls', e.target.id , e.target.value);
-        };
-        $(this).change(send_ga);
+        });
       });
     }
     else {
@@ -51,9 +54,8 @@ $( window ).load(function() {
   initMap();
 
   $('a[data-toggle=tab]').each(function() {
-    send_ga = function(){
+    $(this).click(function(){
       ga('send', 'event', 'nav', $(this).data('value'));
-    };
-    $(this).click(send_ga);
+    });
   });
 });
