@@ -366,7 +366,8 @@ shinyServer(function(input, output, session){
         " - ",
         a("Codebook", href = paste(
           "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_zones.csv", sep = "/"),
-          title="This explains the vairable names in the downloadable data")
+          title="This explains the vairable names in the downloadable data",
+          onclick= paste0("ga('send', 'event', 'download', 'z_codebook' );"))
       )
     )
   })
@@ -377,7 +378,9 @@ shinyServer(function(input, output, session){
                " - ",
                a("Codebook", href = paste(
                  "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_lines.csv", sep = "/"),
-                 title="This explains the vairable names in the downloadable data"),
+                 title="This explains the vairable names in the downloadable data",
+                 onclick= paste0("ga('send', 'event', 'download', 'l_codebook' );")
+               ),
                br(),
                "Fast routes",
                make_download_link("rf", "fast_routes", region$current, c('Rds', 'geojson')),

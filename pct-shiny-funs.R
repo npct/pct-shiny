@@ -21,7 +21,11 @@ make_download_link <- function(file, download_name, region, formats = c('Rds', '
     format <- formats[i]
     all_links <- paste(
       all_links, a(format,
-                   href= paste0(base_url, "/", file, ".", format), target='_blank', download = paste0(download_name, ".", format))
+                   href= paste0(base_url, "/", file, ".", format),
+                   target='_blank',
+                   download = paste0(download_name, ".", format),
+                   onclick= paste0("ga('send', 'event', 'download', '", file , '.' , format, "', '", data_sha ,"' );")
+      )
     )
   }
   all_links

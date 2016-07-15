@@ -36,6 +36,13 @@ $( window ).load(function() {
       var l_map = $(map).data('leaflet-map');
       L.control.scale().addTo(l_map);
       url_updater(l_map, undefined);
+
+      $('select, input').each(function() {
+        send_ga = function(e){
+          ga('send', 'event', 'controls', e.target.id , e.target.value);
+        };
+        $(this).change(send_ga);
+      });
     }
     else {
       setTimeout(initMap, 100);
@@ -43,7 +50,10 @@ $( window ).load(function() {
   };
   initMap();
 
-  $("#printBtn").click(function(){
-    $('#map').print();
+  $('a[data-toggle=tab]').each(function() {
+    send_ga = function(){
+      ga('send', 'event', 'nav', $(this).data('value'));
+    };
+    $(this).click(send_ga);
   });
 });
