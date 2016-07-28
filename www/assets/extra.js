@@ -1,4 +1,8 @@
 $( window ).load(function() {
+  if(typeof ga === "undefined"){
+    ga = function(){};
+  }
+
   var toggle_panel = function(panelId, link){
     var panel = $(panelId);
     // Commment toggling as the toggle function is being handled by shinyjs
@@ -36,6 +40,12 @@ $( window ).load(function() {
       var l_map = $(map).data('leaflet-map');
       L.control.scale().addTo(l_map);
       url_updater(l_map, undefined);
+
+      $('select, input').each(function() {
+        $(this).change(function(e){
+          ga('send', 'event', 'controls', e.target.id , e.target.value);
+        });
+      });
     }
     else {
       setTimeout(initMap, 100);
@@ -43,7 +53,9 @@ $( window ).load(function() {
   };
   initMap();
 
-  $("#printBtn").click(function(){
-    $('#map').print();
+  $('a[data-toggle=tab]').each(function() {
+    $(this).click(function(){
+      ga('send', 'event', 'nav', $(this).data('value'));
+    });
   });
 });

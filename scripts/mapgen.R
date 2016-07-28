@@ -18,20 +18,6 @@ if(!exists("centsa")) # Population-weighted centroids
 centsa$geo_code <- as.character(centsa$geo_code)
 regions = geojson_read("../pct-bigdata/regions.geojson", what = "sp", stringsAsFactors = F)
 
-# las = readRDS("../pct-bigdata/las-geo-mode.Rds")
-# las_cents = gCentroid(las, byid = T)
-# las_cents = SpatialPointsDataFrame(las_cents, las@data)
-
-# # modifying regional data for presenting
-# library(sp)
-# names(las_cents)[4] = "All"
-# region_tcycle = aggregate(las_cents["Bicycle"], regions, sum, na.rm = T)
-# region_t = aggregate(las_cents["All"], regions, sum, na.rm = T)
-# qtm(region_t, "All")
-# regions$pcycle2 = region_tcycle$Bicycle / region_t$All * 100
-# plot(regions$pcycle, regions$pcycle2)
-# summary(regions$pcycle - regions$pcycle2)
-
 i = 1
 regions$pcycle = NA
 regions$Region_cap = gsub(pattern = "-", replacement = " ", x = regions$Region)
@@ -89,12 +75,3 @@ m
 old = setwd("regions_www/")
 saveWidget(m, file = "map.html")
 setwd(old)
-# # V1: builds all zones for a single geography
-# pkgs <- c("leaflet", "htmlwidgets", "geojsonio")
-# lapply(pkgs, library, character.only = T)
-# downloader::download("https://github.com/npct/pct-bigdata/raw/master/national/regions.geojson",
-#                      destfile = "regions.geojson")
-# regions <- geojson_read("regions.geojson", what = "sp")
-# file.remove("regions.geojson")
-# names(regions)
-# m <- leaflet() %>% addTiles() %>% addPolygons(data = regions, popup = regions$url_text)
