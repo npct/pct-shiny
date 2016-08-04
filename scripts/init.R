@@ -18,7 +18,7 @@ init_dev_env <- function(dataDirRoot, data_sha, cranPkgs, shiny_root) {
   sys_message = c("--git-dir", file.path(dataDirRoot, ".git"),
                   "--work-tree", dataDirRoot, "checkout", data_sha)
   # Comment the following line to stop auto checkout
-  system2("git", sys_message, wait=T)
+  # system2("git", sys_message, wait=T)
 
   gitArgs <- c("rev-parse", "--short", "HEAD", ">", file.path(shiny_root, "repo_sha"))
 
