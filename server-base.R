@@ -335,7 +335,8 @@ shinyServer(function(input, output, session){
     else{
       addPolylines(m, data = sorted_l, color = color
                    # Plot widths proportional to attribute value
-                   , weight = normalise(sorted_l[[line_data()]], min = min, max = max)
+                   # Remove NAs from the weights
+                   , weight = normalise( sorted_l[[line_data()]][!is.na(sorted_l[[line_data()]]) ], min = min, max = max)
                    , opacity = line_opacity
                    , group = group_name
                    , popup = popup_fn(sorted_l, input$scenario)
