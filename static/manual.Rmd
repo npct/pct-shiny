@@ -505,9 +505,70 @@ We plan to add more documentation to ease the creation of locally specific scena
 
 </div>
 
-<!-- [8\. How can the PCT be used to build a business case for cycling?](javascript:toggleElement('a8'))
+[8\. Why is there no increase in cycling under Go Dutch?](javascript:toggleElement('a8'))
 
-<div id="a8" style="display:none">
+<div id="a5" style="display:none">
+
+On a very few routes, almost all in Cambridge, there is no increase in cycling under the Go Dutch scenario. This means that between these places cycling is already at Dutch levels. It does not mean that there is no potential for more cycling in those areas. The evidence we use from the Netherlands is based on average values for the whole country. However, even within the high cycling Netherlands there is variation between regions:
+
+<table class="table table-hover table-responsive">
+
+<tbody>
+
+<tr>
+
+<td style="vertical-align: top; width: 1054px;"><span style="font-weight: bold; text-decoration: underline;">% trips less than 8 miles that are cycled:</span>  
+
+Limburg 24.19
+Zuid-Holland 31.06
+Noord-Brabant 31.32
+Flevoland 33.75
+Gelderland 35.13
+Noord-Holland 35.69
+Utrecht 37.71
+Drenthe 38.03
+Zeeland 38.2
+Overijssel 39.63
+Friesland 40.39
+Groningen 40.46
+ALL 34.84
+
+</td>
+</tr>
+
+Within these regions there will be further variation between high and very high cycling areas.
+
+For most of England, using an average Go Dutch scenario would represent a massive increase in cycling and represents a suitably ambitious goal. However, Cambridge is an extreme outlier in English cycling. Cambridge has a strong cycling culture, an old dense centre that is hard to pass by car, and a high proportion of students. So for Cambridge a scenario should be more ambitious, and perhaps a ‘Go Groningen’ scenario would be more appropriate. 
+
+</div>
+
+[9\.What does a negative health benefit mean?](javascript:toggleElement('a9'))
+
+<div id="a9" style="display:none">
+
+The health economic impact is composed of two parts. The health gain comes from calculating the reduction in premature deaths due to the increase in physical activity from the new cycling or e-bike trips.
+
+However, we also have to account for any trips switched from walking to cycling. For these trips there is an overall reduction in physical activity. If a trip is switched to e-bikes the reduction in physical activity is larger.
+
+As such, the overall effect on health along any route is calculated by estimating the health gain from the scenario increase in cycling and ebiking, minus the health loss from any decrease in walking.  In the vast majority of areas the overall effect is a decrease in mortality (99.7% of MSOAs show a health gain at the area level).  For some routes, however, the health impact can be negative if a large proportion of the new cycling trips were previously walked. This is particularly likely when applying scenarios to short routes in city centres, where walking often makes up a very high proportion of all commuter trips of baseline.  This is true of only a relatively small proportion of routes: 5.9% in the Government Target scenario, 4.0% in the Gender Equity scenario, 6.8% in the Go Dutch scenario, and 15.9% in the Ebikes scenario.  However, these routes may be particularly visible when using PCT as they will usually have a short distance, and so have high cycling potential.
+
+Overall for England as a whole the health and health economic benefits from the increase in cycling are large and this is true for all regions and town and cities. 
+
+**E-bikes**
+The proportion of routes with a negative health impact is greater for e-bikes as e-bikes require less physical activity than regular bikes.  However, e-bikes also enable people to cycle in hillier areas and on longer journeys, few of which are walked at the moment. It is possible that e-bikes would facilitate cycling by people who are currently less active and less likely to use regular bikes but we have not modelled this.
+
+**Does a negative health impact mean we shouldn’t invest in cycling?**
+Even when there is a negative health impact for a route between two areas, it may still make sense to invest in cycling. Firstly this route is likely to be close to a city centre and thus a key part of a wider network enabling people to travel into the city by bike from further away. These longer trips will have a positive health benefit as few are currently walked. The cycling potential for a route can best be seen via the route network layer. 
+
+Secondly, when cycling is replacing walking there will be time savings, and these will be even greater for e-bikes. We have not currently modelled travel time changes. For car trips, whether cycling is faster will be context specific as it depends on congestion levels. However, cycling will almost always be faster than walking. It should also be noted that in some cases people will be walking as they do not have access to a car, and thus investing in cycling provides more travel choices for lower income groups.
+
+**Overall**, clearly societal benefits are greater if cycling replaces cars rather than walking and these results are a reminder of the importance of maintaining and improving the walking environment. However, increasing transport options and providing access to a faster form of active transport does also bring benefits. 
+
+</div>
+
+<!-- [10\. How can the PCT be used to build a business case for cycling?](javascript:toggleElement('a10'))
+
+<div id="a10" style="display:none">
 
 This section is work in progress.
 
