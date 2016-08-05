@@ -1,30 +1,85 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-
-<head>
-
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="pandoc" />
-
-
-
-
-<title>Welcome to the Propensity to Cycle Tool (PCT)</title>
-
-<script src="index_files/jquery-1.11.3/jquery.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<link href="index_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
-<script src="index_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
-<script src="index_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
-<script src="index_files/bootstrap-3.3.5/shim/respond.min.js"></script>
-<!DOCTYPE html>
-<html>
   <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="generator" content="pandoc" />
+
+    <title>Welcome to the Propensity to Cycle Tool (PCT)</title>
+
+    <script src="index_files/jquery-1.11.3/jquery.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="index_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="index_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+    <script src="index_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+    <script src="index_files/bootstrap-3.3.5/shim/respond.min.js"></script>
     <meta charset="utf-8" />
     <link href="../regions_www/style/bootstrap.min.css" rel="stylesheet">
     <title>National Propensity to Cycle Tool (NPCT)</title>
+    <style type="text/css">code{white-space: pre;}</style>
+    <link rel="stylesheet"
+    href="index_files/highlight/default.css"
+    type="text/css" />
+    <script src="index_files/highlight/highlight.js"></script>
+    <style type="text/css">
+      pre:not([class]) {
+        background-color: white;
+      }
+    </style>
+    <script type="text/javascript">
+      if (window.hljs && document.readyState && document.readyState === "complete") {
+        window.setTimeout(function() {
+          hljs.initHighlighting();
+        }, 0);
+      }
+    </script>
+
+    <style type="text/css">
+      h1 {
+        font-size: 34px;
+      }
+      h1.title {
+        font-size: 38px;
+      }
+      h2 {
+        font-size: 30px;
+      }
+      h3 {
+        font-size: 24px;
+      }
+      h4 {
+        font-size: 18px;
+      }
+      h5 {
+        font-size: 16px;
+      }
+      h6 {
+        font-size: 12px;
+      }
+      .table th:not([align]) {
+        text-align: left;
+      }
+      .main-container {
+        max-width: 940px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      code {
+        color: inherit;
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+      img {
+        max-width:100%;
+        height: auto;
+      }
+      .tabbed-pane {
+        padding-top: 12px;
+      }
+      button.code-folding-btn:focus {
+        outline: none;
+      }
+    </style>
   </head>
   <body>
     <nav class="navbar navbar-default navbar-static-top" role="navigation">
@@ -36,144 +91,40 @@
     </nav>
     <div class="container">
       <div class="row-fluid">
+        <!-- code folding -->
+        <div class="fluid-row" id="header">
+          <h1 class="title toc-ignore">Welcome to the Propensity to Cycle Tool (PCT)</h1>
+        </div>
         <div class="pull-left" style="border:10px solid white;">
           <iframe src="map.html" width="450" height="600"></iframe>
         </div>
 
-<style type="text/css">code{white-space: pre;}</style>
-<link rel="stylesheet"
-      href="index_files/highlight/default.css"
-      type="text/css" />
-<script src="index_files/highlight/highlight.js"></script>
-<style type="text/css">
-  pre:not([class]) {
-    background-color: white;
-  }
-</style>
-<script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
-}
-</script>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/58UaVb8ZCrc" frameborder="0" allowfullscreen></iframe>
+
+        <div class="container-fluid main-container">
 
 
+          <p>Created by the Propensity to Cycle Tool team.</p>
 
-<style type="text/css">
-h1 {
-  font-size: 34px;
-}
-h1.title {
-  font-size: 38px;
-}
-h2 {
-  font-size: 30px;
-}
-h3 {
-  font-size: 24px;
-}
-h4 {
-  font-size: 18px;
-}
-h5 {
-  font-size: 16px;
-}
-h6 {
-  font-size: 12px;
-}
-.table th:not([align]) {
-  text-align: left;
-}
-</style>
+          <p>Welcome to the Propensity to Cycle Tool for England (PCT-England), which provides an evidence base to inform cycling investment. To find out more about the tool, its use and the four scenarios, please watch the video below. More detailed information can be found on <a href="http://blog.pct.bike/">PCT blog</a>, the <a href="./manual.html">manual</a>, an <a href="http://arxiv.org/abs/1509.04425">academic paper</a> or the <a href="./about.html">about page</a>.</p>
 
+          <p>To run the PCT, click on a region in the map to the left. This will open up the PCT for that region. The PCT will then show you cycling levels in that region at area, ‘desire line’ and route network levels, from 2011 Census for commuting and for various scenarios that illustrate where cycling has the greatest potential to grow. This is based on a model that estimates cycling potential based upon trip distances and hilliness.</p>
 
-</head>
-
-<body>
-
-<style type = "text/css">
-.main-container {
-  max-width: 940px;
-  margin-left: auto;
-  margin-right: auto;
-}
-code {
-  color: inherit;
-  background-color: rgba(0, 0, 0, 0.04);
-}
-img {
-  max-width:100%;
-  height: auto;
-}
-.tabbed-pane {
-  padding-top: 12px;
-}
-button.code-folding-btn:focus {
-  outline: none;
-}
-</style>
-
-
-<div class="container-fluid main-container">
-
-<!-- code folding -->
-
-
-
-
-
-
-<div class="fluid-row" id="header">
-
-
-
-<h1 class="title toc-ignore">Welcome to the Propensity to Cycle Tool (PCT)</h1>
-
-</div>
-
-
-<!--Don't edit this file directly. Edit the .Rmd version which compiles into index.html:
-https://github.com/npct/pct-shiny/blob/master/static/index.Rmd -->
-<p>Created by the Propensity to Cycle Tool team.</p>
-<p>Last updated: 2016-06-09.</p>
-<p>Welcome to the National Propensity to Cycle Tool (PCT), an online and interactive planning support tool to provide an evidence base to inform investment in cycling. For more information about the tool please refer to the <a href="http://pct.bike/manual.html">Manual</a>, an <a href="http://arxiv.org/abs/1509.04425">academic paper</a> about the PCT or the <a href="http://pct.bike/about.html">about page</a>.</p>
-<p>To run the tool for England (PCT-England), click on a region in the map to the left. The tool shows cycling levels at area, ‘desire line’ and route network levels based on the 2011 Census for commuting and for various scenarios, illustrating where cycling has the greatest potential to grow.</p>
-<p>The cycling trips can be allocated to the road network, based on the fastest cycling route. The purpose of the route allocation is to see on which routes the most provision might be necessary as cycling grows rather than to show where people currently cycle. We recognise that many people currently choose longer routes to avoid busy roads. But for cycling to reach its potential safe direct routes are needed. The Route Network layer is therefore intended to show where (on which routes) investment is most needed rather than where people currently cycle.</p>
-<p>Users can select different overall cycling scenarios, such as ‘Go Dutch’ or ‘Ebikes’, and can then see what this might mean for cycling levels in each small area and along the network. The model estimates cycling potential based upon trip distances and hilliness. Therefore, it highlights the greatest unmet potential in areas that currently have high numbers of short trips in relatively flat areas but where people are not currently cycling.</p>
-<p>Currently the PCT only shows commuting trips but additional layers are planned. See <a href="about.html">the about page</a> for more information.</p>
-<p><img src="https://cloud.githubusercontent.com/assets/11028720/15325024/d5e38f7c-1c40-11e6-9dd3-4567edaba8d5.png" width="100%" /></p>
-<div id="refs" class="references">
-
-</div>
-
+          <p>Currently the PCT only shows commuting trips but additional layers are planned.</p>
+          <p><img src="https://cloud.githubusercontent.com/assets/11028720/15325024/d5e38f7c-1c40-11e6-9dd3-4567edaba8d5.png" width="100%" /></p>
+        </div>
       </div>
     </div>
+
+    <!-- dynamically load mathjax for compatibility with self-contained -->
+    <script>
+      (function () {
+        var script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+        document.getElementsByTagName("head")[0].appendChild(script);
+      })();
+    </script>
+
   </body>
-</html>
-
-
-
-</div>
-
-<script>
-
-// add bootstrap table styles to pandoc tables
-$(document).ready(function () {
-  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
-});
-
-</script>
-
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
-
-</body>
 </html>
