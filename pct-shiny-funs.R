@@ -285,6 +285,14 @@ route_popup <- function(data, scenario){
     if(scenario == 'olc')
       quiet_route_label <- "Census 2011 cycling (baseline)"
 
+    # Keep rqincr in a local variable
+    val <- data$rqincr
+    # Replace NAs with 0
+    val[is.na(val)] <- 0
+    # Convert it into percent
+    val <- round( ((100 * val) - 100), 1)
+    # Append '+' sign with values greater than zero
+    val <- ifelse(val > 0, paste0("+", val), val)
 
     paste0("
 <table class = 'htab'>
@@ -299,7 +307,7 @@ route_popup <- function(data, scenario){
     </tr>
     <tr>
     <td> Distance compared w. fastest route (%): &nbsp; </td>
-      <td>", round((100*data$rqincr-100), 1), "</td>
+      <td>", val , "</td>
     </tr>
     <tr>
       <td> Hilliness (av. gradient, %): &nbsp; </td>
