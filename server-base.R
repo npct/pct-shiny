@@ -465,6 +465,15 @@ shinyServer(function(input, output, session){
       # Return an empty data.frame
       return(data.frame(File=character()))
     }
+
+    # When route network is selected, show 'no lines available
+    if(input$line_type == 'rnet'){
+      # Set the warning message that no lines have been selected by the user
+      output$warning_message <- renderUI(HTML("<strong>No lines available </strong>"))
+      # Return an empty data.frame
+      return(data.frame(File=character()))
+    }
+
     # Empty the warning message - as some lines have been selected by the user
     output$warning_message <- renderUI("")
 
