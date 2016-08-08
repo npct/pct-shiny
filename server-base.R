@@ -502,4 +502,18 @@ shinyServer(function(input, output, session){
     else
       shinyjs::show("zone_legend")
   })
+
+
+  # Function to add a layers control for the routes, so that users can easily select quiet routes
+  observe({
+    input$line_type
+    if (input$line_type == 'route'){
+      leafletProxy("map") %>% addLayersControl(
+        position = c("bottomright"),
+        overlayGroups = c("quieter_route", "faster_route"),
+        options = layersControlOptions(collapsed = T)
+      )
+    }else
+      leafletProxy("map") %>% removeLayersControl()
+  })
 })
