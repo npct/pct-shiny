@@ -303,7 +303,7 @@ route_popup <- function(data, scenario){
     </tr>
     <tr>
       <td> Route distance (km): </td>
-      <td>", round(data$length, 1), "</td>
+      <td>", round(data$dist_quiet, 1), "</td>
     </tr>
     <tr>
     <td> Distance compared w. fastest route (%): &nbsp; </td>
