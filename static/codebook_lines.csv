@@ -45,18 +45,18 @@ dutch_sldeath_heat,Change in deaths/year in Go Dutch versus 'no cycling'
 dutch_slvalue_heat,Value (£) of change in deaths in Go Dutch versus 'no cycling' 
 dutch_sideath_heat,Change in deaths/year in Go Dutch versus Census 2011
 dutch_sivalue_heat,Value (£) of change in deaths in Go Dutch versus Census 2011
-ebikes_sldeath_heat,Change in deaths/year in Ebikes versus 'no cycling'
-ebikes_slvalue_heat,Value (£) of change in deaths in Ebikes versus 'no cycling' 
-ebikes_sideath_heat,Change in deaths/year in Ebikes versus Census 2011
-ebikes_sivalue_heat,Value (£) of change in deaths in Ebikes versus Census 2011
+ebike_sldeath_heat,Change in deaths/year in Ebikes versus 'no cycling'
+ebike_slvalue_heat,Value (£) of change in deaths in Ebikes versus 'no cycling' 
+ebike_sideath_heat,Change in deaths/year in Ebikes versus Census 2011
+ebike_sivalue_heat,Value (£) of change in deaths in Ebikes versus Census 2011
 govtarget_slco2,Change in CO2/year (kg) in Government Target versus 'no cycling'
 govtarget_sico2,Change in CO2/year (kg) in Government Target versus Census 2011
 gendereq_slco2,Change in CO2/year (kg) in Gender Equality versus 'no cycling'
 gendereq_sico2,Change in CO2/year (kg) in Gender Equality versus Census 2011
 dutch_slco2,Change in CO2/year (kg) in Go Dutch versus 'no cycling'
 dutch_sico2,Change in CO2/year (kg) in Go Dutch versus Census 2011
-ebikes_slco2,Change in CO2/year (kg) in Ebikes versus 'no cycling'
-ebikes_sico2,Change in CO2/year (kg) in Ebikes versus Census 2011
+ebike_slco2,Change in CO2/year (kg) in Ebikes versus 'no cycling'
+ebike_sico2,Change in CO2/year (kg) in Ebikes versus Census 2011
 dist,Straight line distance (km)
 geo_label1,"Start or end zone 1, zone name"
 geo_label2,"Start or end zone 2, zone name"
