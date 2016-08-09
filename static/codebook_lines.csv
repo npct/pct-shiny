@@ -2,17 +2,20 @@ Variable name,Variable Description
 id,Start and end zones
 msoa1,"Start or end zone 1, zone code"
 msoa2,"Start or end zone 2, zone code"
+geo_label1,"Start or end zone 1, zone name"
+geo_label2,"Start or end zone 2, zone name"
 all,Total no. commuters
-light_rail,No. light rail users in Census 2011
+bicycle,No. cyclists in Census 2011
+foot,No. pedestrians in Census 2011
+car_driver,No. car drivers in Census 2011
+car_passenger,No. car passengers in Census 2011
 train,No. train users in Census 2011
+light_rail,No. light rail users in Census 2011
 bus,No. bus users in Census 2011
 taxi,No. taxi users in Census 2011
 motorbike,No. motorbikers in Census 2011
-car_driver,No. car drivers in Census 2011
-car_passenger,No. car passengers in Census 2011
-bicycle,No. cyclists in Census 2011
-foot,No. pedestrians in Census 2011
 other,No. other transport users in Census 2011
+clc,% cyclists in Census 2011
 govtarget_slc,No. cyclists in Government Target
 govtarget_sic,Increase no. cyclists in Government Target vs. Census 2011
 govtarget_slw,No. pedestrians in Government Target
@@ -58,14 +61,11 @@ dutch_sico2,Change in CO2/year (kg) in Go Dutch versus Census 2011
 ebike_slco2,Change in CO2/year (kg) in Ebikes versus 'no cycling'
 ebike_sico2,Change in CO2/year (kg) in Ebikes versus Census 2011
 dist,Straight line distance (km)
-geo_label1,"Start or end zone 1, zone name"
-geo_label2,"Start or end zone 2, zone name"
 dist_fast,Fast route distance (km)
 dist_quiet,Quiet route distance (km)
-time_fast,Fast route trip duration (seconds) - estimated by CycleStreets
-time_quiet,Quiet route trip duration (seconds) - estimated by CycleStreets
 cirquity,Cirquity (fast distance / straight line distance)
 distq_f,Quiet distance / fast distance
 avslope,Average fast route gradient (%)
 avslope_q,Average quiet route gradient (%)
-clc,% cyclists in Census 2011
+time_fast,Fast route trip duration (seconds) - estimated by CycleStreets
+time_quiet,Quiet route trip duration (seconds) - estimated by CycleStreets
