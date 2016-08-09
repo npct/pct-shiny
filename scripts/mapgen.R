@@ -1,4 +1,3 @@
-# mapgen generates the basemap html script
 source("../pct-load/set-up.R")
 
 # devtools::install_github("berndbischl/BBmisc")
@@ -47,31 +46,38 @@ for(i in 1:length(regions)){
   regions$url_text[i] <- as.character(a(regions$Region_cap[i], href = regions$url[i]))
   regions$url_text[i] <- gsub('">', '" target ="_top">', regions$url_text[i])
 }
-popup <- paste0(regions$url_text, ".<br>Cycling to work per scenario:<br> ",
-                round(regions$pcycle, 1), "% in 2011 Census<br>",
-                round(regions$govtarget_slc, 1), "% in Government Target<br>",
-                round(regions$gendereq_slc, 1), "% in Gender Equality<br>",
-                round(regions$dutch_slc, 1), "% in Go Dutch<br>",
-                round(regions$ebike_slc, 1), "% in Ebikes<br>")
+popup_census <- paste0(regions$url_text, "</br>", round(regions$pcycle, 1), "% in 2011 Census<br>")
+
+popup_govt_target <- paste0(regions$url_text, "</br>",round(regions$govtarget_slc, 1), "% in Government Target<br>")
+
+popup_gender_eq <- paste0(regions$url_text, "</br>", round(regions$gendereq_slc, 1), "% in Gender Equality<br>")
+
+popup_dutch <- paste0(regions$url_text, "</br>", round(regions$dutch_slc, 1), "% in Go Dutch<br>")
+
+popup_ebikes <- paste0(regions$url_text, "</br>", round(regions$ebike_slc, 1), "% in Ebikes<br>")
+
 library(leaflet)
 qpal <- colorBin("RdYlGn", regions$pcycle, bins = c(0, 3, 6, 12, 20, 40), pretty = TRUE)
 
 m <- leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
-  addPolygons(data = regions, popup = popup, weight = 1,
+  addPolygons(data = regions, popup = popup_census, weight = 1,
               fillColor = ~qpal(regions$pcycle), fillOpacity = 0.5, color = "black", group = "2011 Census") %>%
-  addPolygons(data = regions, popup = popup, weight = 1,
+  addPolygons(data = regions, popup = popup_govt_target, weight = 1,
               fillColor = ~qpal(regions$govtarget_slc), fillOpacity = 0.5, color = "black", group = "Government Target") %>%
-  addPolygons(data = regions, popup = popup, weight = 1,
+  addPolygons(data = regions, popup = popup_gender_eq, weight = 1,
               fillColor = ~qpal(regions$gendereq_slc), fillOpacity = 0.5, color = "black", group = "Gender Equality") %>%
-  addPolygons(data = regions, popup = popup, weight = 1,
+  addPolygons(data = regions, popup = popup_dutch, weight = 1,
               fillColor = ~qpal(regions$dutch_slc), fillOpacity = 0.5, color = "black", group = "Go Dutch") %>%
-  addPolygons(data = regions, popup = popup, weight = 1,
+  addPolygons(data = regions, popup = popup_ebikes, weight = 1,
               fillColor = ~qpal(regions$ebike_slc), fillOpacity = 0.5, color = "black", group = "Ebikes") %>%
-  addLegend(pal = qpal, values = regions$pcycle, title = "% Cycling\nto work", opacity = 0.5) %>%
-  addLayersControl(baseGroups = c("2011 Census", "Government Target", "Gender Equality", "Go Dutch", "Ebikes"), options = layersControlOptions(autoZIndex = T, collapse = F))
-
+  addLegend(pal = qpal, position = c("topleft"), values = regions$pcycle, title = "% Cycling\nto work", opacity = 0.5) %>%
+  addLayersControl(
+    position = c("topleft"),
+    baseGroups = c("2011 Census", "Government Target", "Gender Equality", "Go Dutch", "Ebikes"),
+    options = layersControlOptions(collapsed = F)
+  )
 
 m
 old = setwd("regions_www/")
-saveWidget(m, file = "map.html")
+saveWidget(m, file = "new_map.html")
 setwd(old)
