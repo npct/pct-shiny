@@ -1,0 +1,6 @@
+Variable name,Variable Description
+id,"Start and end zones, to merge with OD data"
+length,Distance in m
+time,Estimated time taken (s) by CycleStreets.net
+change_elev,Cumulative change in elevation
+av_incline,Average route gradient (total cumulative change in elevation / total distance)
