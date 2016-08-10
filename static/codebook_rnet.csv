@@ -1,3 +1,4 @@
+Variable name,Variable Description
 bicycle,No. between-zone cyclists using this segment in Census 2011 (see model output tab for details of selected between-zone flows)
 govtarget_slc,No. between-zone cyclists using this segment in Government Target scenario (see model output tab for details of selected between-zone flows)
 gendereq_slc,No. between-zone cyclists using this segment in Gender Equity scenario (see model output tab for details of selected between-zone flows)
