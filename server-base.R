@@ -374,7 +374,7 @@ shinyServer(function(input, output, session){
   })
 
   output$line_data_links <- renderUI({
-    HTML(paste("Straight lines",
+    HTML(paste("Straight lines geographic file format and attribute data:",
                make_download_link("l", "lines", region$current),
                " - ",
                a("Codebook", href = paste(
@@ -383,14 +383,17 @@ shinyServer(function(input, output, session){
                  onclick= paste0("ga('send', 'event', 'download', 'l_codebook' );"), target='_blank'
                ),
                br(),
-               "Fast routes",
+               "Fast route geographic file format*:",
                make_download_link("rf", "fast_routes", region$current, c('Rds', 'geojson')),
                br(),
-               "Quiet routes",
+               "Quiet route geographic file format*:",
                make_download_link("rq", "quiet_routes", region$current, c('Rds', 'geojson')),
                br(),
-               "Route Network",
-               make_download_link("rnet", "route_network", region$current, c('Rds', 'geojson'))
+               "Route Network geographic file format and attribute data:",
+               make_download_link("rnet", "route_network", region$current, c('Rds', 'geojson')),
+               br(),
+               "* To get attribute data, use 'ID' field to merge with straight-line CSV file",
+               br()
     ))
   })
 

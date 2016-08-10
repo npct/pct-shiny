@@ -142,12 +142,11 @@ shinyUI(
              br(),
              br(),
              HTML("This tab shows a selection of the Census 2011 and scenario data generated
-                  for selected between-zone lines in the chosen region (see Model Output tab
-                  for details of the lines included). The full csv dataset contains further
+                    for all zones in the chosen region. The full csv dataset contains further
                   details concerning mode share in Census 2011; the cycling, walking and driving
-                  levels in each scenario; and the associated health and carbon impacts. You can
-                  download the full csv dataset for the lines here, alongside geographic and
-                  attribute data to be read by R (.Rds) or GIS programs such as QGIS (.geojson):"),
+                  levels in each scenario; and the associated health and carbon impacts.
+                  You can download the full csv dataset for the zones here, alongside geographic
+                  and attribute data to be read by R (.Rds) or GIS programs such as QGIS (.geojson):"),
              htmlOutput("line_data_links"),
              uiOutput("warning_message"),
              DT::dataTableOutput("lines_datatable")
