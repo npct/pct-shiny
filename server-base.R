@@ -393,7 +393,7 @@ shinyServer(function(input, output, session){
                make_download_link("rnet", "route_network", region$current, c('Rds', 'geojson')),
                br(),
                "* To get attribute data, use 'ID' field to merge with straight-line CSV file",
-               br()
+               br(), br()
     ))
   })
 
@@ -464,7 +464,7 @@ shinyServer(function(input, output, session){
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plot_lines_data()){
       # Set the warning message that no lines have been selected by the user
-      output$warning_message <- renderUI(HTML("<strong>No lines selected: </strong> Lines must be displayed on map"))
+      output$warning_message <- renderUI(HTML("<strong>No lines selected: </strong> Lines must be displayed on map </br>"))
       # Return an empty data.frame
       return(data.frame(File=character()))
     }
@@ -472,7 +472,7 @@ shinyServer(function(input, output, session){
     # When route network is selected, show 'no lines available
     if(input$line_type == 'rnet'){
       # Set the warning message that no lines have been selected by the user
-      output$warning_message <- renderUI(HTML("<strong>No lines available </strong>"))
+      output$warning_message <- renderUI(HTML("<strong>No lines available </strong> </br>"))
       # Return an empty data.frame
       return(data.frame(File=character()))
     }
