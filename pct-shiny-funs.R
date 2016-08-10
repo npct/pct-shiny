@@ -1,4 +1,3 @@
-
 sc_name_df <- data.frame(
   sc_f_name = c("Census 2011 Cycling", "Government Target", "Gender equality", "Go Dutch", "Ebikes"),
   sc_s_name = c("olc","govtarget","gendereq","dutch", "ebike")
@@ -35,30 +34,11 @@ get_scenario_name <- function(sc_name){
   sc_name_df$sc_f_name[sc_name_df$sc_s_name == sc_name]
 }
 
-numeric_line_col_names <- c(
-  "No. cyclists in Government Target"            = "govtarget_slc",
-  "Change in deaths/year in Government Target"   = "govtarget_sideath_heat",
-  "Change in CO2/year (kg) in Government Target" = "govtarget_sico2",
-  "No. cyclists in Gender Equality"              = "gendereq_slc",
-  "Change in deaths/year in Gender Equality"     = "gendereq_sideath_heat",
-  "Change in CO2/year (kg) in Gender Equality"   = "gendereq_sico2",
-  "No. cyclists in Go Dutch"                     = "dutch_slc",
-  "Change in deaths/year in Go Dutch"            = "dutch_sideath_heat",
-  "Change in CO2/year (kg) in Go Dutch"          = "dutch_sico2",
-  "No. cyclists in Ebikes"                       = "ebike_slc",
-  "Change in deaths/year in Ebikes"              = "ebike_sideath_heat",
-  "Change in CO2/year (kg) in Ebikes"            = "ebike_sico2"
-)
-
 line_col_names <- c(
-  "Start and end zones"               = "id",
-  "Total no. commuters"               = "all",
-  "No. cyclists in Census 2011"       = "bicycle",
-  "No. car drivers in Census 2011"    = "car_driver",
-  numeric_line_col_names
-)
-
-numeric_zone_col_names <- c(
+  "Start and end zones"                          = "id",
+  "Total no. commuters"                          = "all",
+  "No. cyclists in Census 2011"                  = "bicycle",
+  "No. car drivers in Census 2011"               = "car_driver",
   "No. cyclists in Government Target"            = "govtarget_slc",
   "Change in deaths/year in Government Target"   = "govtarget_sideath_heat",
   "Change in CO2/year (kg) in Government Target" = "govtarget_sico2",
@@ -74,12 +54,23 @@ numeric_zone_col_names <- c(
 )
 
 zone_col_names <- c(
-  "Zone code"                          = "geo_code",
-  "Zone name"                          = "geo_label",
-  "Total no. commuters"                = "all",
-  "No. cyclists in Census 2011"        = "bicycle",
-  "No. car drivers in Census 2011"     = "car_driver",
-  numeric_zone_col_names
+  "Zone code"                                    = "geo_code",
+  "Zone name"                                    = "geo_label",
+  "Total no. commuters"                          = "all",
+  "No. cyclists in Census 2011"                  = "bicycle",
+  "No. car drivers in Census 2011"               = "car_driver",
+  "No. cyclists in Government Target"            = "govtarget_slc",
+  "Change in deaths/year in Government Target"   = "govtarget_sideath_heat",
+  "Change in CO2/year (kg) in Government Target" = "govtarget_sico2",
+  "No. cyclists in Gender Equality"              = "gendereq_slc",
+  "Change in deaths/year in Gender Equality"     = "gendereq_sideath_heat",
+  "Change in CO2/year (kg) in Gender Equality"   = "gendereq_sico2",
+  "No. cyclists in Go Dutch"                     = "dutch_slc",
+  "Change in deaths/year in Go Dutch"            = "dutch_sideath_heat",
+  "Change in CO2/year (kg) in Go Dutch"          = "dutch_sico2",
+  "No. cyclists in Ebikes"                       = "ebike_slc",
+  "Change in deaths/year in Ebikes"              = "ebike_sideath_heat",
+  "Change in CO2/year (kg) in Ebikes"            = "ebike_sico2"
 )
 
 scenarios_names <- c(
