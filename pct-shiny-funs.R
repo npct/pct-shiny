@@ -342,6 +342,15 @@ network_route_popup <- function(data, scenario){
       <td> Between-zone cyclists (scenario): &nbsp; </td>
       <td>", round(data[[data_filter(scenario, 'slc')]]), "</td>
     </tr>
+    <tr>
+      <td> * Increase (%): &nbsp; </td>
+      <td>", (round(data[[data_filter(scenario, 'slc')]] / data$bicycle, 1 ) - 1) * 100, "</td>
+    </tr>
+    <tr>
+      <td> * For information on included cyclists see Model Output tab </td>
+    </tr>
+
+
   </tbody>
 </table>
 ")
