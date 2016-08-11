@@ -25,7 +25,7 @@ zcols <- "RdYlBu" # for colourbrewer scale (see get_colour_ramp in pct-shiny-fun
 # expect pct-data as a sibling of pct-shiny
 data_dir_root <- file.path(shiny_root, '..', 'pct-data')
 # packages required
-cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT", "shinyjs", "sp", "dplyr", "geojsonio")
+cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT", "shinyjs", "sp", "dplyr", "geojsonio", "parallel", "rmapshaper")
 
 on_production <- grepl('^/var/shiny/pct-shiny', getwd())
 
@@ -69,6 +69,9 @@ shinyServer(function(input, output, session){
     to_plot$r_fast@data <<- cbind(to_plot$r_fast@data[!(names(to_plot$r_fast) %in% names(to_plot$l))], to_plot$l@data)
     to_plot$r_quiet <<- readRDS(file.path(region$data_dir, "rq.Rds"))
     to_plot$r_quiet@data <<- cbind(to_plot$r_quiet@data[!(names(to_plot$r_quiet) %in% names(to_plot$l))], to_plot$l@data)
+
+    to_plot$joined <<- mcparallel(rbind_lines(to_plot$l, to_plot$r_fast, to_plot$r_quiet))
+
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
     region$repopulate_region <<- F
@@ -620,14 +623,14 @@ shinyServer(function(input, output, session){
   output$download_lines_geojson <- downloadHandler(
     filename = function() { "all_lines.geojson"  },
     content = function(file) {
-      geojson_write(rbind_lines(to_plot$l, to_plot$r_fast, to_plot$r_quiet), file = file)
+      geojson_write(mccollect(to_plot$joined)[[1]], file = file)
     }
   )
 
   output$download_lines_csv <- downloadHandler(
     filename = function() { "routes_fast.csv"  },
     content = function(file) {
-      write.csv(rbind_lines(to_plot$l, to_plot$r_fast, to_plot$r_quiet), file = file) }
+      write.csv(mccollect(to_plot$joined)[[1]], file = file) }
   )
 
   # Hide/show panels on user-demand
