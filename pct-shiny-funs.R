@@ -3,6 +3,28 @@ sc_name_df <- data.frame(
   sc_s_name = c("olc","govtarget","gendereq","dutch", "ebike")
 )
 
+signif_sdf <- function(sdf, digits = 3) {
+  nums <- vapply(sdf@data, is.numeric, FUN.VALUE = logical(1))
+
+  sdf@data[,nums] <- signif(sdf@data[,nums], digits = digits)
+
+  (sdf)
+}
+
+rbind_lines <- function(lines, fast, quiet) {
+  row.names(quiet) <- paste("quiet", row.names(quiet), sep=".")
+  quiet <- spChFIDs(quiet, row.names(quiet))
+
+  row.names(fast) <- paste("fast", row.names(fast), sep=".")
+  fast <- spChFIDs(fast, row.names(fast))
+
+  lines <- spChFIDs(lines, row.names(lines))
+  lines$length <- lines$dist * 1000
+  lines$time <- lines$change_elev <- lines$av_incline <- 0
+  quiet$rqincr <- NULL
+
+  rbind(signif_sdf(lines), signif_sdf(fast), signif_sdf(quiet))
+}
 # Data Frame which contains the links of lines and their colours
 line_and_colour_df <- data.frame(
   line_type = c("straight_line", "quieter_route", "faster_route", "route_network", "centres"),

@@ -25,7 +25,7 @@ zcols <- "RdYlBu" # for colourbrewer scale (see get_colour_ramp in pct-shiny-fun
 # expect pct-data as a sibling of pct-shiny
 data_dir_root <- file.path(shiny_root, '..', 'pct-data')
 # packages required
-cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT", "shinyjs", "sp", "dplyr")
+cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT", "shinyjs", "sp", "dplyr", "geojsonio")
 
 on_production <- grepl('^/var/shiny/pct-shiny', getwd())
 
@@ -616,6 +616,19 @@ shinyServer(function(input, output, session){
     DT::datatable(zones_to_plot, options = list(pageLength = 10), colnames = zone_col_names, rownames = FALSE) %>%
       formatRound(columns = decimal_zone_cols, digits=2)
   })
+
+  output$download_lines_geojson <- downloadHandler(
+    filename = function() { "all_lines.geojson"  },
+    content = function(file) {
+      geojson_write(rbind_lines(to_plot$l, to_plot$r_fast, to_plot$r_quiet), file = file)
+    }
+  )
+
+  output$download_lines_csv <- downloadHandler(
+    filename = function() { "routes_fast.csv"  },
+    content = function(file) {
+      write.csv(rbind_lines(to_plot$l, to_plot$r_fast, to_plot$r_quiet), file = file) }
+  )
 
   # Hide/show panels on user-demand
   shinyjs::onclick("toggle_panel", shinyjs::toggle(id = "input_panel", anim = FALSE))
