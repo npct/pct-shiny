@@ -347,7 +347,7 @@ network_route_popup <- function(data, scenario){
     </tr>
     <tr>
       <td> Ratio (scenario / baseline): &nbsp; </td>
-      <td>", round(data[[data_filter(scenario, 'slc')]] / data$bicycle, 1 ), "</td>
+      <td>", round(data[[data_filter(scenario, 'slc')]] / data$bicycle, 2 ), "</td>
     </tr>
     <tr>
       <td> * Selected cyclists: see Model Output tab </td>
