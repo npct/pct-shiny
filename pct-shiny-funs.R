@@ -321,9 +321,12 @@ network_route_popup <- function(data, scenario){
   <th> Census 2011 cycling (baseline)</th>
   <tbody>
     <tr>
-      <td> Between-zone cyclists (baseline): &nbsp; </td>
+      <td> Between-zone cyclists* (baseline): &nbsp; </td>
       <td>", data$bicycle, "</td>
     </tr>
+    <tr>
+      <td> * Selected cyclists: see Model Output tab </td>
+     </tr>
   </tbody>
 </table>
 ")
