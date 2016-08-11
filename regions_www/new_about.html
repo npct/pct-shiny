@@ -1,0 +1,167 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>GoActive About Page</title>
+
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" media="screen" rel="stylesheet" type="text/css" />
+
+<script>
+
+  function openclose(myid){
+    lilist=document.getElementById("maintext").getElementsByTagName("span");
+    for (var i = 0; i < lilist.length; i++) {
+      if (lilist[i].id==myid) {
+        if (document.getElementById(myid).style.display=="block") document.getElementById(myid).style.display="none";
+        else document.getElementById(myid).style.display="block";
+      } else document.getElementById(lilist[i].id).style.display="none";
+    }
+  }
+
+</script>
+
+</head>
+<body>
+
+<style>
+
+.carousel-inner > .item > img,
+  .carousel-inner > .item > a > img {
+      width: 60%;
+      margin: auto;
+  }
+
+
+
+</style>
+
+<div class="container">
+
+  <nav class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="row" style = "font-size: 16px">
+            <div class="col-md-9 nopadding">
+              <img src="./logos/pct-logo.png" alt="Propensity to Cycle Tool" />
+            </div>
+        </div>
+    </nav>
+
+
+<style>
+
+  span.ocbox {
+  	display: none;
+  }
+
+  h4{
+    padding:0px;
+    margin:0px;
+    margin-bottom:5px;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+    -moz-font-feature-settings: "kern";
+    font-feature-settings: "kern";
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  p,li{
+    color: #393d40;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+    -moz-font-feature-settings: "kern";
+    font-feature-settings: "kern";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+  .aboutlinks{
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+    -moz-font-feature-settings: "kern";
+    font-feature-settings: "kern";
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 1.5;
+  }
+
+</style>
+
+<div class="row maintext" id="maintext">
+  <!--<div class="col-md-12 text-center"><h3>About GoActive</h3></div>-->
+    <div class="col-md-3 text-left" style="padding-top:10px;">
+      <div style="padding-bottom:10px;"><a class="aboutlinks" href="#about">About</a></div>
+      <div style="padding-bottom:10px;"><a class="aboutlinks" href="#team">Team</a></div>
+      <div style="padding-bottom:10px;"><a class="aboutlinks" href="#references">References</a></div>
+    </div>
+
+    <div class="col-md-9">
+
+      <div class="col-md-12 text-left" style="padding-top:10px;">
+        <h4><a name="about">About</a></h4>
+        <p>This is the online home of the open source transport planning system, the Propensity to Cycle Tool (PCT). The PCT is released under the <a href="http://pct.bike/kent/licence.html" target="_blank">AGP Licence</a>: it is free to use, copy and modify, e.g. to create versions for new cities and states.</p>
+<p>The PCT was created by an academic team from <a href="http://www.cedar.iph.cam.ac.uk/" target="_blank">CEDAR</a> (University of Cambridge), the Institute for Transport Studies (<a href="http://www.its.leeds.ac.uk/" target="_blank">ITS</a>)/<a href="http://cdrc.ac.uk/" target="_blank">CDRC</a> (University of Leeds), the <a href="http://westminster.ac.uk/" target="_blank">University of Westminster</a>, and YouthinMind. The work was initially funded by the Department for Transport (<a href="https://www.gov.uk/government/organisations/department-for-transport" target="_blank">DfT</a>) to create the National Propensity to Cycle Tool for England (PCT-England). This will be officially launched in July 2016.</p>
+<p>Further information on the project can be found at the <a href="http://www.cedar.iph.cam.ac.uk/research/modelling/npct-tool/" target="_blank">University of Cambridge</a>, the <a href="https://www.cdrc.ac.uk/research/npct/">University of Leeds</a> and the <a href="https://ecf.com/news-and-events/news/national-propensity-cycle-tool-npct-project" target="_blank">European Cycling Federation</a>.
+      </div>
+
+      <div class="col-md-12 text-left" style="padding-top:10px;">
+        <h4><a name="team">The PCT Team</a></h4>
+        <p>
+          The PCT was created by:</p>
+          <ul>
+          <li><a href="http://www.cedar.iph.cam.ac.uk/people/leads/james-woodcock/">James Woodcock</a></li>
+          <li><a href="http://robinlovelace.net/">Robin Lovelace</a></li>
+          <li><a href="http://rachelaldred.org/">Rachel Aldred</a></li>
+          <li><a href="http://www.lshtm.ac.uk/aboutus/people/goodman.anna">Anna Goodman</a></li>
+          <li><a href="http://www.cedar.iph.cam.ac.uk/people/support/alvaro-ullrich/">Alvaro Ullrich</a></li>
+          <li><a href="http://www.cedar.iph.cam.ac.uk/people/cdfs/ali-abbas/">Ali Abbas</a></li>
+          <li><a href="https://github.com/nikolai-b">Nikolai Berkoff</a></li>
+          </ul>
+
+        </p>
+      </div>
+    </div>
+
+</div>
+
+          <div style="margin-top:10px; margin-bottom:10px; padding-top:10px; border-top: 1px solid #e7e7e7;">
+
+          <div class="row">
+            <div class="col-md-2 col-md-offset-1 text-center" style="padding-top:10px;">
+              <a target="_blank" href="http://www.cam.ac.uk/">
+                <img style="max-height:60px" src="./logos/camuni-logo.png" class="img-responsive" alt="Cambridge University Logo">
+              </a>
+            </div>
+            <div class="col-xs-2 text-center" style = "padding-top:10px">
+              <a target="_blank" href="http://www.cedar.iph.cam.ac.uk/">
+                <img style="max-height:60px" src="./logos/cedar-logo.png" class="img-responsive" alt="Cedar Logo">
+              </a>
+            </div>
+            <div class="col-xs-2 text-center" style="padding-top:10px;">
+              <a target="_blank" href="http://www.westminster.ac.uk/">
+                <img style="max-height:60px" src="./logos/westminster-logo.jpg" class="img-responsive" alt="Westminster University Logo">
+              </a>
+            </div>
+            <div class="col-xs-2 text-center" style="padding-top:10px;">
+              <a target="_blank" href="http://www.leeds.ac.uk/">
+                <img style="max-height:60px" src="./logos/leeds-logo.png" class="img-responsive" alt="Leeds University Logo">
+              </a>
+            </div>
+            <div class="col-xs-2 text-center" style="padding-top:1px;" >
+              <a target="_blank" href="http://www.gov.uk/government/organisations/department-for-transport/">
+                <img style="max-height:60px" src="./logos/Department_for_Transport.png" class="img-responsive" alt="Dft Logo">
+              </a>
+          </div>
+      </div>
+    </div>
+
+</div>
+
+</body>
+</html>
