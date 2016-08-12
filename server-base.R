@@ -25,7 +25,7 @@ zcols <- "RdYlBu" # for colourbrewer scale (see get_colour_ramp in pct-shiny-fun
 # expect pct-data as a sibling of pct-shiny
 data_dir_root <- file.path(shiny_root, '..', 'pct-data')
 # packages required
-cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT", "shinyjs", "sp", "dplyr", "geojsonio", "parallel", "rmapshaper")
+cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT", "shinyjs", "sp", "dplyr", "geojsonio")
 
 on_production <- grepl('^/var/shiny/pct-shiny', getwd())
 
@@ -69,8 +69,6 @@ shinyServer(function(input, output, session){
     to_plot$r_fast@data <<- cbind(to_plot$r_fast@data[!(names(to_plot$r_fast) %in% names(to_plot$l))], to_plot$l@data)
     to_plot$r_quiet <<- readRDS(file.path(region$data_dir, "rq.Rds"))
     to_plot$r_quiet@data <<- cbind(to_plot$r_quiet@data[!(names(to_plot$r_quiet) %in% names(to_plot$l))], to_plot$l@data)
-
-    to_plot$joined <<- mcparallel(rbind_lines(to_plot$l, to_plot$r_fast, to_plot$r_quiet))
 
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
@@ -620,11 +618,19 @@ shinyServer(function(input, output, session){
       formatRound(columns = decimal_zone_cols, digits=2)
   })
 
-  output$download_lines_geojson <- downloadHandler(
-    filename = function() { "all_lines.geojson"  },
-    content = function(file) {
-      geojson_write(mccollect(to_plot$joined)[[1]], file = file)
-    }
+  output$download_l_geojson <- downloadHandler(
+    filename = function() { "lines.geojson"  },
+    content = function(file) { geojson_write(to_plot$l, file = file) }
+  )
+
+  output$download_rf_geojson <- downloadHandler(
+    filename = function() { "routes_fast.geojson"  },
+    content = function(file) { geojson_write(to_plot$r_fast, file = file) }
+  )
+
+  output$download_rnet_geojson <- downloadHandler(
+    filename = function() { "routes_network.geojson"  },
+    content = function(file) { geojson_write(to_plot$r_net, file = file) }
   )
 
   output$download_lines_csv <- downloadHandler(

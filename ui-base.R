@@ -156,7 +156,9 @@ shinyUI(
                     levels in each scenario; and the associated health and carbon impacts.
                     You can download the full csv dataset for the zones here, alongside geographic
                     and attribute data to be read by R (.Rds) or GIS programs such as QGIS (.geojson):"),
-             tags$div(downloadLink('download_lines_geojson', 'lines.geojson')),
+             tags$div(downloadLink('download_l_geojson', 'lines.geojson')),
+             tags$div(downloadLink('download_rf_geojson', 'routes_fast.geojson')),
+             tags$div(downloadLink('download_rnet_geojson', 'routes_network.geojson')),
              tags$div(downloadLink('download_lines_csv', 'lines.csv')),
              DT::dataTableOutput("zones_data_table")
     ),
