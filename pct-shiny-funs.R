@@ -7,18 +7,11 @@ signif_sdf <- function(sdf, name, digits = 3) {
   nums <- vapply(sdf@data, is.numeric, FUN.VALUE = logical(1))
 
   sdf@data[,nums] <- signif(sdf@data[,nums], digits = digits)
-  sdf <- ms_simplify(sdf, no_repair = T)
   row.names(sdf) <- paste(name, row.names(sdf), sep=".")
   sdf <- spChFIDs(sdf, row.names(sdf))
   sdf
 }
 
-rbind_lines <- function(lines, fast, quiet) {
-  lines$length <- lines$dist * 1000
-  lines$time <- lines$change_elev <- lines$av_incline <- 0
-
-  rbind(signif_sdf(lines, "lines"), signif_sdf(fast, "fast"), signif_sdf(quiet, "quiet"))
-}
 # Data Frame which contains the links of lines and their colours
 line_and_colour_df <- data.frame(
   line_type = c("straight_line", "quieter_route", "faster_route", "route_network", "centres"),
