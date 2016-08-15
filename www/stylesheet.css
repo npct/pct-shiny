@@ -85,3 +85,26 @@ body {
 .htab  {
   font-size: 12px;
 }
+
+
+/*
+Add CSS for tables. Taken from:
+https://onlinecourses.science.psu.edu/statprogram/markdown
+*/
+
+.model_output_table th {
+  background-color:#E0E0E0 ;
+  border-bottom:1px solid black;
+  padding:5px;
+}
+.model_output_table td {
+  border-bottom:1px dotted black;
+  padding:5px;
+}
+.model_output_table table{
+  border-collapse:collapse;
+  margin:auto;
+  border: 1px solid black;
+}
+
+
