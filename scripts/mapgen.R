@@ -36,11 +36,11 @@ for(i in 1:length(regions)){
   zones = readRDS(paste0("../pct-data/", region_name, "/z.Rds"))
   # cents <- centsa[region_shape,]
   # zones <- ukmsoas[ukmsoas@data$geo_code %in% cents$geo_code, ]
-  regions$pcycle[i] <- round(100 * sum(zones$Bicycle) / sum(zones$All), 1)
-  regions$govtarget_slc[i] <- round(100 * sum(zones$govtarget_slc) / sum(zones$All), 1)
-  regions$gendereq_slc[i] <- round(100 * sum(zones$gendereq_slc) / sum(zones$All), 1)
-  regions$dutch_slc[i] <- round(100 * sum(zones$dutch_slc) / sum(zones$All), 1)
-  regions$ebike_slc[i] <- round(100 * sum(zones$ebike_slc) / sum(zones$All), 1)
+  regions$pcycle[i] <- round(100 * sum(zones$bicycle) / sum(zones$all), 1)
+  regions$govtarget_slc[i] <- round(100 * sum(zones$govtarget_slc) / sum(zones$all), 1)
+  regions$gendereq_slc[i] <- round(100 * sum(zones$gendereq_slc) / sum(zones$all), 1)
+  regions$dutch_slc[i] <- round(100 * sum(zones$dutch_slc) / sum(zones$all), 1)
+  regions$ebike_slc[i] <- round(100 * sum(zones$ebike_slc) / sum(zones$all), 1)
 
   regions$url[i] <- paste0("./", regions$Region[i])
   regions$url_text[i] <- as.character(a(regions$Region_cap[i], href = regions$url[i]))
