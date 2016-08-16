@@ -86,9 +86,13 @@ body {
   font-size: 12px;
 }
 
+
+/*
+Temporarily disabling center alignment of tables for model-output tab
 table {
   margin: 0 auto;
 }
+*/
 
 
 /*
