@@ -86,6 +86,10 @@ body {
   font-size: 12px;
 }
 
+table {
+  margin: 0 auto;
+}
+
 
 /*
 Add CSS for tables. Taken from:
@@ -103,7 +107,6 @@ https://onlinecourses.science.psu.edu/statprogram/markdown
 }
 .model_output_table table{
   border-collapse:collapse;
-  margin:auto;
   border: 1px solid black;
 }
 
