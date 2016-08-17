@@ -385,9 +385,21 @@ shinyServer(function(input, output, session){
                br(),
                "Fast route geographic file format*:",
                make_download_link("rf", "fast_routes", region$current, c('Rds', 'geojson')),
+               " - ",
+               a("Codebook", href = paste(
+                 "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
+                 title="This explains the variable names in the downloadable data",
+                 onclick= paste0("ga('send', 'event', 'download', 'route_codebook' );"), target='_blank'
+               ),
                br(),
                "Quiet route geographic file format*:",
                make_download_link("rq", "quiet_routes", region$current, c('Rds', 'geojson')),
+               " - ",
+               a("Codebook", href = paste(
+                 "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
+                 title="This explains the variable names in the downloadable data",
+                 onclick= paste0("ga('send', 'event', 'download', 'route_codebook' );"), target='_blank'
+               ),
                br(),
                "Route Network geographic file format and attribute data:",
                make_download_link("rnet", "route_network", region$current, c('Rds', 'geojson')),
