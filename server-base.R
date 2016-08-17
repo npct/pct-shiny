@@ -403,6 +403,12 @@ shinyServer(function(input, output, session){
                br(),
                "Route Network geographic file format and attribute data:",
                make_download_link("rnet", "route_network", region$current, c('Rds', 'geojson')),
+               " - ",
+               a("Codebook", href = paste(
+                 "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_rnet.csv", sep = "/"),
+                 title="This explains the variable names in the downloadable data",
+                 onclick= paste0("ga('send', 'event', 'download', 'route_network_codebook' );"), target='_blank'
+               ),
                br(),
                "* To get attribute data, use 'ID' field to merge with straight-line CSV file",
                br(), br()
