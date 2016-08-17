@@ -46,7 +46,7 @@ on_production <- grepl('^/var/shiny/pct-shiny', getwd())
 
 shinyUI(
   navbarPage(
-    title = "National Propensity to Cycle Tool",
+    title = "Propensity to Cycle Tool",
     id="nav",
     tabPanel(
       "Map",

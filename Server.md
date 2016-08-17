@@ -2,7 +2,7 @@ Copied from https://oracle.mythic-beasts.com/7592/Summary converted to md
 
 # Summary
 
-National Propensity to Cycle is a mapping tool that combines census data with mapping data
+Propensity to Cycle is a mapping tool that combines census data with mapping data
 to draw pretty pictures of how often people cycle.
 
 You can see the data for Cambridge here,
