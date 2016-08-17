@@ -167,7 +167,7 @@ shinyUI(
              htmlOutput("m_output")
     ),
     tabPanel("About",
-             includeHTML(file.path("static", "about_in_shiny.html"))
+             includeHTML(file.path("regions_www", "about_body.html"))
     ),
     tabPanel("Manual",
              includeHTML(file.path("static", "manual.html"))
