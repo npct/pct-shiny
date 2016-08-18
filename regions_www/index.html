@@ -83,37 +83,20 @@
         margin: 18px;
       }
       .logo {
-          padding-top: 10px;
+        padding-top: 10px;
       }
       .img-responsive {
-          max-height:60px;
+        max-height:60px;
       }
     </style>
     <link rel="import" href="./favicon.html">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-</head>
-<body>
-    <nav class="navbar navbar-default navbar-static-top" role="navigation">
-        <div class="container">
-            <div class="row" style= "font-size: 16px">
-                <div class="col-md-9 nopadding">
-                    <img src="./img/logos/pct-logo.png" alt="Propensity to Cycle Tool" />
-                </div>
-                <div class="col-md-1 text-right" style="margin-top:20px;font-size: 16px">
-                    <a href="http://blog.pct.bike/" target="_blank">Blog</a>
-                </div>
-                <div class="col-md-1 text-center" style="padding-top:20px;">
-                    <a href="./manual.html">Manual</a>
-                </div>
-                <div class="col-md-1 text-left" style="padding-top:20px;">
-                    <a href="./about.html">About</a>
-                </div>
-            </div>
-        </div>
+  </head>
 
-    </nav>
+  <body>
+    <div id="includedNav"></div>
     <div class="container">
       <div class="row-fluid">
         <div class="pull-left plain-margin">
@@ -123,13 +106,12 @@
         <iframe class="plain-margin" width="425" height="275" src="https://www.youtube.com/embed/58UaVb8ZCrc" frameborder="0" allowfullscreen></iframe>
 
         <div class="container-fluid main-container">
-            <p> Welcome to the Propensity to Cycle Tool (PCT) for England, which provides an evidence base to inform cycling investment.</p>
-            <p>To run the PCT, first click on a region on the map on the left to see the regional potential, then click on the name of the region.</p>
-            <p>For an introduction to the tool, its use, and the scenarios, please watch the video above.</p>
+          <p> Welcome to the Propensity to Cycle Tool (PCT) for England, which provides an evidence base to inform cycling investment.</p>
+          <p>To run the PCT, first click on a region on the map on the left to see the regional potential, then click on the name of the region.</p>
+          <p>For an introduction to the tool, its use, and the scenarios, please watch the video above.</p>
         </div>
 
         <div style="margin-top:10px; margin-bottom:10px; padding-top:10px; border-top: 1px solid #e7e7e7;">
-
           <div class="row">
             <div class="col-md-2 col-md-offset-1 text-center logo">
               <a target="_blank" href="http://www.cam.ac.uk/">
@@ -155,10 +137,10 @@
               <a target="_blank" href="http://www.gov.uk/government/organisations/department-for-transport/">
                 <img src="./img/logos/Department_for_Transport.png" class="img-responsive" alt="Dft Logo">
               </a>
+            </div>
           </div>
+        </div>
       </div>
-    </div>
-    </div>
     </div>
     <!-- dynamically load mathjax for compatibility with self-contained -->
     <script>
@@ -168,6 +150,9 @@
         script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
         document.getElementsByTagName("head")[0].appendChild(script);
       })();
+      jQuery(document).ready(function(){
+        $("#includedNav").load("nav.html");
+      });
     </script>
 
   </body>
