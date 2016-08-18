@@ -56,7 +56,8 @@ shinyUI(
         tags$head(
           if(on_production) includeScript("www/assets/google-analytics.js"),
           includeScript("www/assets/extra.js"),
-          includeCSS("www/stylesheet.css")
+          includeCSS("www/stylesheet.css"),
+          includeHTML(file.path("regions_www", "favicon.html"))
         ),
         br(),
         leafletOutput("map", width="100%", height="95%"),
