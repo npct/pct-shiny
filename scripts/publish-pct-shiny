@@ -15,7 +15,7 @@ fi
 export PATH=$PATH:/home/git/bin
 
 echo "Check out the latest version into our temp directory"
-rm -r /home/git/var-shiny/pct-shiny
+rm -rf /home/git/var-shiny/pct-shiny
 mkdir -p /home/git/var-shiny/pct-shiny
 git --work-tree /home/git/var-shiny/pct-shiny --git-dir /home/git/pct-shiny checkout ${BRANCH} -f
 git --git-dir /home/git/pct-shiny rev-parse --short HEAD > /home/git/var-shiny/pct-shiny/repo_sha
@@ -30,7 +30,7 @@ mkdir /home/git/var-shiny/pct-data
 git --work-tree /home/git/var-shiny/pct-data --git-dir /home/git/pct-data checkout $DATASHA -f
 
 if [[ $(hostname -s) = "npct0" ]]; then
-  update-server npct.vs.mythic-beasts.com
+  update-server npct0
 else
   echo "Update the first server, then the second"
   update-server npt1.vs.mythic-beasts.com
