@@ -15,6 +15,7 @@ fi
 export PATH=$PATH:/home/git/bin
 
 echo "Check out the latest version into our temp directory"
+rm -r /home/git/var-shiny/pct-shiny
 mkdir -p /home/git/var-shiny/pct-shiny
 git --work-tree /home/git/var-shiny/pct-shiny --git-dir /home/git/pct-shiny checkout ${BRANCH} -f
 git --git-dir /home/git/pct-shiny rev-parse --short HEAD > /home/git/var-shiny/pct-shiny/repo_sha
