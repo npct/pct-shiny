@@ -30,9 +30,7 @@ mkdir /home/git/var-shiny/pct-data
 git --work-tree /home/git/var-shiny/pct-data --git-dir /home/git/pct-data checkout $DATASHA -f
 
 if [[ $(hostname -s) = "npct0" ]]; then
-  ssh -a -l root -i /home/git/.ssh/id_rsa_cp npct0
-  ssh -a -l root -i /home/git/.ssh/id_rsa_chown npct0
-  ssh -a -l root -i /home/git/.ssh/id_rsa_restart_server npct0
+  update-server npct.vs.mythic-beasts.com
 else
   echo "Update the first server, then the second"
   update-server npt1.vs.mythic-beasts.com
