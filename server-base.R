@@ -368,7 +368,7 @@ shinyServer(function(input, output, session){
         a("Codebook", href = paste(
           "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_zones.csv", sep = "/"),
           title="This explains the variable names in the downloadable data",
-          onclick= paste0("ga('send', 'event', 'download', 'z_codebook' );"), target='_blank')
+          onclick="ga('send', 'event', 'download', 'z_codebook');", target='_blank')
       )
     )
   })
@@ -380,7 +380,7 @@ shinyServer(function(input, output, session){
                a("Codebook", href = paste(
                  "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_lines.csv", sep = "/"),
                  title="This explains the variable names in the downloadable data",
-                 onclick= paste0("ga('send', 'event', 'download', 'l_codebook' );"), target='_blank'
+                 onclick="ga('send', 'event', 'download', 'l_codebook');", target='_blank'
                ),
                br(),
                "Fast route geographic file format*:",
@@ -389,7 +389,7 @@ shinyServer(function(input, output, session){
                a("Codebook", href = paste(
                  "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
                  title="This explains the variable names in the downloadable data",
-                 onclick= paste0("ga('send', 'event', 'download', 'route_codebook' );"), target='_blank'
+                 onclick="ga('send', 'event', 'download', 'route_codebook');", target='_blank'
                ),
                br(),
                "Quiet route geographic file format*:",
@@ -398,7 +398,7 @@ shinyServer(function(input, output, session){
                a("Codebook", href = paste(
                  "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
                  title="This explains the variable names in the downloadable data",
-                 onclick= paste0("ga('send', 'event', 'download', 'route_codebook' );"), target='_blank'
+                 onclick="ga('send', 'event', 'download', 'route_codebook');", target='_blank'
                ),
                br(),
                "Route Network geographic file format and attribute data:",
@@ -407,7 +407,7 @@ shinyServer(function(input, output, session){
                a("Codebook", href = paste(
                  "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_rnet.csv", sep = "/"),
                  title="This explains the variable names in the downloadable data",
-                 onclick= paste0("ga('send', 'event', 'download', 'route_network_codebook' );"), target='_blank'
+                 onclick="ga('send', 'event', 'download', 'route_network_codebook');", target='_blank'
                ),
                br(),
                "* To get attribute data, use 'ID' field to merge with straight-line CSV file",
