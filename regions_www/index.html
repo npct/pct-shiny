@@ -26,12 +26,15 @@
         background-color: white;
       }
     </style>
-    <script type="text/javascript">
+    <script>
       if (window.hljs && document.readyState && document.readyState === "complete") {
         window.setTimeout(function() {
           hljs.initHighlighting();
         }, 0);
       }
+      $(document).ready(function(){
+        $("#includedNav").load("nav.html");
+      });
     </script>
 
     <style type="text/css">
@@ -150,9 +153,6 @@
         script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
         document.getElementsByTagName("head")[0].appendChild(script);
       })();
-      jQuery(document).ready(function(){
-        $("#includedNav").load("nav.html");
-      });
     </script>
 
   </body>
