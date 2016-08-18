@@ -57,7 +57,7 @@ popup_dutch <- paste0(regions$url_text, "</br>", round(regions$dutch_slc, 1), "%
 popup_ebikes <- paste0(regions$url_text, "</br>", round(regions$ebike_slc, 1), "% in Ebikes<br>")
 
 library(leaflet)
-qpal <- colorBin("RdYlGn", regions$pcycle, bins = c(0, 3, 6, 12, 20, 40), pretty = TRUE)
+qpal <- colorBin(c("darkslategrey", "yellow"), regions$pcycle, bins = c(0, 3, 6, 12, 20, 40), pretty = TRUE)
 
 m <- leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
   addPolygons(data = regions, popup = popup_census, weight = 1,
