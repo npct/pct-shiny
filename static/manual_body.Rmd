@@ -1,4 +1,5 @@
 ---
+knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(inputFile), '../regions_www/manual_body.html')) })
 title: "User Manual"
 author: "PCT Team"
 output: 
@@ -28,7 +29,8 @@ This was last built on `r Sys.Date()`.
 This is work in progress and is being developed as part of a suite of training materials during 2016. To request more information or provide feedback, please [email us at pct@pct.bike](mailto:pct@pct.bike?Subject=Manual) or report issues on our
 <a target="_blank" href="https://github.com/npct/pct-shiny/issues">GitHub issue tracker</a>.
 Contributions to the project are welcome. This file, for instance, can be edited online at
-<a target="_blank" href="https://github.com/npct/pct-shiny/edit/master/static/manual.Rmd">github.com/npct/pct-shiny</a>.
+<a target="_blank" href="https://github.com/npct/pct-shiny/edit/master/static/manual_body.Rmd">github.com/npct/pct-shiny</a>.
+
 
 <!-- The NPCT has a [blog](http://pct.bike/wp/), where more [training materials](http://pct.bike/wp/?cat=6) including short videos, are being posted. -->
 
@@ -63,7 +65,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 </td>
 
-<td style="vertical-align: top; width: 535px;">![Scenario Selection](img/help/scenario-selection.png)  
+<td style="vertical-align: top; width: 535px;">![Scenario Selection](/www/img/help/scenario-selection.png)  
 </td>
 
 </tr>
@@ -78,7 +80,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 </td>
 
-<td style="vertical-align: top; width: 535px;">![Zone Attribute](img/help/zone-attribute.png)  
+<td style="vertical-align: top; width: 535px;">![Zone Attribute](/www/img/help/zone-attribute.png)  
 </td>
 
 </tr>
@@ -95,7 +97,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 </td>
 
-<td style="vertical-align: top; width: 535px;">![Cycling Flows](img/help/cycling-flows.png)  
+<td style="vertical-align: top; width: 535px;">![Cycling Flows](/www/img/help/cycling-flows.png)  
 </td>
 
 </tr>
@@ -111,7 +113,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 </td>
 
-<td style="vertical-align: top; width: 535px;">![Fixed Lines](img/help/freeze-lines.png)  
+<td style="vertical-align: top; width: 535px;">![Fixed Lines](/www/img/help/freeze-lines.png)  
 </td>
 
 </tr>
@@ -127,7 +129,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 
 </td>
 
-<td style="vertical-align: top; width: 535px;">![Line Attribute](img/help/line-attribute.png)  
+<td style="vertical-align: top; width: 535px;">![Line Attribute](/www/img/help/line-attribute.png)  
 </td>
 
 </tr>
@@ -137,7 +139,7 @@ Overall, there are many ways that the tool can be used to improve cycling provis
 <td style="vertical-align: top; width: 1054px;"><span style="font-weight: bold; text-decoration: underline;">Flows to Show</span>  
 When viewing flows, this slider selects how many of the of the top 50 are shown</td>
 
-<td style="vertical-align: top; width: 535px;">![Number of Lines to Show](img/help/number-of-lines.png)  
+<td style="vertical-align: top; width: 535px;">![Number of Lines to Show](/www/img/help/number-of-lines.png)  
 </td>
 
 </tr>
@@ -156,7 +158,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown<
 
 <span style="font-weight: bold; text-decoration: underline;"></span></td>
 
-<td style="vertical-align: top; width: 535px;">![Direct Route](img/help/direct-route.png)  
+<td style="vertical-align: top; width: 535px;">![Direct Route](/www/img/help/direct-route.png)  
 </td>
 
 </tr>
@@ -175,7 +177,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown<
 
 </td>
 
-<td style="vertical-align: top;">![Quiet Route](img/help/quiet-route.png)  
+<td style="vertical-align: top;">![Quiet Route](/www/img/help/quiet-route.png)  
 </td>
 
 </tr>
@@ -194,7 +196,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown<
 
 </td>
 
-<td style="vertical-align: top;">![Straight Line](img/help/straight-line-popup.png)  
+<td style="vertical-align: top;">![Straight Line](/www/img/help/straight-line-popup.png)  
 </td>
 
 </tr>
@@ -212,7 +214,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown<
 
 </td>
 
-<td style="vertical-align: top;">![Zone](img/help/zone-popup.png)  
+<td style="vertical-align: top;">![Zone](/www/img/help/zone-popup.png)  
 </td>
 
 </tr>
@@ -221,7 +223,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown<
 
 <td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;">Zone Attribute Legend</span> The legend shows quartiles for the displayed zone attribute according to the scenario selected.</td>
 
-<td style="vertical-align: top;">![Legend](img/help/legend.png)</td>
+<td style="vertical-align: top;">![Legend](/www/img/help/legend.png)</td>
 
 </tr>
 
@@ -245,7 +247,7 @@ Hilliness is certainly an important predictor of cycling levels in England, with
 
 <tr>
 
-<td align="center" valign="center">[![](img/help/Fig0.png)](img/help/Fig0.png "Figure 1: Proportion of trips cycled in England, according to the hilliness of the local area")   
+<td align="center" valign="center">[![](/www/img/help/Fig0.png)](/www/img/help/Fig0.png "Figure 1: Proportion of trips cycled in England, according to the hilliness of the local area")   
 </td>
 
 </tr>
@@ -272,7 +274,7 @@ It is also true that the Netherlands is a flatter country than England. As illus
 
 <tr>
 
-<td align="center" valign="center">[![](img/help/Fig1.png)](img/help/Fig1.png "Figure 2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England.") </td>
+<td align="center" valign="center">[![](/www/img/help/Fig1.png)](/www/img/help/Fig1.png "Figure 2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England.") </td>
 
 </tr>
 
@@ -306,7 +308,7 @@ People in the Netherlands make 26.7% of trips by bicycle, fifteen times higher t
 
 <tr>
 
-<td align="center" valign="center">[![](img/help/Fig2.png)](img/help/Fig2.png "Figure 1: Proportion of trips cycled in England and Netherlands stratified by age and sex")   
+<td align="center" valign="center">[![](/www/img/help/Fig2.png)](/www/img/help/Fig2.png "Figure 1: Proportion of trips cycled in England and Netherlands stratified by age and sex")   
 </td>
 
 </tr>
@@ -319,8 +321,8 @@ People in the Netherlands make 26.7% of trips by bicycle, fifteen times higher t
 
 <tr class="row2">
 
-<td align="center" valign="center">[![](img/help/Fig3.png)  
-](img/help/Fig3.png "Figure 2: Ratio of cycle mode share in the Netherlands versus England, stratified by age and sex")</td>
+<td align="center" valign="center">[![](/www/img/help/Fig3.png)  
+](/www/img/help/Fig3.png "Figure 2: Ratio of cycle mode share in the Netherlands versus England, stratified by age and sex")</td>
 
 </tr>
 
@@ -346,7 +348,7 @@ In both countries, the probability of cycling falls rapidly as trip distance inc
 
 <tr>
 
-<td align="center" valign="center">[![](img/help/Fig4.png)](img/help/Fig4.png "Figure 3: 'Distance decay' curves in England and the Netherlands, showing the probability that a trip of a given distance will be cycled relative to a trip of 2 miles")   
+<td align="center" valign="center">[![](/www/img/help/Fig4.png)](/www/img/help/Fig4.png "Figure 3: 'Distance decay' curves in England and the Netherlands, showing the probability that a trip of a given distance will be cycled relative to a trip of 2 miles")   
 </td>
 
 </tr>
@@ -387,7 +389,7 @@ This hits women’s and older men’s cycling twice: they are less likely than m
 
 <tr>
 
-<td align="center" valign="center">[![](img/help/Route.png)](img/help/Route.png "Direct and Quiet Routes between two zones.")   
+<td align="center" valign="center">[![](/www/img/help/Route.png)](/www/img/help/Route.png "Direct and Quiet Routes between two zones.")   
 </td>
 
 </tr>
@@ -510,3 +512,9 @@ This section is work in progress.
 </div> -->
 
 </div>
+
+```{r, echo=FALSE}
+# m = readLines("regions_www/manual_body.html")
+# m = gsub(pattern = 'img www/img', replacement = "img www/img")
+```
+
