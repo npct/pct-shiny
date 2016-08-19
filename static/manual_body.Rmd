@@ -513,8 +513,4 @@ This section is work in progress.
 
 </div>
 
-```{r, echo=FALSE}
-# m = readLines("regions_www/manual_body.html")
-# m = gsub(pattern = 'img www/img', replacement = "img www/img")
-```
 
