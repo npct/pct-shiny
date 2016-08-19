@@ -2,7 +2,7 @@ deployment:
   production:
     branch: production
     commands:
-      - git push git@npt1.vs.mythic-beasts.com:pct-shiny $CIRCLE_SHA1:master -f
+      - git push git@npt1.vs.mythic-beasts.com:pct-shiny $CIRCLE_SHA1:production -f
   master:
     branch: master
     commands:
