@@ -57,9 +57,9 @@ popup_dutch <- paste0(regions$url_text, "</br>", round(regions$dutch_slc, 1), "%
 popup_ebikes <- paste0(regions$url_text, "</br>", round(regions$ebike_slc, 1), "% in Ebikes<br>")
 
 library(leaflet)
-qpal <- colorBin(c("darkslategrey", "yellow"), regions$pcycle, bins = c(0, 3, 6, 12, 20, 40), pretty = TRUE)
+qpal <- colorBin("RdYlGn", regions$pcycle, bins = c(0, 3, 6, 12, 20, 40), pretty = TRUE)
 
-m <- leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
+m <- leaflet() %>%
   addPolygons(data = regions, popup = popup_census, weight = 1,
               fillColor = ~qpal(regions$pcycle), fillOpacity = 0.5, color = "black", group = "2011 Census") %>%
   addPolygons(data = regions, popup = popup_govt_target, weight = 1,
@@ -75,9 +75,10 @@ m <- leaflet() %>% addProviderTiles("CartoDB.Positron") %>%
     position = c("topleft"),
     baseGroups = c("2011 Census", "Government Target", "Gender Equality", "Go Dutch", "Ebikes"),
     options = layersControlOptions(collapsed = F)
-  )
+  ) %>%
+  addTiles('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', attribution = '<a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors')
 
 m
-old = setwd("regions_www/")
-saveWidget(m, file = "new_map.html")
-setwd(old)
+# old = setwd("regions_www/")
+# saveWidget(m, file = "new_map.html")
+# setwd(old)
