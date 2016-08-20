@@ -90,7 +90,7 @@ shinyUI(
               conditionalPanel(
                 condition = "input.line_type != 'rnet' && input.scenario != 'olc'",
                 tags$div(title="Order the top flows by",
-                         selectInput("line_order", "Order flows by", attrs_zone, selected = "slc", selectize = F)
+                         selectInput("line_order", "Order lines/flows by", attrs_zone, selected = "slc", selectize = F)
                 )
               )
             ),
