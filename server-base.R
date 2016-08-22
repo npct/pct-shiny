@@ -20,7 +20,8 @@
 # # # # #
 
 # Colours
-zcols <- c("darkslategrey", "yellow")
+# zcols <- c("darkslategrey", "yellow") # for double-color graduated scale
+zcols <- "RdYlBu" # for colourbrewer scale (see get_colour_ramp in pct-shiny-funs.R)
 
 # expect pct-data as a sibling of pct-shiny
 data_dir_root <- file.path(shiny_root, '..', 'pct-data')
@@ -231,10 +232,7 @@ shinyServer(function(input, output, session){
                   , weight = 2
                   , fillOpacity = transp_rate()
                   , opacity = 0.2
-                  # , fillColor = get_colour_ramp(zcols, to_plot$zones[[zone_data()]]/to_plot$zones$all)
-                  , fillColor = RColorBrewer::brewer.pal(n = 9, name = "RdYlBu")[
-                    cut(x = to_plot$zones[[zone_data()]]/to_plot$zones$all, breaks = c(0, 0.2, 0.5, 1, 2, 5, 10, 20, 30, 100) / 100)
-                  ]
+                  , fillColor = get_colour_ramp(zcols, to_plot$zones[[zone_data()]]/to_plot$zones$all)
                   , color = "black"
                   , group = "zones"
                   , popup = popup

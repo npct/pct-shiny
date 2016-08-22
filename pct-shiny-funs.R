@@ -13,6 +13,8 @@ get_line_colour <- function(line_type){
   line_and_colour_df$line_colour[line_and_colour_df$line_type == line_type]
 }
 
+zone_fill_breaks = c(0, 1, 2, 4, 6, 8, 10, 14, 20, 60) / 100 # The bins used for the scale
+
 make_download_link <- function(file, download_name, region, formats = c('Rds', 'geojson', 'csv')){
   base_url = paste("https://cdn.rawgit.com/npct/pct-data", data_sha, region, sep = "/")
   all_links <- ""
@@ -88,10 +90,14 @@ normalise <- function(values, min = 0, max = 1){
 
 # Generate a series of colours based on the input range
 get_colour_ramp <- function(colors, values) {
-  v <- normalise(values)
-  x <- colorRamp(colors)(v)
-  x[is.na(x)] <- 1
-  rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
+  if(length(colors) == 1){
+    RColorBrewer::brewer.pal(n = 9, name = colors)[cut(x = values, breaks = zone_fill_breaks)]
+  } else {
+    v <- normalise(values)
+    x <- colorRamp(colors)(v)
+    x[is.na(x)] <- 1
+    rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
+  }
 }
 
 data_filter <- function(scenario, type){
