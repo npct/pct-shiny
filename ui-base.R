@@ -101,7 +101,7 @@ shinyUI(
         ),
         absolutePanel(
           cursor = "default", id = "legend", class = "panel panel-default",
-          top = 100, left = 25, height = 30, width = 100,
+          top = 350, left = 25, height = 30, width = 100,
           style = "opacity: 0.7",
           tags$div(title="Show/Hide zone legend",
                    a(id = "toggle_legend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
