@@ -57,7 +57,8 @@ popup_dutch <- paste0(regions$url_text, "</br>", round(regions$dutch_slc, 1), "%
 popup_ebikes <- paste0(regions$url_text, "</br>", round(regions$ebike_slc, 1), "% in Ebikes<br>")
 
 library(leaflet)
-qpal <- colorBin("RdYlGn", regions$pcycle, bins = c(0, 3, 6, 12, 20, 40), pretty = TRUE)
+# qpal <- colorBin("RdYln", regions$pcycle, bins = c(0, 3, 6, 12, 20, 40), pretty = TRUE)
+qpal <- colorBin("RdYlBu", regions$pcycle, bins = zone_fill_breaks * 100, pretty = TRUE)
 
 m <- leaflet() %>%
   addPolygons(data = regions, popup = popup_census, weight = 1,
@@ -79,6 +80,6 @@ m <- leaflet() %>%
   addTiles('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', attribution = '<a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors')
 
 m
-# old = setwd("regions_www/")
-# saveWidget(m, file = "new_map.html")
-# setwd(old)
+old = setwd("regions_www/")
+saveWidget(m, file = "new_test_map.html")
+setwd(old)
