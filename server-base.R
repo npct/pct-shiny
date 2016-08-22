@@ -231,7 +231,10 @@ shinyServer(function(input, output, session){
                   , weight = 2
                   , fillOpacity = transp_rate()
                   , opacity = 0.2
-                  , fillColor = get_colour_ramp(zcols, to_plot$zones[[zone_data()]]/to_plot$zones$all)
+                  # , fillColor = get_colour_ramp(zcols, to_plot$zones[[zone_data()]]/to_plot$zones$all)
+                  , fillColor = RColorBrewer::brewer.pal(n = 9, name = "RdYlBu")[
+                    cut(x = to_plot$zones[[zone_data()]]/to_plot$zones$all, breaks = c(0, 0.2, 0.5, 1, 2, 5, 10, 20, 30, 100) / 100)
+                  ]
                   , color = "black"
                   , group = "zones"
                   , popup = popup
