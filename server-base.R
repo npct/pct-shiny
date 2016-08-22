@@ -20,7 +20,6 @@
 # # # # #
 
 # Colours
-# zcols <- c("darkslategrey", "yellow") # for double-color graduated scale
 zcols <- "RdYlBu" # for colourbrewer scale (see get_colour_ramp in pct-shiny-funs.R)
 
 # expect pct-data as a sibling of pct-shiny
@@ -439,30 +438,6 @@ shinyServer(function(input, output, session){
                 position = c("topleft"), values = regions$pcycle, title = "% Cycling\nto work", opacity = 0.5)
   )
 
-  # output$legend_cycling_potential <- renderPlot({
-  #   region$replot
-  #   # Create quantiles out of the zone data
-  #   r <- range(zone_fill_breaks)
-  #   b <- seq(r[1], r[2], length=2*zone_fill_breaks + 1)
-  #   brk <- b[0:zone_fill_breaks * 2 + 1]
-  #   m <- b[1:zone_fill_breaks * 2]
-  #   # m <- (zone_fill_breaks[- length(zone_fill_breaks)] + length(zone_fill_breaks[-1])) / 2
-  #
-  #   # Create a zone colour based on the value of data
-  #   zone_col <- get_colour_ramp(zcols, m)
-  #
-  #   # Set a full form of the scenario as a label
-  #   ylabel <- "% Cycle Commuters"
-  #
-  #   # Set the labelling of Y-axis and font to bold, alter font size
-  #   par(font = 2, font.lab = 2, cex = 0.95, mar=c(0.0,5.0,0.0,1.0))
-  #
-  #   # Barplot the data in vertical manner
-  #   barplot(height = rep(1, 9), names.arg = round(matrix(m, nrow=9,ncol=1)*100),
-  #           col = zone_col, horiz=TRUE, xlab = "", ylab = ylabel, space = 0, axes = FALSE)
-  # })
-
-
   output$imd_legend <- renderPlot({
     my_lab <- c("Most deprived decile", "2nd", "3rd", "4th", "5th",
                "6th", "7th", "8th", "9th", "Least deprived decile",
@@ -532,7 +507,6 @@ shinyServer(function(input, output, session){
     else
       shinyjs::show("zone_legend")
   })
-
 
   # Function to add a layers control for the routes, so that users can easily select quiet routes
   observe({
