@@ -90,7 +90,7 @@ shinyUI(
               conditionalPanel(
                 condition = "input.line_type != 'rnet' && input.scenario != 'olc'",
                 tags$div(title="Order the top flows by",
-                         selectInput("line_order", "Order flows by", attrs_zone, selected = "slc", selectize = F)
+                         selectInput("line_order", "Order lines/flows by", attrs_zone, selected = "slc", selectize = F)
                 )
               )
             ),
@@ -99,23 +99,23 @@ shinyUI(
             )
           )
         ),
-        absolutePanel(
-          cursor = "default", id = "legend", class = "panel panel-default",
-          top = 100, left = 25, height = 30, width = 100,
-          style = "opacity: 0.7",
-          tags$div(title="Show/Hide zone legend",
-                   a(id = "toggle_legend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
-          ),
-          div(id = "zone_legend",
-              tags$div(title="Scenario-specific quartiles of cycling level",
-                       selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)", "All"), selected = "Commute data", selectize = T),
-                       conditionalPanel(
-                         condition = "input.map_base != 'c'",
-                         plotOutput("legend_cycling_potential", width = "100%", height = 200)
-                       )
-              )
-          )
-        ),
+        # absolutePanel(
+        #   cursor = "default", id = "legend", class = "panel panel-default",
+        #   top = 350, left = 25, height = 30, width = 100,
+        #   style = "opacity: 0.7",
+        #   tags$div(title="Show/Hide zone legend",
+        #            a(id = "toggle_legend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+        #   ),
+        #   div(id = "zone_legend",
+        #       tags$div(title="Scenario-specific quartiles of cycling level",
+        #                selectInput("triptype", label = "Trip data", choices = c("Commuting", "Education (unavailable)", "Shopping (unavailable)", "All"), selected = "Commute data", selectize = T),
+        #                conditionalPanel(
+        #                  condition = "input.map_base != 'c'",
+        #                  plotOutput("legend_cycling_potential", width = "100%", height = 200)
+        #                )
+        #       )
+        #   )
+        # ),
 
         conditionalPanel(
           condition = "input.map_base == 'IMD'",

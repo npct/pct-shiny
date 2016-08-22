@@ -20,7 +20,8 @@
 # # # # #
 
 # Colours
-zcols <- c("darkslategrey", "yellow")
+# zcols <- c("darkslategrey", "yellow") # for double-color graduated scale
+zcols <- "RdYlBu" # for colourbrewer scale (see get_colour_ramp in pct-shiny-funs.R)
 
 # expect pct-data as a sibling of pct-shiny
 data_dir_root <- file.path(shiny_root, '..', 'pct-data')
@@ -433,27 +434,33 @@ shinyServer(function(input, output, session){
 
       } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
-      mapOptions(zoomToLimits = "first")
+      mapOptions(zoomToLimits = "first") %>%
+      addLegend(pal = colorBin("RdYlBu", regions$pcycle, bins = zone_fill_breaks * 100, pretty = TRUE),
+                position = c("topleft"), values = regions$pcycle, title = "% Cycling\nto work", opacity = 0.5)
   )
 
-  output$legend_cycling_potential <- renderPlot({
-    region$replot
-    # Create quantiles out of the zone data
-    m <- quantile(to_plot$zones[[zone_data()]]/to_plot$zones$all, probs=seq.int(0,1, length.out=4))
-
-    # Create a zone colour based on the value of data
-    zone_col <- get_colour_ramp(zcols, m)
-
-    # Set a full form of the scenario as a label
-    ylabel <- "% Cycle Commuters"
-
-    # Set the labelling of Y-axis and font to bold, alter font size
-    par(font = 2, font.lab = 2, cex = 0.95, mar=c(0.0,5.0,0.0,1.0))
-
-    # Barplot the data in vertical manner
-    barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)*100),
-            col = zone_col, horiz=TRUE, xlab = "", ylab = ylabel, space = 0, axes = FALSE)
-  })
+  # output$legend_cycling_potential <- renderPlot({
+  #   region$replot
+  #   # Create quantiles out of the zone data
+  #   r <- range(zone_fill_breaks)
+  #   b <- seq(r[1], r[2], length=2*zone_fill_breaks + 1)
+  #   brk <- b[0:zone_fill_breaks * 2 + 1]
+  #   m <- b[1:zone_fill_breaks * 2]
+  #   # m <- (zone_fill_breaks[- length(zone_fill_breaks)] + length(zone_fill_breaks[-1])) / 2
+  #
+  #   # Create a zone colour based on the value of data
+  #   zone_col <- get_colour_ramp(zcols, m)
+  #
+  #   # Set a full form of the scenario as a label
+  #   ylabel <- "% Cycle Commuters"
+  #
+  #   # Set the labelling of Y-axis and font to bold, alter font size
+  #   par(font = 2, font.lab = 2, cex = 0.95, mar=c(0.0,5.0,0.0,1.0))
+  #
+  #   # Barplot the data in vertical manner
+  #   barplot(height = rep(1, 9), names.arg = round(matrix(m, nrow=9,ncol=1)*100),
+  #           col = zone_col, horiz=TRUE, xlab = "", ylab = ylabel, space = 0, axes = FALSE)
+  # })
 
 
   output$imd_legend <- renderPlot({
