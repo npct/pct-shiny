@@ -78,9 +78,18 @@ http://leafletjs.com/examples/choropleth-example.html
 
 		info.update = function (props) {
 			this._div.innerHTML = '<h4>Cycling to Work</h4>' +  (props ?
-				props.pcycle + '  % population'
+				'<b>' + capitalize(props.Region) + '</b><br />' + props.pcycle + '  % population'
 				: 'Hover over a region');
 		};
+
+
+		function capitalize(s){
+		    s = s.replace(/-/g, ' ');
+		    s = s.toLowerCase().replace( /\b./g, function(a){ return a.toUpperCase(); } )
+        s = s.replace('And', 'and');
+        s = s.replace('Of', 'of');
+        return s;
+    };
 
 		info.addTo(map);
 
