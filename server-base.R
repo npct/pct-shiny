@@ -440,7 +440,11 @@ shinyServer(function(input, output, session){
   output$legend_cycling_potential <- renderPlot({
     region$replot
     # Create quantiles out of the zone data
-    m <- quantile(to_plot$zones[[zone_data()]]/to_plot$zones$all, probs=seq.int(0,1, length.out=4))
+    r <- range(zone_fill_breaks)
+    b <- seq(r[1], r[2], length=2*zone_fill_breaks + 1)
+    brk <- b[0:zone_fill_breaks * 2 + 1]
+    m <- b[1:zone_fill_breaks * 2]
+    # m <- (zone_fill_breaks[- length(zone_fill_breaks)] + length(zone_fill_breaks[-1])) / 2
 
     # Create a zone colour based on the value of data
     zone_col <- get_colour_ramp(zcols, m)
@@ -452,7 +456,7 @@ shinyServer(function(input, output, session){
     par(font = 2, font.lab = 2, cex = 0.95, mar=c(0.0,5.0,0.0,1.0))
 
     # Barplot the data in vertical manner
-    barplot(height = rep(1, 4), names.arg = round(matrix(m, nrow=4,ncol=1)*100),
+    barplot(height = rep(1, 9), names.arg = round(matrix(m, nrow=9,ncol=1)*100),
             col = zone_col, horiz=TRUE, xlab = "", ylab = ylabel, space = 0, axes = FALSE)
   })
 
