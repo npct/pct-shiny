@@ -72,6 +72,8 @@ label {
   bottom: 25px;
   left: 120px;
   font-size: 12px;
+  float: left;
+  background: rgba(255, 255, 255, 0.7);
 }
 
 body {
