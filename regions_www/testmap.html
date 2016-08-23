@@ -107,17 +107,10 @@ http://leafletjs.com/examples/choropleth-example.html
 				    '<b>' + capitalize(props.Region) + '</b><br />' + props.ebike_slc + '  % in Ebike'
 				    : 'Hover over a region');
 		    }
-
-        /*
-		    for(var i=0; i<arguments.length; i++) {
-	        console.log(arguments[i])
-	      }*/
 		  }else{
-
 		    this._div.innerHTML = '<h4>Cycling to work</h4>' +  (props ?
 				'<b>' + props.name + '</b><br />'	: 'Hover over a region');
 		  }
-
 
 		};
 
@@ -131,21 +124,6 @@ http://leafletjs.com/examples/choropleth-example.html
     };
 
 		info.addTo(map);
-
-    /*
-		// get color depending on population govtarget_slc value
-		function getColor(d) {
-			return d > 1000 ? '#800026' :
-			       d > 500  ? '#BD0026' :
-			       d > 200  ? '#E31A1C' :
-			       d > 100  ? '#FC4E2A' :
-			       d > 50   ? '#FD8D3C' :
-			       d > 20   ? '#FEB24C' :
-			       d > 10   ? '#FED976' :
-			                  '#FFEDA0';
-
-			                  // [0, 3, 6, 12, 20, 40],
-		}*/
 
 		function getColor(d) {
 			return d > 40 ? '#800026' :
@@ -199,7 +177,6 @@ http://leafletjs.com/examples/choropleth-example.html
 		}
 
 		function onEachFeature_census(feature, layer) {
-      //console.log("layer is " + layer.name);
 		  layer.on({
 				mouseover: highlightFeature_census,
 				mouseout: resetHighlight_census,
@@ -210,10 +187,9 @@ http://leafletjs.com/examples/choropleth-example.html
 		olc = L.geoJson(statesData, {
 			style: style_census,
 			onEachFeature: onEachFeature_census
-		});//.addTo(map);
+		});
 
     var govtarget;
-
 
     function style_govt_target(feature) {
 			return {
@@ -250,7 +226,6 @@ http://leafletjs.com/examples/choropleth-example.html
 		}
 
 		function onEachFeature_govt_target(feature, layer) {
-      //console.log("layer is " + layer.name);
 		  layer.on({
 				mouseover: highlightFeature_govt_target,
 				mouseout: resetHighlight_govt_target,
@@ -261,14 +236,12 @@ http://leafletjs.com/examples/choropleth-example.html
 		govtarget	= L.geoJson(govt_target_gj, {
 			style: style_govt_target,
 			onEachFeature: onEachFeature_govt_target
-		});//.addTo(map);
-
+		});
 
 		// ------------------------------ //
 
 		 var govtarget;
 
-
     function style_govt_target(feature) {
 			return {
 				weight: 2,
@@ -304,7 +277,6 @@ http://leafletjs.com/examples/choropleth-example.html
 		}
 
 		function onEachFeature_govt_target(feature, layer) {
-      //console.log("layer is " + layer.name);
 		  layer.on({
 				mouseover: highlightFeature_govt_target,
 				mouseout: resetHighlight_govt_target,
@@ -315,12 +287,9 @@ http://leafletjs.com/examples/choropleth-example.html
 		govtarget	= L.geoJson(govt_target_gj, {
 			style: style_govt_target,
 			onEachFeature: onEachFeature_govt_target
-		})//;.addTo(map);
-
-
+		});
 
 		// ---------------------------------- //
-
 
 		 var gendereq;
 
@@ -360,7 +329,6 @@ http://leafletjs.com/examples/choropleth-example.html
 		}
 
 		function onEachFeature_gendereq(feature, layer) {
-      //console.log("layer is " + layer.name);
 		  layer.on({
 				mouseover: highlightFeature_gendereq,
 				mouseout: resetHighlight_gendereq,
@@ -371,7 +339,7 @@ http://leafletjs.com/examples/choropleth-example.html
 		gendereq	= L.geoJson(gendereq_gj, {
 			style: style_gendereq,
 			onEachFeature: onEachFeature_gendereq
-		})//;.addTo(map);
+		});
 
 
 		// ---------------------------------------//
@@ -414,7 +382,6 @@ http://leafletjs.com/examples/choropleth-example.html
 		}
 
 		function onEachFeature_dutch(feature, layer) {
-      //console.log("layer is " + layer.name);
 		  layer.on({
 				mouseover: highlightFeature_dutch,
 				mouseout: resetHighlight_dutch,
@@ -425,7 +392,7 @@ http://leafletjs.com/examples/choropleth-example.html
 		dutch	= L.geoJson(dutch_gj, {
 			style: style_dutch,
 			onEachFeature: onEachFeature_dutch
-		});//.addTo(map);
+		});
 
 
 		// ------------------------ //
@@ -468,7 +435,6 @@ http://leafletjs.com/examples/choropleth-example.html
 		}
 
 		function onEachFeature_ebike(feature, layer) {
-      //console.log("layer is " + layer.name);
 		  layer.on({
 				mouseover: highlightFeature_ebike,
 				mouseout: resetHighlight_ebike,
@@ -489,7 +455,7 @@ http://leafletjs.com/examples/choropleth-example.html
       "Ebikes" : ebike
     };
 
-    L.control.layers(map_layers, null, {collapsed:false}, {position: 'topleft'}).addTo(map);
+    L.control.layers(map_layers, null, {collapsed:false},  {position: 'bottomright'}).addTo(map);
 
     // Add census as the default layer
     olc.addTo(map);
