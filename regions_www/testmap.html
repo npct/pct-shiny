@@ -59,7 +59,10 @@ http://leafletjs.com/examples/choropleth-example.html
 			margin-right: 8px;
 			opacity: 0.7;
 		}
+
+
 	</style>
+
 </head>
 <body>
 	<div id="map"></div>
@@ -73,13 +76,17 @@ http://leafletjs.com/examples/choropleth-example.html
 
 	  var map = L.map('map').setView([ 53, 0.55], 6);
 
-		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
+  	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
 			maxZoom: 18,
-			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			attribution: '<a href="http://leafletjs.com" target = "_blank">Leaflet</a> | ' +
+			  'Map data &copy; <a href="http://openstreetmap.org" target = "_blank">OpenStreetMap</a> contributors | ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/" target = "_blank">CC-BY-SA</a> | ' +
+				'Imagery © <a href="http://mapbox.com" target = "_blank">Mapbox</a>',
 			id: 'mapbox.light'
 		}).addTo(map);
+
+    // Don't show the 'Leaflet' text. Attribution overload
+    map.attributionControl.setPrefix('');
 
 
 		// control that shows region info on hover
@@ -92,7 +99,7 @@ http://leafletjs.com/examples/choropleth-example.html
 		};
 
 
-		// Armin's solution to a fixed round
+		// Armin's solution to a fixed decimal places
 		// taken from a stackoverflow thread:
 		// http://stackoverflow.com/questions/1726630/formatting-a-number-with-exactly-two-decimals-in-javascript
 		// source: https://gist.github.com/ArminVieweg/28647e735aa6efaba401
@@ -492,6 +499,8 @@ http://leafletjs.com/examples/choropleth-example.html
     };
 
     L.control.layers(map_layers, null, {collapsed:false}, {position: 'topleft'}).addTo(map);
+
+    //L.control.removeAttribution('Leaflet')
 
     // Add census as the default layer
     olc.addTo(map);
