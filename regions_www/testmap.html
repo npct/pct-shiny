@@ -18,7 +18,7 @@ http://leafletjs.com/examples/choropleth-example.html
 	<style>
 		#map {
 				height: 480px;
-				width: 597px;
+				width: 615px;
 		}
 
 		.info_legend {
@@ -169,24 +169,35 @@ http://leafletjs.com/examples/choropleth-example.html
 		info.addTo(map);
 
 		function getColor(d) {
-			return d > 40 ? '#800026' :
-			       d > 20  ? '#BD0026' :
-			       d > 12  ? '#E31A1C' :
-			       d > 6   ? '#FD8D3C' :
-			       d > 3   ? '#FEB24C' :
-			       d > 0   ? '#FED976' :
-			                  '#FFEDA0';
+			return d > 60  ? '#313695' :
+			       d > 20  ? '#4575b4' :
+			       d > 14  ? '#74add1' :
+			       d > 10  ? '#abd9e9' :
+			       d > 8   ? '#e0f3f8' :
+			       d > 6   ? '#ffffbf' :
+			       d > 4   ? '#fee090' :
+			       d > 2   ? '#fdae61' :
+			       d > 1   ? '#f46d43' :
+			       d > 0   ? '#d73027' :
+			                  '#a50026';
+
+//zone_fill_breaks = c(0, 1, 2, 4, 6, 8, 10, 14, 20, 60) / 100 # The bins used for the scale
 
 			                  // [0, 3, 6, 12, 20, 40],
 		}
 
+
+		var poly_color = 'black'
+		var poly_weight = 0.5
+		var poly_fillOpacity = poly_opacity = 0.8
+
 		function style_census(feature) {
 			return {
-				weight: 2,
-				//opacity: 1,
-				color: 'white',
+				weight: poly_weight,
+				//opacity: poly_opacity,
+				color: poly_color,
 				//dashArray: '3',
-				fillOpacity: 0.7,
+				fillOpacity: poly_fillOpacity,
 				fillColor: getColor(feature.properties.pcycle)
 			};
 		}
@@ -198,7 +209,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				weight: 5,
 				color: '#666',
 				dashArray: '',
-				fillOpacity: 0.7
+				fillOpacity: poly_fillOpacity
 			});
 
 			if (!L.Browser.ie && !L.Browser.opera) {
@@ -236,11 +247,11 @@ http://leafletjs.com/examples/choropleth-example.html
 
     function style_govt_target(feature) {
 			return {
-				weight: 2,
+				weight: poly_weight,
 				//opacity: 1,
-				color: 'white',
+				color: poly_color,
 				//dashArray: '3',
-				fillOpacity: 0.7,
+				fillOpacity: poly_fillOpacity,
 				fillColor: getColor(feature.properties.govtarget_slc)
 			};
 		}
@@ -252,7 +263,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				weight: 5,
 				color: '#666',
 				dashArray: '',
-				fillOpacity: 0.7
+				fillOpacity: poly_fillOpacity
 			});
 
 			if (!L.Browser.ie && !L.Browser.opera) {
@@ -287,11 +298,11 @@ http://leafletjs.com/examples/choropleth-example.html
 
     function style_govt_target(feature) {
 			return {
-				weight: 2,
+				weight: poly_weight,
 				//opacity: 1,
-				color: 'white',
+				color: poly_color,
 				//dashArray: '3',
-				fillOpacity: 0.7,
+				fillOpacity: poly_fillOpacity,
 				fillColor: getColor(feature.properties.govtarget_slc)
 			};
 		}
@@ -303,7 +314,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				weight: 5,
 				color: '#666',
 				dashArray: '',
-				fillOpacity: 0.7
+				fillOpacity: poly_fillOpacity
 			});
 
 			if (!L.Browser.ie && !L.Browser.opera) {
@@ -339,11 +350,11 @@ http://leafletjs.com/examples/choropleth-example.html
 
     function style_gendereq(feature) {
 			return {
-				weight: 2,
+				weight: poly_weight,
 				//opacity: 1,
-				color: 'white',
+				color: poly_color,
 				//dashArray: '3',
-				fillOpacity: 0.7,
+				fillOpacity: poly_fillOpacity,
 				fillColor: getColor(feature.properties.gendereq_slc)
 			};
 		}
@@ -355,7 +366,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				weight: 5,
 				color: '#666',
 				dashArray: '',
-				fillOpacity: 0.7
+				fillOpacity: poly_fillOpacity
 			});
 
 			if (!L.Browser.ie && !L.Browser.opera) {
@@ -392,11 +403,11 @@ http://leafletjs.com/examples/choropleth-example.html
 
     function style_dutch(feature) {
 			return {
-				weight: 2,
+				weight: poly_weight,
 				//opacity: 1,
-				color: 'white',
+				color: poly_color,
 				//dashArray: '3',
-				fillOpacity: 0.7,
+				fillOpacity: poly_fillOpacity,
 				fillColor: getColor(feature.properties.dutch_slc)
 			};
 		}
@@ -408,7 +419,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				weight: 5,
 				color: '#666',
 				dashArray: '',
-				fillOpacity: 0.7
+				fillOpacity: poly_fillOpacity
 			});
 
 			if (!L.Browser.ie && !L.Browser.opera) {
@@ -445,11 +456,11 @@ http://leafletjs.com/examples/choropleth-example.html
 
     function style_ebike(feature) {
 			return {
-				weight: 2,
+				weight: poly_weight,
 				//opacity: 1,
-				color: 'white',
+				color: poly_color,
 				//dashArray: '3',
-				fillOpacity: 0.7,
+				fillOpacity: poly_fillOpacity,
 				fillColor: getColor(feature.properties.ebike_slc)
 			};
 		}
@@ -461,7 +472,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				weight: 5,
 				color: '#666',
 				dashArray: '',
-				fillOpacity: 0.7
+				fillOpacity: poly_fillOpacity
 			});
 
 			if (!L.Browser.ie && !L.Browser.opera) {
@@ -510,11 +521,11 @@ http://leafletjs.com/examples/choropleth-example.html
 		legend.onAdd = function (map) {
 
 			var div = L.DomUtil.create('div', 'info_legend legend'),
-				grades = [0, 3, 6, 12, 20, 40],
+				grades = [0, 1, 2, 4, 6, 8, 10, 14, 20, 60],
 				labels = [],
 				from, to;
 
-			for (var i = 0; i < grades.length; i++) {
+			for (var i = 0; i < grades.length - 1; i++) {
 				from = grades[i];
 				to = grades[i + 1];
 
