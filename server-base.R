@@ -45,6 +45,7 @@ source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
 regions <- readOGR(dsn = file.path(shiny_root, "regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 
+
 # # # # # # # #
 # shinyServer #
 # # # # # # # #
@@ -434,8 +435,30 @@ shinyServer(function(input, output, session){
       } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
       mapOptions(zoomToLimits = "first") %>%
-      addLegend(pal = colorBin("RdYlBu", regions$pcycle, bins = zone_fill_breaks * 100, pretty = TRUE),
-                position = c("topleft"), values = regions$pcycle, title = "% Cycling\nto work", opacity = 0.5)
+      addLegend("topleft", colors = c('#d73027',
+                                      '#f46d43',
+                                      '#fdae61',
+                                      '#fee090',
+                                      '#ffffbf',
+                                      '#e0f3f8',
+                                      '#abd9e9',
+                                      '#74add1',
+                                      '#4575b4',
+                                      '#313695' ),# ,
+                                      #'#a50026'),
+                labels = c("<0.5%",
+                           "1%",
+                           "2-3%",
+                           "4-5%",
+                           "6-7%",
+                           "8-9%",
+                           "10-13%",
+                           "14-19%",
+                           "20-60%",
+                           "60%+"),
+                title = "% Cycling\nto work",
+                opacity = 0.5
+      )
   )
 
   output$imd_legend <- renderPlot({
