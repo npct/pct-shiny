@@ -110,6 +110,12 @@ straight_popup <- function(data, scenario){
   # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
   data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
 
+  # Store olc bicycle values in a local variable
+  olc_bicycle_percentage <- 100 * data$bicycle / data$all
+
+  # Create a new variable for cyclists, showing 1 decimal place for values less than 0.5
+  data@data$olc_bicycle_percentage <- ifelse((olc_bicycle_percentage > 0 & olc_bicycle_percentage < 0.5), round(olc_bicycle_percentage, 1), round(olc_bicycle_percentage))
+
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -124,7 +130,7 @@ straight_popup <- function(data, scenario){
     </tr>
     <tr>
       <td> Cyclists (baseline): &nbsp; </td>
-      <td>",  data$bicycle, " (", round(100 * data$bicycle / data$all), "%) </td>
+      <td>",  data$bicycle, " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
       <td> Drivers (baseline): &nbsp; </td>
@@ -139,6 +145,13 @@ straight_popup <- function(data, scenario){
 ")
 
   } else {
+
+
+    # Store scenario bicycle values in a local variable
+    scenario_bicycle_percentage <- 100 * data[[data_filter(scenario, "slc")]] / data$all
+
+    # Create a new variable for cyclists, showing 1 decimal place for values less than 0.5
+    data@data$scenario_bicycle_percentage <- ifelse((scenario_bicycle_percentage > 0 & scenario_bicycle_percentage < 0.5), round(scenario_bicycle_percentage, 1), round(scenario_bicycle_percentage))
 
     # scenarios table
     # Please align HTML!
@@ -155,11 +168,11 @@ straight_popup <- function(data, scenario){
     </tr>
     <tr>
       <td> Cyclists (baseline): </td>
-      <td>", data$bicycle, " (", round(100 * data$bicycle / data$all), "%) </td>
+      <td>", data$bicycle, " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
       <td> Cyclists (scenario): </td>
-      <td>", round(data[[data_filter(scenario, "slc")]]), " (", round(100*data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
+      <td>", round(data[[data_filter(scenario, "slc")]]), " (", data$scenario_bicycle_percentage , "%) </td>
     </tr>
     <tr>
       <td> Change in drivers: </td>
@@ -196,6 +209,14 @@ route_popup <- function(data, scenario){
   # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
   data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
 
+
+  # Store olc bicycle values in a local variable
+  olc_bicycle_percentage <- 100 * data$bicycle / data$all
+
+  # Create a new variable for cyclists, showing 1 decimal place for values less than 0.5
+  data@data$olc_bicycle_percentage <- ifelse((olc_bicycle_percentage > 0 & olc_bicycle_percentage < 0.5), round(olc_bicycle_percentage, 1), round(olc_bicycle_percentage))
+
+
   if (route_type=='fast') {
     if(scenario == 'olc') {
       paste0("
@@ -211,7 +232,7 @@ route_popup <- function(data, scenario){
     </tr>
     <tr>
       <td> Cyclists (baseline): &nbsp; </td>
-      <td>",  data$bicycle, " (", round(100 * data$bicycle / data$all), "%) </td>
+      <td>",  data$bicycle, " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
       <td> Drivers (baseline): &nbsp; </td>
@@ -231,6 +252,14 @@ route_popup <- function(data, scenario){
 
     } else {
 
+
+      # Store scenario bicycle values in a local variable
+      scenario_bicycle_percentage <- 100 * data[[data_filter(scenario, "slc")]] / data$all
+
+      # Create a new variable for cyclists, showing 1 decimal place for values less than 0.5
+      data@data$scenario_bicycle_percentage <- ifelse((scenario_bicycle_percentage > 0 & scenario_bicycle_percentage < 0.5), round(scenario_bicycle_percentage, 1), round(scenario_bicycle_percentage))
+
+
       paste0("
 <table class = 'htab'>
   <th>  Scenario: ", get_scenario_name(scenario), " </th>
@@ -244,11 +273,11 @@ route_popup <- function(data, scenario){
     </tr>
     <tr>
       <td> Cyclists (baseline): </td>
-      <td>", data$bicycle, " (", round(100 * data$bicycle / data$all), "%) </td>
+      <td>", data$bicycle, " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
       <td> Cyclists (scenario): </td>
-      <td>", round(data[[data_filter(scenario, "slc")]]), " (", round(100*data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
+      <td>", round(data[[data_filter(scenario, "slc")]]), " (", data$scenario_bicycle_percentage , "%) </td>
     </tr>
     <tr>
       <td> Change in drivers: </td>
@@ -373,6 +402,13 @@ zone_popup <- function(data, scenario, zone){
   # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
   data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
 
+  # Store olc bicycle values in a local variable
+  olc_bicycle_percentage <- 100 * data[[data_filter('olc', zone)]] /data$all
+
+  # Create a new variable for cyclists, showing 1 decimal place for values less than 0.5
+  data@data$olc_bicycle_percentage <- ifelse((olc_bicycle_percentage > 0 & olc_bicycle_percentage < 0.5), round(olc_bicycle_percentage, 1), round(olc_bicycle_percentage))
+
+
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -388,7 +424,7 @@ zone_popup <- function(data, scenario, zone){
     </tr>
     <tr>
       <td> Cyclists (baseline): &nbsp; </td>
-      <td>",  round(data[[data_filter('olc', zone)]] ), " (", round(100*data[[data_filter('olc', zone)]] /data$all), "%) </td>
+      <td>",  round(data[[data_filter('olc', zone)]] ), " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
       <td> Drivers (baseline): &nbsp; </td>
@@ -398,6 +434,14 @@ zone_popup <- function(data, scenario, zone){
 </table>")
 
   } else {
+
+
+    # Store scenario bicycle values in a local variable
+    scenario_bicycle_percentage <- 100 * data[[data_filter(scenario, "slc")]] / data$all
+
+    # Create a new variable for cyclists, showing 1 decimal place for values less than 0.5
+    data@data$scenario_bicycle_percentage <- ifelse((scenario_bicycle_percentage > 0 & scenario_bicycle_percentage < 0.5), round(scenario_bicycle_percentage, 1), round(scenario_bicycle_percentage))
+
 
     paste0("
 <table class = 'htab'>
@@ -413,11 +457,11 @@ zone_popup <- function(data, scenario, zone){
     </tr>
     <tr>
       <td> Cyclists (baseline): &nbsp; </td>
-      <td>",  round(data[[data_filter('olc', zone)]] ), " (", round(100*data[[data_filter('olc', zone)]] /data$all), "%) </td>
+      <td>",  round(data[[data_filter('olc', zone)]] ), " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
       <td> Cyclists (scenario): </td>
-      <td>", round(data[[data_filter(scenario, 'slc')]]), " (", round(100*data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
+      <td>", round(data[[data_filter(scenario, 'slc')]]), " (", data$scenario_bicycle_percentage , "%) </td>
     </tr>
     <tr>
       <td> Change in cyclists: </td>
@@ -450,6 +494,13 @@ centroid_popup <- function(data, scenario, zone){
   data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
 
 
+  # Store olc bicycle values in a local variable
+  olc_bicycle_percentage <- 100 * data$bicycle / data$all
+
+  # Create a new variable for cyclists, showing 1 decimal place for values less than 0.5
+  data@data$olc_bicycle_percentage <- ifelse((olc_bicycle_percentage > 0 & olc_bicycle_percentage < 0.5), round(olc_bicycle_percentage, 1), round(olc_bicycle_percentage))
+
+
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -472,7 +523,7 @@ centroid_popup <- function(data, scenario, zone){
     </tr>
     <tr>
       <td> Cyclists (baseline): &nbsp; </td>
-      <td>",  data$bicycle, " (", round(100 * data$bicycle / data$all), "%) </td>
+      <td>",  data$bicycle, " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
       <td> Drivers (baseline): &nbsp; </td>
@@ -483,6 +534,14 @@ centroid_popup <- function(data, scenario, zone){
 ")
 
   } else {
+
+
+    # Store scenario bicycle values in a local variable
+    scenario_bicycle_percentage <- 100 * data[[data_filter(scenario, "slc")]] / data$all
+
+    # Create a new variable for cyclists, showing 1 decimal place for values less than 0.5
+    data@data$scenario_bicycle_percentage <- ifelse((scenario_bicycle_percentage > 0 & scenario_bicycle_percentage < 0.5), round(scenario_bicycle_percentage, 1), round(scenario_bicycle_percentage))
+
 
     paste0("
 <table class = 'htab'>
@@ -505,11 +564,11 @@ centroid_popup <- function(data, scenario, zone){
     </tr>
     <tr>
       <td> Cyclists (baseline): </td>
-      <td>", data$bicycle, " (", round(100 * data$bicycle / data$all), "%) </td>
+      <td>", data$bicycle, " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
       <td> Cyclists (scenario): </td>
-      <td>", round(data[[data_filter(scenario, "slc")]]), " (", round(100*data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
+      <td>", round(data[[data_filter(scenario, "slc")]]), " (", data$scenario_bicycle_percentage , "%) </td>
     </tr>
     <tr>
       <td> Change in drivers: </td>
