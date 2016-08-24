@@ -191,13 +191,14 @@ http://leafletjs.com/examples/choropleth-example.html
 		var poly_color = 'black'
 		var poly_weight = 0.5
 		var poly_fillOpacity = poly_opacity = 0.8
+		var poly_dashArry = ''
 
 		function style_census(feature) {
 			return {
 				weight: poly_weight,
 				//opacity: poly_opacity,
 				color: poly_color,
-				//dashArray: '3',
+				dashArray: poly_dashArry,
 				fillOpacity: poly_fillOpacity,
 				fillColor: getColor(feature.properties.pcycle)
 			};
@@ -251,7 +252,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				weight: poly_weight,
 				//opacity: 1,
 				color: poly_color,
-				//dashArray: '3',
+				dashArray: poly_dashArry,
 				fillOpacity: poly_fillOpacity,
 				fillColor: getColor(feature.properties.govtarget_slc)
 			};
@@ -302,7 +303,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				weight: poly_weight,
 				//opacity: 1,
 				color: poly_color,
-				//dashArray: '3',
+				dashArray: poly_dashArry,
 				fillOpacity: poly_fillOpacity,
 				fillColor: getColor(feature.properties.govtarget_slc)
 			};
@@ -354,7 +355,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				weight: poly_weight,
 				//opacity: 1,
 				color: poly_color,
-				//dashArray: '3',
+				dashArray: poly_dashArry,
 				fillOpacity: poly_fillOpacity,
 				fillColor: getColor(feature.properties.gendereq_slc)
 			};
@@ -407,7 +408,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				weight: poly_weight,
 				//opacity: 1,
 				color: poly_color,
-				//dashArray: '3',
+				dashArray: poly_dashArry,
 				fillOpacity: poly_fillOpacity,
 				fillColor: getColor(feature.properties.dutch_slc)
 			};
@@ -460,7 +461,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				weight: poly_weight,
 				//opacity: 1,
 				color: poly_color,
-				//dashArray: '3',
+				dashArray: poly_dashArry,
 				fillOpacity: poly_fillOpacity,
 				fillColor: getColor(feature.properties.ebike_slc)
 			};
