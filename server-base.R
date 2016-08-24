@@ -440,7 +440,7 @@ shinyServer(function(input, output, session){
                                       '#fdae61',
                                       '#fee090',
                                       '#ffffbf',
-                                      '#e0f3f8',
+                                      '#c6dbef',
                                       '#abd9e9',
                                       '#74add1',
                                       '#4575b4',
