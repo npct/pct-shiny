@@ -170,17 +170,24 @@ http://leafletjs.com/examples/choropleth-example.html
 		info.addTo(map);
 
 		function getColor(d) {
-			return d > 60  ? '#313695' :
-			       d > 20  ? '#4575b4' :
-			       d > 14  ? '#74add1' :
-			       d > 10  ? '#abd9e9' :
-			       d > 8   ? '#e0f3f8' :
-			       d > 6   ? '#ffffbf' :
-			       d > 4   ? '#fee090' :
-			       d > 2   ? '#fdae61' :
-			       d > 1   ? '#f46d43' :
-			       d > 0   ? '#d73027' :
-			                  '#a50026';
+			return d > 40  ? '#313695' :
+			       d > 30  ? '#4575B4' :
+			       d > 25  ? '#74ADD1' :
+			       d > 20  ? '#ABD9E9' :
+			       d > 15   ? '#C6DBEF' :
+			       d > 10   ? '#ffffbf' :
+			       d > 7   ? '#FEE090' :
+			       d > 4   ? '#FDAE61' :
+			       d > 2   ? '#F46D43' :
+			       d > 0   ? '#D73027' :
+			                  '#A50026';
+
+
+			       //grades = [0, 2, 4, 7, 10, 15, 20, 25, 30, 40]
+
+
+
+
 
 //zone_fill_breaks = c(0, 1, 2, 4, 6, 8, 10, 14, 20, 60) / 100 # The bins used for the scale
 
@@ -523,19 +530,27 @@ http://leafletjs.com/examples/choropleth-example.html
 		legend.onAdd = function (map) {
 
 			var div = L.DomUtil.create('div', 'info_legend legend'),
-				grades = [0, 1, 2, 4, 6, 8, 10, 14, 20, 60],
+			  // zone_fill_breaks = c(0, 1.5, 3.5, 6.5, 9.5, 14.5, 19.5, 24.5, 29.5, 100) / 100  # The bins used for the scale
+				grades = [0, 2, 4, 7, 10, 15, 20, 25, 30, 40],
+				bin_labels = ["<1.5%",
+                           "2-3%",
+                           "4-6%",
+                           "7-9%",
+                           "10-14%",
+                           "15-19%",
+                           "20-24%",
+                           "25-29%",
+                           "30-40%",
+                           "40%+"],
+
 				labels = [],
 				from, to;
-
-			for (var i = 0; i < grades.length - 1; i++) {
+  		for (var i = 0; i < grades.length; i++) {
 				from = grades[i];
-				to = grades[i + 1];
-
 				labels.push(
 					'<i style="background:' + getColor(from + 1) + '"></i> ' +
-					from + (to ? '&ndash;' + to : '+'));
+  				bin_labels[i]);
 			}
-
 			div.innerHTML = labels.join('<br>');
 			return div;
 		};
