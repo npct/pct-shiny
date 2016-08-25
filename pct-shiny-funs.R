@@ -6,7 +6,7 @@ sc_name_df <- data.frame(
 # Data Frame which contains the links of lines and their colours
 line_and_colour_df <- data.frame(
   line_type = c("straight_line", "quieter_route", "faster_route", "route_network", "centres"),
-  line_colour = c("maroon","aquamarine","purple","blue", "maroon")
+  line_colour = c("maroon","darkgreen","purple","blue", "maroon")
 )
 
 get_line_colour <- function(line_type){
