@@ -435,19 +435,18 @@ shinyServer(function(input, output, session){
       } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
       mapOptions(zoomToLimits = "first") %>%
-      addLegend("topleft", colors = RColorBrewer::brewer.pal(n = 10, name = zcols),
-                labels = c("<0.5%",
-                           "1%",
+      addLegend("topleft", colors = get_colour_palette(zcols, 10),
+                labels = c("<1.5%",
                            "2-3%",
-                           "4-5%",
-                           "6-7%",
-                           "8-9%",
-                           "10-13%",
+                           "4-6%",
+                           "7-9%",
+                           "10-14%",
                            "14-19%",
-                           "20-60%",
-                           "60%+"),
-                #zone_fill_breaks = c(0, 0.5, 1.5, 3.5, 5.5, 9.5, 14.5, 19.5, 30.5, 60)
-                title = "% Cycling\nto work",
+                           "20-24%",
+                           "25-29%",
+                           "30-40%",
+                           "40%+"),
+                title = "% Cycling to work",
                 opacity = 0.5
       )
   )
