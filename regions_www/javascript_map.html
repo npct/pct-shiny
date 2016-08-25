@@ -124,39 +124,22 @@ http://leafletjs.com/examples/choropleth-example.html
     }
 
 
+    info.scenarioMap = {
+      pcycle: "2011 Census",
+      govtarget_slc: "Government Target",
+      gendereq_slc: "Gender Equality",
+      dutch_slc: "Go Dutch",
+      ebike_slc: "Ebike"
+    };
 
 		info.update = function (props, scenario) {
-
-
-
-		  if (!(scenario == undefined)){
-		    if (scenario == "census"){
-		        this._div.innerHTML = '<h4>Cycling to work</h4>' +  (props ?
-				    '<b>' + capitalize(props.Region) + '</b><br />' + precise_round(props.pcycle, 1) + '  % in 2011 Census'
-				    : 'Hover over a region');
-		    }else if (scenario == "govt_target"){
-		        this._div.innerHTML = '<h4>Cycling to work</h4>' +  (props ?
-				    '<b>' + capitalize(props.Region) + '</b><br />' + precise_round(props.govtarget_slc, 1) + '  % in Government Target'
-				    : 'Hover over a region');
-		    }else if (scenario == "gendereq"){
-		        this._div.innerHTML = '<h4>Cycling to work</h4>' +  (props ?
-				    '<b>' + capitalize(props.Region) + '</b><br />' + precise_round(props.gendereq_slc, 1) + '  % in Gender Equality'
-				    : 'Hover over a region');
-		    }else if (scenario == "dutch"){
-		        this._div.innerHTML = '<h4>Cycling to work</h4>' +  (props ?
-				    '<b>' + capitalize(props.Region) + '</b><br />' + precise_round(props.dutch_slc, 1) + '  % in Go Dutch'
-				    : 'Hover over a region');
-		    }else if (scenario == "ebike"){
-		        this._div.innerHTML = '<h4>Cycling to work</h4>' +  (props ?
-				    '<b>' + capitalize(props.Region) + '</b><br />' + precise_round(props.ebike_slc, 1) + '  % in Ebike'
-				    : 'Hover over a region');
-		    }
-		  }else{
-		    this._div.innerHTML = '<h4>Cycling to work</h4>' +  (props ?
-				'<b>' + props.name + '</b><br />'	: 'Hover over a region');
-		  }
-
-		};
+      if(scenario !== undefined && props) {
+        regionText = '<b>' + capitalize(props.Region) + '</b><br />' + precise_round(props[scenario], 1) + '  % in ' + info.scenarioMap[scenario];
+      } else {
+        regionText = 'Hover over a region';
+      };
+      this._div.innerHTML = '<h4>Cycling to work</h4>' + regionText;
+    };
 
     // Capitalize all words in a region except 'and' and 'of'
 		function capitalize(s){
@@ -239,7 +222,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				layer.bringToFront();
 			}
 
-			info.update(layer.feature.properties, "census");
+			info.update(layer.feature.properties, "pcycle");
 		}
 
 		var olc;
@@ -344,7 +327,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				layer.bringToFront();
 			}
 
-			info.update(layer.feature.properties, "govt_target");
+			info.update(layer.feature.properties, "govtarget_slc");
 		}
 
 
@@ -396,7 +379,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				layer.bringToFront();
 			}
 
-			info.update(layer.feature.properties, "gendereq");
+			info.update(layer.feature.properties, "gendereq_slc");
 		}
 
 
@@ -449,7 +432,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				layer.bringToFront();
 			}
 
-			info.update(layer.feature.properties, "dutch");
+			info.update(layer.feature.properties, "dutch_slc");
 		}
 
 
@@ -502,7 +485,7 @@ http://leafletjs.com/examples/choropleth-example.html
 				layer.bringToFront();
 			}
 
-			info.update(layer.feature.properties, "ebike");
+			info.update(layer.feature.properties, "ebike_slc");
 		}
 
 
@@ -522,7 +505,7 @@ http://leafletjs.com/examples/choropleth-example.html
 		ebike	= L.geoJson(ebike_gj, {
 			style: style_ebike,
 			onEachFeature: onEachFeature_ebike
-		});//.addTo(map);
+		});
 
 		var map_layers = {
   	  "Census 2011" : olc,
