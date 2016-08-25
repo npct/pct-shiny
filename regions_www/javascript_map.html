@@ -170,7 +170,20 @@ http://leafletjs.com/examples/choropleth-example.html
 		info.addTo(map);
 
 		function getColor(d) {
-			return d > 40  ? '#313695' :
+			return d > 40  ? '#4575B4' :
+			       d > 30  ? '#74ADD1' :
+			       d > 25  ? '#ABD9E9' :
+			       d > 20  ? '#C6DBEF' :
+			       d > 15   ? '#ffffbf' :
+			       d > 10   ? '#FEE090' :
+			       d > 7   ? '#FDAE61' :
+			       d > 4   ? '#F46D43' :
+			       d > 2   ? '#D73027' :
+			       d > 0   ? '#A50026' :
+			                  '#313695';
+
+
+			       /*return d > 40  ? '#313695' :
 			       d > 30  ? '#4575B4' :
 			       d > 25  ? '#74ADD1' :
 			       d > 20  ? '#ABD9E9' :
@@ -181,6 +194,7 @@ http://leafletjs.com/examples/choropleth-example.html
 			       d > 2   ? '#F46D43' :
 			       d > 0   ? '#D73027' :
 			                  '#A50026';
+
 
 
 			       //grades = [0, 2, 4, 7, 10, 15, 20, 25, 30, 40]
