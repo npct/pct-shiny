@@ -307,19 +307,13 @@ plot(desire_lines)</code></pre>
 l = readRDS(&quot;../pct-data/kent/l.Rds&quot;)
 plot(l) # plot the result</code></pre>
 <div class="figure">
-<img src="/www/img/help/kent-.png" alt="" />
+<img src="/www/img/help/kent-1.png" alt="" />
 
 </div>
 <p>By modifying the values of the variables associated with each line (e.g. <code>l$Bicycle</code>, representing the current level of cycling) in this dataset, new scenarios can be created. Let’s change the Government Target scenario so that the level of cycling is proportional to the inverse of distance, minus the average hilliness of the fastest route. This contrived example could be acheived with the following command:</p>
 <pre class="r"><code>l$govtarget_slc =       # modify the scenario level of cycling for Government Target
   0.5 / l$dist_fast -   # set proportional to the inverse of distance
   l$avslope / 100       # minus the average gradient (percent)</code></pre>
-<p>Now this can be plotted as follows:</p>
-<pre class="r"><code>plot(l, lwd = l$govtarget_slc)</code></pre>
-<div class="figure">
-<img src="/www/img/help/kent-2.png" alt="" />
-
-</div>
 <p>We plan to add more documentation to ease the creation of locally specific scenarios and the deployment of the PCT for use in other custom regions, cities and countries where OD data is available.</p>
 </div>
 <!-- [8\. How can the PCT be used to build a business case for cycling?](javascript:toggleElement('a8'))
