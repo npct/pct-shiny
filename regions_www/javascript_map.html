@@ -150,7 +150,7 @@ http://leafletjs.com/examples/choropleth-example.html
       info.addTo(map);
 
       function getColor(d) {
-        return d > 40  ? '#4575B4' :
+        return d >= 40  ? '#4575B4' :
           d >= 30  ? '#74ADD1' :
           d >= 25  ? '#ABD9E9' :
           d >= 20  ? '#C6DBEF' :
