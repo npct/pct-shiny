@@ -8,7 +8,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, fig.path = "img/help/")
 ```
 
 <!--Don't edit the html versions of this file directly. Edit the .Rmd version instead.
@@ -480,14 +480,19 @@ l = readRDS("../pct-data/kent/l.Rds")
 plot(l) # plot the result
 ```
 
-```{r kent-l1, echo=FALSE, message=FALSE}
-l = readRDS("../../pct-data/kent/l.Rds")
+```{r echo=FALSE, eval=FALSE}
+# Run manually to update figure
+l = readRDS("../pct-data/kent/l.Rds")
+png("www/img/help/kent-1.png")
 plot(l)
+dev.off()
 ```
+
+![](/www/img/help/kent-.png)
 
 By modifying the values of the variables associated with each line (e.g. `l$Bicycle`, representing the current level of cycling) in this dataset, new scenarios can be created. Let's change the Government Target scenario so that the level of cycling is proportional to the inverse of distance, minus the average hilliness of the fastest route. This contrived example could be acheived with the following command:
 
-```{r}
+```{r, eval=FALSE}
 l$govtarget_slc =       # modify the scenario level of cycling for Government Target
   0.5 / l$dist_fast -   # set proportional to the inverse of distance
   l$avslope / 100       # minus the average gradient (percent)
@@ -495,9 +500,18 @@ l$govtarget_slc =       # modify the scenario level of cycling for Government Ta
 
 Now this can be plotted as follows:
 
-```{r kent-l2}
+```{r, eval=FALSE}
 plot(l, lwd = l$govtarget_slc)
 ```
+
+```{r, echo=FALSE, eval=FALSE}
+# Run manually to update figure
+png("www/img/help/kent-2.png")
+plot(l, lwd = l$govtarget_slc)
+dev.off()
+```
+
+![](/www/img/help/kent-2.png)
 
 We plan to add more documentation to ease the creation of locally specific scenarios and the deployment of the PCT for use in other custom regions, cities and countries where OD data is available.
 
