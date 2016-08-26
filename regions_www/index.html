@@ -31,6 +31,11 @@
       };
       $(document).ready(function(){
         $("#includedNav").load("nav.html");
+        if (typeof(ga) !== "undefined"){
+          $('navbar a').each(function() {
+            ga('send', 'event', 'front-nav', $(this).data('value'));
+          });
+        };
       });
     </script>
 
