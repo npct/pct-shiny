@@ -444,7 +444,7 @@ shinyServer(function(input, output, session){
                            "15-19%",
                            "20-24%",
                            "25-29%",
-                           "30-40%",
+                           "30-39%",
                            "40%+"),
                 title = "% Cycling to work",
                 opacity = 0.5
