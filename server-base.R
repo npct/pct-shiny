@@ -436,7 +436,7 @@ shinyServer(function(input, output, session){
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
       mapOptions(zoomToLimits = "first") %>%
       addLegend("topleft", colors = get_colour_palette(zcols, 10),
-                labels = c("<1.5%",
+                labels = c("0-1%",
                            "2-3%",
                            "4-6%",
                            "7-9%",
