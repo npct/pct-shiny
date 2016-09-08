@@ -46,6 +46,8 @@ for(i in 1:length(regions)){
   regions$url_text[i] <- as.character(a(regions$Region_cap[i], href = regions$url[i]))
   regions$url_text[i] <- gsub('">', '" target ="_top">', regions$url_text[i])
 }
+names(regions)
+geojson_write(regions, file = "../pct-bigdata/regions.geojson")
 popup_census <- paste0(regions$url_text, "</br>", round(regions$pcycle, 1), "% in 2011 Census<br>")
 
 popup_govt_target <- paste0(regions$url_text, "</br>",round(regions$govtarget_slc, 1), "% in Government Target<br>")
