@@ -434,22 +434,30 @@ shinyServer(function(input, output, session){
 
       } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
-      mapOptions(zoomToLimits = "first") %>%
-      addLegend("topleft", colors = get_colour_palette(zcols, 10),
-                labels = c("0-1%",
-                           "2-3%",
-                           "4-6%",
-                           "7-9%",
-                           "10-14%",
-                           "15-19%",
-                           "20-24%",
-                           "25-29%",
-                           "30-39%",
-                           "40%+"),
-                title = "% Cycling to work",
-                opacity = 0.5
-      )
+      mapOptions(zoomToLimits = "first")
   )
+
+
+  observe({
+    if (input$show_zones) {
+      leafletProxy("map") %>% addLegend("topleft", colors = get_colour_palette(zcols, 10),
+                  labels = c("0-1%",
+                             "2-3%",
+                             "4-6%",
+                             "7-9%",
+                             "10-14%",
+                             "15-19%",
+                             "20-24%",
+                             "25-29%",
+                             "30-39%",
+                             "40%+"),
+                  title = "% Cycling to work",
+                  opacity = 0.5
+        )
+    }else{
+      leafletProxy("map") %>% clearControls(.)
+    }
+  })
 
   output$imd_legend <- renderPlot({
     my_lab <- c("Most deprived decile", "2nd", "3rd", "4th", "5th",
