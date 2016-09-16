@@ -3,12 +3,10 @@ sc_name_df <- data.frame(
   sc_s_name = c("olc","govtarget","gendereq","dutch", "ebike")
 )
 
-signif_sdf <- function(sdf, name, digits = 3) {
+signif_sdf <- function(sdf, digits = 3) {
   nums <- vapply(sdf@data, is.numeric, FUN.VALUE = logical(1))
 
   sdf@data[,nums] <- signif(sdf@data[,nums], digits = digits)
-  row.names(sdf) <- paste(name, row.names(sdf), sep=".")
-  sdf <- spChFIDs(sdf, row.names(sdf))
   sdf
 }
 

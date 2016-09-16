@@ -449,61 +449,44 @@ shinyServer(function(input, output, session){
       region$current
   })
 
-  # Creates data links for zones tab
-  output$zone_data_links <- renderUI({
-    HTML(
-      paste(
-        make_download_link("z", "zones", data_dir()),
-        " - ",
-        a("Codebook", href = paste(
-          "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_zones.csv", sep = "/"),
-          title="This explains the variable names in the downloadable data",
-          onclick="ga('send', 'event', 'download', 'z_codebook');", target='_blank')
-      )
+  output$line_codebook <- renderUI({
+    a("Codebook", href = paste(
+      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_lines.csv", sep = "/"),
+      title="This explains the variable names in the downloadable data",
+      onclick="ga('send', 'event', 'download', 'l_codebook');", target='_blank'
     )
   })
 
-  # Creates data links for lines tab
-  output$line_data_links <- renderUI({
-    HTML(paste("Straight lines geographic file format and attribute data:",
-               make_download_link("l", "lines", data_dir()),
-               " - ",
-               a("Codebook", href = paste(
-                 "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_lines.csv", sep = "/"),
-                 title="This explains the variable names in the downloadable data",
-                 onclick="ga('send', 'event', 'download', 'l_codebook');", target='_blank'
-               ),
-               br(),
-               "Fast route geographic file format*:",
-               make_download_link("rf", "fast_routes", data_dir(), c('Rds', 'geojson')),
-               " - ",
-               a("Codebook", href = paste(
-                 "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
-                 title="This explains the variable names in the downloadable data",
-                 onclick="ga('send', 'event', 'download', 'route_codebook');", target='_blank'
-               ),
-               br(),
-               "Quiet route geographic file format*:",
-               make_download_link("rq", "quiet_routes", data_dir(), c('Rds', 'geojson')),
-               " - ",
-               a("Codebook", href = paste(
-                 "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
-                 title="This explains the variable names in the downloadable data",
-                 onclick="ga('send', 'event', 'download', 'route_codebook');", target='_blank'
-               ),
-               br(),
-               "Route Network geographic file format and attribute data:",
-               make_download_link("rnet", "route_network", data_dir(), c('Rds', 'geojson')),
-               " - ",
-               a("Codebook", href = paste(
-                 "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_rnet.csv", sep = "/"),
-                 title="This explains the variable names in the downloadable data",
-                 onclick="ga('send', 'event', 'download', 'route_network_codebook');", target='_blank'
-               ),
-               br(),
-               "* To get attribute data, use 'ID' field to merge with straight-line CSV file",
-               br(), br()
-    ))
+  output$route_codebook <- renderUI({
+    a("Codebook", href = paste(
+      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
+      title="This explains the variable names in the downloadable data",
+      onclick="ga('send', 'event', 'download', 'route_codebook');", target='_blank'
+    )
+  })
+
+  output$route_codebook_quiet <- renderUI({
+    a("Codebook", href = paste(
+      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
+      title="This explains the variable names in the downloadable data",
+      onclick="ga('send', 'event', 'download', 'route_codebook');", target='_blank'
+    )
+  })
+
+  output$route_network_codebook <- renderUI({
+    a("Codebook", href = paste(
+      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_rnet.csv", sep = "/"),
+      title="This explains the variable names in the downloadable data",
+      onclick="ga('send', 'event', 'download', 'route_network_codebook');", target='_blank'
+    )
+  })
+
+  output$zone_codebook <- renderUI({
+    a("Codebook", href = paste(
+      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_zones.csv", sep = "/"),
+      title="This explains the variable names in the downloadable data",
+      onclick="ga('send', 'event', 'download', 'zones_codebook');", target='_blank'
+    )
   })
 
   # Initialize the leaflet map
@@ -618,25 +601,64 @@ shinyServer(function(input, output, session){
       formatRound(columns = decimal_zone_cols, digits=2)
   })
 
+  output$download_l_csv <- downloadHandler(
+    filename = function() { "lines.csv"  },
+    content = function(file) { write.csv(signif_sdf(to_plot$l)@data, file = file) }
+  )
+
+  output$download_z_csv <- downloadHandler(
+    filename = function() { "zones.csv"  },
+    content = function(file) { write.csv(signif_sdf(to_plot$zones)@data, file = file) }
+  )
+
+  output$download_z_geojson <- downloadHandler(
+    filename = function() { "zones.geojson"  },
+    content = function(file) { geojson_write(signif_sdf(to_plot$zones), file = file) }
+  )
+
   output$download_l_geojson <- downloadHandler(
     filename = function() { "lines.geojson"  },
-    content = function(file) { geojson_write(to_plot$l, file = file) }
+    content = function(file) { geojson_write(signif_sdf(to_plot$l), file = file) }
   )
 
   output$download_rf_geojson <- downloadHandler(
     filename = function() { "routes_fast.geojson"  },
-    content = function(file) { geojson_write(to_plot$r_fast, file = file) }
+    content = function(file) { geojson_write(signif_sdf(to_plot$r_fast), file = file) }
+  )
+
+  output$download_rq_geojson <- downloadHandler(
+    filename = function() { "routes_quite.geojson"  },
+    content = function(file) { geojson_write(signif_sdf(to_plot$r_quiet), file = file) }
   )
 
   output$download_rnet_geojson <- downloadHandler(
     filename = function() { "routes_network.geojson"  },
-    content = function(file) { geojson_write(to_plot$r_net, file = file) }
+    content = function(file) { geojson_write(signif_sdf(to_plot$r_net), file = file) }
   )
 
-  output$download_lines_csv <- downloadHandler(
-    filename = function() { "routes_fast.csv"  },
-    content = function(file) {
-      write.csv(mccollect(to_plot$joined)[[1]], file = file) }
+  output$download_l_rds <- downloadHandler(
+    filename = function() { "lines.Rds"  },
+    content = function(file) { saveRDS(to_plot$l, file = file) }
+  )
+
+  output$download_rf_rds <- downloadHandler(
+    filename = function() { "routes_fast.Rds"  },
+    content = function(file) { saveRDS(to_plot$r_fast, file = file) }
+  )
+
+  output$download_rq_rds <- downloadHandler(
+    filename = function() { "routes_quiet.Rds"  },
+    content = function(file) { saveRDS(to_plot$r_quiet, file = file) }
+  )
+
+  output$download_rnet_rds <- downloadHandler(
+    filename = function() { "routes_network.Rds"  },
+    content = function(file) { saveRDS(to_plot$r_net, file = file) }
+  )
+
+  output$download_z_rds <- downloadHandler(
+    filename = function() { "zones.Rds"  },
+    content = function(file) { saveRDS(to_plot$zones, file = file) }
   )
 
   # Hide/show panels on user-demand
