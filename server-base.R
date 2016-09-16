@@ -439,6 +439,7 @@ shinyServer(function(input, output, session){
 
 
   observe({
+    input$map_base
     if (input$show_zones) {
       leafletProxy("map") %>% addLegend("topleft", colors = get_colour_palette(zcols, 10),
                   labels = c("0-1%",
