@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+    <script src="/www/front_page/map.js"></script>
 
-    <meta charset="utf-8" />
-    <title>National Propensity to Cycle Tool (NPCT)</title>
-    <style type="text/css">code{white-space: pre;}</style>
-    <link rel="stylesheet"
-    type="text/css" />
+    <link rel="/www/front_page/style.css" type="text/css" />
+    <link rel="/www/front_page/map.css" type="text/css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
     <style type="text/css">
       pre:not([class]) {
         background-color: white;
@@ -40,59 +40,6 @@
     </script>
 
     <style type="text/css">
-      h1 {
-        font-size: 34px;
-      }
-      h1.title {
-        font-size: 38px;
-      }
-      h2 {
-        font-size: 30px;
-      }
-      h3 {
-        font-size: 24px;
-      }
-      h4 {
-        font-size: 18px;
-      }
-      h5 {
-        font-size: 16px;
-      }
-      h6 {
-        font-size: 12px;
-      }
-      .table th:not([align]) {
-        text-align: left;
-      }
-      .main-container {
-        font-size: 16px;
-        max-width: 1400px;
-        margin-left: auto;
-        margin-right: 5px;
-      }
-      code {
-        color: inherit;
-        background-color: rgba(0, 0, 0, 0.04);
-      }
-      img {
-        max-width:100%;
-        height: auto;
-      }
-      .tabbed-pane {
-        padding-top: 12px;
-      }
-      button.code-folding-btn:focus {
-        outline: none;
-      }
-      .plain-margin {
-        margin: 18px;
-      }
-      .logo {
-        padding-top: 10px;
-      }
-      .img-responsive {
-        max-height:60px;
-      }
     </style>
     <link rel="import" href="./favicon.html">
     <meta name="msapplication-TileColor" content="#ffffff">
@@ -105,7 +52,7 @@
     <div class="container">
       <div class="row-fluid">
         <div class="pull-left plain-margin">
-          <iframe src="javascript_map.html" width="625" height="500" frameborder = "0"></iframe>
+          <div id="map"></div>
         </div>
         <div style="margin-top:7px; margin-bottom:7px; padding-top:7px;">
           <iframe class="plain-margin" width="425" height="275" src="https://www.youtube.com/embed/58UaVb8ZCrc" frameborder="0"   allowfullscreen></iframe>
