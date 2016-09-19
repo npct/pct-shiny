@@ -204,8 +204,13 @@ shinyServer(function(input, output, session){
     }
     if(input$line_type == 'rnet')
       updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 20, label = "Percent (%) of Network")
-    else
-      updateSliderInput(session, inputId = "nos_lines", min = 1, max = 200, step = 1,  label = "N. Lines (most cycled)")
+    else{
+
+      if (input$line_order == "slc")
+        updateSliderInput(session, inputId = "nos_lines", min = 1, max = 200, step = 1,  label = "Top N Lines (most cycled)")
+      else
+        updateSliderInput(session, inputId = "nos_lines", min = 1, max = 200, step = 1,  label = "Top N Lines")
+    }
 
   })
   get_zone_multiplier <- function(zoom){ zoom^4/8200 }
