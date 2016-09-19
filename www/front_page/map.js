@@ -23,7 +23,7 @@ $(document).ready(function(){
     var info = L.control();
 
     info.onAdd = function (map) {
-      this._div = L.DomUtil.create('div', 'info');
+      this._div = L.DomUtil.create('div', 'info-box cycle-to-work');
       this.update();
       return this._div;
     };
@@ -209,7 +209,7 @@ $(document).ready(function(){
 
     legend.onAdd = function (map) {
 
-      var div = L.DomUtil.create('div', 'info_legend legend'),
+      var div = L.DomUtil.create('div', 'info-box legend'),
         // zone_fill_breaks = c(0, 1.5, 3.5, 6.5, 9.5, 14.5, 19.5, 24.5, 29.5, 100) / 100  # The bins used for the scale
         grades = [0, 2, 4, 7, 10, 15, 20, 25, 30, 40],
         bin_labels = ["0-1%",
