@@ -68,6 +68,7 @@ shinyServer(function(input, output, session){
     to_plot$r_quiet@data <<- cbind(to_plot$r_quiet@data[!(names(to_plot$r_quiet) %in% names(to_plot$l))], to_plot$l@data)
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
+
     isolate(region$replot <- !region$replot)
   })
 
@@ -244,7 +245,7 @@ shinyServer(function(input, output, session){
                   , options = pathOptions(clickable = show_zone_popup)
                   , layerId = paste0(to_plot$zones[['geo_code']], '-', "zones")) %>%
       addCircleMarkers(., radius=0, lat=0, lng=0, group = "region_name", fillOpacity= 0, layerId = region$current) %>%
-      addCircleMarkers(., data = to_plot$cents, radius = to_plot$cents$all / mean(to_plot$cents$all) * 2 + 1,
+      addCircleMarkers(., data = to_plot$cents, radius = normalise(to_plot$cents$all, min = 1, max = 8),
                        color = get_line_colour("centres"), group = "centres", opacity = 0.5,
                        popup = centroid_popup(to_plot$cents, input$scenario, zone_attr())) %>%
       # Hide and Show line layers, so that they are displayed as the top layer in the map.
