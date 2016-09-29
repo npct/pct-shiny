@@ -53,6 +53,10 @@ shinyServer(function(input, output, session){
     # To set initialize to_plot
   observe({
     region$current
+    region$data_dir
+    region$repopulateRegions
+
+    cat("Directory: ", region$data_dir, "\n")
     to_plot$l <<- readRDS(file.path(region$data_dir, "l.Rds"))
     to_plot$zones <<-  readRDS(file.path(region$data_dir, "z.Rds"))
     to_plot$cents <<-   readRDS(file.path(region$data_dir, "c.Rds"))
@@ -68,11 +72,31 @@ shinyServer(function(input, output, session){
     to_plot$r_quiet@data <<- cbind(to_plot$r_quiet@data[!(names(to_plot$r_quiet) %in% names(to_plot$l))], to_plot$l@data)
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
-
-    isolate(region$replot <- !region$replot)
+    region$repopulateRegions <<- F
+    #isolate(region$replot <- !region$replot)
   })
 
-  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), replot = F )
+  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), repopulateRegions = F) # replot = F,
+
+
+  observe({
+    # Create a reactive expression on the type of trips dropdown menu
+    input$triptype
+
+    # Check if the data folder of a specific region contains a subfolder called 'all-trip'
+    # If it does, only then load 'all-trip' data or load defaul commute data
+    if (dir.exists(file.path(data_dir_root, starting_city, 'all-trips'))){
+      if (input$triptype == 'All'){
+        region$data_dir <<- file.path(data_dir_root, starting_city, 'all-trips')
+      }
+      else{
+        region$data_dir <<- file.path(data_dir_root, starting_city)
+      }
+
+      # redraw_zones()
+      region$repopulateRegions <<- T
+    }
+  })
 
   # For all plotting data
   to_plot <- NULL
@@ -171,7 +195,16 @@ shinyServer(function(input, output, session){
   observe({
     if(file.exists(file.path(region$data_dir, 'isolated'))) return()
     new_region <- find_region(region$current)
-    new_data_dir <- file.path(data_dir_root, new_region)
+    # Check if the new_region is not null, and contains 'all-trips' subfolder
+    if (!is.null(new_region) && file.exists(file.path(data_dir_root, new_region, 'all-trips'))){
+      if (input$triptype == 'All'){
+        new_data_dir <- file.path(data_dir_root, new_region, 'all-trips')
+      }else{
+        new_data_dir <- file.path(data_dir_root, new_region)
+      }
+    }else
+      new_data_dir <- file.path(data_dir_root, new_region)
+
     if(!is.null(new_region) && region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
       region$current <- new_region
       region$data_dir <- new_data_dir
@@ -180,12 +213,38 @@ shinyServer(function(input, output, session){
     }
   })
 
+
+  # # Updates the Local Authority if the map is moved
+  # # over another region with data
+  # observe({
+  #   if(file.exists(file.path(helper$dataDir, 'isolated'))) return()
+  #   newRegion <- findRegion()
+  #   # Check if the newRegion is not null, and contains 'all-trips' subfolder
+  #   if (!is.null(newRegion) && file.exists(file.path(dataDirRoot, newRegion, 'all-trips'))){
+  #     if (input$triptype == 'All'){
+  #       dataDir <- file.path(dataDirRoot, newRegion, 'all-trips')
+  #     }else{
+  #       dataDir <- file.path(dataDirRoot, newRegion)
+  #     }
+  #   }else
+  #     dataDir <- file.path(dataDirRoot, newRegion)
+  #
+  #   if(!is.null(newRegion) && helper$dataDir != dataDir && file.exists(dataDir)){
+  #     region$current <- newRegion
+  #     helper$dataDir <<- dataDir
+  #     #toPlot <<- loadData(dataDir)
+  #     if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
+  #       updateCheckboxInput(session, "freeze", value = F)
+  #   }
+  # })
+
+
   # Plot if lines change
   observe({
     # Needed to force lines to be redrawn when scenario, zone or base map changes
     input$scenario
     input$map_base
-    region$replot
+    region$repopulateRegions
     input$show_zones
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
@@ -219,7 +278,7 @@ shinyServer(function(input, output, session){
   # This function updates the zones and the lines
   observe({
     if(is.null(input$map_zoom) ) return()
-    region$replot
+    region$repopulateRegions
     input$map_base
     zoom_multiplier <- get_zone_multiplier(input$map_zoom)
     if(input$map_zoom < 11 || input$line_type == 'none')
@@ -229,7 +288,7 @@ shinyServer(function(input, output, session){
   })
 
   observe({
-    region$replot
+    region$repopulateRegions
     input$map_base
     show_zone_popup <- input$line_type == 'none'
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr())
