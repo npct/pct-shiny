@@ -54,7 +54,7 @@ shinyServer(function(input, output, session){
   observe({
     region$current
     region$data_dir
-    region$repopulateRegions
+    region$repopulate_region
 
     cat("Directory: ", region$data_dir, "\n")
     to_plot$l <<- readRDS(file.path(region$data_dir, "l.Rds"))
@@ -72,11 +72,11 @@ shinyServer(function(input, output, session){
     to_plot$r_quiet@data <<- cbind(to_plot$r_quiet@data[!(names(to_plot$r_quiet) %in% names(to_plot$l))], to_plot$l@data)
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
-    region$repopulateRegions <<- F
+    region$repopulate_region <<- F
     #isolate(region$replot <- !region$replot)
   })
 
-  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), repopulateRegions = F) # replot = F,
+  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), repopulate_region = F) # replot = F,
 
 
   observe({
@@ -94,7 +94,7 @@ shinyServer(function(input, output, session){
       }
 
       # redraw_zones()
-      region$repopulateRegions <<- T
+      region$repopulate_region <<- T
     }
   })
 
@@ -218,7 +218,7 @@ shinyServer(function(input, output, session){
     # Needed to force lines to be redrawn when scenario, zone or base map changes
     input$scenario
     input$map_base
-    region$repopulateRegions
+    region$repopulate_region
     input$show_zones
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
@@ -252,7 +252,7 @@ shinyServer(function(input, output, session){
   # This function updates the zones and the lines
   observe({
     if(is.null(input$map_zoom) ) return()
-    region$repopulateRegions
+    region$repopulate_region
     input$map_base
     zoom_multiplier <- get_zone_multiplier(input$map_zoom)
     if(input$map_zoom < 11 || input$line_type == 'none')
@@ -262,7 +262,7 @@ shinyServer(function(input, output, session){
   })
 
   observe({
-    region$repopulateRegions
+    region$repopulate_region
     input$map_base
     show_zone_popup <- input$line_type == 'none'
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr())
