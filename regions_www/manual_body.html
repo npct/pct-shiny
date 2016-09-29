@@ -3,167 +3,20 @@ Running the R code at the bottom generates the html files-->
 <script>function toggleElement(id) { if(document.getElementById(id).style.display == 'none') { document.getElementById(id).style.display = ''; } else { document.getElementById(id).style.display = 'none'; } }</script>
 <style><!-- td { border: 0px; } tr.row2 td { padding-top: 100px; } tr.caption td { padding-top: 30px; } --></style>
 <div class="col-xs-12 col-sm-11 col-md-10 col-lg-9">
+
 <div id="header" class="fluid-row">
 
 </div>
 <p>Welcome to the <strong>User Manual</strong> for the Propensity to Cycle Tool (PCT).</p>
-<p>This was last built on 2016-08-26.</p>
+<p>This was last built on 2016-09-29.</p>
 <p>This is work in progress and is being developed as part of a suite of training materials during 2016. To request more information or provide feedback, please <a href="mailto:pct@pct.bike?Subject=Manual">email us at pct@pct.bike</a> or report issues on our <a target="_blank" href="https://github.com/npct/pct-shiny/issues">GitHub issue tracker</a>. Contributions to the project are welcome. This file, for instance, can be edited online at <a target="_blank" href="https://github.com/npct/pct-shiny/edit/master/static/manual_body.Rmd">github.com/npct/pct-shiny</a>.</p>
+<pre><code>## C:/RStudio Projects/pct-shiny/static</code></pre>
+<p><a target="_blank" href="user-manual-a.pdf">User Manual A.pdf</a></p>
+<p><a target="_blank" href="user-manual-b.pdf">User Manual B.pdf</a></p>
+<div id="additional-faqs" class="section level4">
+<h4>Additional FAQs</h4>
 <!-- The NPCT has a [blog](http://pct.bike/wp/), where more [training materials](http://pct.bike/wp/?cat=6) including short videos, are being posted. -->
-<p><a href="javascript:toggleElement(&#39;helptable&#39;)">1. How should the tool be used?</a></p>
-<div id="helptable" style="display:none">
-<p>The tool can be used in many different ways depending on the aims of the user. The tool is primarily designed to be used interactively. By switching between different scenarios, for example, one can see how the distribution of cycling can be expected to change as cycling grows. By switching between line types, you can see whether or not ‘desire lines’ of high demand are supplied with quiet and direct routes.</p>
-<p>By experimenting with the ‘Freeze lines’ option and zooming into specific areas of interest, the level of cycling at more local levels can be explored. By setting the basemap to ‘Satellite’ and zooming in, space available create space for cycling can be seen.</p>
-<p>The PCT works on a region-by-region basis. The url corresponds to the region you are looking at, which can be selected from the <a target="_blank" href="http://pct.bike">home page</a>. <a target="_blank" href="http://pct.bike/west-yorkshire/">pct.bike/west-yorkshire/</a>, for example, shows West Yorkshire. If you move the map’s extent outside the region’s boundary, the PCT will jump to a new region.</p>
-<p>Overall, there are many ways that the tool can be used to improve cycling provision. It is likely that more features will be added in future versions The table below explains the various options in the interactive map.</p>
-<table class="table table-hover table-responsive">
-<tbody>
-<tr>
-<td style="vertical-align: top; width: 1054px;">
-<p><span style="font-weight: bold; text-decoration: underline;">Scenario:</span></p>
-<ol style="list-style-type: decimal">
-<li>Census 2011 Reported Cycle Commuting</li>
-<li>Government Target: this scenario is based on the UK government’s proposed target (as set out in its draft <a target="_blank" href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/364791/141015_Cycling_Delivery_Plan.pdf">Cycling Delivery Plan</a>) to double cycling in England. Taking population increases and trip rate decreases into account, the target implies doubling the proportion of trips made by cycling nationwide. Trips that have a large distances or that already have a high rate of cycling will see cycling increase less than two-fold; trips with a below average current rate of cycling but high potential (based on the distance) will see cycling increase more than two-fold.</li>
-<li>Gender equality: Women have the same cycling rate as men</li>
-<li>Go Dutch: Cycling propensity at the levels seen in the Netherlands</li>
-<li>Electric bicycles: Willingness to cycle longer trips increases with widespread use of electric bicycles</li>
-</ol>
-</td>
-<td style="vertical-align: top; width: 535px;">
-<img src="/www/img/help/scenario-selection.png" alt="Scenario Selection" />
-</td>
-</tr>
-<tr>
-<td style="vertical-align: top; width: 1054px;">
-<p><span style="font-weight: bold; text-decoration: underline;">Zone Attribute</span></p>
-<ol style="list-style-type: decimal">
-<li>Scenario Level of Cycling is the model predicted rate of cycling in the given area for the chosen scenario</li>
-<li>Scenario Increase in Cycling is the corresponding number of additional cycle commuters over and above Census 2011</li>
-<li>None: No zone attribute is displayed</li>
-</ol>
-</td>
-<td style="vertical-align: top; width: 535px;">
-<img src="/www/img/help/zone-attribute.png" alt="Zone Attribute" />
-</td>
-</tr>
-<tr>
-<td style="vertical-align: top; width: 1054px;">
-<p><span style="font-weight: bold; text-decoration: underline;">Cycling Flows</span></p>
-<ol style="list-style-type: decimal">
-<li>Straight Lines between the population weighted centroids of Census Medium Super Output Areas</li>
-<li><p>‘Fastest’ Route using <a target="_blank" href="http://www.cyclestreets.net/journey/help/howitworks/">Cycle Streets Routing</a></p></li>
-<li><p>‘Fastest’ and ‘Quietest’ Routes using Cycle Streets Routing</p></li>
-</ol>
-</td>
-<td style="vertical-align: top; width: 535px;">
-<img src="/www/img/help/cycling-flows.png" alt="Cycling Flows" />
-</td>
-</tr>
-<tr>
-<td style="vertical-align: top; width: 1054px;">
-<p><span style="font-weight: bold; text-decoration: underline;">Freeze Lines</span></p>
-<ol style="list-style-type: decimal">
-<li>Ticked: The top cycling flows shown remain those calculated based on the visible map area when the box was ticked</li>
-<li>Unticked: If the visible map area changes, flows are recalculated accordingly</li>
-</ol>
-</td>
-<td style="vertical-align: top; width: 535px;">
-<img src="/www/img/help/freeze-lines.png" alt="Fixed Lines" />
-</td>
-</tr>
-<tr>
-<td style="vertical-align: top; width: 1054px;">
-<p><span style="font-weight: bold; text-decoration: underline;">Line Attribute</span></p>
-<ol style="list-style-type: decimal">
-<li>Scenario Level of Cycling is the model predicted rate of cycling between an origin destination pair for the chosen scenario</li>
-<li>Scenario Increase in Cycling is the corresponding number of additional cycle commuters that can be expected between the origin destination pair</li>
-</ol>
-</td>
-<td style="vertical-align: top; width: 535px;">
-<img src="/www/img/help/line-attribute.png" alt="Line Attribute" />
-</td>
-</tr>
-<tr>
-<td style="vertical-align: top; width: 1054px;">
-<span style="font-weight: bold; text-decoration: underline;">Flows to Show</span><br />
-When viewing flows, this slider selects how many of the of the top 50 are shown
-</td>
-<td style="vertical-align: top; width: 535px;">
-<img src="/www/img/help/number-of-lines.png" alt="Number of Lines to Show" />
-</td>
-</tr>
-<tr>
-<td style="vertical-align: top; width: 1054px;">
-<p><span style="font-weight: bold; text-decoration: underline;">Fastest Route</span> The purple line represents the ‘Fastest’ cycling route calculated by CycleStreets between the population weighted centroid of two zones. Once selected the following information is displayed:</p>
-<ol style="list-style-type: decimal">
-<li>Total commutes 2011: The total number of commuting trips between these two zones</li>
-<li>Cycling 2011: Reported cycle commutes between these two zones</li>
-<li>Scenario Cycling: The model predicted rate of cycling between an origin destination pair for the chosen scenario</li>
-<li>Scenario Increase: The difference between the Census 2011 Cycling and the Scenario</li>
-<li>Route Distance: The route distance in km between the centre of the zones</li>
-</ol>
-<span style="font-weight: bold; text-decoration: underline;"></span>
-</td>
-<td style="vertical-align: top; width: 535px;">
-<img src="/www/img/help/direct-route.png" alt="Direct Route" />
-</td>
-</tr>
-<tr>
-<td style="vertical-align: top;">
-<p><span style="font-weight: bold; text-decoration: underline;">Quiet Route</span> The light blue line represents the ‘Quietest’ cycling route calculated by CycleStreets between the population weighted centroid of two zones. Once selected the following information is displayed:</p>
-<ol style="list-style-type: decimal">
-<li>Total commutes 2011: The total number of commuting trips between these two zones</li>
-<li>Cycling 2011: Reported cycle commutes between these two zones</li>
-<li>Scenario Cycling: The model predicted rate of cycling between an origin destination pair for the chosen scenario</li>
-<li>Scenario Increase: The difference between the Census 2011 Cycling and the Scenario</li>
-<li>Route Distance: The route distance in km between the centre of the zones</li>
-</ol>
-</td>
-<td style="vertical-align: top;">
-<img src="/www/img/help/quiet-route.png" alt="Quiet Route" />
-</td>
-</tr>
-<tr>
-<td style="vertical-align: top;">
-<p><span style="font-weight: bold; text-decoration: underline;">Straight Lines</span> The red line represents a straight line between the population weighted centroid of two zones. Once selected the following information is displayed:</p>
-<ol style="list-style-type: decimal">
-<li>Total commutes 2011: The total number of commuting trips between these two zones</li>
-<li>Cycling 2011: Reported cycle commutes between these two zones</li>
-<li>Scenario Cycling: The model predicted rate of cycling between an origin destination pair for the chosen scenario</li>
-<li>Scenario Increase: The difference between the Census 2011 Cycling and the Scenario</li>
-<li>Route Distance: The route distance in km between the centre of the zones</li>
-</ol>
-</td>
-<td style="vertical-align: top;">
-<img src="/www/img/help/straight-line-popup.png" alt="Straight Line" />
-</td>
-</tr>
-<tr>
-<td style="vertical-align: top;">
-<p><span style="font-weight: bold; text-decoration: underline;">Zone Information</span> Zone information is displayed on clicking on the black circle in the centre of each zone:</p>
-<ol style="list-style-type: decimal">
-<li>Zone: Zone name according to the Census</li>
-<li>Scenario Level of Cycling: the model predicted rate of cycling in the given area for the chosen scenario</li>
-<li>Scenario Increase in Cycling: the corresponding number of additional cycle commuters over and above Census 2011</li>
-<li>Hilliness: Shows the average hilliness of the zone from CycleStreets.net.</li>
-</ol>
-</td>
-<td style="vertical-align: top;">
-<img src="/www/img/help/zone-popup.png" alt="Zone" />
-</td>
-</tr>
-<tr>
-<td style="vertical-align: top;">
-<span style="font-weight: bold; text-decoration: underline;">Zone Attribute Legend</span> The legend shows quartiles for the displayed zone attribute according to the scenario selected.
-</td>
-<td style="vertical-align: top;">
-<img src="/www/img/help/legend.png" alt="Legend" />
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p><a href="javascript:toggleElement(&#39;a1&#39;)">2. Does hilliness matter for cycling? Do the Dutch just cycle more because the Netherlands is flatter?</a></p>
+<p><a href="javascript:toggleElement(&#39;a1&#39;)">1. Does hilliness matter for cycling? Do the Dutch just cycle more because the Netherlands is flatter?</a></p>
 <div id="a1" style="display:none">
 <p>Hilliness is certainly an important predictor of cycling levels in England, with the probability of cycling a trip falling steadily as the hilliness of the local area increases (Figure 1). Overall, people in the tenth of the population in the flattest areas are three times more likely to cycle a trip than the tenth of people in the hilliest areas (2.8% trips cycled vs 0.8%).</p>
 <div style="margin: 0 auto; text-align: center">
@@ -171,7 +24,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 <tbody>
 <tr>
 <td align="center" valign="center">
-<a href="/www/img/help/Fig0.png" title="Figure 1: Proportion of trips cycled in England, according to the hilliness of the local area"><img src="/www/img/help/Fig0.png" alt="" /></a>
+<a href="/www/img/help/Fig0.png" title="Figure 1: Proportion of trips cycled in England, according to the hilliness of the local area"><img src="/www/img/help/Fig0.png" /></a>
 </td>
 </tr>
 <tr class="caption">
@@ -188,7 +41,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 <tbody>
 <tr>
 <td align="center" valign="center">
-<a href="/www/img/help/Fig1.png" title="Figure 2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England."><img src="/www/img/help/Fig1.png" alt="" /></a>
+<a href="/www/img/help/Fig1.png" title="Figure 2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England."><img src="/www/img/help/Fig1.png" /></a>
 </td>
 </tr>
 <tr class="caption">
@@ -201,7 +54,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 </div>
 <p>We estimated what would happen to cycling levels in England if England had the same flat topography as the Netherlands (but the existing infrastructure, travel patterns and cycling cultures). We did this by re-weighting the cycle mode share shown in Figure 1 according to the Dutch distribution of hilliness shown in Figure 2 i.e. giving much more weight to the cycling levels of those living in the flattest parts of England than those living in the hilliest parts. In this “Dutch levels of hilliness” scenario, the proportion of trips cycled in England rose from 1.7% to 2.6%. This is still ten times lower than the mode share of 26.7% actually observed in the Netherlands. So although hilliness does explain a small part of why the English cycle less than the Dutch, it still leaves a massive difference unexplained. Or to put it another way, only if cycling levels in England were increased ten-fold would “the Netherlands is flatter” become a convincing excuse for England lagging behind.</p>
 </div>
-<p><a href="javascript:toggleElement(&#39;a2&#39;)">3. How does propensity to cycle differ between England and the Netherlands?</a></p>
+<p><a href="javascript:toggleElement(&#39;a2&#39;)">2. How does propensity to cycle differ between England and the Netherlands?</a></p>
 <div id="a2" style="display:none">
 <p>People in the Netherlands make 26.7% of trips by bicycle, fifteen times higher than the figure of 1.7% in England. In addition, cycling in England is skewed towards younger, male cyclists (Figure 1A). By contrast in the Netherlands cycling remains common into older age, and women are in fact slightly more likely to cycle than men (Figure 1B). This means that the difference between England and the Netherlands is particularly large for women and older people (Figure 2). For example, whereas the cycle mode share is ‘only’ six times higher in the Netherlands than in England for men in their thirties, it is over 20 times higher for women in their thirties or men in their seventies and eighties. For women in their seventies and eighties, the cycle mode share is over 60 times higher in the Netherlands than in England.</p>
 <div style="margin: 0 auto; text-align: center">
@@ -209,7 +62,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 <tbody>
 <tr>
 <td align="center" valign="center">
-<a href="/www/img/help/Fig2.png" title="Figure 1: Proportion of trips cycled in England and Netherlands stratified by age and sex"><img src="/www/img/help/Fig2.png" alt="" /></a>
+<a href="/www/img/help/Fig2.png" title="Figure 1: Proportion of trips cycled in England and Netherlands stratified by age and sex"><img src="/www/img/help/Fig2.png" /></a>
 </td>
 </tr>
 <tr class="caption">
@@ -219,7 +72,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 </tr>
 <tr class="row2">
 <td align="center" valign="center">
-<a href="/www/img/help/Fig3.png" title="Figure 2: Ratio of cycle mode share in the Netherlands versus England, stratified by age and sex"><img src="/www/img/help/Fig3.png" alt="" /><br />
+<a href="/www/img/help/Fig3.png" title="Figure 2: Ratio of cycle mode share in the Netherlands versus England, stratified by age and sex"><img src="/www/img/help/Fig3.png" /><br />
 </a>
 </td>
 </tr>
@@ -237,7 +90,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 <tbody>
 <tr>
 <td align="center" valign="center">
-<a href="/www/img/help/Fig4.png" title="Figure 3: &#39;Distance decay&#39; curves in England and the Netherlands, showing the probability that a trip of a given distance will be cycled relative to a trip of 2 miles"><img src="/www/img/help/Fig4.png" alt="" /></a>
+<a href="/www/img/help/Fig4.png" title="Figure 3: &#39;Distance decay&#39; curves in England and the Netherlands, showing the probability that a trip of a given distance will be cycled relative to a trip of 2 miles"><img src="/www/img/help/Fig4.png" /></a>
 </td>
 </tr>
 <tr class="caption">
@@ -249,7 +102,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 </table>
 </div>
 </div>
-<p><a href="javascript:toggleElement(&#39;a3&#39;)">4. Why focus on the direct routes?</a></p>
+<p><a href="javascript:toggleElement(&#39;a3&#39;)">3. Why focus on the direct routes?</a></p>
 <div id="a3" style="display:none">
 <p>We give users the option of seeing either the ‘direct’ or the ‘direct’ the ‘quietest’ routes on the map. Which might people use? These routes come from the journey planner Cyclestreets.net, which helps people plan their cycling route. <a target="_blank" href="http://www.cyclestreets.net/journey/help/howitworks/">CycleStreets.net</a> shows three types of route, ‘direct’, ‘balanced’, and ‘quietest’. Many cyclists currently choose to take a quieter route at the cost of extra time because often the shortest route involves sharing with motor traffic on busy roads. However, even the quieter routes can still involve negotiating busy roads at times. The aim of the NPCT is not to predict exactly where people are currently cycling. Rather we are trying to prioritise where to put new infrastructure.</p>
 <p>For many people, cycling with busy traffic is hugely off-putting. A systematic review carried out for this project found this particularly puts off women, and probably also older people and those riding with children.</p>
@@ -260,7 +113,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 <tbody>
 <tr>
 <td align="center" valign="center">
-<a href="/www/img/help/Route.png" title="Direct and Quiet Routes between two zones."><img src="/www/img/help/Route.png" alt="" /></a>
+<a href="/www/img/help/Route.png" title="Direct and Quiet Routes between two zones."><img src="/www/img/help/Route.png" /></a>
 </td>
 </tr>
 <tr class="caption">
@@ -274,7 +127,7 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 <p>Instead, for utility trips, improving direct routes will reduce safety and time disincentives to cycling. So while a good proportion of current cyclists may use the ‘quietest’ route, a big increase in capacity will likely necessitate substantial improvements to the ‘direct’ route, which will then carry many more riders.</p>
 <p>Thus we have chosen to present the ‘direct’ as the most first choice for creating good cycling routes.</p>
 </div>
-<p><a href="javascript:toggleElement(&#39;a4&#39;)">5. What are the estimates of future cycling rate based on?</a></p>
+<p><a href="javascript:toggleElement(&#39;a4&#39;)">4. What are the estimates of future cycling rate based on?</a></p>
 <div id="a4" style="display:none">
 <p>The estimates of future cycling rate are based on a regression model, the results of which can be seen in the Model Output Tab.</p>
 <p>To create different scenarios of the future, we used different distance decay curves. For the Dutch scenario, for example, we assumed that the likelihood of cycling a given distance was the same in the UK as it is in the Netherlands.</p>
@@ -283,44 +136,4 @@ When viewing flows, this slider selects how many of the of the top 50 are shown
 <p>By experimenting with the ‘Freeze lines’ option and zooming into specific areas of interest, the level of cycling at more local levels can be explored. And by setting the basemap to ‘Satellite’ when zoomed into specific parts of the road network, the space available to create new cycle paths and car-free zones can be explored.</p>
 <p>Overall, there are many ways that the tool can be used to improve cycling provision. It is likely that more features will be added in future versions (if you have any suggestions, please <a href="mailto:npct@npct.org.uk">get in touch</a>). The table below explains the various options in the interactive map.</p>
 </div>
-<p><a href="javascript:toggleElement(&#39;a5&#39;)">6. How to download and use the data from the PCT?</a></p>
-<div id="a5" style="display:none">
-<!-- This section is work in progress. -->
-<p>The data underlying the PCT can be downloaded by clicking on the the Lines tab. Data can be downloaded in 3 formats:</p>
-<ul>
-<li><p><code>.Rds</code>: This includes geographical and attribute data in R’s native file format. After the file has been downloaded, <code>.Rds</code> files can be loaded using the R function <code>readRDS()</code>.</p></li>
-<li><p><code>.geojson</code>: This is an open data format for geographical and attribute data. <code>.geojson</code> files can be opened using the open source software <a href="http://www.qgis.org/en/site/">QGIS</a>, which can be installed for free.</p></li>
-<li><p><code>.csv</code>: This is a standard format for tabular data and can be opened in standard spreadsheet programs such as <a href="https://www.libreoffice.org/discover/calc/">LibreOffice Calc</a> and Microsoft Excel.</p></li>
-</ul>
-<p>The PCT’s native file format is <code>.Rds</code> because it is fast and light. Loading these into into R is illustrated below for the lines data (called ‘l.Rds’) for West Yorkshire:</p>
-<pre class="r"><code>desire_lines = readRDS(&quot;l.Rds&quot;)</code></pre>
-<pre class="r"><code>library(sp) # load sp package for spatial data
-plot(desire_lines)</code></pre>
-<p>For more information about using the geographic data in QGIS, please refer to the official <a href="http://docs.qgis.org/2.8/en/docs/training_manual/index.html">QGIS Training Manual</a>.</p>
-</div>
-<p><a href="javascript:toggleElement(&#39;a7&#39;)">7. How to create custom scenarios?</a></p>
-<div id="a7" style="display:none">
-<p>To create custom scenarios you need to ‘build’ new input data for the PCT and have a version of the tool running on your computer (not on a remote server). The steps to install working versions of the PCT and the build scripts on your computer are well described in the README files associated with the pct-load and pct-shiny GitHub repositories. These can be seen from the NPCT team’s GitHub page: <a target="_blank" href="https://github.com/npct">github.com/npct</a>.</p>
-<p>To create custom scenarios, the key dataset to modify is ‘l.Rds’, a SpatialLinesDataFrame (an R object class) that exists in each region. In the <em>root directory</em> of the RStudio project for the <code>pct-load</code> folder (which can be opened by opening the <code>pct-load.Rproj</code> file), this could be loaded for kent, for example, with the folowing commands, resulting in the follow plot:</p>
-<pre class="r"><code>library(sp) # load spatial library </code></pre>
-<pre class="r"><code># Load the OD-based &#39;desire lines&#39; for Kent
-l = readRDS(&quot;../pct-data/kent/l.Rds&quot;)
-plot(l) # plot the result</code></pre>
-<div class="figure">
-<img src="/www/img/help/kent-1.png" alt="" />
-
-</div>
-<p>By modifying the values of the variables associated with each line (e.g. <code>l$Bicycle</code>, representing the current level of cycling) in this dataset, new scenarios can be created. Let’s change the Government Target scenario so that the level of cycling is proportional to the inverse of distance, minus the average hilliness of the fastest route. This contrived example could be acheived with the following command:</p>
-<pre class="r"><code>l$govtarget_slc =       # modify the scenario level of cycling for Government Target
-  0.5 / l$dist_fast -   # set proportional to the inverse of distance
-  l$avslope / 100       # minus the average gradient (percent)</code></pre>
-<p>We plan to add more documentation to ease the creation of locally specific scenarios and the deployment of the PCT for use in other custom regions, cities and countries where OD data is available.</p>
-</div>
-<!-- [8\. How can the PCT be used to build a business case for cycling?](javascript:toggleElement('a8'))
-
-<div id="a8" style="display:none">
-
-This section is work in progress.
-
-</div> -->
 </div>
