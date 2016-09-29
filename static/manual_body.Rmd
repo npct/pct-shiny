@@ -33,7 +33,7 @@ Contributions to the project are welcome. This file, for instance, can be edited
 
 <a target="black" href = "https://github.com/npct/pct-shiny/files/500598/User.Manual.A_final.pdf">User Manual A</a>
 
-<a target="black" href = "https://github.com/npct/pct-shiny/files/500597/User.Manual.B_final.pdf">User Manual A</a>
+<a target="black" href = "https://github.com/npct/pct-shiny/files/500597/User.Manual.B_final.pdf">User Manual B</a>
 
 
 #### Additional FAQs
