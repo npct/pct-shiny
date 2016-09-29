@@ -31,10 +31,9 @@ This is work in progress and is being developed as part of a suite of training m
 Contributions to the project are welcome. This file, for instance, can be edited online at
 <a target="_blank" href="https://github.com/npct/pct-shiny/edit/master/static/manual_body.Rmd">github.com/npct/pct-shiny</a>.
 
+<a target="black" href = "https://github.com/npct/pct-shiny/files/500598/User.Manual.A_final.pdf">User Manual A</a>
 
-<a target="_blank" href="user-manual-a.pdf">User Manual A.pdf</a>
-
-<a target="_blank" href="user-manual-b.pdf">User Manual B.pdf</a>
+<a target="black" href = "https://github.com/npct/pct-shiny/files/500597/User.Manual.B_final.pdf">User Manual A</a>
 
 
 #### Additional FAQs
