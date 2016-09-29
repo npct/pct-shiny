@@ -213,32 +213,6 @@ shinyServer(function(input, output, session){
     }
   })
 
-
-  # # Updates the Local Authority if the map is moved
-  # # over another region with data
-  # observe({
-  #   if(file.exists(file.path(helper$dataDir, 'isolated'))) return()
-  #   newRegion <- findRegion()
-  #   # Check if the newRegion is not null, and contains 'all-trips' subfolder
-  #   if (!is.null(newRegion) && file.exists(file.path(dataDirRoot, newRegion, 'all-trips'))){
-  #     if (input$triptype == 'All'){
-  #       dataDir <- file.path(dataDirRoot, newRegion, 'all-trips')
-  #     }else{
-  #       dataDir <- file.path(dataDirRoot, newRegion)
-  #     }
-  #   }else
-  #     dataDir <- file.path(dataDirRoot, newRegion)
-  #
-  #   if(!is.null(newRegion) && helper$dataDir != dataDir && file.exists(dataDir)){
-  #     region$current <- newRegion
-  #     helper$dataDir <<- dataDir
-  #     #toPlot <<- loadData(dataDir)
-  #     if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
-  #       updateCheckboxInput(session, "freeze", value = F)
-  #   }
-  # })
-
-
   # Plot if lines change
   observe({
     # Needed to force lines to be redrawn when scenario, zone or base map changes
