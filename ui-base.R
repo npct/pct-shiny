@@ -99,6 +99,19 @@ shinyUI(
             )
           )
         ),
+
+        absolutePanel(
+          cursor = "default", id = "legend", class = "panel panel-default",
+          bottom = 200, left = 25, height = 30, width = 100,
+          style = "opacity: 0.7",
+          # tags$div(title="Show/Hide zone legend",
+          #          a(id = "toggleLegend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+          # ),
+          div(id = "zone_legend",
+                 selectInput("triptype", label = "Trip data", choices = c("Commuting", "All"), selected = "Commute data", selectize = T)
+            )
+        ),
+
         conditionalPanel(
           condition = "input.map_base == 'IMD'",
           absolutePanel(
