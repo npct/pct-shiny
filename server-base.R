@@ -362,7 +362,7 @@ shinyServer(function(input, output, session){
   })
   output$cite_html <- renderUI({
     HTML(paste('Ver', a(repo_sha, href= paste0("https://github.com/npct/pct-shiny/tree/", repo_sha), target='_blank'),
-               'released under a', a('GNU AGP licence', href= "../licence.html", target='_blank'),
+               'released under a', a('GNU Affero GPL', href= "../licence.html", target='_blank'),
                'and funded by the', a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport", target="_blank")
     ))
   })
