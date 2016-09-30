@@ -31,9 +31,16 @@ This is work in progress and is being developed as part of a suite of training m
 Contributions to the project are welcome. This file, for instance, can be edited online at
 <a target="_blank" href="https://github.com/npct/pct-shiny/edit/master/static/manual_body.Rmd">github.com/npct/pct-shiny</a>.
 
-<a target="black" href = "https://github.com/npct/pct-shiny/files/500598/User.Manual.A_final.pdf">User Manual A</a>
+```{r, echo = F, eval=T}
+repo_sha <- as.character(readLines(file.path("../repo_sha")))
+manual_a_url <- paste("https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "pct-bike-user-manual-a.pdf", sep = "/")
 
-<a target="black" href = "https://github.com/npct/pct-shiny/files/500597/User.Manual.B_final.pdf">User Manual B</a>
+manual_b_url <- paste("https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "pct-bike-user-manual-b.pdf", sep = "/")
+```
+
+<a target="_blank" href = "`r manual_a_url`">User Manual A</a>
+
+<a target="_blank" href = "`r manual_b_url`">User Manual B</a>
 
 
 #### Additional FAQs
