@@ -42,7 +42,7 @@ lapply(cran_pkgs, library, character.only = T)
 
 # Functions
 source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
-regions <- readOGR(dsn = file.path(shiny_root, "regions.geojson"), layer = "OGRGeoJSON")
+regions <- readOGR(dsn = file.path(data_dir_root, "regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 
 
