@@ -80,6 +80,15 @@ shinyServer(function(input, output, session){
 
 
   observe({
+    # If a region does not have an 'all-trips'directory, disable the dropdown menu
+    if (!dir.exists(file.path(data_dir_root, starting_city, 'all-trips'))){
+      disable("triptype")
+    }
+
+  })
+
+
+  observe({
     # Create a reactive expression on the type of trips dropdown menu
     input$triptype
 
@@ -96,6 +105,7 @@ shinyServer(function(input, output, session){
       # redraw_zones()
       region$repopulate_region <<- T
     }
+
   })
 
   # For all plotting data
@@ -581,4 +591,5 @@ shinyServer(function(input, output, session){
     }else
       leafletProxy("map") %>% removeLayersControl()
   })
+
 })
