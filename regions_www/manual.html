@@ -44,6 +44,7 @@
   <script>
     jQuery(document).ready(function(){
       $("#includedContent").load("manual_body.html");
+      $("#includedNav").load("nav.html");
     });
   </script>
 </head>
@@ -58,17 +59,7 @@
   }
 
 </style>
-  <nav class="navbar navbar-default navbar-static-top" role="navigation">
-    <div class="container">
-        <div class="row" style = "font-size: 16px">
-            <div class="col-md-12 nopadding">
-              <a href = "/">
-              <img src="/www/img/logos/pct-logo.png" alt="Propensity to Cycle Tool" />
-              </a>
-            </div>
-        </div>
-      </div>
-    </nav>
-   <div id="includedContent"></div>
+  <div id="includedNav"></div>
+  <div id="includedContent"></div>
 </body>
 </html>
