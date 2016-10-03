@@ -573,7 +573,7 @@ shinyServer(function(input, output, session){
   })
 
   shinyjs::onclick("toggle_panel", shinyjs::toggle(id = "input_panel", anim = FALSE))
-  shinyjs::onclick("toggle_legend", shinyjs::toggle(id = "trip_menu", anim = FALSE))
+  shinyjs::onclick("toggle_trip_menu", shinyjs::toggle(id = "trip_menu", anim = FALSE))
   shinyjs::onclick("toggle_map_legend", shinyjs::toggle(id = "map_legend", anim = FALSE))
 
   # Function to add a layers control for the routes, so that users can easily select quiet routes

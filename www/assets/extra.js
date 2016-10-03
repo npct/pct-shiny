@@ -15,7 +15,7 @@ $( window ).load(function() {
   };
 
   $('#toggle_panel').click(function(){ toggle_panel('#input_panel', this); });
-  $('#toggle_legend').click(function(){ toggle_panel('#trip_menu', this); });
+  $('#toggle_trip_menu').click(function(){ toggle_panel('#trip_menu', this); });
   $('#toggle_map_legend').click(function(){ toggle_panel('#map_legend', this); });
 
   $('select').addClass("form-control");
