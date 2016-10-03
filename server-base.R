@@ -56,7 +56,6 @@ shinyServer(function(input, output, session){
     region$data_dir
     region$repopulate_region
 
-    cat("Directory: ", region$data_dir, "\n")
     to_plot$l <<- readRDS(file.path(region$data_dir, "l.Rds"))
     to_plot$zones <<-  readRDS(file.path(region$data_dir, "z.Rds"))
     to_plot$cents <<-   readRDS(file.path(region$data_dir, "c.Rds"))
@@ -78,17 +77,13 @@ shinyServer(function(input, output, session){
 
   region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), repopulate_region = F) # replot = F,
 
-
   observe({
     # If a region does not have an 'all-trips'directory, disable the dropdown menu
     if (!dir.exists(file.path(data_dir_root, starting_city, 'all-trips'))){
       shinyjs::disable("trip_type")
       # hide trip_menu
       shinyjs::hide("trip_menu")
-
-
     }
-
   })
 
 
@@ -105,11 +100,9 @@ shinyServer(function(input, output, session){
       else{
         region$data_dir <<- file.path(data_dir_root, starting_city)
       }
-
       # redraw_zones()
       region$repopulate_region <<- T
     }
-
   })
 
   # For all plotting data
