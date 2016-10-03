@@ -107,7 +107,7 @@ shinyUI(
           tags$div(title="Show/Hide zone legend",
                      a(id = "toggle_legend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
           ),
-          div(id = "zone_legend",
+          div(id = "trip_menu",
                  selectInput("triptype", label = "Trip data", choices = c("Commuting", "All"), selected = "Commute data", selectize = T)
             )
         ),

@@ -83,8 +83,8 @@ shinyServer(function(input, output, session){
     # If a region does not have an 'all-trips'directory, disable the dropdown menu
     if (!dir.exists(file.path(data_dir_root, starting_city, 'all-trips'))){
       shinyjs::disable("triptype")
-      # hide zone_legend
-      shinyjs::hide("zone_legend")
+      # hide trip_menu
+      shinyjs::hide("trip_menu")
 
 
     }
@@ -573,7 +573,7 @@ shinyServer(function(input, output, session){
   })
 
   shinyjs::onclick("toggle_panel", shinyjs::toggle(id = "input_panel", anim = FALSE))
-  shinyjs::onclick("toggle_legend", shinyjs::toggle(id = "zone_legend", anim = FALSE))
+  shinyjs::onclick("toggle_legend", shinyjs::toggle(id = "trip_menu", anim = FALSE))
   shinyjs::onclick("toggle_map_legend", shinyjs::toggle(id = "map_legend", anim = FALSE))
 
   # Function to add a layers control for the routes, so that users can easily select quiet routes
