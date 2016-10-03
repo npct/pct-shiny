@@ -576,13 +576,6 @@ shinyServer(function(input, output, session){
   shinyjs::onclick("toggle_legend", shinyjs::toggle(id = "zone_legend", anim = FALSE))
   shinyjs::onclick("toggle_map_legend", shinyjs::toggle(id = "map_legend", anim = FALSE))
 
-  observe({
-    if (input$map_base == 'IMD')
-      shinyjs::hide("zone_legend")
-    else
-      shinyjs::show("zone_legend")
-  })
-
   # Function to add a layers control for the routes, so that users can easily select quiet routes
   observe({
     input$line_type
