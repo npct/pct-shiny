@@ -82,7 +82,11 @@ shinyServer(function(input, output, session){
   observe({
     # If a region does not have an 'all-trips'directory, disable the dropdown menu
     if (!dir.exists(file.path(data_dir_root, starting_city, 'all-trips'))){
-      disable("triptype")
+      shinyjs::disable("triptype")
+      # hide zone_legend
+      shinyjs::hide("zone_legend")
+
+
     }
 
   })
