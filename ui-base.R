@@ -102,13 +102,13 @@ shinyUI(
 
         absolutePanel(
           cursor = "default", id = "legend", class = "panel panel-default",
-          top = 375, left = 10, height = 30, width = 100,
-          style = "opacity: 0.7",
+          fixed = TRUE,  top = 375, width = 100, left = 10,
+          height = "auto", style = "opacity: 0.9",
           tags$div(title="Show/Hide trip types menu",
                      a(id = "toggle_trip_menu", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
           ),
           div(id = "trip_menu",
-                 selectInput("trip_type", label = "Trip data", choices = c("Commuting", "All"), selected = "Commute data", selectize = T)
+                 radioButtons("trip_type", label = "Trip data", choices = c("Commuting", "All"))
             )
         ),
 
