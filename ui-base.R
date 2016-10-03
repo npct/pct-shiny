@@ -108,7 +108,7 @@ shinyUI(
                      a(id = "toggle_legend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
           ),
           div(id = "trip_menu",
-                 selectInput("triptype", label = "Trip data", choices = c("Commuting", "All"), selected = "Commute data", selectize = T)
+                 selectInput("trip_type", label = "Trip data", choices = c("Commuting", "All"), selected = "Commute data", selectize = T)
             )
         ),
 

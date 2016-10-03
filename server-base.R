@@ -82,7 +82,7 @@ shinyServer(function(input, output, session){
   observe({
     # If a region does not have an 'all-trips'directory, disable the dropdown menu
     if (!dir.exists(file.path(data_dir_root, starting_city, 'all-trips'))){
-      shinyjs::disable("triptype")
+      shinyjs::disable("trip_type")
       # hide trip_menu
       shinyjs::hide("trip_menu")
 
@@ -94,12 +94,12 @@ shinyServer(function(input, output, session){
 
   observe({
     # Create a reactive expression on the type of trips dropdown menu
-    input$triptype
+    input$trip_type
 
     # Check if the data folder of a specific region contains a subfolder called 'all-trip'
     # If it does, only then load 'all-trip' data or load defaul commute data
     if (dir.exists(file.path(data_dir_root, starting_city, 'all-trips'))){
-      if (input$triptype == 'All'){
+      if (input$trip_type == 'All'){
         region$data_dir <<- file.path(data_dir_root, starting_city, 'all-trips')
       }
       else{
@@ -211,7 +211,7 @@ shinyServer(function(input, output, session){
     new_region <- find_region(region$current)
     # Check if the new_region is not null, and contains 'all-trips' subfolder
     if (!is.null(new_region) && file.exists(file.path(data_dir_root, new_region, 'all-trips'))){
-      if (input$triptype == 'All'){
+      if (input$trip_type == 'All'){
         new_data_dir <- file.path(data_dir_root, new_region, 'all-trips')
       }else{
         new_data_dir <- file.path(data_dir_root, new_region)
