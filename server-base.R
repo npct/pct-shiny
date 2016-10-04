@@ -42,7 +42,7 @@ lapply(cran_pkgs, library, character.only = T)
 
 # Functions
 source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
-regions <- readOGR(dsn = file.path(shiny_root, "regions.geojson"), layer = "OGRGeoJSON")
+regions <- readOGR(dsn = file.path(data_dir_root, "regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 
 
@@ -68,6 +68,7 @@ shinyServer(function(input, output, session){
     to_plot$r_quiet@data <<- cbind(to_plot$r_quiet@data[!(names(to_plot$r_quiet) %in% names(to_plot$l))], to_plot$l@data)
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
+
     isolate(region$replot <- !region$replot)
   })
 
@@ -112,6 +113,7 @@ shinyServer(function(input, output, session){
   attrs_zone <- c("Scenario Level of Cycling (SLC)" =    "slc",
                  "Scenario Increase in Cycling (SIC)" = "sic")
 
+  # Read model-output.html, if it exists, for the loaded region
   observe({
     output$m_output <- renderUI({
       model_file <- file.path(data_dir_root, region$current, "model-output.html")
@@ -204,13 +206,18 @@ shinyServer(function(input, output, session){
     }
     if(input$line_type == 'rnet')
       updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 20, label = "Percent (%) of Network")
-    else
-      updateSliderInput(session, inputId = "nos_lines", min = 1, max = 200, step = 1,  label = "N. Lines (most cycled)")
+    else{
+
+      if (input$line_order == "slc")
+        updateSliderInput(session, inputId = "nos_lines", min = 1, max = 200, step = 1,  label = "Top N Lines (most cycled)")
+      else
+        updateSliderInput(session, inputId = "nos_lines", min = 1, max = 200, step = 1,  label = "Top N Lines")
+    }
 
   })
   get_zone_multiplier <- function(zoom){ zoom^4/8200 }
 
-  # This function updates the zones and the lines
+  # This code displays centroids if zoom level is greater than 11 and lines are displayed
   observe({
     if(is.null(input$map_zoom) ) return()
     region$replot
@@ -222,6 +229,8 @@ shinyServer(function(input, output, session){
       showGroup(leafletProxy("map"), "centres")
   })
 
+
+  # Displays zone popups when no lines are selected
   observe({
     region$replot
     input$map_base
@@ -239,7 +248,7 @@ shinyServer(function(input, output, session){
                   , options = pathOptions(clickable = show_zone_popup)
                   , layerId = paste0(to_plot$zones[['geo_code']], '-', "zones")) %>%
       addCircleMarkers(., radius=0, lat=0, lng=0, group = "region_name", fillOpacity= 0, layerId = region$current) %>%
-      addCircleMarkers(., data = to_plot$cents, radius = to_plot$cents$all / mean(to_plot$cents$all) * 2 + 1,
+      addCircleMarkers(., data = to_plot$cents, radius = normalise(to_plot$cents$all, min = 1, max = 8),
                        color = get_line_colour("centres"), group = "centres", opacity = 0.5,
                        popup = centroid_popup(to_plot$cents, input$scenario, zone_attr())) %>%
       # Hide and Show line layers, so that they are displayed as the top layer in the map.
@@ -264,24 +273,29 @@ shinyServer(function(input, output, session){
         showGroup(leafletProxy("map"), "centres")
   })
 
+  # Set transparency of zones to 0.5 when displayed, otherwise 0
   transp_rate <- reactive({
     if (input$show_zones) 0.5 else 0.0
   })
 
+  # Identify suffix of lines variables
   line_attr <- reactive({
     if(input$scenario == 'olc') 'olc'
     else if (input$line_type != 'rnet') input$line_order
     else 'slc'
   })
 
+  # Identify suffix of zones variables
   zone_attr <- reactive({
     if(input$scenario == 'olc') 'olc' else 'slc'
   })
 
+  # Identify complete name of lines variable
   line_data <- reactive({
     data_filter(input$scenario, line_attr())
   })
 
+  # Identify complete name of zones variable
   zone_data <- reactive({
     data_filter(input$scenario, zone_attr())
   })
@@ -315,6 +329,7 @@ shinyServer(function(input, output, session){
     helper$bb
   })
 
+  # Adds polylines on the map, depending on types and number of lines
   plot_lines <- function(m, lines, nos, popup_fn, group_name, color){
     if (group_name == "route_network") {
       nos <- nos / 100 * nrow(lines)
@@ -344,7 +359,7 @@ shinyServer(function(input, output, session){
                    , layerId = paste0(sorted_l[['id']], '-', group_name))
     }
   }
-
+  # Updates map tile according to the selected map base
   map_tile_url <- reactive({
     switch(input$map_base,
            'roadmap' = "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
@@ -354,13 +369,16 @@ shinyServer(function(input, output, session){
            'hilliness' = "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png"
     )
   })
+
+  # Set map attributes
   output$cite_html <- renderUI({
     HTML(paste('Ver', a(repo_sha, href= paste0("https://github.com/npct/pct-shiny/tree/", repo_sha), target='_blank'),
-               'released under a', a('GNU AGP licence', href= "../licence.html", target='_blank'),
+               'released under a', a('GNU Affero GPL', href= "../licence.html", target='_blank'),
                'and funded by the', a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport", target="_blank")
     ))
   })
 
+  # Creates data links for zones tab
   output$zone_data_links <- renderUI({
     HTML(
       paste(
@@ -374,6 +392,7 @@ shinyServer(function(input, output, session){
     )
   })
 
+  # Creates data links for lines tab
   output$line_data_links <- renderUI({
     HTML(paste("Straight lines geographic file format and attribute data:",
                make_download_link("l", "lines", region$current),
@@ -416,6 +435,7 @@ shinyServer(function(input, output, session){
     ))
   })
 
+  # Initialize the leaflet map
   output$map = renderLeaflet(
     leaflet() %>%
       addTiles(., urlTemplate = map_tile_url(),
@@ -437,8 +457,9 @@ shinyServer(function(input, output, session){
       mapOptions(zoomToLimits = "first")
   )
 
-
+  # Adds map legend
   observe({
+    input$map_base
     if (input$show_zones) {
       leafletProxy("map") %>% addLegend("topleft", colors = get_colour_palette(zcols, 10),
                   labels = c("0-1%",
@@ -459,6 +480,7 @@ shinyServer(function(input, output, session){
     }
   })
 
+  # Creates legend as a barplot for IMD map base
   output$imd_legend <- renderPlot({
     my_lab <- c("Most deprived decile", "2nd", "3rd", "4th", "5th",
                "6th", "7th", "8th", "9th", "Least deprived decile",
@@ -481,6 +503,7 @@ shinyServer(function(input, output, session){
     text(0, bp, my_lab, cex=0.8, pos=4, font=2, col = "black")
   })
 
+  # Creates data for the lines datatable
   output$lines_datatable <- DT::renderDataTable({
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plot_lines_data()){
@@ -508,6 +531,7 @@ shinyServer(function(input, output, session){
       formatRound(columns = decimal_line_cols, digits=2)
   })
 
+  # Creates data for the zones datatable
   output$zones_data_table <- DT::renderDataTable({
     if(is.null(to_plot$zones@data)){
       return()
@@ -518,6 +542,7 @@ shinyServer(function(input, output, session){
       formatRound(columns = decimal_zone_cols, digits=2)
   })
 
+  # Hide/show panels on user-demand
   shinyjs::onclick("toggle_panel", shinyjs::toggle(id = "input_panel", anim = FALSE))
   shinyjs::onclick("toggle_legend", shinyjs::toggle(id = "zone_legend", anim = FALSE))
   shinyjs::onclick("toggle_map_legend", shinyjs::toggle(id = "map_legend", anim = FALSE))

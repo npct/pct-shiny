@@ -31,7 +31,7 @@ line_types <- c("None" = "none",
                 "Fast & Quiet Routes" = "route",
                 "Route Network" = "rnet")
 
-attrs_zone <- c("Level of Cycling"    = "slc",
+attrs_zone <- c("Number of cyclists"    = "slc",
                "Increase in Cycling" = "sic",
                "HEAT Value"          = "slvalue_heat",
                "CO2 reduction"       = "sico2")
@@ -70,7 +70,7 @@ shinyUI(
           ),
           div(
             id = "input_panel",
-            tags$div(title="Scenario (see FAQ tab)",
+            tags$div(title="Scenario (see manual)",
                      selectInput("scenario", "Scenario:", scenarios, selectize = F)
             ),
             tags$div(title="Shows the cycling flow between the centres of zones",
@@ -84,8 +84,8 @@ shinyUI(
               tags$div(title="Untick to update lines when you move the map",
                        checkboxInput("freeze", "Freeze Lines", value = TRUE)
               ),
-              tags$div(title="Flows to show",
-                       sliderInput("nos_lines", label = "N. Lines (most cycled)", 1, 200, value = 30, ticks = F)
+              tags$div(title="Number of lines to show",
+                       sliderInput("nos_lines", label = "Top N Lines (most cycled)", 1, 200, value = 30, ticks = F)
               ),
               conditionalPanel(
                 condition = "input.line_type != 'rnet' && input.scenario != 'olc'",
