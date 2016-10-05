@@ -206,14 +206,7 @@ shinyServer(function(input, output, session){
     if(file.exists(file.path(region$data_dir, 'isolated'))) return()
     new_region <- find_region(region$current)
     # Check if the new_region is not null, and contains 'all-trips' subfolder
-    if (!is.null(new_region) &&  region$all_trips){ #file.exists(file.path(data_dir_root, new_region, 'all-trips'))){
-      if (input$trip_type == 'All'){
-        new_data_dir <- file.path(data_dir_root, new_region, 'all-trips')
-      }else{
-        new_data_dir <- file.path(data_dir_root, new_region)
-      }
-    }else
-      new_data_dir <- file.path(data_dir_root, new_region)
+    new_data_dir <- ifelse ((!is.null(new_region) &&  region$all_trips && input$trip_type == 'All'), file.path(data_dir_root, new_region, 'all-trips'), file.path(data_dir_root, new_region))
 
     if(!is.null(new_region) && region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
       region$current <- new_region
