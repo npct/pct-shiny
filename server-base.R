@@ -82,16 +82,24 @@ shinyServer(function(input, output, session){
   helper$e_lat_lng <- ""
 
   # Select and sort lines within a bounding box - given by flows_bb()
-  sort_lines <- function(lines, sort_by, nos){
+  sort_lines <- function(lines, group_name, sort_by, nos){
     if(!sort_by %in% names(lines)) return(NULL)
-    poly <- flows_bb()
-    if(is.null(poly)) return(NULL)
-    poly <- spTransform(poly, CRS(proj4string(lines)))
-    keep <- gContains(poly, lines,byid=TRUE )
-    if(all(!keep)) return(NULL)
-    lines_in_bb <- lines[drop(keep), ]
-    # Sort by the absolute values
-    lines_in_bb[ tail(order(abs(lines_in_bb[[sort_by]])), nos), ]
+    # If other than route network lines are selected, subset them by the bounding box
+    if (group_name != "route_network"){
+      poly <- flows_bb()
+      if(is.null(poly)) return(NULL)
+      poly <- spTransform(poly, CRS(proj4string(lines)))
+      keep <- gContains(poly, lines,byid=TRUE )
+      if(all(!keep)) return(NULL)
+      lines_in_bb <- lines[drop(keep), ]
+      # Sort by the absolute values
+      lines_in_bb[ tail(order(abs(lines_in_bb[[sort_by]])), nos), ]
+    }else{
+      # For the route network, just sort them according to the percentage of display
+      # Sort by the absolute values
+      lines[ tail(order(abs(lines[[sort_by]])), nos), ]
+    }
+
   }
 
   # Finds the Local Authority shown inside the map bounds
@@ -329,6 +337,24 @@ shinyServer(function(input, output, session){
     helper$bb
   })
 
+  # Set freeze checkbox to false when lines are rnet, otherwise to true
+  # Also disable freeze checkbox for rnet
+  observe({
+    # Build a reactive expression for lines
+    input$line_type
+
+    if (input$line_type != 'none'){
+      if (input$line_type == "rnet" && !isolate(input$freeze)){
+        updateCheckboxInput(session, "freeze", value = T)
+        disable("freeze")
+      }
+      else if (input$line_type != "rnet" && isolate(input$freeze)){
+        updateCheckboxInput(session, "freeze", value = F)
+        enable("freeze")
+      }
+    }
+  })
+
   # Adds polylines on the map, depending on types and number of lines
   plot_lines <- function(m, lines, nos, popup_fn, group_name, color){
     if (group_name == "route_network") {
@@ -344,7 +370,8 @@ shinyServer(function(input, output, session){
     if (group_name == 'quieter_route' || group_name == 'faster_route')
       line_opacity <- 0.5
 
-    sorted_l <- sort_lines(lines, line_data(), nos)
+    sorted_l <- sort_lines(lines, group_name, line_data(), nos)
+
     to_plot$ldata <<- sorted_l
     if(is.null(sorted_l))
       m
