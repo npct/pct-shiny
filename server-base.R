@@ -534,6 +534,7 @@ shinyServer(function(input, output, session){
 
   # Creates data for the lines datatable
   output$lines_datatable <- DT::renderDataTable({
+    region$replot
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plot_lines_data()){
       # Set the warning message that no lines have been selected by the user
@@ -562,6 +563,7 @@ shinyServer(function(input, output, session){
 
   # Creates data for the zones datatable
   output$zones_data_table <- DT::renderDataTable({
+    region$replot
     if(is.null(to_plot$zones@data)){
       return()
     }
