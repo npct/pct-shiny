@@ -72,14 +72,15 @@ shinyServer(function(input, output, session){
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
     region$repopulate_region <<- F
-    #isolate(region$replot <- !region$replot)
   })
 
-  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), repopulate_region = F) # replot = F,
+  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), repopulate_region = F,
+                           all_trips = dir.exists(file.path(data_dir_root, starting_city, 'all-trips')))
 
   observe({
     # If a region does not have an 'all-trips'directory, disable the dropdown menu
-    if (!dir.exists(file.path(data_dir_root, starting_city, 'all-trips'))){
+    # if (!dir.exists(file.path(data_dir_root, starting_city, 'all-trips'))){
+    if (!region$all_trips){
       shinyjs::disable("trip_type")
       # hide trip_menu
       shinyjs::hide("trip_menu")
@@ -93,7 +94,8 @@ shinyServer(function(input, output, session){
 
     # Check if the data folder of a specific region contains a subfolder called 'all-trip'
     # If it does, only then load 'all-trip' data or load defaul commute data
-    if (dir.exists(file.path(data_dir_root, starting_city, 'all-trips'))){
+    # if (dir.exists(file.path(data_dir_root, starting_city, 'all-trips'))){
+    if (region$all_trips){
       if (input$trip_type == 'All'){
         region$data_dir <<- file.path(data_dir_root, starting_city, 'all-trips')
       }
@@ -204,7 +206,7 @@ shinyServer(function(input, output, session){
     if(file.exists(file.path(region$data_dir, 'isolated'))) return()
     new_region <- find_region(region$current)
     # Check if the new_region is not null, and contains 'all-trips' subfolder
-    if (!is.null(new_region) && file.exists(file.path(data_dir_root, new_region, 'all-trips'))){
+    if (!is.null(new_region) &&  region$all_trips){ #file.exists(file.path(data_dir_root, new_region, 'all-trips'))){
       if (input$trip_type == 'All'){
         new_data_dir <- file.path(data_dir_root, new_region, 'all-trips')
       }else{
