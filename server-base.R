@@ -534,7 +534,8 @@ shinyServer(function(input, output, session){
 
   # Creates data for the lines datatable
   output$lines_datatable <- DT::renderDataTable({
-    region$replot
+    # Call a function which reactively reads replot variable
+    replot_tables()
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plot_lines_data()){
       # Set the warning message that no lines have been selected by the user
@@ -563,14 +564,21 @@ shinyServer(function(input, output, session){
 
   # Creates data for the zones datatable
   output$zones_data_table <- DT::renderDataTable({
-    region$replot
+    # Call a function which reactively reads replot variable
+    replot_tables()
     if(is.null(to_plot$zones@data)){
       return()
     }
+
     zones_to_plot <- to_plot$zones@data[,unname(zone_col_names)]
     decimal_zone_cols <- which(vapply(zones_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
     DT::datatable(zones_to_plot, options = list(pageLength = 10), colnames = zone_col_names, rownames = FALSE) %>%
       formatRound(columns = decimal_zone_cols, digits=2)
+  })
+
+  # React to the changes made to the replot variable
+  replot_tables <- reactive({
+    region$replot
   })
 
   # Hide/show panels on user-demand
