@@ -82,7 +82,7 @@ shinyUI(
             conditionalPanel(
               condition = "input.line_type != 'none'",
               tags$div(title="Untick to update lines when you move the map",
-                       checkboxInput("freeze", "Freeze Lines", value = TRUE)
+                       checkboxInput("freeze", "Freeze Lines", value = F)
               ),
               tags$div(title="Number of lines to show",
                        sliderInput("nos_lines", label = "Top N Lines (most cycled)", 1, 200, value = 30, ticks = F)
