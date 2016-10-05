@@ -342,9 +342,11 @@ shinyServer(function(input, output, session){
   observe({
     # Build a reactive expression for lines
     input$line_type
+    # Also when user moves to a new region
+    region$current
 
     if (input$line_type != 'none'){
-      if (input$line_type == "rnet" && !isolate(input$freeze)){
+      if (input$line_type == "rnet"){
         updateCheckboxInput(session, "freeze", value = T)
         disable("freeze")
       }
