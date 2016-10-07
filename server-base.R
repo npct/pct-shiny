@@ -69,7 +69,7 @@ shinyServer(function(input, output, session){
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
 
-    isolate(region$replot <- !region$replot)
+    isolate(region$replot <<- !region$replot)
   })
 
   region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), replot = F )
@@ -535,7 +535,7 @@ shinyServer(function(input, output, session){
   # Creates data for the lines datatable
   output$lines_datatable <- DT::renderDataTable({
     # Call a function which reactively reads replot variable
-    replot_tables()
+    region$replot
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plot_lines_data()){
       # Set the warning message that no lines have been selected by the user
@@ -564,8 +564,7 @@ shinyServer(function(input, output, session){
 
   # Creates data for the zones datatable
   output$zones_data_table <- DT::renderDataTable({
-    # Call a function which reactively reads replot variable
-    replot_tables()
+    region$replot
     if(is.null(to_plot$zones@data)){
       return()
     }
@@ -574,11 +573,6 @@ shinyServer(function(input, output, session){
     decimal_zone_cols <- which(vapply(zones_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
     DT::datatable(zones_to_plot, options = list(pageLength = 10), colnames = zone_col_names, rownames = FALSE) %>%
       formatRound(columns = decimal_zone_cols, digits=2)
-  })
-
-  # React to the changes made to the replot variable
-  replot_tables <- reactive({
-    region$replot
   })
 
   # Hide/show panels on user-demand
