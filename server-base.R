@@ -558,7 +558,8 @@ shinyServer(function(input, output, session){
     # Reuse the lines data stored in the ldata session variable
     lines_to_plot <- to_plot$ldata@data[,unname(line_col_names)]
     decimal_line_cols <- which(vapply(lines_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
-    DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names, rownames = FALSE) %>%
+    DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names, rownames = FALSE,
+                  callback = JS("table.ajax.url(location.href + table.ajax.url());")) %>%
       formatRound(columns = decimal_line_cols, digits=2)
   })
 
