@@ -84,7 +84,6 @@ shinyServer(function(input, output, session){
       # hide trip_menu
       shinyjs::hide("trip_menu")
     }
-    isolate(region$replot <<- !region$replot)
   })
 
 
@@ -568,8 +567,8 @@ shinyServer(function(input, output, session){
 
   # Creates data for the lines datatable
   output$lines_datatable <- DT::renderDataTable({
-    # Call a function which reactively reads replot variable
-    region$replot
+    # Call a function which reactively reads repopulate_region variable
+    region$repopulate_region
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plot_lines_data()){
       # Set the warning message that no lines have been selected by the user
@@ -599,7 +598,7 @@ shinyServer(function(input, output, session){
 
   # Creates data for the zones datatable
   output$zones_data_table <- DT::renderDataTable({
-    region$replot
+    region$repopulate_region
     if(is.null(to_plot$zones@data)){
       return()
     }
