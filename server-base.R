@@ -53,6 +53,9 @@ shinyServer(function(input, output, session){
     # To set initialize to_plot
   observe({
     region$current
+    region$data_dir
+    region$repopulate_region
+
     to_plot$l <<- readRDS(file.path(region$data_dir, "l.Rds"))
     to_plot$zones <<-  readRDS(file.path(region$data_dir, "z.Rds"))
     to_plot$cents <<-   readRDS(file.path(region$data_dir, "c.Rds"))
@@ -68,11 +71,39 @@ shinyServer(function(input, output, session){
     to_plot$r_quiet@data <<- cbind(to_plot$r_quiet@data[!(names(to_plot$r_quiet) %in% names(to_plot$l))], to_plot$l@data)
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
-
-    isolate(region$replot <<- !region$replot)
+    region$repopulate_region <<- F
   })
 
-  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), replot = F )
+  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), repopulate_region = F,
+                           all_trips = dir.exists(file.path(data_dir_root, starting_city, 'all-trips')))
+
+  observe({
+    # If a region does not have an 'all-trips'directory, disable the dropdown menu
+    if (!region$all_trips){
+      shinyjs::disable("trip_type")
+      # hide trip_menu
+      shinyjs::hide("trip_menu")
+    }
+  })
+
+
+  observe({
+    # Create a reactive expression on the type of trips dropdown menu
+    input$trip_type
+
+    # Check if the data folder of a specific region contains a subfolder called 'all-trip'
+    # If it does, only then load 'all-trip' data or load defaul commute data
+    if (region$all_trips){
+      if (input$trip_type == 'All'){
+        region$data_dir <<- file.path(data_dir_root, starting_city, 'all-trips')
+      }
+      else{
+        region$data_dir <<- file.path(data_dir_root, starting_city)
+      }
+      # redraw_zones()
+      region$repopulate_region <<- T
+    }
+  })
 
   # For all plotting data
   to_plot <- NULL
@@ -180,7 +211,9 @@ shinyServer(function(input, output, session){
   observe({
     if(file.exists(file.path(region$data_dir, 'isolated'))) return()
     new_region <- find_region(region$current)
-    new_data_dir <- file.path(data_dir_root, new_region)
+    # Check if the new_region is not null, and contains 'all-trips' subfolder
+    new_data_dir <- ifelse ((!is.null(new_region) &&  region$all_trips && input$trip_type == 'All'), file.path(data_dir_root, new_region, 'all-trips'), file.path(data_dir_root, new_region))
+
     if(!is.null(new_region) && region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
       region$current <- new_region
       region$data_dir <- new_data_dir
@@ -194,7 +227,7 @@ shinyServer(function(input, output, session){
     # Needed to force lines to be redrawn when scenario, zone or base map changes
     input$scenario
     input$map_base
-    region$replot
+    region$repopulate_region
     input$show_zones
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
@@ -228,7 +261,7 @@ shinyServer(function(input, output, session){
   # This code displays centroids if zoom level is greater than 11 and lines are displayed
   observe({
     if(is.null(input$map_zoom) ) return()
-    region$replot
+    region$repopulate_region
     input$map_base
     zoom_multiplier <- get_zone_multiplier(input$map_zoom)
     if(input$map_zoom < 11 || input$line_type == 'none')
@@ -240,7 +273,7 @@ shinyServer(function(input, output, session){
 
   # Displays zone popups when no lines are selected
   observe({
-    region$replot
+    region$repopulate_region
     input$map_base
     show_zone_popup <- input$line_type == 'none'
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr())
@@ -534,8 +567,8 @@ shinyServer(function(input, output, session){
 
   # Creates data for the lines datatable
   output$lines_datatable <- DT::renderDataTable({
-    # Call a function which reactively reads replot variable
-    region$replot
+    # Call a function which reactively reads repopulate_region variable
+    region$repopulate_region
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plot_lines_data()){
       # Set the warning message that no lines have been selected by the user
@@ -565,7 +598,7 @@ shinyServer(function(input, output, session){
 
   # Creates data for the zones datatable
   output$zones_data_table <- DT::renderDataTable({
-    region$replot
+    region$repopulate_region
     if(is.null(to_plot$zones@data)){
       return()
     }
@@ -578,15 +611,8 @@ shinyServer(function(input, output, session){
 
   # Hide/show panels on user-demand
   shinyjs::onclick("toggle_panel", shinyjs::toggle(id = "input_panel", anim = FALSE))
-  shinyjs::onclick("toggle_legend", shinyjs::toggle(id = "zone_legend", anim = FALSE))
+  shinyjs::onclick("toggle_trip_menu", shinyjs::toggle(id = "trip_menu", anim = FALSE))
   shinyjs::onclick("toggle_map_legend", shinyjs::toggle(id = "map_legend", anim = FALSE))
-
-  observe({
-    if (input$map_base == 'IMD')
-      shinyjs::hide("zone_legend")
-    else
-      shinyjs::show("zone_legend")
-  })
 
   # Function to add a layers control for the routes, so that users can easily select quiet routes
   observe({

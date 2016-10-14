@@ -99,6 +99,19 @@ shinyUI(
             )
           )
         ),
+
+        absolutePanel(
+          cursor = "move", id = "legend", class = "panel panel-default",
+          fixed = TRUE,  top = 530, width = 100, right = 20, draggable = TRUE,
+          height = "auto", style = "opacity: 0.9",
+          tags$div(title="Show/Hide trip types menu",
+                     a(id = "toggle_trip_menu", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+          ),
+          div(id = "trip_menu",
+                 radioButtons("trip_type", label = "Trip data", choices = c("Commuting", "All"))
+            )
+        ),
+
         conditionalPanel(
           condition = "input.map_base == 'IMD'",
           absolutePanel(
