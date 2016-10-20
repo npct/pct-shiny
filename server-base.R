@@ -424,7 +424,7 @@ shinyServer(function(input, output, session){
   # Updates map tile according to the selected map base
   map_tile_url <- reactive({
     switch(input$map_base,
-           'roadmap' = "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
+           'roadmap' = "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
            'satellite' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
            'IMD' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png",
            'opencyclemap' = "https://c.tile.thunderforest.com/cycle/{z}/{x}/{y}.png",
