@@ -53,6 +53,9 @@ shinyServer(function(input, output, session){
     # To set initialize to_plot
   observe({
     region$current
+    region$data_dir
+    region$repopulate_region
+
     to_plot$l <<- readRDS(file.path(region$data_dir, "l.Rds"))
     to_plot$zones <<-  readRDS(file.path(region$data_dir, "z.Rds"))
     to_plot$cents <<-   readRDS(file.path(region$data_dir, "c.Rds"))
@@ -68,11 +71,39 @@ shinyServer(function(input, output, session){
     to_plot$r_quiet@data <<- cbind(to_plot$r_quiet@data[!(names(to_plot$r_quiet) %in% names(to_plot$l))], to_plot$l@data)
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
-
-    isolate(region$replot <- !region$replot)
+    region$repopulate_region <<- F
   })
 
-  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), replot = F )
+  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), repopulate_region = F,
+                           all_trips = dir.exists(file.path(data_dir_root, starting_city, 'all-trips')))
+
+  observe({
+    # If a region does not have an 'all-trips'directory, disable the dropdown menu
+    if (!region$all_trips){
+      shinyjs::disable("trip_type")
+      # hide trip_menu
+      shinyjs::hide("trip_menu")
+    }
+  })
+
+
+  observe({
+    # Create a reactive expression on the type of trips dropdown menu
+    input$trip_type
+
+    # Check if the data folder of a specific region contains a subfolder called 'all-trip'
+    # If it does, only then load 'all-trip' data or load defaul commute data
+    if (region$all_trips){
+      if (input$trip_type == 'All'){
+        region$data_dir <<- file.path(data_dir_root, starting_city, 'all-trips')
+      }
+      else{
+        region$data_dir <<- file.path(data_dir_root, starting_city)
+      }
+      # redraw_zones()
+      region$repopulate_region <<- T
+    }
+  })
 
   # For all plotting data
   to_plot <- NULL
@@ -82,16 +113,24 @@ shinyServer(function(input, output, session){
   helper$e_lat_lng <- ""
 
   # Select and sort lines within a bounding box - given by flows_bb()
-  sort_lines <- function(lines, sort_by, nos){
+  sort_lines <- function(lines, group_name, sort_by, nos){
     if(!sort_by %in% names(lines)) return(NULL)
-    poly <- flows_bb()
-    if(is.null(poly)) return(NULL)
-    poly <- spTransform(poly, CRS(proj4string(lines)))
-    keep <- gContains(poly, lines,byid=TRUE )
-    if(all(!keep)) return(NULL)
-    lines_in_bb <- lines[drop(keep), ]
-    # Sort by the absolute values
-    lines_in_bb[ tail(order(abs(lines_in_bb[[sort_by]])), nos), ]
+    # If other than route network lines are selected, subset them by the bounding box
+    if (group_name != "route_network"){
+      poly <- flows_bb()
+      if(is.null(poly)) return(NULL)
+      poly <- spTransform(poly, CRS(proj4string(lines)))
+      keep <- gContains(poly, lines,byid=TRUE )
+      if(all(!keep)) return(NULL)
+      lines_in_bb <- lines[drop(keep), ]
+      # Sort by the absolute values
+      lines_in_bb[ tail(order(abs(lines_in_bb[[sort_by]])), nos), ]
+    }else{
+      # For the route network, just sort them according to the percentage of display
+      # Sort by the absolute values
+      lines[ tail(order(abs(lines[[sort_by]])), nos), ]
+    }
+
   }
 
   # Finds the Local Authority shown inside the map bounds
@@ -172,7 +211,9 @@ shinyServer(function(input, output, session){
   observe({
     if(file.exists(file.path(region$data_dir, 'isolated'))) return()
     new_region <- find_region(region$current)
-    new_data_dir <- file.path(data_dir_root, new_region)
+    # Check if the new_region is not null, and contains 'all-trips' subfolder
+    new_data_dir <- ifelse ((!is.null(new_region) &&  region$all_trips && input$trip_type == 'All'), file.path(data_dir_root, new_region, 'all-trips'), file.path(data_dir_root, new_region))
+
     if(!is.null(new_region) && region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
       region$current <- new_region
       region$data_dir <- new_data_dir
@@ -186,7 +227,7 @@ shinyServer(function(input, output, session){
     # Needed to force lines to be redrawn when scenario, zone or base map changes
     input$scenario
     input$map_base
-    region$replot
+    region$repopulate_region
     input$show_zones
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
@@ -220,7 +261,7 @@ shinyServer(function(input, output, session){
   # This code displays centroids if zoom level is greater than 11 and lines are displayed
   observe({
     if(is.null(input$map_zoom) ) return()
-    region$replot
+    region$repopulate_region
     input$map_base
     zoom_multiplier <- get_zone_multiplier(input$map_zoom)
     if(input$map_zoom < 11 || input$line_type == 'none')
@@ -232,7 +273,7 @@ shinyServer(function(input, output, session){
 
   # Displays zone popups when no lines are selected
   observe({
-    region$replot
+    region$repopulate_region
     input$map_base
     show_zone_popup <- input$line_type == 'none'
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr())
@@ -329,6 +370,26 @@ shinyServer(function(input, output, session){
     helper$bb
   })
 
+  # Set freeze checkbox to false when lines are rnet, otherwise to true
+  # Also disable freeze checkbox for rnet
+  observe({
+    # Build a reactive expression for lines
+    input$line_type
+    # Also when user moves to a new region
+    region$current
+
+    if (input$line_type != 'none'){
+      if (input$line_type == "rnet"){
+        updateCheckboxInput(session, "freeze", value = T)
+        disable("freeze")
+      }
+      else if (input$line_type != "rnet" && isolate(input$freeze)){
+        updateCheckboxInput(session, "freeze", value = F)
+        enable("freeze")
+      }
+    }
+  })
+
   # Adds polylines on the map, depending on types and number of lines
   plot_lines <- function(m, lines, nos, popup_fn, group_name, color){
     if (group_name == "route_network") {
@@ -344,7 +405,8 @@ shinyServer(function(input, output, session){
     if (group_name == 'quieter_route' || group_name == 'faster_route')
       line_opacity <- 0.5
 
-    sorted_l <- sort_lines(lines, line_data(), nos)
+    sorted_l <- sort_lines(lines, group_name, line_data(), nos)
+
     to_plot$ldata <<- sorted_l
     if(is.null(sorted_l))
       m
@@ -362,11 +424,11 @@ shinyServer(function(input, output, session){
   # Updates map tile according to the selected map base
   map_tile_url <- reactive({
     switch(input$map_base,
-           'roadmap' = "http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png",
+           'roadmap' = "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
            'satellite' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
            'IMD' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png",
            'opencyclemap' = "https://c.tile.thunderforest.com/cycle/{z}/{x}/{y}.png",
-           'hilliness' = "http://{s}.tiles.wmflabs.org/hillshading/{z}/{x}/{y}.png"
+           'hilliness' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}"
     )
   })
 
@@ -505,6 +567,8 @@ shinyServer(function(input, output, session){
 
   # Creates data for the lines datatable
   output$lines_datatable <- DT::renderDataTable({
+    # Call a function which reactively reads repopulate_region variable
+    region$repopulate_region
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plot_lines_data()){
       # Set the warning message that no lines have been selected by the user
@@ -527,15 +591,18 @@ shinyServer(function(input, output, session){
     # Reuse the lines data stored in the ldata session variable
     lines_to_plot <- to_plot$ldata@data[,unname(line_col_names)]
     decimal_line_cols <- which(vapply(lines_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
-    DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names, rownames = FALSE) %>%
+    DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names, rownames = FALSE,
+                  callback = JS("table.ajax.url(history.state + table.ajax.url());")) %>%
       formatRound(columns = decimal_line_cols, digits=2)
   })
 
   # Creates data for the zones datatable
   output$zones_data_table <- DT::renderDataTable({
+    region$repopulate_region
     if(is.null(to_plot$zones@data)){
       return()
     }
+
     zones_to_plot <- to_plot$zones@data[,unname(zone_col_names)]
     decimal_zone_cols <- which(vapply(zones_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
     DT::datatable(zones_to_plot, options = list(pageLength = 10), colnames = zone_col_names, rownames = FALSE) %>%
@@ -544,15 +611,8 @@ shinyServer(function(input, output, session){
 
   # Hide/show panels on user-demand
   shinyjs::onclick("toggle_panel", shinyjs::toggle(id = "input_panel", anim = FALSE))
-  shinyjs::onclick("toggle_legend", shinyjs::toggle(id = "zone_legend", anim = FALSE))
+  shinyjs::onclick("toggle_trip_menu", shinyjs::toggle(id = "trip_menu", anim = FALSE))
   shinyjs::onclick("toggle_map_legend", shinyjs::toggle(id = "map_legend", anim = FALSE))
-
-  observe({
-    if (input$map_base == 'IMD')
-      shinyjs::hide("zone_legend")
-    else
-      shinyjs::show("zone_legend")
-  })
 
   # Function to add a layers control for the routes, so that users can easily select quiet routes
   observe({

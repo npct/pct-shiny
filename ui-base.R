@@ -82,7 +82,7 @@ shinyUI(
             conditionalPanel(
               condition = "input.line_type != 'none'",
               tags$div(title="Untick to update lines when you move the map",
-                       checkboxInput("freeze", "Freeze Lines", value = TRUE)
+                       checkboxInput("freeze", "Freeze Lines", value = F)
               ),
               tags$div(title="Number of lines to show",
                        sliderInput("nos_lines", label = "Top N Lines (most cycled)", 1, 200, value = 30, ticks = F)
@@ -99,6 +99,19 @@ shinyUI(
             )
           )
         ),
+
+        absolutePanel(
+          cursor = "move", id = "legend", class = "panel panel-default",
+          fixed = TRUE,  top = 530, width = 100, right = 20, draggable = TRUE,
+          height = "auto", style = "opacity: 0.9",
+          tags$div(title="Show/Hide trip types menu",
+                     a(id = "toggle_trip_menu", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+          ),
+          div(id = "trip_menu",
+                 radioButtons("trip_type", label = "Trip data", choices = c("Commuting", "All"))
+            )
+        ),
+
         conditionalPanel(
           condition = "input.map_base == 'IMD'",
           absolutePanel(
