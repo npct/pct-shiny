@@ -440,11 +440,19 @@ shinyServer(function(input, output, session){
     ))
   })
 
+  # Return the right directory name
+  data_dir <- reactive({
+    if (region$all_trips)
+      paste(region$current, "all-trips", sep = "/")
+    else
+      region$current
+  })
+
   # Creates data links for zones tab
   output$zone_data_links <- renderUI({
     HTML(
       paste(
-        make_download_link("z", "zones", region$current),
+        make_download_link("z", "zones", data_dir()),
         " - ",
         a("Codebook", href = paste(
           "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_zones.csv", sep = "/"),
@@ -457,7 +465,7 @@ shinyServer(function(input, output, session){
   # Creates data links for lines tab
   output$line_data_links <- renderUI({
     HTML(paste("Straight lines geographic file format and attribute data:",
-               make_download_link("l", "lines", region$current),
+               make_download_link("l", "lines", data_dir()),
                " - ",
                a("Codebook", href = paste(
                  "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_lines.csv", sep = "/"),
@@ -466,7 +474,7 @@ shinyServer(function(input, output, session){
                ),
                br(),
                "Fast route geographic file format*:",
-               make_download_link("rf", "fast_routes", region$current, c('Rds', 'geojson')),
+               make_download_link("rf", "fast_routes", data_dir(), c('Rds', 'geojson')),
                " - ",
                a("Codebook", href = paste(
                  "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
@@ -475,7 +483,7 @@ shinyServer(function(input, output, session){
                ),
                br(),
                "Quiet route geographic file format*:",
-               make_download_link("rq", "quiet_routes", region$current, c('Rds', 'geojson')),
+               make_download_link("rq", "quiet_routes", data_dir(), c('Rds', 'geojson')),
                " - ",
                a("Codebook", href = paste(
                  "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
@@ -484,7 +492,7 @@ shinyServer(function(input, output, session){
                ),
                br(),
                "Route Network geographic file format and attribute data:",
-               make_download_link("rnet", "route_network", region$current, c('Rds', 'geojson')),
+               make_download_link("rnet", "route_network", data_dir(), c('Rds', 'geojson')),
                " - ",
                a("Codebook", href = paste(
                  "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_rnet.csv", sep = "/"),
