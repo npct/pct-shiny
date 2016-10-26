@@ -155,7 +155,7 @@ shinyServer(function(input, output, session){
   # Read model-output.html, if it exists, for the loaded region
   observe({
     output$m_output <- renderUI({
-      model_file <- file.path(data_dir_root, region$current, "model-output.html")
+      model_file <- file.path(data_dir_root, data_dir(), "model-output.html")
       if (file.exists(model_file))
         includeHTML(model_file)
       else
@@ -440,7 +440,7 @@ shinyServer(function(input, output, session){
     ))
   })
 
-  # Return the right directory name
+  # Return the right directory name based on type of trips
   data_dir <- reactive({
     if (region$all_trips)
       paste(region$current, "all-trips", sep = "/")
