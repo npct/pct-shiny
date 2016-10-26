@@ -442,7 +442,7 @@ shinyServer(function(input, output, session){
 
   # Return the right directory name based on type of trips
   data_dir <- reactive({
-    if (region$all_trips)
+    if (region$all_trips && input$trip_type == 'All')
       paste(region$current, "all-trips", sep = "/")
     else
       region$current
