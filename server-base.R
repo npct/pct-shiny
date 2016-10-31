@@ -347,7 +347,10 @@ shinyServer(function(input, output, session){
   # 2) Also called when freeze lines is unchecked and the user navigates the map
   # 3) Or when the user changes the Top Lines slider
   plot_lines_data <- reactive({
-    (input$line_type != 'none' && ((!input$freeze && !is.null(input$map_bounds)) || input$nos_lines > 0)) && (line_data() %in% names(to_plot$l@data))
+    !is.null(to_plot$ldata) &&
+      input$line_type != 'none' &&
+      ((!input$freeze && !is.null(input$map_bounds)) || input$nos_lines > 0) &&
+      (line_data() %in% names(to_plot$ldata@data))
   })
 
   # Returns the map bounding box
