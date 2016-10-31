@@ -506,6 +506,8 @@ shinyServer(function(input, output, session){
   # Adds map legend
   observe({
     input$map_base
+    leafletProxy("map") %>% clearControls(.)
+    title <- ifelse(input$trip_type == 'All', "% Cycling", "% Cycling to work")
     if (input$show_zones) {
       leafletProxy("map") %>% addLegend("topleft", colors = get_colour_palette(zcols, 10),
                   labels = c("0-1%",
@@ -518,11 +520,9 @@ shinyServer(function(input, output, session){
                              "25-29%",
                              "30-39%",
                              "40%+"),
-                  title = "% Cycling to work",
+                  title = title,
                   opacity = 0.5
         )
-    }else{
-      leafletProxy("map") %>% clearControls(.)
     }
   })
 
