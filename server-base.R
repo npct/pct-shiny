@@ -55,7 +55,6 @@ shinyServer(function(input, output, session){
   observe({
     region$current
     region$data_dir
-    region$repopulate_region
 
     to_plot$l <<- readRDS(file.path(region$data_dir, "l.Rds"))
     to_plot$zones <<-  readRDS(file.path(region$data_dir, "z.Rds"))
@@ -73,10 +72,9 @@ shinyServer(function(input, output, session){
 
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
-    region$repopulate_region <<- F
   })
 
-  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), repopulate_region = F,
+  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city),
                            all_trips = dir.exists(file.path(data_dir_root, starting_city, 'all-trips')))
 
   observe({
@@ -102,8 +100,6 @@ shinyServer(function(input, output, session){
       else{
         region$data_dir <<- file.path(data_dir_root, starting_city)
       }
-      # redraw_zones()
-      region$repopulate_region <<- T
     }
   })
 
@@ -157,7 +153,7 @@ shinyServer(function(input, output, session){
   # Read model-output.html, if it exists, for the loaded region
   observe({
     output$m_output <- renderUI({
-      model_file <- file.path(data_dir_root, data_dir(), "model-output.html")
+      model_file <- file.path(region$data_dir, "model-output.html")
       if (file.exists(model_file))
         includeHTML(model_file)
       else
@@ -229,7 +225,7 @@ shinyServer(function(input, output, session){
     # Needed to force lines to be redrawn when scenario, zone or base map changes
     input$scenario
     input$map_base
-    region$repopulate_region
+    region$data_dir
     input$show_zones
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
@@ -263,7 +259,7 @@ shinyServer(function(input, output, session){
   # This code displays centroids if zoom level is greater than 11 and lines are displayed
   observe({
     if(is.null(input$map_zoom) ) return()
-    region$repopulate_region
+    region$data_dir
     input$map_base
     zoom_multiplier <- get_zone_multiplier(input$map_zoom)
     if(input$map_zoom < 11 || input$line_type == 'none')
@@ -275,7 +271,7 @@ shinyServer(function(input, output, session){
 
   # Displays zone popups when no lines are selected
   observe({
-    region$repopulate_region
+    region$data_dir
     input$map_base
     show_zone_popup <- input$line_type == 'none'
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr())
@@ -445,14 +441,6 @@ shinyServer(function(input, output, session){
     ))
   })
 
-  # Return the right directory name based on type of trips
-  data_dir <- reactive({
-    if (region$all_trips && input$trip_type == 'All')
-      paste(region$current, "all-trips", sep = "/")
-    else
-      region$current
-  })
-
   output$line_codebook <- renderUI({
     a("Codebook", href = paste(
       "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_lines.csv", sep = "/"),
@@ -564,7 +552,7 @@ shinyServer(function(input, output, session){
   # Creates data for the lines datatable
   output$lines_datatable <- DT::renderDataTable({
     # Call a function which reactively reads repopulate_region variable
-    region$repopulate_region
+    region$data_dir
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plot_lines_data()){
       # Set the warning message that no lines have been selected by the user
@@ -594,7 +582,7 @@ shinyServer(function(input, output, session){
 
   # Creates data for the zones datatable
   output$zones_data_table <- DT::renderDataTable({
-    region$repopulate_region
+    region$data_dir
     if(is.null(to_plot$zones@data)){
       return()
     }
