@@ -45,6 +45,7 @@ source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
 regions <- readOGR(dsn = file.path(data_dir_root, "regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 
+dt_callback <- JS("if(!!history.state){ table.ajax.url(history.state + table.ajax.url()).load(); };")
 
 # # # # # # # #
 # shinyServer #
@@ -587,7 +588,7 @@ shinyServer(function(input, output, session){
     lines_to_plot <- to_plot$ldata@data[,unname(line_col_names)]
     decimal_line_cols <- which(vapply(lines_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
     DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names, rownames = FALSE,
-                  callback = JS("table.ajax.url(history.state + table.ajax.url());")) %>%
+                  callback = dt_callback) %>%
       formatRound(columns = decimal_line_cols, digits=2)
   })
 
@@ -600,7 +601,9 @@ shinyServer(function(input, output, session){
 
     zones_to_plot <- to_plot$zones@data[,unname(zone_col_names)]
     decimal_zone_cols <- which(vapply(zones_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
-    DT::datatable(zones_to_plot, options = list(pageLength = 10), colnames = zone_col_names, rownames = FALSE) %>%
+    DT::datatable(zones_to_plot, options = list(pageLength = 10),
+                  colnames = zone_col_names, rownames = FALSE,
+                  callback = dt_callback) %>%
       formatRound(columns = decimal_zone_cols, digits=2)
   })
 

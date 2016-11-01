@@ -3,6 +3,8 @@ $( window ).load(function() {
     ga = function(){};
   }
 
+  $.fn.dataTable.ext.errMode = "throw"; // See https://github.com/npct/pct-shiny/issues/419
+
   var toggle_panel = function(panelId, link){
     var panel = $(panelId);
     // Commment toggling as the toggle function is being handled by shinyjs
