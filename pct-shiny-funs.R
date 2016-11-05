@@ -3,6 +3,13 @@ sc_name_df <- data.frame(
   sc_s_name = c("olc","govtarget","gendereq","dutch", "ebike")
 )
 
+signif_sdf <- function(sdf, digits = 3) {
+  nums <- vapply(sdf@data, is.numeric, FUN.VALUE = logical(1))
+
+  sdf@data[,nums] <- signif(sdf@data[,nums], digits = digits)
+  sdf
+}
+
 # Data Frame which contains the links of lines and their colours
 line_and_colour_df <- data.frame(
   line_type = c("straight_line", "quieter_route", "faster_route", "route_network", "centres"),

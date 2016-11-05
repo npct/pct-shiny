@@ -82,7 +82,7 @@ shinyUI(
             conditionalPanel(
               condition = "input.line_type != 'none'",
               tags$div(title="Untick to update lines when you move the map",
-                       checkboxInput("freeze", "Freeze Lines", value = TRUE)
+                       checkboxInput("freeze", "Freeze Lines", value = F)
               ),
               tags$div(title="Number of lines to show",
                        sliderInput("nos_lines", label = "Top N Lines (most cycled)", 1, 200, value = 30, ticks = F)
@@ -99,6 +99,19 @@ shinyUI(
             )
           )
         ),
+
+        absolutePanel(
+          cursor = "move", id = "legend", class = "panel panel-default",
+          fixed = TRUE,  top = 530, width = 100, right = 20, draggable = TRUE,
+          height = "auto", style = "opacity: 0.9",
+          tags$div(title="Show/Hide trip types menu",
+                     a(id = "toggle_trip_menu", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+          ),
+          div(id = "trip_menu",
+                 radioButtons("trip_type", label = "Trip data", choices = c("Commuting", "All"))
+            )
+        ),
+
         conditionalPanel(
           condition = "input.map_base == 'IMD'",
           absolutePanel(
@@ -124,26 +137,62 @@ shinyUI(
     tabPanel("Lines",
              br(),
              br(),
-             HTML("This tab shows a selection of the Census 2011 and scenario data generated for selected between-zone
+             p("This tab shows a selection of the Census 2011 and scenario data generated for selected between-zone
                   lines in the chosen region (see Model Output tab for details of the lines included). The full csv
                   dataset contains further details concerning mode share in Census 2011; the cycling, walking and driving
                   levels in each scenario; and the associated health and carbon impacts. You can download the full csv
                   dataset for the lines and routes here, alongside geographic and attribute data to be read by R (.Rds)
-                  or GIS programs such as QGIS (.geojson)"),
-             htmlOutput("line_data_links"),
+                  or GIS programs such as QGIS (.geojson)"
+             ),
+             p(
+               "Straight lines geographic file format and attribute data:",
+               downloadLink('download_l_csv', 'CSV'),
+               downloadLink('download_l_geojson', 'GeoJSON'),
+               downloadLink('download_l_rds', 'Rds'),
+               " - ",
+               htmlOutput('line_codebook', inline = T)
+             ),
+             p(
+               "Fast route geographic file format:",
+               downloadLink('download_rf_geojson', 'GeoJSON'),
+               downloadLink('download_rf_rds', 'Rds'),
+               " - ",
+               htmlOutput('route_codebook', inline = T)
+             ),
+             p(
+               "Quiet route geographic file format:",
+               downloadLink('download_rq_geojson', 'GeoJSON'),
+               downloadLink('download_rq_rds', 'Rds'),
+               " - ",
+               htmlOutput('route_codebook_quiet', inline = T)
+             ),
+             p(
+               "Route Network geographic file format and attribute data:",
+               downloadLink('download_rnet_geojson', 'GeoJSON'),
+               downloadLink('download_rnet_rds', 'Rds'),
+               " - ",
+               htmlOutput('route_network_codebook', inline = T)
+             ),
              uiOutput("warning_message"),
              DT::dataTableOutput("lines_datatable")
     ),
     tabPanel("Zones",
              br(),
              br(),
-             HTML("This tab shows a selection of the Census 2011 and scenario data generated
+             p("This tab shows a selection of the Census 2011 and scenario data generated
                     for all zones in the chosen region. The full csv dataset contains further
                     details concerning mode share in Census 2011; the cycling, walking and driving
                     levels in each scenario; and the associated health and carbon impacts.
                     You can download the full csv dataset for the zones here, alongside geographic
                     and attribute data to be read by R (.Rds) or GIS programs such as QGIS (.geojson):"),
-             htmlOutput("zone_data_links"),
+             p(
+               downloadLink('download_z_csv', 'CSV'),
+               downloadLink('download_z_geojson', 'GeoJSON'),
+               downloadLink('download_z_rds', 'Rds'),
+               " - ",
+               htmlOutput('zone_codebook', inline = T)
+             ),
+
              DT::dataTableOutput("zones_data_table")
     ),
     tabPanel("Model Output",
