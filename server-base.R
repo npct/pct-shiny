@@ -94,7 +94,7 @@ shinyServer(function(input, output, session){
     # Check if the data folder of a specific region contains a subfolder called 'all-trip'
     # If it does, only then load 'all-trip' data or load defaul commute data
     if (region$all_trips){
-      if (input$trip_type == 'All'){
+      if (showing_all_trips()){
         region$data_dir <<- file.path(data_dir_root, starting_city, 'all-trips')
       }
       else{
@@ -210,7 +210,7 @@ shinyServer(function(input, output, session){
     if(file.exists(file.path(region$data_dir, 'isolated'))) return()
     new_region <- find_region(region$current)
     # Check if the new_region is not null, and contains 'all-trips' subfolder
-    new_data_dir <- ifelse ((!is.null(new_region) &&  region$all_trips && input$trip_type == 'All'), file.path(data_dir_root, new_region, 'all-trips'), file.path(data_dir_root, new_region))
+    new_data_dir <- ifelse ((!is.null(new_region) && region$all_trips && showing_all_trips()), file.path(data_dir_root, new_region, 'all-trips'), file.path(data_dir_root, new_region))
 
     if(!is.null(new_region) && region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
       region$current <- new_region
@@ -237,9 +237,9 @@ shinyServer(function(input, output, session){
              'straight' = plot_lines(., to_plot$l, input$nos_lines, straight_popup, "straight_line", get_line_colour("straight_line")),
              'route'= {
                plot_lines(., to_plot$r_quiet, input$nos_lines, route_popup, "quieter_route", get_line_colour("quieter_route"))
-               plot_lines(., to_plot$r_fast, input$nos_lines, route_popup,"faster_route",  get_line_colour("faster_route"))
+               plot_lines(., to_plot$r_fast, input$nos_lines, route_popup, "faster_route",  get_line_colour("faster_route"))
              },
-             'd_route'= plot_lines(., to_plot$r_fast, input$nos_lines, route_popup,"faster_route",  get_line_colour("faster_route")),
+             'd_route'= plot_lines(., to_plot$r_fast, input$nos_lines, route_popup, "faster_route", get_line_colour("faster_route")),
              'rnet' = plot_lines(., to_plot$rnet, input$nos_lines, network_route_popup, "route_network", get_line_colour("route_network"))
       )
     }
@@ -274,7 +274,7 @@ shinyServer(function(input, output, session){
     region$data_dir
     input$map_base
     show_zone_popup <- input$line_type == 'none'
-    popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr())
+    popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
     leafletProxy("map")  %>% clearGroup(., "zones") %>% clearGroup(., "region_name") %>%
       addPolygons(.,  data = to_plot$zones
                   , weight = 2
@@ -289,7 +289,7 @@ shinyServer(function(input, output, session){
       addCircleMarkers(., radius=0, lat=0, lng=0, group = "region_name", fillOpacity= 0, layerId = region$current) %>%
       addCircleMarkers(., data = to_plot$cents, radius = normalise(to_plot$cents$all, min = 1, max = 8),
                        color = get_line_colour("centres"), group = "centres", opacity = 0.5,
-                       popup = centroid_popup(to_plot$cents, input$scenario, zone_attr())) %>%
+                       popup = centroid_popup(to_plot$cents, input$scenario, zone_attr(), showing_all_trips())) %>%
       # Hide and Show line layers, so that they are displayed as the top layer in the map.
       # Leaflet's function bringToBack() or bringToFront() (see http://leafletjs.com/reference.html#path)
       # don't seem to exist for R
@@ -323,6 +323,8 @@ shinyServer(function(input, output, session){
     else if (input$line_type != 'rnet') input$line_order
     else 'slc'
   })
+
+  showing_all_trips <- reactive({ input$trip_type == 'All' })
 
   # Identify suffix of zones variables
   zone_attr <- reactive({
@@ -418,7 +420,7 @@ shinyServer(function(input, output, session){
                    , weight = normalise( sorted_l[[line_data()]][!is.na(sorted_l[[line_data()]]) ], min = min, max = max)
                    , opacity = line_opacity
                    , group = group_name
-                   , popup = popup_fn(sorted_l, input$scenario)
+                   , popup = popup_fn(sorted_l, input$scenario, showing_all_trips())
                    , layerId = paste0(sorted_l[['id']], '-', group_name))
     }
   }
@@ -507,7 +509,7 @@ shinyServer(function(input, output, session){
   observe({
     input$map_base
     leafletProxy("map") %>% clearControls(.)
-    title <- ifelse(input$trip_type == 'All', "% Cycling", "% Cycling to work")
+    title <- ifelse(input$trip_type == 'All', "% trips cycled", "% cycling to work")
     if (input$show_zones) {
       leafletProxy("map") %>% addLegend("topleft", colors = get_colour_palette(zcols, 10),
                   labels = c("0-1%",
