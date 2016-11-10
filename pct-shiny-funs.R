@@ -205,7 +205,7 @@ straight_popup <- function(data, scenario, all_trips){
     # Please align HTML!
     paste0("
 <table class = 'htab'>
-  <th> Scenario: ", get_scenario_name(scenario), "</th>
+  <th> Scenario: ", get_scenario_name(scenario, all_trips), "</th>
   <tbody>
     <tr>
       <td>", data$geo_label1 , " - ", data$geo_label2, "</td>
@@ -355,7 +355,7 @@ route_popup <- function(data, scenario, all_trips){
     }
   } else {
     # Create a local variable to distinguish baseline with scenarios
-    quiet_route_label <- paste("Scenario: ", get_scenario_name(scenario))
+    quiet_route_label <- paste("Scenario: ", get_scenario_name(scenario, all_trips))
     if(scenario == 'olc')
       quiet_route_label <-  paste(quiet_route_label, " (baseline)")
 
@@ -418,7 +418,7 @@ network_route_popup <- function(data, scenario, all_trips){
 
     paste0("
 <table class = 'htab'>
-  <th>  Scenario: ", get_scenario_name(scenario), "</th>
+  <th>  Scenario: ", get_scenario_name(scenario, all_trips), "</th>
   <tbody>
     <tr>
       <td>", cyclists_interzone(all_trips)[["cycle"]] ," (baseline): &nbsp; </td>
@@ -493,7 +493,7 @@ zone_popup <- function(data, scenario, zone, all_trips){
 
     paste0("
 <table class = 'htab'>
-  <th>  Scenario: ", get_scenario_name(scenario), " </th>
+  <th>  Scenario: ", get_scenario_name(scenario, all_trips), " </th>
   <tbody>
     <tr>
       <td> Zone: </td>
@@ -598,7 +598,7 @@ centroid_popup <- function(data, scenario, zone, all_trips){
       <th>Within zone flows</th>
     </tr>
     <tr>
-      <th> Scenario: ", get_scenario_name(scenario), "</th>
+      <th> Scenario: ", get_scenario_name(scenario, all_trips), "</th>
     </tr>
   </thead>
   <tbody>
