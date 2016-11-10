@@ -41,8 +41,12 @@ cyclists_interzone <- function(all_trips){
     list("cycle" = "Between-zone cyclists*", "*" = "* selected cyclists: see Model Output tab")
 }
 
+is_decimal <- function(x) {
+  is.numeric(x) && x %% 1 != 0
+}
+
 signif_sdf <- function(sdf, digits = 3) {
-  nums <- vapply(sdf@data, is.numeric, FUN.VALUE = logical(1))
+  nums <- vapply(sdf@data, is_decimal, FUN.VALUE = T)
 
   sdf@data[,nums] <- signif(sdf@data[,nums], digits = digits)
   sdf
