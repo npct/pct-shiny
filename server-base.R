@@ -116,8 +116,10 @@ shinyServer(function(input, output, session){
     # If other than route network lines are selected, subset them by the bounding box
     if (group_name != "route_network"){
       poly <- flows_bb()
+      l_crs <- CRS(proj4string(lines))
+      if(is.na(l_crs)) l_crs <- CRS("+init=epsg:4326 +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0 ")
       if(is.null(poly)) return(NULL)
-      poly <- spTransform(poly, CRS(proj4string(lines)))
+      poly <- spTransform(poly, l_crs)
       keep <- gContains(poly, lines,byid=TRUE )
       if(all(!keep)) return(NULL)
       lines_in_bb <- lines[drop(keep), ]
