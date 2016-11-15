@@ -79,11 +79,11 @@ shinyServer(function(input, output, session){
 
   observe({
     # If a region does not have an 'all-trips'directory, disable the dropdown menu
-    if (!region$all_trips){
+    # if (!region$all_trips){
       shinyjs::disable("trip_type")
       # hide trip_menu
       shinyjs::hide("trip_menu")
-    }
+    # }
   })
 
 
@@ -324,7 +324,7 @@ shinyServer(function(input, output, session){
     else 'slc'
   })
 
-  showing_all_trips <- reactive({ isTRUE(input$trip_type == 'All') })
+  showing_all_trips <- reactive({ F }) # isTRUE(input$trip_type == 'All') })
 
   # Identify suffix of zones variables
   zone_attr <- reactive({
