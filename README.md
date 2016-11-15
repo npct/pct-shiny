@@ -24,5 +24,3 @@ git clone git@github.com:npct/pct-load.git
 
 The `regions_www` folder contains all the current starting regions
 which can be run as shiny apps.
-
-See [npct/pct/analysis](https://github.com/npct/pct/blob/master/analysis/mapgen.R) to see how the regional map was generated.
