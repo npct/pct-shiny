@@ -101,7 +101,7 @@ shinyUI(
         ),
 
         absolutePanel(
-          cursor = "move", id = "legend", class = "panel panel-default",
+          cursor = "move", id = "trip_panel", class = "panel panel-default",
           fixed = TRUE,  top = 530, width = 100, right = 20, draggable = TRUE,
           height = "auto", style = "opacity: 0.9",
           tags$div(title="Show/Hide trip types menu",
