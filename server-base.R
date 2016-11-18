@@ -60,8 +60,6 @@ shinyServer(function(input, output, session){
     to_plot$zones <<-  readRDS(file.path(region$data_dir, "z.Rds"))
     to_plot$cents <<-   readRDS(file.path(region$data_dir, "c.Rds"))
 
-    to_plot$l@data <<- plyr::arrange(to_plot$l@data, id)
-
     to_plot$rnet <<- readRDS(file.path(region$data_dir, "rnet.Rds"))
     to_plot$rnet$id <<- 1:nrow(to_plot$rnet)
 
