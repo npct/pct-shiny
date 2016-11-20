@@ -621,7 +621,7 @@ shinyServer(function(input, output, session){
   )
 
   output$download_rq_geojson <- downloadHandler(
-    filename = function() { "routes_quite.geojson"  },
+    filename = function() { "routes_quiet.geojson"  },
     content = function(file) { geojson_write(signif_sdf(to_plot$r_quiet), file = file) }
   )
 
