@@ -627,7 +627,7 @@ shinyServer(function(input, output, session){
 
   output$download_rnet_geojson <- downloadHandler(
     filename = function() { "routes_network.geojson"  },
-    content = function(file) { geojson_write(signif_sdf(to_plot$r_net), file = file) }
+    content = function(file) { geojson_write(signif_sdf(to_plot$rnet), file = file) }
   )
 
   output$download_l_rds <- downloadHandler(
@@ -647,7 +647,7 @@ shinyServer(function(input, output, session){
 
   output$download_rnet_rds <- downloadHandler(
     filename = function() { "routes_network.Rds"  },
-    content = function(file) { saveRDS(to_plot$r_net, file = file) }
+    content = function(file) { saveRDS(to_plot$rnet, file = file) }
   )
 
   output$download_z_rds <- downloadHandler(
