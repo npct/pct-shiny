@@ -42,9 +42,13 @@ lapply(cran_pkgs, library, character.only = T)
 
 # Functions
 source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
+
+# Static files
 regions <- readOGR(dsn = file.path(data_dir_root, "regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
+codebook_r = readr::read_csv("../pct-shiny/static/codebook_routes.csv")
 
+# JS code
 dt_callback <- JS("if(!!history.state){ table.ajax.url(history.state + table.ajax.url()).load(); };")
 
 # # # # # # # #
