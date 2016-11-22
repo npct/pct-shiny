@@ -25,7 +25,8 @@ zcols <- "RdYlBu" # for colourbrewer scale (see get_colour_ramp in pct-shiny-fun
 # expect pct-data as a sibling of pct-shiny
 data_dir_root <- file.path(shiny_root, '..', 'pct-data')
 # packages required
-cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT", "shinyjs", "sp", "dplyr", "geojsonio")
+cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet",
+               "DT", "shinyjs", "sp", "dplyr", "geojsonio", "readr")
 
 on_production <- grepl('^/var/shiny/pct-shiny', getwd())
 
