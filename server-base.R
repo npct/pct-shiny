@@ -25,7 +25,8 @@ zcols <- "RdYlBu" # for colourbrewer scale (see get_colour_ramp in pct-shiny-fun
 # expect pct-data as a sibling of pct-shiny
 data_dir_root <- file.path(shiny_root, '..', 'pct-data')
 # packages required
-cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT", "shinyjs", "sp", "dplyr", "geojsonio")
+cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet",
+               "DT", "shinyjs", "sp", "dplyr", "geojsonio", "readr")
 
 on_production <- grepl('^/var/shiny/pct-shiny', getwd())
 
@@ -42,9 +43,13 @@ lapply(cran_pkgs, library, character.only = T)
 
 # Functions
 source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
+
+# Static files
 regions <- readOGR(dsn = file.path(data_dir_root, "regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
+codebook_r = readr::read_csv("../../static/codebook_routes.csv")
 
+# JS code
 dt_callback <- JS("if(!!history.state){ table.ajax.url(history.state + table.ajax.url()).load(); };")
 
 # # # # # # # #
@@ -617,12 +622,12 @@ shinyServer(function(input, output, session){
 
   output$download_rf_geojson <- downloadHandler(
     filename = function() { "routes_fast.geojson"  },
-    content = function(file) { geojson_write(signif_sdf(to_plot$r_fast), file = file) }
+    content = function(file) { geojson_write(signif_sdf(to_plot$r_fast[codebook_r$`Variable name`]), file = file) }
   )
 
   output$download_rq_geojson <- downloadHandler(
     filename = function() { "routes_quiet.geojson"  },
-    content = function(file) { geojson_write(signif_sdf(to_plot$r_quiet), file = file) }
+    content = function(file) { geojson_write(signif_sdf(to_plot$r_quiet[codebook_r$`Variable name`]), file = file) }
   )
 
   output$download_rnet_geojson <- downloadHandler(
