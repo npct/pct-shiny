@@ -52,7 +52,6 @@ codebook_z = readr::read_csv(file.path(shiny_root, "static", "codebook_zones.csv
 codebook_r = readr::read_csv(file.path(shiny_root, "static", "codebook_routes.csv"))
 codebook_rnet = readr::read_csv(file.path(shiny_root, "static", "codebook_rnet.csv"))
 
-
 # JS code
 dt_callback <- JS("if(!!history.state){ table.ajax.url(history.state + table.ajax.url()).load(); };")
 
