@@ -47,10 +47,11 @@ source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
 # Static files
 regions <- readOGR(dsn = file.path(data_dir_root, "regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
-codebook_l = readr::read_csv("../../static/codebook_lines.csv")
-codebook_z = readr::read_csv("../../static/codebook_zones.csv")
-codebook_r = readr::read_csv("../../static/codebook_routes.csv")
-codebook_rnet = readr::read_csv("../../static/codebook_rnet.csv")
+codebook_l = readr::read_csv(file.path(shiny_root, "static", "codebook_lines.csv"))
+codebook_z = readr::read_csv(file.path(shiny_root, "static", "codebook_zones.csv"))
+codebook_r = readr::read_csv(file.path(shiny_root, "static", "codebook_routes.csv"))
+codebook_rnet = readr::read_csv(file.path(shiny_root, "static", "codebook_rnet.csv"))
+
 
 # JS code
 dt_callback <- JS("if(!!history.state){ table.ajax.url(history.state + table.ajax.url()).load(); };")
