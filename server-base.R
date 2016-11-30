@@ -101,9 +101,40 @@ shinyServer(function(input, output, session){
     # If it does, only then load 'all-trip' data or load defaul commute data
     if (region$all_trips){
       if (showing_all_trips()){
+        # Update the name of the scenarios
+        local_scenarios <- c("Current travel patterns" = "olc",
+                             "Government Target" = "govtarget",
+                             "Gender equality" = "gendereq",
+                             "Go Dutch" = "dutch",
+                             "Ebikes" = "ebike")
+        updateSelectInput(session, "scenario", choices = local_scenarios, selected = input$scenario)
+
+        # Update the names of the sorting options for lines
+        local_attrs_zone <- c("Number of cycle trips"    = "slc",
+                        "Increase in Cycling" = "sic",
+                        "HEAT Value"          = "slvalue_heat",
+                        "CO2 reduction"       = "sico2")
+
+        updateSelectInput(session, "line_order", choices = local_attrs_zone, selected = input$line_order)
+
         region$data_dir <<- file.path(data_dir_root, starting_city, 'all-trips')
       }
       else{
+        # In case the user switches back to 'commute' revert the names of the scenarios
+        local_scenarios <- c("Census 2011 Cycling" = "olc",
+                             "Government Target" = "govtarget",
+                             "Gender equality" = "gendereq",
+                             "Go Dutch" = "dutch",
+                             "Ebikes" = "ebike")
+        updateSelectInput(session, "scenario", choices = local_scenarios, selected = input$scenario)
+
+        # Revert the names of the sorting options for lines
+        local_attrs_zone <- c("Number of cyclists"    = "slc",
+                              "Increase in Cycling" = "sic",
+                              "HEAT Value"          = "slvalue_heat",
+                              "CO2 reduction"       = "sico2")
+        updateSelectInput(session, "line_order", choices = local_attrs_zone, selected = input$line_order)
+
         region$data_dir <<- file.path(data_dir_root, starting_city)
       }
     }
@@ -233,6 +264,8 @@ shinyServer(function(input, output, session){
     input$map_base
     region$data_dir
     input$show_zones
+    # Add trip_type
+    input$trip_type
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
       clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
