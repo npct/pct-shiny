@@ -46,6 +46,8 @@ is_decimal <- function(x) {
 }
 
 signif_sdf <- function(sdf, digits = 3) {
+  # Replace NAs with zeros
+  sdf@data[ is.na(sdf@data) ] <- 0
   nums <- vapply(sdf@data, is_decimal, FUN.VALUE = T)
 
   sdf@data[,nums] <- signif(sdf@data[,nums], digits = digits)
