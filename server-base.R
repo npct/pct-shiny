@@ -59,10 +59,11 @@ dt_callback <- JS("if(!!history.state){ table.ajax.url(history.state + table.aja
 # shinyServer #
 # # # # # # # #
 shinyServer(function(input, output, session){
-    # To set initialize to_plot
+  # To set initialize to_plot
   observe({
     region$current
     region$data_dir
+    region$repopulate_region
 
     to_plot$l <<- readRDS(file.path(region$data_dir, "l.Rds"))
     to_plot$zones <<-  readRDS(file.path(region$data_dir, "z.Rds"))
@@ -78,9 +79,12 @@ shinyServer(function(input, output, session){
 
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
+
+    region$repopulate_region <<- F
+
   })
 
-  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city),
+  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), repopulate_region = F,
                            all_trips = dir.exists(file.path(data_dir_root, starting_city, 'all-trips')))
 
   observe({
@@ -111,9 +115,9 @@ shinyServer(function(input, output, session){
 
         # Update the names of the sorting options for lines
         local_attrs_zone <- c("Number of cycle trips"    = "slc",
-                        "Increase in Cycling" = "sic",
-                        "HEAT Value"          = "slvalue_heat",
-                        "CO2 reduction"       = "sico2")
+                              "Increase in Cycling" = "sic",
+                              "HEAT Value"          = "slvalue_heat",
+                              "CO2 reduction"       = "sico2")
 
         updateSelectInput(session, "line_order", choices = local_attrs_zone, selected = input$line_order)
 
@@ -137,6 +141,9 @@ shinyServer(function(input, output, session){
 
         region$data_dir <<- file.path(data_dir_root, starting_city)
       }
+
+
+      region$repopulate_region <<- T
     }
   })
 
@@ -185,12 +192,13 @@ shinyServer(function(input, output, session){
   }
 
   attrs_zone <- c("Scenario Level of Cycling (SLC)" =    "slc",
-                 "Scenario Increase in Cycling (SIC)" = "sic")
+                  "Scenario Increase in Cycling (SIC)" = "sic")
 
   # Read model-output.html, if it exists, for the loaded region
   observe({
     output$m_output <- renderUI({
-      model_file <- file.path(region$data_dir, "model-output.html")
+      model_file <- file.path(data_dir_root, data_dir(), "model-output.html")
+      #model_file <- file.path(region$data_dir, "model-output.html")
       if (file.exists(model_file))
         includeHTML(model_file)
       else
@@ -252,6 +260,7 @@ shinyServer(function(input, output, session){
     if(!is.null(new_region) && region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
       region$current <- new_region
       region$data_dir <- new_data_dir
+      # region$all_trips <- dir.exists(file.path(data_dir_root, new_region, 'all-trips'))
       if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
         updateCheckboxInput(session, "freeze", value = F)
     }
@@ -264,8 +273,7 @@ shinyServer(function(input, output, session){
     input$map_base
     region$data_dir
     input$show_zones
-    # Add trip_type
-    input$trip_type
+    region$repopulate_region
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
       clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
@@ -298,7 +306,8 @@ shinyServer(function(input, output, session){
   # This code displays centroids if zoom level is greater than 11 and lines are displayed
   observe({
     if(is.null(input$map_zoom) ) return()
-    region$data_dir
+    region$repopulate_region
+    # region$data_dir
     input$map_base
     zoom_multiplier <- get_zone_multiplier(input$map_zoom)
     if(input$map_zoom < 11 || input$line_type == 'none')
@@ -310,7 +319,7 @@ shinyServer(function(input, output, session){
 
   # Displays zone popups when no lines are selected
   observe({
-    region$data_dir
+    region$repopulate_region
     input$map_base
     show_zone_popup <- input$line_type == 'none'
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
@@ -346,9 +355,18 @@ shinyServer(function(input, output, session){
         )
       }
 
-      # Display centroids when zoom level is greater than 11 and lines are selected
-      if (isolate(input$map_zoom) >= 11 && isolate(input$line_type) != 'none')
-        showGroup(leafletProxy("map"), "centres")
+    # Display centroids when zoom level is greater than 11 and lines are selected
+    if (isolate(input$map_zoom) >= 11 && isolate(input$line_type) != 'none')
+      showGroup(leafletProxy("map"), "centres")
+  })
+
+
+  # Return the right directory name based on type of trips
+  data_dir <- reactive({
+    if (region$all_trips && input$trip_type == 'All')
+      paste(region$current, "all-trips", sep = "/")
+    else
+      region$current
   })
 
   # Set transparency of zones to 0.5 when displayed, otherwise 0
@@ -531,15 +549,15 @@ shinyServer(function(input, output, session){
                Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
                                    maxZoom = ifelse(input$map_base == "IMD", 14, 18), reuseTiles = T)) %>%
-      {
-        if (input$map_base == 'IMD'){
-            addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
-              options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
-            addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
-              options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
-        }else .
+                                   {
+                                     if (input$map_base == 'IMD'){
+                                       addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
+                                                options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
+                                       addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
+                                                options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
+                                     }else .
 
-      } %>%
+                                   } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
       mapOptions(zoomToLimits = "first")
   )
@@ -551,33 +569,33 @@ shinyServer(function(input, output, session){
     title <- ifelse(showing_all_trips(), "% trips cycled", "% cycling to work")
     if (input$show_zones) {
       leafletProxy("map") %>% addLegend("topleft", colors = get_colour_palette(zcols, 10),
-                  labels = c("0-1%",
-                             "2-3%",
-                             "4-6%",
-                             "7-9%",
-                             "10-14%",
-                             "15-19%",
-                             "20-24%",
-                             "25-29%",
-                             "30-39%",
-                             "40%+"),
-                  title = title,
-                  opacity = 0.5
-        )
+                                        labels = c("0-1%",
+                                                   "2-3%",
+                                                   "4-6%",
+                                                   "7-9%",
+                                                   "10-14%",
+                                                   "15-19%",
+                                                   "20-24%",
+                                                   "25-29%",
+                                                   "30-39%",
+                                                   "40%+"),
+                                        title = title,
+                                        opacity = 0.5
+      )
     }
   })
 
   # Creates legend as a barplot for IMD map base
   output$imd_legend <- renderPlot({
     my_lab <- c("Most deprived decile", "2nd", "3rd", "4th", "5th",
-               "6th", "7th", "8th", "9th", "Least deprived decile",
-               "Data missing", "Data not available")
+                "6th", "7th", "8th", "9th", "Least deprived decile",
+                "Data missing", "Data not available")
 
     my_lab <- rev(my_lab)
 
     my_colors <- c("#a50026","#d73027", "#f46d43","#fdae61","#fee08b",
-                  "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850",
-                  "#006837", "#aaaaaa", "#dddddd")
+                   "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850",
+                   "#006837", "#aaaaaa", "#dddddd")
 
     my_colors <- rev(my_colors)
 
@@ -593,7 +611,7 @@ shinyServer(function(input, output, session){
   # Creates data for the lines datatable
   output$lines_datatable <- DT::renderDataTable({
     # Call a function which reactively reads repopulate_region variable
-    region$data_dir
+    region$repopulate_region
     # Only render lines data when any of the Cycling Flows is selected by the user
     if(!plot_lines_data()){
       # Set the warning message that no lines have been selected by the user
@@ -623,7 +641,7 @@ shinyServer(function(input, output, session){
 
   # Creates data for the zones datatable
   output$zones_data_table <- DT::renderDataTable({
-    region$data_dir
+    region$repopulate_region
     if(is.null(to_plot$zones@data)){
       return()
     }
