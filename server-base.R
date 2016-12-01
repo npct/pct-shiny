@@ -88,11 +88,13 @@ shinyServer(function(input, output, session){
                            all_trips = dir.exists(file.path(data_dir_root, starting_city, 'all-trips')))
 
   observe({
-    # If a region does not have an 'all-trips'directory, disable the dropdown menu
+    # If a region does not have an 'all-trips'directory, hide the trip panel
     if (!region$all_trips){
-      shinyjs::disable("trip_type")
-      # hide trip_menu
-      shinyjs::hide("trip_menu")
+      # hide trip_panel
+      shinyjs::hide("trip_panel")
+    }else{
+      # show trip_panel
+      shinyjs::show("trip_panel")
     }
   })
 
