@@ -39,7 +39,7 @@ if(!on_production){
 # Initialize production_branch as F
 production_branch <- F
 # Check if we are on the production branch
-if (system("git rev-parse --abbrev-ref HEAD") == "production"){
+if (system("git rev-parse --abbrev-ref HEAD", intern = TRUE) == "production"){
   production_branch <- T
 }
 
