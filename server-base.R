@@ -28,11 +28,11 @@ data_dir_root <- file.path(shiny_root, '..', 'pct-data')
 cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet",
                "DT", "shinyjs", "sp", "dplyr", "geojsonio", "readr")
 
-on_production <- grepl('^/var/shiny/pct-shiny', getwd())
+on_server <- grepl('^/var/shiny/pct-shiny', getwd())
 
 data_sha <- as.character(readLines(file.path(shiny_root, "data_sha")))
 
-if(!on_production){
+if(!on_server){
   source(file.path(shiny_root, "scripts", "init.R"))
   init_dev_env(data_dir_root, data_sha, cran_pkgs, shiny_root)
 }

@@ -42,7 +42,7 @@ map_base_attrs <- c("Roadmap (Black & White)"   = "roadmap",
                     "Index of Deprivation" = "IMD",
                     "Hilliness" = "hilliness")
 
-on_production <- grepl('^/var/shiny/pct-shiny', getwd())
+on_server <- grepl('^/var/shiny/pct-shiny', getwd())
 
 shinyUI(
   navbarPage(
@@ -54,7 +54,7 @@ shinyUI(
       div(
         class="outer",
         tags$head(
-          if(on_production) includeScript("www/assets/google-analytics.js"),
+          if(on_server) includeScript("www/assets/google-analytics.js"),
           includeScript("www/assets/extra.js"),
           includeCSS("www/stylesheet.css"),
           includeHTML(file.path("regions_www", "favicon.html"))
