@@ -36,6 +36,12 @@ if(!on_production){
   source(file.path(shiny_root, "scripts", "init.R"))
   init_dev_env(data_dir_root, data_sha, cran_pkgs, shiny_root)
 }
+# Initialize production_branch as F
+production_branch <- F
+# Check if we are on the production branch
+if (system("git rev-parse --abbrev-ref HEAD") == "production"){
+  production_branch <- T
+}
 
 repo_sha <- as.character(readLines(file.path(shiny_root, "repo_sha")))
 
@@ -95,6 +101,11 @@ shinyServer(function(input, output, session){
     }else{
       # show trip_panel
       shinyjs::show("trip_panel")
+    }
+
+    if (production_branch){
+      # hide trip_panel
+      shinyjs::hide("trip_panel")
     }
   })
 
