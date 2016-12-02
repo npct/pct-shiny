@@ -656,65 +656,74 @@ shinyServer(function(input, output, session){
       formatRound(columns = decimal_zone_cols, digits=2)
   })
 
-  output$download_l_csv <- downloadHandler(
-    filename = function() { "lines.csv"  },
-    content = function(file) { write.csv(signif_sdf(to_plot$l)@data[codebook_l$`Variable name`], file = file) }
-  )
+  observe({
+    region$current
+    region$data_dir
+    region$repopulate_region
 
-  output$download_z_csv <- downloadHandler(
-    filename = function() { "zones.csv"  },
-    content = function(file) { write.csv(signif_sdf(to_plot$zones)@data[codebook_z$`Variable name`], file = file) }
-  )
 
-  output$download_z_geojson <- downloadHandler(
-    filename = function() { "zones.geojson"  },
-    content = function(file) { geojson_write(signif_sdf(to_plot$zones[codebook_z$`Variable name`]), file = file) }
-  )
+    output$download_l_csv <- downloadHandler(
+      filename = function() { "lines.csv"  },
+      content = function(file) { write.csv(signif_sdf(to_plot$l)@data[codebook_l$`Variable name`], file = file) }
+    )
 
-  output$download_l_geojson <- downloadHandler(
-    filename = function() { "lines.geojson"  },
-    content = function(file) { geojson_write(signif_sdf(to_plot$l[codebook_l$`Variable name`]), file = file) }
-  )
 
-  output$download_rf_geojson <- downloadHandler(
-    filename = function() { "routes_fast.geojson"  },
-    content = function(file) { geojson_write(signif_sdf(to_plot$r_fast[codebook_r$`Variable name`]), file = file) }
-  )
+    output$download_z_csv <- downloadHandler(
+      filename = function() { "zones.csv"  },
+      content = function(file) { write.csv(signif_sdf(to_plot$zones)@data[codebook_z$`Variable name`], file = file) }
+    )
 
-  output$download_rq_geojson <- downloadHandler(
-    filename = function() { "routes_quiet.geojson"  },
-    content = function(file) { geojson_write(signif_sdf(to_plot$r_quiet[codebook_r$`Variable name`]), file = file) }
-  )
+    output$download_z_geojson <- downloadHandler(
+      filename = function() { "zones.geojson"  },
+      content = function(file) { geojson_write(signif_sdf(to_plot$zones[codebook_z$`Variable name`]), file = file) }
+    )
 
-  output$download_rnet_geojson <- downloadHandler(
-    filename = function() { "routes_network.geojson"  },
-    content = function(file) { geojson_write(signif_sdf(to_plot$rnet[codebook_rnet$`Variable name`]), file = file) }
-  )
+    output$download_l_geojson <- downloadHandler(
+      filename = function() { "lines.geojson"  },
+      content = function(file) { geojson_write(signif_sdf(to_plot$l[codebook_l$`Variable name`]), file = file) }
+    )
 
-  output$download_l_rds <- downloadHandler(
-    filename = function() { "lines.Rds"  },
-    content = function(file) { saveRDS(to_plot$l[codebook_l$`Variable name`], file = file) }
-  )
+    output$download_rf_geojson <- downloadHandler(
+      filename = function() { "routes_fast.geojson"  },
+      content = function(file) { geojson_write(signif_sdf(to_plot$r_fast[codebook_r$`Variable name`]), file = file) }
+    )
 
-  output$download_rf_rds <- downloadHandler(
-    filename = function() { "routes_fast.Rds"  },
-    content = function(file) { saveRDS(to_plot$r_fast[codebook_r$`Variable name`], file = file) }
-  )
+    output$download_rq_geojson <- downloadHandler(
+      filename = function() { "routes_quiet.geojson"  },
+      content = function(file) { geojson_write(signif_sdf(to_plot$r_quiet[codebook_r$`Variable name`]), file = file) }
+    )
 
-  output$download_rq_rds <- downloadHandler(
-    filename = function() { "routes_quiet.Rds"  },
-    content = function(file) { saveRDS(to_plot$r_quiet[codebook_r$`Variable name`], file = file) }
-  )
+    output$download_rnet_geojson <- downloadHandler(
+      filename = function() { "routes_network.geojson"  },
+      content = function(file) { geojson_write(signif_sdf(to_plot$rnet[codebook_rnet$`Variable name`]), file = file) }
+    )
 
-  output$download_rnet_rds <- downloadHandler(
-    filename = function() { "routes_network.Rds"  },
-    content = function(file) { saveRDS(to_plot$rnet[codebook_rnet$`Variable name`], file = file) }
-  )
+    output$download_l_rds <- downloadHandler(
+      filename = function() { "lines.Rds"  },
+      content = function(file) { saveRDS(to_plot$l[codebook_l$`Variable name`], file = file) }
+    )
 
-  output$download_z_rds <- downloadHandler(
-    filename = function() { "zones.Rds"  },
-    content = function(file) { saveRDS(to_plot$zones[codebook_z$`Variable name`], file = file) }
-  )
+    output$download_rf_rds <- downloadHandler(
+      filename = function() { "routes_fast.Rds"  },
+      content = function(file) { saveRDS(to_plot$r_fast[codebook_r$`Variable name`], file = file) }
+    )
+
+    output$download_rq_rds <- downloadHandler(
+      filename = function() { "routes_quiet.Rds"  },
+      content = function(file) { saveRDS(to_plot$r_quiet[codebook_r$`Variable name`], file = file) }
+    )
+
+    output$download_rnet_rds <- downloadHandler(
+      filename = function() { "routes_network.Rds"  },
+      content = function(file) { saveRDS(to_plot$rnet[codebook_rnet$`Variable name`], file = file) }
+    )
+
+    output$download_z_rds <- downloadHandler(
+      filename = function() { "zones.Rds"  },
+      content = function(file) { saveRDS(to_plot$zones[codebook_z$`Variable name`], file = file) }
+    )
+
+  })
 
   # Hide/show panels on user-demand
   shinyjs::onclick("toggle_panel", shinyjs::toggle(id = "input_panel", anim = FALSE))
