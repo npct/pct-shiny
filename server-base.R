@@ -407,7 +407,7 @@ shinyServer(function(input, output, session){
   plot_lines_data <- reactive({
     !is.null(to_plot$ldata) &&
       input$line_type != 'none' &&
-      ((!input$freeze && !is.null(input$map_bounds)) || input$nos_lines > 0) &&
+      (!is.null(input$map_bounds)) && input$nos_lines > 0 &&
       (line_data() %in% names(to_plot$ldata@data))
   })
 
