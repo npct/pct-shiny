@@ -407,17 +407,6 @@ shinyServer(function(input, output, session){
     data_filter(input$scenario, zone_attr())
   })
 
-  # Reactive function for the lines data
-  # 1) Called when other than 'none' is selected for the Cycling Flows
-  # 2) Also called when freeze lines is unchecked and the user navigates the map
-  # 3) Or when the user changes the Top Lines slider
-  plot_lines_data <- reactive({
-    !is.null(to_plot$ldata) &&
-      input$line_type != 'none' &&
-      (!is.null(input$map_bounds)) && input$nos_lines > 0 &&
-      (line_data() %in% names(to_plot$ldata@data))
-  })
-
   # Returns the map bounding box
   map_bb <- reactive({
     if (is.null(input$map_bounds)){ return (NULL)}
@@ -622,7 +611,10 @@ shinyServer(function(input, output, session){
     # Call a function which reactively reads repopulate_region variable
     region$repopulate_region
     # Only render lines data when any of the Cycling Flows is selected by the user
-    if(!plot_lines_data()){
+
+    plot_lines_data <- !is.null(to_plot$ldata) && input$line_type != 'none' &&
+      (!is.null(input$map_bounds)) && input$nos_lines > 0 && (line_data() %in% names(to_plot$ldata@data))
+    if(!plot_lines_data){
       # Set the warning message that no lines have been selected by the user
       output$warning_message <- renderUI(HTML("<strong>No lines selected: </strong> Lines must be displayed on map </br>"))
       # Return an empty data.frame
