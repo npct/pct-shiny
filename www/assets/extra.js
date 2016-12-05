@@ -2,10 +2,6 @@ $( window ).load(function() {
   if(typeof ga === "undefined"){
     ga = function(){};
   }
-  $(".datatables").on("init.dt", function () {
-    // See https://github.com/npct/pct-shiny/issues/419
-    $.fn.dataTableExt.errMode = function(settings, tn, msg) { console.log(msg); };
-  });
 
   var toggle_panel = function(panelId, link){
     var panel = $(panelId);
@@ -44,6 +40,7 @@ $( window ).load(function() {
       var l_map = $(map).data('leaflet-map');
       L.control.scale().addTo(l_map);
       url_updater(l_map, undefined);
+
       $('select, input').each(function() {
         $(this).change(function(e){
           ga('send', 'event', 'controls', e.target.id , e.target.value);
