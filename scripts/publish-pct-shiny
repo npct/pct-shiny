@@ -1,10 +1,20 @@
 #!/bin/bash
 
 # (C) 2016 NPTC
-# Written by Pete Stevens of Mythic Beasts Ltd to support NPTC production
-# deployment
+# Written by Pete Stevens of Mythic Beasts Ltd and Nikolai Berkoff
+# to support NPTC production deployment
 
 set +e
+
+var_dir="/home/git/var-shiny/"
+wait_seconds=0
+while [ "$wait_seconds" -lt 120 -a -e ${var_dir}.deploy-shiny-lock ]; do
+  echo "Currently deploying. Waiting for ${var_dir}.deploy-shiny-lock for another $((120-wait_seconds)) seconds"
+  wait_seconds=$((wait_seconds+5))
+  sleep 5
+done
+
+touch ${var_dir}.deploy-shiny-lock
 
 if [[ $(hostname -s) = "npct0" ]]; then
   BRANCH="master"
@@ -15,19 +25,19 @@ fi
 export PATH=$PATH:/home/git/bin
 
 echo "Check out the latest version into our temp directory"
-rm -rf /home/git/var-shiny/pct-shiny
-mkdir -p /home/git/var-shiny/pct-shiny
-git --work-tree /home/git/var-shiny/pct-shiny --git-dir /home/git/pct-shiny checkout ${BRANCH} -f
-git --git-dir /home/git/pct-shiny rev-parse --short HEAD > /home/git/var-shiny/pct-shiny/repo_sha
+rm -rf ${var_dir}pct-shiny
+mkdir -p ${var_dir}pct-shiny
+git --work-tree ${var_dir}pct-shiny --git-dir /home/git/pct-shiny checkout ${BRANCH} -f
+git --git-dir /home/git/pct-shiny rev-parse --short HEAD > ${var_dir}pct-shiny/repo_sha
 
-DATASHA=`cat /home/git/var-shiny/pct-shiny/data_sha`
+DATASHA=`cat ${var_dir}pct-shiny/data_sha`
 echo "The data sha is ${DATASHA}"
 
 echo "Git fetch the data"
 git --git-dir /home/git/pct-data fetch https://github.com/npct/pct-data.git
-rm -rf /home/git/var-shiny/pct-data
-mkdir /home/git/var-shiny/pct-data
-git --work-tree /home/git/var-shiny/pct-data --git-dir /home/git/pct-data checkout $DATASHA -f
+rm -rf ${var_dir}pct-data
+mkdir ${var_dir}pct-data
+git --work-tree ${var_dir}pct-data --git-dir /home/git/pct-data checkout $DATASHA -f
 
 if [[ $(hostname -s) = "npct0" ]]; then
   update-server npct0
@@ -36,3 +46,5 @@ else
   update-server npt1.vs.mythic-beasts.com
   update-server npt2.vs.mythic-beasts.com
 fi
+
+rm ${var_dir}.deploy-shiny-lock
