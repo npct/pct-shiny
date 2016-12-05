@@ -38,8 +38,8 @@ if(!on_server){
 }
 # Initialize production_branch as F
 production_branch <- F
-# Check if we are on the production branch
-if (system("git rev-parse --abbrev-ref HEAD") == "production"){
+# Check if we are on the production branch (on live server)
+if ((Sys.info()["nodename"]) == "npt1"){
   production_branch <- T
 }
 
@@ -94,7 +94,7 @@ shinyServer(function(input, output, session){
                            all_trips = dir.exists(file.path(data_dir_root, starting_city, 'all-trips')))
 
   observe({
-    output$production_branch <- renderText({ ifelse(production_branch, "true", "false") })
+    output$production_branch <- renderText({ifelse(production_branch, "true", "false")})
     # If a region does not have an 'all-trips'directory, hide the trip panel
     if (!region$all_trips){
       # hide trip_panel
