@@ -1,58 +1,7 @@
 sc_name_df <- data.frame(
   sc_f_name = c("Census 2011 Cycling", "Government Target", "Gender equality", "Go Dutch", "Ebikes"),
-  sc_s_name = c("olc", "govtarget","gendereq","dutch", "ebike")
+  sc_s_name = c("olc","govtarget","gendereq","dutch", "ebike")
 )
-
-get_scenario_name <- function(sc_name, all_trips){
-  if (sc_name == "olc" && all_trips){
-    "Current travel patterns"
-  } else {
-    sc_name_df$sc_f_name[sc_name_df$sc_s_name == sc_name]
-  }
-}
-
-total_commuters <- function(all_trips) {
-  ifelse(all_trips, "Total weekly no. trips:", "Total commuters:")
-}
-
-cyclists_baseline <- function(all_trips){
-  ifelse(all_trips, "Cycle trips/wk (baseline): &nbsp;", "Cyclists (baseline): &nbsp; ")
-}
-
-cyclists_scenario <- function(all_trips){
-  ifelse(all_trips, "Cycle trips/wk (scenario): &nbsp;", "Cyclists (scenario): &nbsp; ")
-}
-
-cyclists_change <- function(all_trips){
-  ifelse(all_trips, "Change in cycle trips/wk: &nbsp;", "Change in cyclists: &nbsp; ")
-}
-
-driver_baseline <- function(all_trips){
-  ifelse(all_trips, "Car trips/wk: &nbsp;", "Drivers (baseline): &nbsp; ")
-}
-
-driver_change <- function(all_trips){
-  ifelse(all_trips, "Change in car trips/wk: &nbsp;", "Change in drivers: &nbsp; ")
-}
-cyclists_interzone <- function(all_trips){
-  if(all_trips)
-    list("cycle" = "Between-zone cycle trips/wk* ", "*" = "* selected cycle trips")
-  else
-    list("cycle" = "Between-zone cyclists*", "*" = "* selected cyclists: see Model Output tab")
-}
-
-is_decimal <- function(x) {
-  is.numeric(x) && x %% 1 != 0
-}
-
-signif_sdf <- function(sdf, digits = 3) {
-  # Replace NAs with zeros
-  sdf@data[ is.na(sdf@data) ] <- 0
-  nums <- vapply(sdf@data, is_decimal, FUN.VALUE = T)
-
-  sdf@data[,nums] <- signif(sdf@data[,nums], digits = digits)
-  sdf
-}
 
 # Data Frame which contains the links of lines and their colours
 line_and_colour_df <- data.frame(
@@ -81,6 +30,10 @@ make_download_link <- function(file, download_name, region, formats = c('Rds', '
     )
   }
   all_links
+}
+
+get_scenario_name <- function(sc_name){
+  sc_name_df$sc_f_name[sc_name_df$sc_s_name == sc_name]
 }
 
 line_col_names <- c(
@@ -160,7 +113,7 @@ data_filter <- function(scenario, type){
 }
 
 # Popup function for straight line data in html table
-straight_popup <- function(data, scenario, all_trips){
+straight_popup <- function(data, scenario){
 
   # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
   data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
@@ -174,21 +127,21 @@ straight_popup <- function(data, scenario, all_trips){
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
- 	<th>", get_scenario_name(scenario, all_trips), "</th>
+ 	<th> Census 2011 cycling (baseline) </th>
   <tbody>
     <tr>
       <td>", data$geo_label1 , " - ", data$geo_label2, "</td>
     </tr>
     <tr>
-      <td>", total_commuters(all_trips), "</td>
+      <td> Total commuters: </td>
       <td>", data$all, "</td>
     </tr>
     <tr>
-      <td>", cyclists_baseline(all_trips), "</td>
+      <td> Cyclists (baseline): &nbsp; </td>
       <td>",  data$bicycle, " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
-      <td>", driver_baseline(all_trips), "</td>
+      <td> Drivers (baseline): &nbsp; </td>
       <td>", data$car_driver, " (", round(100 * data$car_driver / data$all), "%) </td>
     </tr>
     <tr>
@@ -198,6 +151,7 @@ straight_popup <- function(data, scenario, all_trips){
   </tbody>
 </table>
 ")
+
   } else {
 
 
@@ -211,25 +165,25 @@ straight_popup <- function(data, scenario, all_trips){
     # Please align HTML!
     paste0("
 <table class = 'htab'>
-  <th> Scenario: ", get_scenario_name(scenario, all_trips), "</th>
+  <th> Scenario: ", get_scenario_name(scenario), "</th>
   <tbody>
     <tr>
       <td>", data$geo_label1 , " - ", data$geo_label2, "</td>
     </tr>
     <tr>
-      <td>", total_commuters(all_trips), "</td>
+      <td> Total commuters: </td>
       <td>", data$all, "</td>
     </tr>
     <tr>
-      <td>", cyclists_baseline(all_trips), "</td>
+      <td> Cyclists (baseline): </td>
       <td>", data$bicycle, " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
-      <td>", cyclists_scenario(all_trips), "</td>
+      <td> Cyclists (scenario): </td>
       <td>", round(data[[data_filter(scenario, "slc")]]), " (", data$scenario_bicycle_percentage , "%) </td>
     </tr>
     <tr>
-      <td>", driver_change(all_trips), "</td>
+      <td> Change in drivers: </td>
       <td>", round(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
@@ -256,7 +210,7 @@ route_type_label[['fastest']] <- 'Direct'
 route_type_label[['quietest']] <- 'Quiet'
 
 # Route popup function
-route_popup <- function(data, scenario, all_trips){
+route_popup <- function(data, scenario){
 
   ifelse(("rqincr" %in% colnames(data@data)), route_type <-'quiet', route_type <-'fast')
 
@@ -275,21 +229,21 @@ route_popup <- function(data, scenario, all_trips){
     if(scenario == 'olc') {
       paste0("
 <table class = 'htab'>
-  <th>", get_scenario_name(scenario, all_trips), " (baseline) </th>
+  <th> Census 2011 cycling (baseline) </th>
   <tbody>
     <tr>
       <td>", data$geo_label1 , " - ", data$geo_label2, "</td>
     </tr>
     <tr>
-      <td>", total_commuters(all_trips), "</td>
+      <td> Total commuters: </td>
       <td>", data$all, "</td>
     </tr>
     <tr>
-      <td>", cyclists_baseline(all_trips), "</td>
+      <td> Cyclists (baseline): &nbsp; </td>
       <td>",  data$bicycle, " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
-      <td>", driver_baseline(all_trips), "</td>
+      <td> Drivers (baseline): &nbsp; </td>
       <td>", data$car_driver, " (", round(100 * data$car_driver / data$all), "%) </td>
     </tr>
     <tr>
@@ -316,25 +270,25 @@ route_popup <- function(data, scenario, all_trips){
 
       paste0("
 <table class = 'htab'>
-  <th>  Scenario: ", get_scenario_name(scenario, all_trips), " </th>
+  <th>  Scenario: ", get_scenario_name(scenario), " </th>
   <tbody>
     <tr>
         <td>", data$geo_label1 , " - ", data$geo_label2, "</td>
     </tr>
     <tr>
-      <td>", total_commuters(all_trips), "</td>
+      <td> Total commuters: </td>
       <td>", data$all, "</td>
     </tr>
     <tr>
-      <td>", cyclists_baseline(all_trips), "</td>
+      <td> Cyclists (baseline): </td>
       <td>", data$bicycle, " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
-      <td>", cyclists_scenario(all_trips), "</td>
+      <td> Cyclists (scenario): </td>
       <td>", round(data[[data_filter(scenario, "slc")]]), " (", data$scenario_bicycle_percentage , "%) </td>
     </tr>
     <tr>
-      <td>", driver_change(all_trips), "</td>
+      <td> Change in drivers: </td>
       <td>", round(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
@@ -361,9 +315,9 @@ route_popup <- function(data, scenario, all_trips){
     }
   } else {
     # Create a local variable to distinguish baseline with scenarios
-    quiet_route_label <- paste("Scenario: ", get_scenario_name(scenario, all_trips))
+    quiet_route_label <- paste("Scenario: ", get_scenario_name(scenario))
     if(scenario == 'olc')
-      quiet_route_label <-  paste(quiet_route_label, " (baseline)")
+      quiet_route_label <- "Census 2011 cycling (baseline)"
 
     # Keep rqincr in a local variable
     val <- data$rqincr
@@ -401,20 +355,20 @@ route_popup <- function(data, scenario, all_trips){
 
 
 # Network Route popup function
-network_route_popup <- function(data, scenario, all_trips){
+network_route_popup <- function(data, scenario){
   ############ % increase in distance vs. fastest route ONLY FOR QUIETEST ??
 
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
-  <th>", get_scenario_name(scenario, all_trips), " (baseline)</th>
+  <th> Census 2011 cycling (baseline)</th>
   <tbody>
     <tr>
-      <td>", cyclists_interzone(all_trips)[["cycle"]] ," (baseline): &nbsp; </td>
+      <td> Between-zone cyclists* (baseline): &nbsp; </td>
       <td>", data$bicycle, "</td>
     </tr>
     <tr>
-      <td>", cyclists_interzone(all_trips)[["*"]] ," </td>
+      <td> * Selected cyclists: see Model Output tab </td>
      </tr>
   </tbody>
 </table>
@@ -424,14 +378,14 @@ network_route_popup <- function(data, scenario, all_trips){
 
     paste0("
 <table class = 'htab'>
-  <th>  Scenario: ", get_scenario_name(scenario, all_trips), "</th>
+  <th>  Scenario: ", get_scenario_name(scenario), "</th>
   <tbody>
     <tr>
-      <td>", cyclists_interzone(all_trips)[["cycle"]] ," (baseline): &nbsp; </td>
+      <td> Between-zone cyclists* (baseline): &nbsp; </td>
       <td>", data$bicycle, "</td>
     </tr>
     <tr>
-      <td>", cyclists_interzone(all_trips)[["cycle"]] ," (scenario): &nbsp; </td>
+      <td> Between-zone cyclists* (scenario): &nbsp; </td>
       <td>", round(data[[data_filter(scenario, 'slc')]]), "</td>
     </tr>
     <tr>
@@ -439,7 +393,7 @@ network_route_popup <- function(data, scenario, all_trips){
       <td>", round(data[[data_filter(scenario, 'slc')]] / data$bicycle, 2 ), "</td>
     </tr>
     <tr>
-      <td>", cyclists_interzone(all_trips)[["*"]] ,"</td>
+      <td> * Selected cyclists: see Model Output tab </td>
     </tr>
 
 
@@ -450,7 +404,7 @@ network_route_popup <- function(data, scenario, all_trips){
 }
 
 ####ZONE = ANYWHERE INSIDE THE AREA but the centroid
-zone_popup <- function(data, scenario, zone, all_trips){
+zone_popup <- function(data, scenario, zone){
   zone_filter_name <- scenarios_names[zone]
 
   # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
@@ -466,22 +420,22 @@ zone_popup <- function(data, scenario, zone, all_trips){
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
-  <th>", get_scenario_name(scenario, all_trips), " (baseline)</th>
+  <th> Census 2011 cycling (baseline)</th>
   <tbody>
     <tr>
       <td> Zone: </td>
       <td>", data$geo_label, "</td>
     </tr>
     <tr>
-      <td>", total_commuters(all_trips), "</td>
+      <td> Total commuters: </td>
       <td>", data$all, "</td>
     </tr>
     <tr>
-      <td>", cyclists_baseline(all_trips), "</td>
+      <td> Cyclists (baseline): &nbsp; </td>
       <td>",  round(data[[data_filter('olc', zone)]] ), " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
-      <td>", driver_baseline(all_trips), "</td>
+      <td> Drivers (baseline): &nbsp; </td>
       <td>", data$car_driver, " (", round(100* data$car_driver/data$all), "%) </td>
     </tr>
   </tbody>
@@ -499,30 +453,30 @@ zone_popup <- function(data, scenario, zone, all_trips){
 
     paste0("
 <table class = 'htab'>
-  <th>  Scenario: ", get_scenario_name(scenario, all_trips), " </th>
+  <th>  Scenario: ", get_scenario_name(scenario), " </th>
   <tbody>
     <tr>
       <td> Zone: </td>
       <td>", data$geo_label, "</td>
     </tr>
     <tr>
-      <td>", total_commuters(all_trips), "</td>
+      <td> Total commuters: </td>
       <td>", data$all, "</td>
     </tr>
     <tr>
-      <td>", cyclists_baseline(all_trips), "</td>
-      <td>", round(data[[data_filter('olc', zone)]] ), " (", data$olc_bicycle_percentage , "%) </td>
+      <td> Cyclists (baseline): &nbsp; </td>
+      <td>",  round(data[[data_filter('olc', zone)]] ), " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
-      <td>", cyclists_scenario(all_trips), "</td>
+      <td> Cyclists (scenario): </td>
       <td>", round(data[[data_filter(scenario, 'slc')]]), " (", data$scenario_bicycle_percentage , "%) </td>
     </tr>
     <tr>
-      <td> ", cyclists_change(all_trips), " </td>
+      <td> Change in cyclists: </td>
       <td>", (round(round(data[[data_filter(scenario, 'slc')]]) - round(data[[data_filter('olc', zone)]]))) , "</td>
     </tr>
     <tr>
-      <td>", driver_change(all_trips), "</td>
+      <td> Change in drivers: </td>
       <td>", round(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
@@ -541,7 +495,7 @@ zone_popup <- function(data, scenario, zone, all_trips){
 }
 
 ####CENTROID
-centroid_popup <- function(data, scenario, zone, all_trips){
+centroid_popup <- function(data, scenario, zone){
   zone_filter_name <- scenarios_names[zone]
 
   # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
@@ -563,7 +517,7 @@ centroid_popup <- function(data, scenario, zone, all_trips){
       <th> Within zone flows </th>
     </tr>
     <tr>
-      <th>", get_scenario_name(scenario, all_trips), " (baseline) </th>
+      <th> Census 2011 cycling (baseline) </th>
     </tr>
   </thead>
   <tbody>
@@ -572,15 +526,15 @@ centroid_popup <- function(data, scenario, zone, all_trips){
       <td>", data$geo_label, "</td>
     </tr>
     <tr>
-      <td>", total_commuters(all_trips), "</td>
+      <td> Total commuters: </td>
       <td>", data$all, "</td>
     </tr>
     <tr>
-      <td>", cyclists_baseline(all_trips), "</td>
-      <td>", data$bicycle, " (", data$olc_bicycle_percentage , "%) </td>
+      <td> Cyclists (baseline): &nbsp; </td>
+      <td>",  data$bicycle, " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
-      <td>", driver_baseline(all_trips), "</td>
+      <td> Drivers (baseline): &nbsp; </td>
       <td>", data$car_driver, " (", round(100 * data$car_driver / data$all), "%) </td>
     </tr>
   </tbody>
@@ -604,7 +558,7 @@ centroid_popup <- function(data, scenario, zone, all_trips){
       <th>Within zone flows</th>
     </tr>
     <tr>
-      <th> Scenario: ", get_scenario_name(scenario, all_trips), "</th>
+      <th> Scenario: ", get_scenario_name(scenario), "</th>
     </tr>
   </thead>
   <tbody>
@@ -613,19 +567,19 @@ centroid_popup <- function(data, scenario, zone, all_trips){
       <td>", data$geo_label, "</td>
     </tr>
     <tr>
-      <td>", total_commuters(all_trips), "</td>
+      <td> Total commuters: </td>
       <td>", data$all, "</td>
     </tr>
     <tr>
-      <td>", cyclists_baseline(all_trips), "</td>
+      <td> Cyclists (baseline): </td>
       <td>", data$bicycle, " (", data$olc_bicycle_percentage , "%) </td>
     </tr>
     <tr>
-      <td>", cyclists_scenario(all_trips), "</td>
+      <td> Cyclists (scenario): </td>
       <td>", round(data[[data_filter(scenario, "slc")]]), " (", data$scenario_bicycle_percentage , "%) </td>
     </tr>
     <tr>
-      <td>", driver_change(all_trips), "</td>
+      <td> Change in drivers: </td>
       <td>", round(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>

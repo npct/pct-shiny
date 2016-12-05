@@ -25,22 +25,15 @@ zcols <- "RdYlBu" # for colourbrewer scale (see get_colour_ramp in pct-shiny-fun
 # expect pct-data as a sibling of pct-shiny
 data_dir_root <- file.path(shiny_root, '..', 'pct-data')
 # packages required
-cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet",
-               "DT", "shinyjs", "sp", "dplyr", "geojsonio", "readr")
+cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet", "DT", "shinyjs", "sp", "dplyr")
 
-on_server <- grepl('^/var/shiny/pct-shiny', getwd())
+on_production <- grepl('^/var/shiny/pct-shiny', getwd())
 
 data_sha <- as.character(readLines(file.path(shiny_root, "data_sha")))
 
-if(!on_server){
+if(!on_production){
   source(file.path(shiny_root, "scripts", "init.R"))
   init_dev_env(data_dir_root, data_sha, cran_pkgs, shiny_root)
-}
-# Initialize production_branch as F
-production_branch <- F
-# Check if we are on the production branch
-if (system("git rev-parse --abbrev-ref HEAD") == "production"){
-  production_branch <- T
 }
 
 repo_sha <- as.character(readLines(file.path(shiny_root, "repo_sha")))
@@ -49,23 +42,15 @@ lapply(cran_pkgs, library, character.only = T)
 
 # Functions
 source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
-
-# Static files
-regions <- readOGR(dsn = file.path(shiny_root, "regions_www/regions.geojson"), layer = "OGRGeoJSON")
+regions <- readOGR(dsn = file.path(data_dir_root, "regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
-codebook_l = readr::read_csv(file.path(shiny_root, "static", "codebook_lines.csv"))
-codebook_z = readr::read_csv(file.path(shiny_root, "static", "codebook_zones.csv"))
-codebook_r = readr::read_csv(file.path(shiny_root, "static", "codebook_routes.csv"))
-codebook_rnet = readr::read_csv(file.path(shiny_root, "static", "codebook_rnet.csv"))
 
-# JS code
-dt_callback <- JS("if(!!history.state){ table.ajax.url(history.state + table.ajax.url()).load(); };")
 
 # # # # # # # #
 # shinyServer #
 # # # # # # # #
 shinyServer(function(input, output, session){
-  # To set initialize to_plot
+    # To set initialize to_plot
   observe({
     region$current
     region$data_dir
@@ -75,6 +60,8 @@ shinyServer(function(input, output, session){
     to_plot$zones <<-  readRDS(file.path(region$data_dir, "z.Rds"))
     to_plot$cents <<-   readRDS(file.path(region$data_dir, "c.Rds"))
 
+    to_plot$l@data <<- plyr::arrange(to_plot$l@data, id)
+
     to_plot$rnet <<- readRDS(file.path(region$data_dir, "rnet.Rds"))
     to_plot$rnet$id <<- 1:nrow(to_plot$rnet)
 
@@ -82,26 +69,20 @@ shinyServer(function(input, output, session){
     to_plot$r_fast@data <<- cbind(to_plot$r_fast@data[!(names(to_plot$r_fast) %in% names(to_plot$l))], to_plot$l@data)
     to_plot$r_quiet <<- readRDS(file.path(region$data_dir, "rq.Rds"))
     to_plot$r_quiet@data <<- cbind(to_plot$r_quiet@data[!(names(to_plot$r_quiet) %in% names(to_plot$l))], to_plot$l@data)
-
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
-
     region$repopulate_region <<- F
-
   })
 
   region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), repopulate_region = F,
                            all_trips = dir.exists(file.path(data_dir_root, starting_city, 'all-trips')))
 
   observe({
-    output$production_branch <- renderText({ ifelse(production_branch, "true", "false") })
-    # If a region does not have an 'all-trips'directory, hide the trip panel
+    # If a region does not have an 'all-trips'directory, disable the dropdown menu
     if (!region$all_trips){
-      # hide trip_panel
-      shinyjs::hide("trip_panel")
-    }else{
-      # show trip_panel
-      shinyjs::show("trip_panel")
+      shinyjs::disable("trip_type")
+      # hide trip_menu
+      shinyjs::hide("trip_menu")
     }
   })
 
@@ -113,45 +94,13 @@ shinyServer(function(input, output, session){
     # Check if the data folder of a specific region contains a subfolder called 'all-trip'
     # If it does, only then load 'all-trip' data or load defaul commute data
     if (region$all_trips){
-      if (showing_all_trips()){
-        # Update the name of the scenarios
-        local_scenarios <- c("Current travel patterns" = "olc",
-                             "Government Target" = "govtarget",
-                             "Gender equality" = "gendereq",
-                             "Go Dutch" = "dutch",
-                             "Ebikes" = "ebike")
-        updateSelectInput(session, "scenario", choices = local_scenarios, selected = input$scenario)
-
-        # Update the names of the sorting options for lines
-        local_attrs_zone <- c("Number of cycle trips"    = "slc",
-                              "Increase in Cycling" = "sic",
-                              "HEAT Value"          = "slvalue_heat",
-                              "CO2 reduction"       = "sico2")
-
-        updateSelectInput(session, "line_order", choices = local_attrs_zone, selected = input$line_order)
-
+      if (input$trip_type == 'All'){
         region$data_dir <<- file.path(data_dir_root, starting_city, 'all-trips')
       }
       else{
-        # In case the user switches back to 'commute' revert the names of the scenarios
-        local_scenarios <- c("Census 2011 Cycling" = "olc",
-                             "Government Target" = "govtarget",
-                             "Gender equality" = "gendereq",
-                             "Go Dutch" = "dutch",
-                             "Ebikes" = "ebike")
-        updateSelectInput(session, "scenario", choices = local_scenarios, selected = input$scenario)
-
-        # Revert the names of the sorting options for lines
-        local_attrs_zone <- c("Number of cyclists"    = "slc",
-                              "Increase in Cycling" = "sic",
-                              "HEAT Value"          = "slvalue_heat",
-                              "CO2 reduction"       = "sico2")
-        updateSelectInput(session, "line_order", choices = local_attrs_zone, selected = input$line_order)
-
         region$data_dir <<- file.path(data_dir_root, starting_city)
       }
-
-
+      # redraw_zones()
       region$repopulate_region <<- T
     }
   })
@@ -201,13 +150,12 @@ shinyServer(function(input, output, session){
   }
 
   attrs_zone <- c("Scenario Level of Cycling (SLC)" =    "slc",
-                  "Scenario Increase in Cycling (SIC)" = "sic")
+                 "Scenario Increase in Cycling (SIC)" = "sic")
 
   # Read model-output.html, if it exists, for the loaded region
   observe({
     output$m_output <- renderUI({
-      model_file <- file.path(data_dir_root, data_dir(), "model-output.html")
-      #model_file <- file.path(region$data_dir, "model-output.html")
+      model_file <- file.path(data_dir_root, region$current, "model-output.html")
       if (file.exists(model_file))
         includeHTML(model_file)
       else
@@ -264,12 +212,11 @@ shinyServer(function(input, output, session){
     if(file.exists(file.path(region$data_dir, 'isolated'))) return()
     new_region <- find_region(region$current)
     # Check if the new_region is not null, and contains 'all-trips' subfolder
-    new_data_dir <- ifelse ((!is.null(new_region) && region$all_trips && showing_all_trips()), file.path(data_dir_root, new_region, 'all-trips'), file.path(data_dir_root, new_region))
+    new_data_dir <- ifelse ((!is.null(new_region) &&  region$all_trips && input$trip_type == 'All'), file.path(data_dir_root, new_region, 'all-trips'), file.path(data_dir_root, new_region))
 
     if(!is.null(new_region) && region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
       region$current <- new_region
       region$data_dir <- new_data_dir
-      # region$all_trips <- dir.exists(file.path(data_dir_root, new_region, 'all-trips'))
       if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
         updateCheckboxInput(session, "freeze", value = F)
     }
@@ -280,9 +227,8 @@ shinyServer(function(input, output, session){
     # Needed to force lines to be redrawn when scenario, zone or base map changes
     input$scenario
     input$map_base
-    region$data_dir
-    input$show_zones
     region$repopulate_region
+    input$show_zones
 
     leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
       clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
@@ -293,9 +239,9 @@ shinyServer(function(input, output, session){
              'straight' = plot_lines(., to_plot$l, input$nos_lines, straight_popup, "straight_line", get_line_colour("straight_line")),
              'route'= {
                plot_lines(., to_plot$r_quiet, input$nos_lines, route_popup, "quieter_route", get_line_colour("quieter_route"))
-               plot_lines(., to_plot$r_fast, input$nos_lines, route_popup, "faster_route",  get_line_colour("faster_route"))
+               plot_lines(., to_plot$r_fast, input$nos_lines, route_popup,"faster_route",  get_line_colour("faster_route"))
              },
-             'd_route'= plot_lines(., to_plot$r_fast, input$nos_lines, route_popup, "faster_route", get_line_colour("faster_route")),
+             'd_route'= plot_lines(., to_plot$r_fast, input$nos_lines, route_popup,"faster_route",  get_line_colour("faster_route")),
              'rnet' = plot_lines(., to_plot$rnet, input$nos_lines, network_route_popup, "route_network", get_line_colour("route_network"))
       )
     }
@@ -316,7 +262,6 @@ shinyServer(function(input, output, session){
   observe({
     if(is.null(input$map_zoom) ) return()
     region$repopulate_region
-    # region$data_dir
     input$map_base
     zoom_multiplier <- get_zone_multiplier(input$map_zoom)
     if(input$map_zoom < 11 || input$line_type == 'none')
@@ -331,7 +276,7 @@ shinyServer(function(input, output, session){
     region$repopulate_region
     input$map_base
     show_zone_popup <- input$line_type == 'none'
-    popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
+    popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr())
     leafletProxy("map")  %>% clearGroup(., "zones") %>% clearGroup(., "region_name") %>%
       addPolygons(.,  data = to_plot$zones
                   , weight = 2
@@ -346,7 +291,7 @@ shinyServer(function(input, output, session){
       addCircleMarkers(., radius=0, lat=0, lng=0, group = "region_name", fillOpacity= 0, layerId = region$current) %>%
       addCircleMarkers(., data = to_plot$cents, radius = normalise(to_plot$cents$all, min = 1, max = 8),
                        color = get_line_colour("centres"), group = "centres", opacity = 0.5,
-                       popup = centroid_popup(to_plot$cents, input$scenario, zone_attr(), showing_all_trips())) %>%
+                       popup = centroid_popup(to_plot$cents, input$scenario, zone_attr())) %>%
       # Hide and Show line layers, so that they are displayed as the top layer in the map.
       # Leaflet's function bringToBack() or bringToFront() (see http://leafletjs.com/reference.html#path)
       # don't seem to exist for R
@@ -364,18 +309,9 @@ shinyServer(function(input, output, session){
         )
       }
 
-    # Display centroids when zoom level is greater than 11 and lines are selected
-    if (isolate(input$map_zoom) >= 11 && isolate(input$line_type) != 'none')
-      showGroup(leafletProxy("map"), "centres")
-  })
-
-
-  # Return the right directory name based on type of trips
-  data_dir <- reactive({
-    if (region$all_trips && input$trip_type == 'All')
-      paste(region$current, "all-trips", sep = "/")
-    else
-      region$current
+      # Display centroids when zoom level is greater than 11 and lines are selected
+      if (isolate(input$map_zoom) >= 11 && isolate(input$line_type) != 'none')
+        showGroup(leafletProxy("map"), "centres")
   })
 
   # Set transparency of zones to 0.5 when displayed, otherwise 0
@@ -390,8 +326,6 @@ shinyServer(function(input, output, session){
     else 'slc'
   })
 
-  showing_all_trips <- reactive({ isTRUE(input$trip_type == 'All') })
-
   # Identify suffix of zones variables
   zone_attr <- reactive({
     if(input$scenario == 'olc') 'olc' else 'slc'
@@ -405,6 +339,14 @@ shinyServer(function(input, output, session){
   # Identify complete name of zones variable
   zone_data <- reactive({
     data_filter(input$scenario, zone_attr())
+  })
+
+  # Reactive function for the lines data
+  # 1) Called when other than 'none' is selected for the Cycling Flows
+  # 2) Also called when freeze lines is unchecked and the user navigates the map
+  # 3) Or when the user changes the Top Lines slider
+  plot_lines_data <- reactive({
+    (input$line_type != 'none' && ((!input$freeze && !is.null(input$map_bounds)) || input$nos_lines > 0)) && (line_data() %in% names(to_plot$l@data))
   })
 
   # Returns the map bounding box
@@ -475,7 +417,7 @@ shinyServer(function(input, output, session){
                    , weight = normalise( sorted_l[[line_data()]][!is.na(sorted_l[[line_data()]]) ], min = min, max = max)
                    , opacity = line_opacity
                    , group = group_name
-                   , popup = popup_fn(sorted_l, input$scenario, showing_all_trips())
+                   , popup = popup_fn(sorted_l, input$scenario)
                    , layerId = paste0(sorted_l[['id']], '-', group_name))
     }
   }
@@ -498,44 +440,61 @@ shinyServer(function(input, output, session){
     ))
   })
 
-  output$line_codebook <- renderUI({
-    a("Codebook", href = paste(
-      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_lines.csv", sep = "/"),
-      title="This explains the variable names in the downloadable data",
-      onclick="ga('send', 'event', 'download', 'l_codebook');", target='_blank'
+  # Creates data links for zones tab
+  output$zone_data_links <- renderUI({
+    HTML(
+      paste(
+        make_download_link("z", "zones", region$current),
+        " - ",
+        a("Codebook", href = paste(
+          "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_zones.csv", sep = "/"),
+          title="This explains the variable names in the downloadable data",
+          onclick="ga('send', 'event', 'download', 'z_codebook');", target='_blank')
+      )
     )
   })
 
-  output$route_codebook <- renderUI({
-    a("Codebook", href = paste(
-      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
-      title="This explains the variable names in the downloadable data",
-      onclick="ga('send', 'event', 'download', 'route_codebook');", target='_blank'
-    )
-  })
-
-  output$route_codebook_quiet <- renderUI({
-    a("Codebook", href = paste(
-      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
-      title="This explains the variable names in the downloadable data",
-      onclick="ga('send', 'event', 'download', 'route_codebook');", target='_blank'
-    )
-  })
-
-  output$route_network_codebook <- renderUI({
-    a("Codebook", href = paste(
-      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_rnet.csv", sep = "/"),
-      title="This explains the variable names in the downloadable data",
-      onclick="ga('send', 'event', 'download', 'route_network_codebook');", target='_blank'
-    )
-  })
-
-  output$zone_codebook <- renderUI({
-    a("Codebook", href = paste(
-      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_zones.csv", sep = "/"),
-      title="This explains the variable names in the downloadable data",
-      onclick="ga('send', 'event', 'download', 'zones_codebook');", target='_blank'
-    )
+  # Creates data links for lines tab
+  output$line_data_links <- renderUI({
+    HTML(paste("Straight lines geographic file format and attribute data:",
+               make_download_link("l", "lines", region$current),
+               " - ",
+               a("Codebook", href = paste(
+                 "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_lines.csv", sep = "/"),
+                 title="This explains the variable names in the downloadable data",
+                 onclick="ga('send', 'event', 'download', 'l_codebook');", target='_blank'
+               ),
+               br(),
+               "Fast route geographic file format*:",
+               make_download_link("rf", "fast_routes", region$current, c('Rds', 'geojson')),
+               " - ",
+               a("Codebook", href = paste(
+                 "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
+                 title="This explains the variable names in the downloadable data",
+                 onclick="ga('send', 'event', 'download', 'route_codebook');", target='_blank'
+               ),
+               br(),
+               "Quiet route geographic file format*:",
+               make_download_link("rq", "quiet_routes", region$current, c('Rds', 'geojson')),
+               " - ",
+               a("Codebook", href = paste(
+                 "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
+                 title="This explains the variable names in the downloadable data",
+                 onclick="ga('send', 'event', 'download', 'route_codebook');", target='_blank'
+               ),
+               br(),
+               "Route Network geographic file format and attribute data:",
+               make_download_link("rnet", "route_network", region$current, c('Rds', 'geojson')),
+               " - ",
+               a("Codebook", href = paste(
+                 "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_rnet.csv", sep = "/"),
+                 title="This explains the variable names in the downloadable data",
+                 onclick="ga('send', 'event', 'download', 'route_network_codebook');", target='_blank'
+               ),
+               br(),
+               "* To get attribute data, use 'ID' field to merge with straight-line CSV file",
+               br(), br()
+    ))
   })
 
   # Initialize the leaflet map
@@ -547,15 +506,15 @@ shinyServer(function(input, output, session){
                Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
                options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
                                    maxZoom = ifelse(input$map_base == "IMD", 14, 18), reuseTiles = T)) %>%
-                                   {
-                                     if (input$map_base == 'IMD'){
-                                       addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
-                                                options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
-                                       addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
-                                                options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
-                                     }else .
+      {
+        if (input$map_base == 'IMD'){
+            addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
+              options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
+            addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
+              options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
+        }else .
 
-                                   } %>%
+      } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
       mapOptions(zoomToLimits = "first")
   )
@@ -563,37 +522,37 @@ shinyServer(function(input, output, session){
   # Adds map legend
   observe({
     input$map_base
-    leafletProxy("map") %>% clearControls(.)
-    title <- ifelse(showing_all_trips(), "% trips cycled", "% cycling to work")
     if (input$show_zones) {
       leafletProxy("map") %>% addLegend("topleft", colors = get_colour_palette(zcols, 10),
-                                        labels = c("0-1%",
-                                                   "2-3%",
-                                                   "4-6%",
-                                                   "7-9%",
-                                                   "10-14%",
-                                                   "15-19%",
-                                                   "20-24%",
-                                                   "25-29%",
-                                                   "30-39%",
-                                                   "40%+"),
-                                        title = title,
-                                        opacity = 0.5
-      )
+                  labels = c("0-1%",
+                             "2-3%",
+                             "4-6%",
+                             "7-9%",
+                             "10-14%",
+                             "15-19%",
+                             "20-24%",
+                             "25-29%",
+                             "30-39%",
+                             "40%+"),
+                  title = "% Cycling to work",
+                  opacity = 0.5
+        )
+    }else{
+      leafletProxy("map") %>% clearControls(.)
     }
   })
 
   # Creates legend as a barplot for IMD map base
   output$imd_legend <- renderPlot({
     my_lab <- c("Most deprived decile", "2nd", "3rd", "4th", "5th",
-                "6th", "7th", "8th", "9th", "Least deprived decile",
-                "Data missing", "Data not available")
+               "6th", "7th", "8th", "9th", "Least deprived decile",
+               "Data missing", "Data not available")
 
     my_lab <- rev(my_lab)
 
     my_colors <- c("#a50026","#d73027", "#f46d43","#fdae61","#fee08b",
-                   "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850",
-                   "#006837", "#aaaaaa", "#dddddd")
+                  "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850",
+                  "#006837", "#aaaaaa", "#dddddd")
 
     my_colors <- rev(my_colors)
 
@@ -611,10 +570,7 @@ shinyServer(function(input, output, session){
     # Call a function which reactively reads repopulate_region variable
     region$repopulate_region
     # Only render lines data when any of the Cycling Flows is selected by the user
-
-    plot_lines_data <- !is.null(to_plot$ldata) && input$line_type != 'none' &&
-      (!is.null(input$map_bounds)) && input$nos_lines > 0 && (line_data() %in% names(to_plot$ldata@data))
-    if(!plot_lines_data){
+    if(!plot_lines_data()){
       # Set the warning message that no lines have been selected by the user
       output$warning_message <- renderUI(HTML("<strong>No lines selected: </strong> Lines must be displayed on map </br>"))
       # Return an empty data.frame
@@ -636,7 +592,7 @@ shinyServer(function(input, output, session){
     lines_to_plot <- to_plot$ldata@data[,unname(line_col_names)]
     decimal_line_cols <- which(vapply(lines_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
     DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names, rownames = FALSE,
-                  callback = dt_callback) %>%
+                  callback = JS("table.ajax.url(history.state + table.ajax.url());")) %>%
       formatRound(columns = decimal_line_cols, digits=2)
   })
 
@@ -649,79 +605,8 @@ shinyServer(function(input, output, session){
 
     zones_to_plot <- to_plot$zones@data[,unname(zone_col_names)]
     decimal_zone_cols <- which(vapply(zones_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
-    DT::datatable(zones_to_plot, options = list(pageLength = 10),
-                  colnames = zone_col_names, rownames = FALSE,
-                  callback = dt_callback) %>%
+    DT::datatable(zones_to_plot, options = list(pageLength = 10), colnames = zone_col_names, rownames = FALSE) %>%
       formatRound(columns = decimal_zone_cols, digits=2)
-  })
-
-  observe({
-    region$current
-    region$data_dir
-    region$repopulate_region
-
-
-    output$download_l_csv <- downloadHandler(
-      filename = function() { "lines.csv"  },
-      content = function(file) { write.csv(signif_sdf(to_plot$l)@data[codebook_l$`Variable name`], file = file) }
-    )
-
-
-    output$download_z_csv <- downloadHandler(
-      filename = function() { "zones.csv"  },
-      content = function(file) { write.csv(signif_sdf(to_plot$zones)@data[codebook_z$`Variable name`], file = file) }
-    )
-
-    output$download_z_geojson <- downloadHandler(
-      filename = function() { "zones.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$zones[codebook_z$`Variable name`]), file = file) }
-    )
-
-    output$download_l_geojson <- downloadHandler(
-      filename = function() { "lines.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$l[codebook_l$`Variable name`]), file = file) }
-    )
-
-    output$download_rf_geojson <- downloadHandler(
-      filename = function() { "routes_fast.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$r_fast[codebook_r$`Variable name`]), file = file) }
-    )
-
-    output$download_rq_geojson <- downloadHandler(
-      filename = function() { "routes_quiet.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$r_quiet[codebook_r$`Variable name`]), file = file) }
-    )
-
-    output$download_rnet_geojson <- downloadHandler(
-      filename = function() { "routes_network.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$rnet[codebook_rnet$`Variable name`]), file = file) }
-    )
-
-    output$download_l_rds <- downloadHandler(
-      filename = function() { "lines.Rds"  },
-      content = function(file) { saveRDS(to_plot$l[codebook_l$`Variable name`], file = file) }
-    )
-
-    output$download_rf_rds <- downloadHandler(
-      filename = function() { "routes_fast.Rds"  },
-      content = function(file) { saveRDS(to_plot$r_fast[codebook_r$`Variable name`], file = file) }
-    )
-
-    output$download_rq_rds <- downloadHandler(
-      filename = function() { "routes_quiet.Rds"  },
-      content = function(file) { saveRDS(to_plot$r_quiet[codebook_r$`Variable name`], file = file) }
-    )
-
-    output$download_rnet_rds <- downloadHandler(
-      filename = function() { "routes_network.Rds"  },
-      content = function(file) { saveRDS(to_plot$rnet[codebook_rnet$`Variable name`], file = file) }
-    )
-
-    output$download_z_rds <- downloadHandler(
-      filename = function() { "zones.Rds"  },
-      content = function(file) { saveRDS(to_plot$zones[codebook_z$`Variable name`], file = file) }
-    )
-
   })
 
   # Hide/show panels on user-demand
