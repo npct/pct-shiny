@@ -94,13 +94,15 @@ shinyUI(
                 )
               )
             ),
+            # pointless div to force shiny to set production_branch variable
+            tags$div(style="font-size: 0px", textOutput("production_branch")),
             tags$div(title="Change base of the map",
                         selectInput("map_base", "Map Base:", map_base_attrs, selectize = F)
             )
           )
         ),
         conditionalPanel(
-          condition = "output.production_branch != 'true'",
+          condition = "output.production_branch == 'false'",
           absolutePanel(
             cursor = "move", id = "trip_panel", class = "panel panel-default",
             fixed = TRUE,  top = 530, width = 100, right = 20, draggable = TRUE,
