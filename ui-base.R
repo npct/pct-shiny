@@ -100,7 +100,7 @@ shinyUI(
           )
         ),
         conditionalPanel(
-          condition = "output.production_branch == 'false'",
+          condition = "output.production_branch != 'true'",
           absolutePanel(
             cursor = "move", id = "trip_panel", class = "panel panel-default",
             fixed = TRUE,  top = 530, width = 100, right = 20, draggable = TRUE,
