@@ -605,10 +605,12 @@ shinyServer(function(input, output, session){
 
   # Creates data for the lines datatable
   output$lines_datatable <- DT::renderDataTable({
-    # Call a function which reactively reads repopulate_region variable
+    # Reactive values that must trigger a tabel update
     region$repopulate_region
-    # Only render lines data when any of the Cycling Flows is selected by the user
+    input$line_type
+    region$current
 
+    # Only render lines data when any of the Cycling Flows is selected by the user
     plot_lines_data <- !is.null(to_plot$ldata) && input$line_type != 'none' &&
       (!is.null(input$map_bounds)) && input$nos_lines > 0 && (line_data() %in% names(to_plot$ldata@data))
     if(!plot_lines_data){
@@ -639,7 +641,10 @@ shinyServer(function(input, output, session){
 
   # Creates data for the zones datatable
   output$zones_data_table <- DT::renderDataTable({
+    # Reactive values that must trigger a tabel update
     region$repopulate_region
+    region$current
+
     if(is.null(to_plot$zones@data)){
       return()
     }
@@ -656,7 +661,6 @@ shinyServer(function(input, output, session){
     region$current
     region$data_dir
     region$repopulate_region
-
 
     output$download_l_csv <- downloadHandler(
       filename = function() { "lines.csv"  },
