@@ -126,7 +126,7 @@ shinyServer(function(input, output, session){
 
         updateSelectInput(session, "line_order", choices = local_attrs_zone, selected = input$line_order)
 
-        region$data_dir <<- file.path(data_dir_root, starting_city, 'all-trips')
+        region$data_dir <- file.path(data_dir_root, starting_city, 'all-trips')
       }
       else{
         # In case the user switches back to 'commute' revert the names of the scenarios
@@ -144,7 +144,7 @@ shinyServer(function(input, output, session){
                               "CO2 reduction"       = "sico2")
         updateSelectInput(session, "line_order", choices = local_attrs_zone, selected = input$line_order)
 
-        region$data_dir <<- file.path(data_dir_root, starting_city)
+        region$data_dir <- file.path(data_dir_root, starting_city)
       }
     }
   })
