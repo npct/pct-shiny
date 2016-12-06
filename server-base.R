@@ -83,8 +83,7 @@ shinyServer(function(input, output, session){
     # Add rqincr column to the quiet data
     to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
 
-    region$repopulate_region <<- F
-
+    region$repopulate_region <- T
   })
 
   region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), repopulate_region = F,
@@ -147,9 +146,6 @@ shinyServer(function(input, output, session){
 
         region$data_dir <<- file.path(data_dir_root, starting_city)
       }
-
-
-      region$repopulate_region <<- T
     }
   })
 
@@ -266,7 +262,7 @@ shinyServer(function(input, output, session){
     if(!is.null(new_region) && region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
       region$current <- new_region
       region$data_dir <- new_data_dir
-      # region$all_trips <- dir.exists(file.path(data_dir_root, new_region, 'all-trips'))
+      region$repopulate_region <- F
       if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
         updateCheckboxInput(session, "freeze", value = F)
     }
