@@ -309,7 +309,6 @@ shinyServer(function(input, output, session){
   observe({
     if(is.null(input$map_zoom) ) return()
     region$repopulate_region
-    # region$data_dir
     input$map_base
     zoom_multiplier <- get_zone_multiplier(input$map_zoom)
     if(input$map_zoom < 11 || input$line_type == 'none')
@@ -604,7 +603,6 @@ shinyServer(function(input, output, session){
     # Reactive values that must trigger a tabel update
     region$repopulate_region
     input$line_type
-    region$current
 
     # Only render lines data when any of the Cycling Flows is selected by the user
     plot_lines_data <- !is.null(to_plot$ldata) && input$line_type != 'none' &&
@@ -639,7 +637,6 @@ shinyServer(function(input, output, session){
   output$zones_data_table <- DT::renderDataTable({
     # Reactive values that must trigger a tabel update
     region$repopulate_region
-    region$current
 
     if(is.null(to_plot$zones@data)){
       return()
@@ -654,8 +651,6 @@ shinyServer(function(input, output, session){
   })
 
   observe({
-    region$current
-    region$data_dir
     region$repopulate_region
 
     output$download_l_csv <- downloadHandler(
