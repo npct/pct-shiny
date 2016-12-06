@@ -146,6 +146,7 @@ shinyServer(function(input, output, session){
 
         region$data_dir <- file.path(data_dir_root, starting_city)
       }
+      region$repopulate_region <- F
     }
   })
 
@@ -426,7 +427,7 @@ shinyServer(function(input, output, session){
     # Build a reactive expression for lines
     input$line_type
     # Also when user moves to a new region
-    region$current
+    region$repopulate_region
 
     if (input$line_type != 'none'){
       if (input$line_type == "rnet"){
