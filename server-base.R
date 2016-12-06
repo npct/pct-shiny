@@ -329,7 +329,7 @@ shinyServer(function(input, output, session){
     input$map_base
     show_zone_popup <- input$line_type == 'none'
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
-    leafletProxy("map")  %>% clearGroup(., "zones") %>% clearGroup(., "region_name") %>%
+    leafletProxy("map")  %>% clearGroup(., "zones") %>% clearGroup(., "region_name") %>% clearGroup(., "centres") %>%
       addPolygons(.,  data = to_plot$zones
                   , weight = 2
                   , fillOpacity = transp_rate()
