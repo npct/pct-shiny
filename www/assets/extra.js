@@ -26,6 +26,14 @@ $( window ).load(function() {
   var url_updater = function(l_map, old_region){
     var grp = l_map.layerManager.getLayerGroup("region_name");
     var current_region;
+    var update_download_link = function(_, link){
+      var href= $(link).attr("href");
+      if(!!history.state && href.split("/")[0] == "session"){
+        $(link).attr("href", history.state.split("/")[3] + "/" + href);
+      }
+    };
+    $(".shiny-download-link").each(update_download_link);
+
     if(grp && grp.getLayers()[0]) {
       current_region = grp.getLayers()[0].options.layerId;
     }
