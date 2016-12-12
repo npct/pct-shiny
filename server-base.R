@@ -603,6 +603,8 @@ shinyServer(function(input, output, session){
   output$lines_datatable <- DT::renderDataTable({
     # Reactive values that must trigger a tabel update
     region$repopulate_region
+    region$current
+    region$data_dir
     input$line_type
 
     # Only render lines data when any of the Cycling Flows is selected by the user
@@ -638,6 +640,9 @@ shinyServer(function(input, output, session){
   output$zones_data_table <- DT::renderDataTable({
     # Reactive values that must trigger a tabel update
     region$repopulate_region
+    region$current
+    region$data_dir
+
 
     if(is.null(to_plot$zones@data)){
       return()
