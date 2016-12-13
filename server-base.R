@@ -652,8 +652,6 @@ shinyServer(function(input, output, session){
   })
 
   observe({
-    region$current
-    region$data_dir
     region$repopulate_region
 
     output$download_l_csv <- downloadHandler(
