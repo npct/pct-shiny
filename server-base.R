@@ -599,60 +599,59 @@ shinyServer(function(input, output, session){
     text(0, bp, my_lab, cex=0.8, pos=4, font=2, col = "black")
   })
 
-  # Creates data for the lines datatable
-  output$lines_datatable <- DT::renderDataTable({
-    # Reactive values that must trigger a tabel update
-    region$repopulate_region
-    input$line_type
-
-    # Only render lines data when any of the Cycling Flows is selected by the user
-    plot_lines_data <- !is.null(to_plot$ldata) && input$line_type != 'none' &&
-      (!is.null(input$map_bounds)) && input$nos_lines > 0 && (line_data() %in% names(to_plot$ldata@data))
-    if(!plot_lines_data){
-      # Set the warning message that no lines have been selected by the user
-      output$warning_message <- renderUI(HTML("<strong>No lines selected: </strong> Lines must be displayed on map </br>"))
-      # Return an empty data.frame
-      return(data.frame(File=character()))
-    }
-
-    # When route network is selected, show 'no lines available
-    if(input$line_type == 'rnet'){
-      # Set the warning message that no lines have been selected by the user
-      output$warning_message <- renderUI(HTML("<strong>No lines available </strong> </br>"))
-      # Return an empty data.frame
-      return(data.frame(File=character()))
-    }
-
-    # Empty the warning message - as some lines have been selected by the user
-    output$warning_message <- renderUI("")
-
-    # Reuse the lines data stored in the ldata session variable
-    lines_to_plot <- to_plot$ldata@data[,unname(line_col_names)]
-    decimal_line_cols <- which(vapply(lines_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
-    DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names, rownames = FALSE,
-                  callback = dt_callback) %>%
-      formatRound(columns = decimal_line_cols, digits=2)
-  })
-
-  # Creates data for the zones datatable
-  output$zones_data_table <- DT::renderDataTable({
-    # Reactive values that must trigger a tabel update
-    region$repopulate_region
-
-    if(is.null(to_plot$zones@data)){
-      return()
-    }
-
-    zones_to_plot <- to_plot$zones@data[,unname(zone_col_names)]
-    decimal_zone_cols <- which(vapply(zones_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
-    DT::datatable(zones_to_plot, options = list(pageLength = 10),
-                  colnames = zone_col_names, rownames = FALSE,
-                  callback = dt_callback) %>%
-      formatRound(columns = decimal_zone_cols, digits=2)
-  })
-
   observe({
     region$repopulate_region
+    # Creates data for the lines datatable
+    output$lines_datatable <- DT::renderDataTable({
+      # Reactive values that must trigger a tabel update
+      region$repopulate_region
+      input$line_type
+
+      # Only render lines data when any of the Cycling Flows is selected by the user
+      plot_lines_data <- !is.null(to_plot$ldata) && input$line_type != 'none' &&
+        (!is.null(input$map_bounds)) && input$nos_lines > 0 && (line_data() %in% names(to_plot$ldata@data))
+      if(!plot_lines_data){
+        # Set the warning message that no lines have been selected by the user
+        output$warning_message <- renderUI(HTML("<strong>No lines selected: </strong> Lines must be displayed on map </br>"))
+        # Return an empty data.frame
+        return(data.frame(File=character()))
+      }
+
+      # When route network is selected, show 'no lines available
+      if(input$line_type == 'rnet'){
+        # Set the warning message that no lines have been selected by the user
+        output$warning_message <- renderUI(HTML("<strong>No lines available </strong> </br>"))
+        # Return an empty data.frame
+        return(data.frame(File=character()))
+      }
+
+      # Empty the warning message - as some lines have been selected by the user
+      output$warning_message <- renderUI("")
+
+      # Reuse the lines data stored in the ldata session variable
+      lines_to_plot <- to_plot$ldata@data[,unname(line_col_names)]
+      decimal_line_cols <- which(vapply(lines_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
+      DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names, rownames = FALSE,
+                    callback = dt_callback) %>%
+        formatRound(columns = decimal_line_cols, digits=2)
+    })
+
+    # Creates data for the zones datatable
+    output$zones_data_table <- DT::renderDataTable({
+      # Reactive values that must trigger a tabel update
+      region$repopulate_region
+
+      if(is.null(to_plot$zones@data)){
+        return()
+      }
+
+      zones_to_plot <- to_plot$zones@data[,unname(zone_col_names)]
+      decimal_zone_cols <- which(vapply(zones_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
+      DT::datatable(zones_to_plot, options = list(pageLength = 10),
+                    colnames = zone_col_names, rownames = FALSE,
+                    callback = dt_callback) %>%
+        formatRound(columns = decimal_zone_cols, digits=2)
+    })
 
     output$download_l_csv <- downloadHandler(
       filename = function() { "lines.csv"  },
