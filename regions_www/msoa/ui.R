@@ -54,10 +54,10 @@ shinyUI(
       div(
         class="outer",
         tags$head(
-          if(on_server) includeScript("www/assets/google-analytics.js"),
-          includeScript("www/assets/extra.js"),
-          includeCSS("www/stylesheet.css"),
-          includeHTML(file.path("regions_www", "favicon.html"))
+          if(on_server) includeScript("../www/assets/google-analytics.js"),
+          includeScript("../www/assets/extra.js"),
+          includeCSS("../www/stylesheet.css"),
+          includeHTML(file.path("..", "favicon.html"))
         ),
         br(),
         leafletOutput("map", width="100%", height="95%"),
@@ -203,10 +203,10 @@ shinyUI(
              htmlOutput("m_output")
     ),
     tabPanel("About",
-             includeHTML(file.path("regions_www", "about_body.html"))
+             includeHTML(file.path("..", "about_body.html"))
     ),
     tabPanel("Manual",
-             includeHTML(file.path("regions_www", "manual_body.html"))
+             includeHTML(file.path("..", "manual_body.html"))
     )
   )
 )
