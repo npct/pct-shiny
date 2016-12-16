@@ -170,8 +170,8 @@ shinyServer(function(input, output, session){
   helper$e_lat_lng <- ""
 
   # Select and sort lines within a bounding box - given by flows_bb()
-  sort_lines <- function(lines, group_name, sort_by, nos){
-    if(!sort_by %in% names(lines)) return(NULL)
+  sort_lines <- function(lines, group_name, nos){
+    if(!line_data() %in% names(lines)) return(NULL)
     # If other than route network lines are selected, subset them by the bounding box
     if (group_name != "route_network"){
       poly <- flows_bb()
@@ -181,11 +181,12 @@ shinyServer(function(input, output, session){
       if(all(!keep)) return(NULL)
       lines_in_bb <- lines[drop(keep), ]
       # Sort by the absolute values
-      lines_in_bb[ tail(order(abs(lines_in_bb[[sort_by]])), nos), ]
+      lines_in_bb[ tail(order(abs(lines_in_bb[[line_data()]])), nos), ]
     }else{
       # For the route network, just sort them according to the percentage of display
       # Sort by the absolute values
-      lines[ tail(order(abs(lines[[sort_by]])), nos), ]
+      nos <- nos / 100 * nrow(lines)
+      lines[ tail(order(abs(lines[[line_data()]])), nos), ]
     }
 
   }
@@ -288,18 +289,19 @@ shinyServer(function(input, output, session){
     leafletProxy("map")  %>% clearGroup(., c("straight_line", "quieter_route", "faster_route", "route_network")) %>%
       removeShape(., "highlighted")
 
-    popup_fun_name <- ifelse(input$line_type == "faster_route", "routes_popup", paste0(input$line_type, "_popup"))
-    popop_fun <- get(popup_fun_name)
-    leafletProxy("map") %>% {
-      switch(input$line_type,
-             'none' = NULL,
-             'routes'= {
-               plot_lines(., to_plot$quieter_route, input$nos_lines, popop_fun, "quieter_route", get_line_colour("quieter_route"))
-               plot_lines(., to_plot$faster_route, input$nos_lines, popop_fun, "faster_route",  get_line_colour("faster_route"))
-             },
-             plot_lines(., to_plot[[input$line_type]], input$nos_lines, popop_fun, input$line_type, get_line_colour(input$line_type))
-      )
-    }
+    switch(input$line_type,
+           'none' = to_plot$ldata <<- NULL,
+           'routes'= to_plot$ldata <<- sort_lines(to_plot$faster_route, input$line_type, input$nos_lines),
+           to_plot$ldata <<- sort_lines(to_plot[[input$line_type]], input$line_type, input$nos_lines)
+    )
+
+    switch(input$line_type,
+           'routes'= {
+             plot_lines(leafletProxy("map"), sort_lines(to_plot$quieter_route, input$line_type, input$nos_lines), "quieter_route")
+             plot_lines(leafletProxy("map"), to_plot$ldata, "faster_route")
+           },
+           plot_lines(leafletProxy("map"), to_plot$ldata, input$line_type)
+    )
 
     if(input$line_type == 'route_network')
       updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 20, label = "Percent (%) of Network")
@@ -352,7 +354,7 @@ shinyServer(function(input, output, session){
       {
         switch(isolate(input$line_type),
                'none' = NULL,
-               'route'= {
+               'routes'= {
                  hideGroup(., c("quieter_route", "faster_route") ) %>% showGroup(., c("quieter_route", "faster_route"))
                },
                hideGroup(., isolate(input$line_type)) %>% showGroup(., isolate(input$line_type))
@@ -360,7 +362,7 @@ shinyServer(function(input, output, session){
       }
 
     # Display centroids when zoom level is greater than 11 and lines are selected
-    if (isolate(input$map_zoom) >= 11 && isolate(input$line_type) != 'none')
+    if (isTRUE(isolate(input$map_zoom) >= 11 && isolate(input$line_type) != 'none'))
       showGroup(leafletProxy("map"), "centres")
   })
 
@@ -444,9 +446,10 @@ shinyServer(function(input, output, session){
   })
 
   # Adds polylines on the map, depending on types and number of lines
-  plot_lines <- function(m, lines, nos, popup_fn, group_name, color){
+  plot_lines <- function(m, sorted_l, group_name){
+    if(is.null(sorted_l)) return()
+
     if (group_name == "route_network") {
-      nos <- nos / 100 * nrow(lines)
       min <- 1
       max <- 20
     } else {
@@ -455,24 +458,22 @@ shinyServer(function(input, output, session){
     }
 
     line_opacity <- 0.8
-    if (group_name == 'quieter_route' || group_name == 'faster_route')
+    popup_fun_name <- paste0(group_name, "_popup")
+
+    if (group_name == 'quieter_route' || group_name == 'faster_route') {
+      popup_fun_name <- "routes_popup"
       line_opacity <- 0.5
-
-    sorted_l <- sort_lines(lines, group_name, line_data(), nos)
-
-    to_plot$ldata <<- sorted_l
-    if(is.null(sorted_l))
-      m
-    else{
-      addPolylines(m, data = sorted_l, color = color
-                   # Plot widths proportional to attribute value
-                   # Remove NAs from the weights
-                   , weight = normalise( sorted_l[[line_data()]][!is.na(sorted_l[[line_data()]]) ], min = min, max = max)
-                   , opacity = line_opacity
-                   , group = group_name
-                   , popup = popup_fn(sorted_l, input$scenario, showing_all_trips())
-                   , layerId = paste0(sorted_l[['id']], '-', group_name))
     }
+    popop_fun <- get(popup_fun_name)
+    addPolylines(m, data = sorted_l, color = get_line_colour(group_name)
+                 # Plot widths proportional to attribute value
+                 # Remove NAs from the weights
+                 , weight = normalise(sorted_l[[line_data()]][!is.na(sorted_l[[line_data()]]) ], min = min, max = max)
+                 , opacity = line_opacity
+                 , group = group_name
+                 , popup = popop_fun(sorted_l, input$scenario, showing_all_trips())
+                 , layerId = paste0(sorted_l[['id']], '-', group_name))
+
   }
   # Updates map tile according to the selected map base
   map_tile_url <- reactive({
