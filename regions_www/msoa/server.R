@@ -77,20 +77,24 @@ shinyServer(function(input, output, session){
     region$data_dir
     region$repopulate_region
 
-    to_plot$l <<- readRDS(file.path(region$data_dir, "l.Rds"))
-    to_plot$zones <<-  readRDS(file.path(region$data_dir, "z.Rds"))
-    to_plot$cents <<-   readRDS(file.path(region$data_dir, "c.Rds"))
+    to_plot$straight_line <<- readRDS(file.path(region$data_dir, "l.Rds"))
+    to_plot$zones <<- readRDS(file.path(region$data_dir, "z.Rds"))
+    to_plot$cents <<- readRDS(file.path(region$data_dir, "c.Rds"))
 
-    to_plot$rnet <<- readRDS(file.path(region$data_dir, "rnet.Rds"))
-    to_plot$rnet$id <<- 1:nrow(to_plot$rnet)
+    to_plot$route_network <<- readRDS(file.path(region$data_dir, "rnet.Rds"))
+    to_plot$route_network$id <<- 1:nrow(to_plot$route_network)
 
-    to_plot$r_fast <<- readRDS(file.path(region$data_dir, "rf.Rds" ))
-    to_plot$r_fast@data <<- cbind(to_plot$r_fast@data[!(names(to_plot$r_fast) %in% names(to_plot$l))], to_plot$l@data)
-    to_plot$r_quiet <<- readRDS(file.path(region$data_dir, "rq.Rds"))
-    to_plot$r_quiet@data <<- cbind(to_plot$r_quiet@data[!(names(to_plot$r_quiet) %in% names(to_plot$l))], to_plot$l@data)
+    to_plot$faster_route <<- readRDS(file.path(region$data_dir, "rf.Rds" ))
+    to_plot$faster_route@data <<- cbind(
+      to_plot$faster_route@data[!(names(to_plot$faster_route) %in% names(to_plot$straight_line))],
+      to_plot$straight_line@data)
+    to_plot$quieter_route <<- readRDS(file.path(region$data_dir, "rq.Rds"))
+    to_plot$quieter_route@data <<- cbind(
+      to_plot$quieter_route@data[!(names(to_plot$quieter_route) %in% names(to_plot$straight_line))],
+      to_plot$straight_line@data)
 
     # Add rqincr column to the quiet data
-    to_plot$r_quiet@data$rqincr <<- to_plot$r_quiet@data$length / to_plot$r_fast@data$length
+    to_plot$quieter_route@data$rqincr <<- to_plot$quieter_route@data$length / to_plot$faster_route@data$length
 
     region$repopulate_region <- T
   })
@@ -247,12 +251,7 @@ shinyServer(function(input, output, session){
                     opacity = 0.7 ,
                     layerId = "highlighted")
       } else {
-        line <- switch(group_name,
-                       'straight_line' = to_plot$l[to_plot$l$id == id,],
-                       'faster_route' = to_plot$r_fast[to_plot$r_fast$id == id,],
-                       'quieter_route' = to_plot$r_quiet[to_plot$r_quiet$id == id,],
-                       'route_network' = to_plot$rnet[to_plot$rnet$id == id,]
-        )
+        line <- to_plot[[group_name]][to_plot[[group_name]]$id == id,]
         if (!is.null(line))
           addPolylines(leafletProxy("map"), data = line, color = "white",
                        opacity = 0.4, layerId = "highlighted")
@@ -293,10 +292,10 @@ shinyServer(function(input, output, session){
       switch(input$line_type,
              'none' = NULL,
              'routes'= {
-               plot_lines(., to_plot$r_quiet, input$nos_lines, route_popup, "quieter_route", get_line_colour("quieter_route"))
-               plot_lines(., to_plot$r_fast, input$nos_lines, route_popup, "faster_route",  get_line_colour("faster_route"))
+               plot_lines(., to_plot$quieter_route, input$nos_lines, route_popup, "quieter_route", get_line_colour("quieter_route"))
+               plot_lines(., to_plot$faster_route, input$nos_lines, route_popup, "faster_route",  get_line_colour("faster_route"))
              },
-             plot_lines(., to_plot$r_fast, input$nos_lines, route_popup, input$line_type, get_line_colour(input$line_type))
+             plot_lines(., to_plot[[input$line_type]], input$nos_lines, route_popup, input$line_type, get_line_colour(input$line_type))
       )
     }
 
@@ -654,7 +653,7 @@ shinyServer(function(input, output, session){
 
     output$download_l_csv <- downloadHandler(
       filename = function() { "lines.csv"  },
-      content = function(file) { write.csv(signif_sdf(to_plot$l)@data[codebook_l$`Variable name`], file = file) }
+      content = function(file) { write.csv(signif_sdf(to_plot$straight_line)@data[codebook_l$`Variable name`], file = file) }
     )
 
 
@@ -670,42 +669,42 @@ shinyServer(function(input, output, session){
 
     output$download_l_geojson <- downloadHandler(
       filename = function() { "lines.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$l[codebook_l$`Variable name`]), file = file) }
+      content = function(file) { geojson_write(signif_sdf(to_plot$straight_line[codebook_l$`Variable name`]), file = file) }
     )
 
     output$download_rf_geojson <- downloadHandler(
       filename = function() { "routes_fast.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$r_fast[codebook_r$`Variable name`]), file = file) }
+      content = function(file) { geojson_write(signif_sdf(to_plot$faster_route[codebook_r$`Variable name`]), file = file) }
     )
 
     output$download_rq_geojson <- downloadHandler(
       filename = function() { "routes_quiet.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$r_quiet[codebook_r$`Variable name`]), file = file) }
+      content = function(file) { geojson_write(signif_sdf(to_plot$quieter_route[codebook_r$`Variable name`]), file = file) }
     )
 
     output$download_rnet_geojson <- downloadHandler(
       filename = function() { "routes_network.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$rnet[codebook_rnet$`Variable name`]), file = file) }
+      content = function(file) { geojson_write(signif_sdf(to_plot$route_network[codebook_rnet$`Variable name`]), file = file) }
     )
 
     output$download_l_rds <- downloadHandler(
       filename = function() { "lines.Rds"  },
-      content = function(file) { saveRDS(to_plot$l[codebook_l$`Variable name`], file = file) }
+      content = function(file) { saveRDS(to_plot$straight_line[codebook_l$`Variable name`], file = file) }
     )
 
     output$download_rf_rds <- downloadHandler(
       filename = function() { "routes_fast.Rds"  },
-      content = function(file) { saveRDS(to_plot$r_fast[codebook_r$`Variable name`], file = file) }
+      content = function(file) { saveRDS(to_plot$faster_route[codebook_r$`Variable name`], file = file) }
     )
 
     output$download_rq_rds <- downloadHandler(
       filename = function() { "routes_quiet.Rds"  },
-      content = function(file) { saveRDS(to_plot$r_quiet[codebook_r$`Variable name`], file = file) }
+      content = function(file) { saveRDS(to_plot$quieter_route[codebook_r$`Variable name`], file = file) }
     )
 
     output$download_rnet_rds <- downloadHandler(
       filename = function() { "routes_network.Rds"  },
-      content = function(file) { saveRDS(to_plot$rnet[codebook_rnet$`Variable name`], file = file) }
+      content = function(file) { saveRDS(to_plot$route_network[codebook_rnet$`Variable name`], file = file) }
     )
 
     output$download_z_rds <- downloadHandler(
