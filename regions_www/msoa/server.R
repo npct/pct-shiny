@@ -288,14 +288,16 @@ shinyServer(function(input, output, session){
     leafletProxy("map")  %>% clearGroup(., c("straight_line", "quieter_route", "faster_route", "route_network")) %>%
       removeShape(., "highlighted")
 
+    popup_fun_name <- ifelse(input$line_type == "faster_route", "routes_popup", paste0(input$line_type, "_popup"))
+    popop_fun <- get(popup_fun_name)
     leafletProxy("map") %>% {
       switch(input$line_type,
              'none' = NULL,
              'routes'= {
-               plot_lines(., to_plot$quieter_route, input$nos_lines, route_popup, "quieter_route", get_line_colour("quieter_route"))
-               plot_lines(., to_plot$faster_route, input$nos_lines, route_popup, "faster_route",  get_line_colour("faster_route"))
+               plot_lines(., to_plot$quieter_route, input$nos_lines, popop_fun, "quieter_route", get_line_colour("quieter_route"))
+               plot_lines(., to_plot$faster_route, input$nos_lines, popop_fun, "faster_route",  get_line_colour("faster_route"))
              },
-             plot_lines(., to_plot[[input$line_type]], input$nos_lines, route_popup, input$line_type, get_line_colour(input$line_type))
+             plot_lines(., to_plot[[input$line_type]], input$nos_lines, popop_fun, input$line_type, get_line_colour(input$line_type))
       )
     }
 
