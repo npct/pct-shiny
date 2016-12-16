@@ -64,7 +64,7 @@ shinyServer(function(input, output, session){
     query <- parseQueryString(session$clientData$url_search)
 
     if (is.na(region$current)) {
-      region$current <- if(query[['r']] %in% regions$Region){
+      region$current <- if(isTRUE(query[['r']] %in% regions$Region)){
         query[['r']]
       } else {
         "west-yorkshire"
@@ -638,8 +638,7 @@ shinyServer(function(input, output, session){
       # Reuse the lines data stored in the ldata session variable
       lines_to_plot <- to_plot$ldata@data[,unname(line_col_names)]
       decimal_line_cols <- which(vapply(lines_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
-      DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names, rownames = FALSE,
-                    callback = dt_callback) %>%
+      DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names, rownames = FALSE) %>%
         formatRound(columns = decimal_line_cols, digits=2)
     })
 
@@ -655,8 +654,7 @@ shinyServer(function(input, output, session){
       zones_to_plot <- to_plot$zones@data[,unname(zone_col_names)]
       decimal_zone_cols <- which(vapply(zones_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
       DT::datatable(zones_to_plot, options = list(pageLength = 10),
-                    colnames = zone_col_names, rownames = FALSE,
-                    callback = dt_callback) %>%
+                    colnames = zone_col_names, rownames = FALSE) %>%
         formatRound(columns = decimal_zone_cols, digits=2)
     })
 
