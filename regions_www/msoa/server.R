@@ -286,25 +286,23 @@ shinyServer(function(input, output, session){
     input$show_zones
     region$repopulate_region
 
-    leafletProxy("map")  %>% clearGroup(., "straight_line") %>%
-      clearGroup(., "quieter_route") %>% clearGroup(., "faster_route") %>% clearGroup(., "route_network") %>%
+    leafletProxy("map")  %>% clearGroup(., c("straight_line", "quieter_route", "faster_route", "route_network")) %>%
       removeShape(., "highlighted")
 
     leafletProxy("map") %>% {
       switch(input$line_type,
-             'straight_line' = plot_lines(., to_plot$l, input$nos_lines, straight_popup, "straight_line", get_line_colour("straight_line")),
+             'none' = NULL,
              'routes'= {
                plot_lines(., to_plot$r_quiet, input$nos_lines, route_popup, "quieter_route", get_line_colour("quieter_route"))
                plot_lines(., to_plot$r_fast, input$nos_lines, route_popup, "faster_route",  get_line_colour("faster_route"))
              },
-             'faster_route'= plot_lines(., to_plot$r_fast, input$nos_lines, route_popup, "faster_route", get_line_colour("faster_route")),
-             'route_network' = plot_lines(., to_plot$rnet, input$nos_lines, network_route_popup, "route_network", get_line_colour("route_network"))
+             plot_lines(., to_plot$r_fast, input$nos_lines, route_popup, input$line_type, get_line_colour(input$line_type))
       )
     }
+
     if(input$line_type == 'route_network')
       updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 20, label = "Percent (%) of Network")
     else{
-
       if (input$line_order == "slc")
         updateSliderInput(session, inputId = "nos_lines", min = 1, max = 200, step = 1,  label = "Top N Lines (most cycled)")
       else
@@ -312,14 +310,12 @@ shinyServer(function(input, output, session){
     }
 
   })
-  get_zone_multiplier <- function(zoom){ zoom^4/8200 }
 
   # This code displays centroids if zoom level is greater than 11 and lines are displayed
   observe({
     if(is.null(input$map_zoom) ) return()
     region$repopulate_region
     input$map_base
-    zoom_multiplier <- get_zone_multiplier(input$map_zoom)
     if(input$map_zoom < 11 || input$line_type == 'none')
       hideGroup(leafletProxy("map"), "centres")
     else
@@ -333,7 +329,7 @@ shinyServer(function(input, output, session){
     input$map_base
     show_zone_popup <- input$line_type == 'none'
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
-    leafletProxy("map")  %>% clearGroup(., "zones") %>% clearGroup(., "centres") %>%
+    leafletProxy("map")  %>% clearGroup(., c("zones", "centres")) %>%
       addPolygons(.,  data = to_plot$zones
                   , weight = 2
                   , fillOpacity = transp_rate()
@@ -354,13 +350,11 @@ shinyServer(function(input, output, session){
       hideGroup(., "centres") %>%
       {
         switch(isolate(input$line_type),
-               'straight_line' = hideGroup(., "straight_line") %>% showGroup(., "straight_line"),
+               'none' = NULL,
                'route'= {
-                 hideGroup(., "quieter_route") %>% showGroup(., "quieter_route")
-                 hideGroup(., "faster_route") %>% showGroup(., "faster_route")
+                 hideGroup(., c("quieter_route", "faster_route") ) %>% showGroup(., c("quieter_route", "faster_route"))
                },
-               'faster_route' = hideGroup(., "faster_route") %>% showGroup(., "faster_route"),
-               'route_network' = hideGroup(., "route_network") %>% showGroup(., "route_network")
+               hideGroup(., isolate(input$line_type)) %>% showGroup(., isolate(input$line_type))
         )
       }
 
