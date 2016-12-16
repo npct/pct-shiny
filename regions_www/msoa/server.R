@@ -292,16 +292,16 @@ shinyServer(function(input, output, session){
 
     leafletProxy("map") %>% {
       switch(input$line_type,
-             'straight' = plot_lines(., to_plot$l, input$nos_lines, straight_popup, "straight_line", get_line_colour("straight_line")),
-             'route'= {
+             'straight_line' = plot_lines(., to_plot$l, input$nos_lines, straight_popup, "straight_line", get_line_colour("straight_line")),
+             'routes'= {
                plot_lines(., to_plot$r_quiet, input$nos_lines, route_popup, "quieter_route", get_line_colour("quieter_route"))
                plot_lines(., to_plot$r_fast, input$nos_lines, route_popup, "faster_route",  get_line_colour("faster_route"))
              },
-             'd_route'= plot_lines(., to_plot$r_fast, input$nos_lines, route_popup, "faster_route", get_line_colour("faster_route")),
-             'rnet' = plot_lines(., to_plot$rnet, input$nos_lines, network_route_popup, "route_network", get_line_colour("route_network"))
+             'faster_route'= plot_lines(., to_plot$r_fast, input$nos_lines, route_popup, "faster_route", get_line_colour("faster_route")),
+             'route_network' = plot_lines(., to_plot$rnet, input$nos_lines, network_route_popup, "route_network", get_line_colour("route_network"))
       )
     }
-    if(input$line_type == 'rnet')
+    if(input$line_type == 'route_network')
       updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 20, label = "Percent (%) of Network")
     else{
 
@@ -354,13 +354,13 @@ shinyServer(function(input, output, session){
       hideGroup(., "centres") %>%
       {
         switch(isolate(input$line_type),
-               'straight' = hideGroup(., "straight_line") %>% showGroup(., "straight_line"),
+               'straight_line' = hideGroup(., "straight_line") %>% showGroup(., "straight_line"),
                'route'= {
                  hideGroup(., "quieter_route") %>% showGroup(., "quieter_route")
                  hideGroup(., "faster_route") %>% showGroup(., "faster_route")
                },
-               'd_route' = hideGroup(., "faster_route") %>% showGroup(., "faster_route"),
-               'rnet' = hideGroup(., "route_network") %>% showGroup(., "route_network")
+               'faster_route' = hideGroup(., "faster_route") %>% showGroup(., "faster_route"),
+               'route_network' = hideGroup(., "route_network") %>% showGroup(., "route_network")
         )
       }
 
@@ -386,7 +386,7 @@ shinyServer(function(input, output, session){
   # Identify suffix of lines variables
   line_attr <- reactive({
     if(input$scenario == 'olc') 'olc'
-    else if (input$line_type != 'rnet') input$line_order
+    else if (input$line_type != 'route_network') input$line_order
     else 'slc'
   })
 
@@ -428,8 +428,8 @@ shinyServer(function(input, output, session){
     helper$bb
   })
 
-  # Set freeze checkbox to false when lines are rnet, otherwise to true
-  # Also disable freeze checkbox for rnet
+  # Set freeze checkbox to false when lines are route_network, otherwise to true
+  # Also disable freeze checkbox for route_network
   observe({
     # Build a reactive expression for lines
     input$line_type
@@ -625,7 +625,7 @@ shinyServer(function(input, output, session){
       }
 
       # When route network is selected, show 'no lines available
-      if(input$line_type == 'rnet'){
+      if(input$line_type == 'route_network'){
         # Set the warning message that no lines have been selected by the user
         output$warning_message <- renderUI(HTML("<strong>No lines available </strong> </br>"))
         # Return an empty data.frame
@@ -729,7 +729,7 @@ shinyServer(function(input, output, session){
   # Function to add a layers control for the routes, so that users can easily select quiet routes
   observe({
     input$line_type
-    if (input$line_type == 'route'){
+    if (input$line_type == 'routes'){
       leafletProxy("map") %>% addLayersControl(
         position = c("bottomright"),
         overlayGroups = c("quieter_route", "faster_route"),

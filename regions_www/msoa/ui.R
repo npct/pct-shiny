@@ -26,10 +26,10 @@ scenarios <- c("Census 2011 Cycling" = "olc",
                "Ebikes" = "ebike")
 
 line_types <- c("None" = "none",
-                "Straight Lines" = "straight",
-                "Fast Routes" = "d_route",
-                "Fast & Quiet Routes" = "route",
-                "Route Network" = "rnet")
+                "Straight Lines" = "straight_line",
+                "Fast Routes" = "faster_route",
+                "Fast & Quiet Routes" = "routes",
+                "Route Network" = "route_network")
 
 attrs_zone <- c("Number of cyclists"    = "slc",
                "Increase in Cycling" = "sic",
@@ -88,7 +88,7 @@ shinyUI(
                        sliderInput("nos_lines", label = "Top N Lines (most cycled)", 1, 200, value = 30, ticks = F)
               ),
               conditionalPanel(
-                condition = "input.line_type != 'rnet' && input.scenario != 'olc'",
+                condition = "input.line_type != 'route_network' && input.scenario != 'olc'",
                 tags$div(title="Order the top flows by",
                          selectInput("line_order", "Order lines/flows by", attrs_zone, selected = "slc", selectize = F)
                 )
