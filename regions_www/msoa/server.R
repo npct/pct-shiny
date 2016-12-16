@@ -72,7 +72,8 @@ shinyServer(function(input, output, session){
       region$data_dir <- file.path(data_dir_root, region$current)
       region$all_trips <- dir.exists(file.path(data_dir_root, region$current , 'all-trips'))
     }
-    region$current
+
+    session$sendCustomMessage("regionchange", region$current)
     region$data_dir
     region$repopulate_region
 
@@ -332,7 +333,7 @@ shinyServer(function(input, output, session){
     input$map_base
     show_zone_popup <- input$line_type == 'none'
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
-    leafletProxy("map")  %>% clearGroup(., "zones") %>% clearGroup(., "region_name") %>% clearGroup(., "centres") %>%
+    leafletProxy("map")  %>% clearGroup(., "zones") %>% clearGroup(., "centres") %>%
       addPolygons(.,  data = to_plot$zones
                   , weight = 2
                   , fillOpacity = transp_rate()
@@ -343,7 +344,6 @@ shinyServer(function(input, output, session){
                   , popup = popup
                   , options = pathOptions(clickable = show_zone_popup)
                   , layerId = paste0(to_plot$zones[['geo_code']], '-', "zones")) %>%
-      addCircleMarkers(., radius=0, lat=0, lng=0, group = "region_name", fillOpacity= 0, layerId = region$current) %>%
       addCircleMarkers(., data = to_plot$cents, radius = normalise(to_plot$cents$all, min = 1, max = 8),
                        color = get_line_colour("centres"), group = "centres", opacity = 0.5,
                        popup = centroid_popup(to_plot$cents, input$scenario, zone_attr(), showing_all_trips())) %>%

@@ -1,4 +1,4 @@
-$( window ).load(function() {
+$(window).load(function() {
   if(typeof ga === "undefined"){
     ga = function(){};
   }
@@ -19,27 +19,17 @@ $( window ).load(function() {
   $('#toggle_map_legend').click(function(){ toggle_panel('#map_legend', this); });
 
   $('select').addClass("form-control");
-  var url_updater = function(l_map, old_region){
-    var grp = l_map.layerManager.getLayerGroup("region_name");
-    var current_region;
-    if(grp && grp.getLayers()[0]) {
-      current_region = grp.getLayers()[0].options.layerId;
-    }
-    if(!!old_region && !!current_region && old_region != current_region){
-      var newUrl = window.location.origin + window.location.pathname + "?r=" + current_region;
-      history.pushState(history.state || location.href, current_region, newUrl);
-      setTimeout(url_updater, 500, l_map, current_region);
-    } else {
-      setTimeout(url_updater, 500, l_map, current_region || old_region);
-    }
-  };
+
+  Shiny.addCustomMessageHandler("regionchange", function(newRegion) {
+    var newUrl = window.location.origin + window.location.pathname + "?r=" + newRegion;
+    history.pushState(newRegion, newRegion, newUrl);
+  });
 
   var initMap = function(){
     if($(map).data('leaflet-map')){
       // l_map is the leaflet map object see http://leafletjs.com/reference.html
       var l_map = $(map).data('leaflet-map');
       L.control.scale().addTo(l_map);
-      url_updater(l_map, undefined);
       $('select, input').each(function() {
         $(this).change(function(e){
           ga('send', 'event', 'controls', e.target.id , e.target.value);
