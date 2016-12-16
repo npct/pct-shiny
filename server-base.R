@@ -55,15 +55,23 @@ codebook_z = readr::read_csv(file.path(shiny_root, "static", "codebook_zones.csv
 codebook_r = readr::read_csv(file.path(shiny_root, "static", "codebook_routes.csv"))
 codebook_rnet = readr::read_csv(file.path(shiny_root, "static", "codebook_rnet.csv"))
 
-# JS code
-dt_callback <- JS("if(!!history.state){ table.ajax.url(history.state + table.ajax.url()).load(); };")
-
 # # # # # # # #
 # shinyServer #
 # # # # # # # #
 shinyServer(function(input, output, session){
   # To set initialize to_plot
   observe({
+    query <- parseQueryString(session$clientData$url_search)
+
+    if (is.na(region$current)) {
+      region$current <- if(query[['r']] %in% regions$Region){
+        query[['r']]
+      } else {
+        "west-yorkshire"
+      }
+      region$data_dir <- file.path(data_dir_root, region$current)
+      region$all_trips <- dir.exists(file.path(data_dir_root, region$current , 'all-trips'))
+    }
     region$current
     region$data_dir
     region$repopulate_region
@@ -86,8 +94,7 @@ shinyServer(function(input, output, session){
     region$repopulate_region <- T
   })
 
-  region <- reactiveValues(current = starting_city, data_dir = file.path(data_dir_root, starting_city), repopulate_region = F,
-                           all_trips = dir.exists(file.path(data_dir_root, starting_city, 'all-trips')))
+  region <- reactiveValues(current = NA, data_dir = NA, repopulate_region = F, all_trips = NA)
 
   observe({
     output$production_branch <- renderText({ifelse(production_branch, "true", "false")})

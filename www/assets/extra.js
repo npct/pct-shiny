@@ -38,8 +38,8 @@ $( window ).load(function() {
       current_region = grp.getLayers()[0].options.layerId;
     }
     if(!!old_region && !!current_region && old_region != current_region){
-      var new_url = (history.state !== null) ? current_region : "../" + current_region;
-      history.pushState(history.state || location.href, current_region, new_url);
+      var newUrl = window.location.origin + window.location.pathname + "?r=" + current_region;
+      history.pushState(history.state || location.href, current_region, newUrl);
       setTimeout(url_updater, 500, l_map, current_region);
     } else {
       setTimeout(url_updater, 500, l_map, current_region || old_region);
