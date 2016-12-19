@@ -96,6 +96,8 @@ shinyServer(function(input, output, session){
     # Add rqincr column to the quiet data
     to_plot$quieter_route@data$rqincr <<- to_plot$quieter_route@data$length / to_plot$faster_route@data$length
 
+    region$all_trips <- dir.exists(file.path(data_dir_root, region$current , 'all-trips'))
+
     region$repopulate_region <- T
   })
 
@@ -266,7 +268,9 @@ shinyServer(function(input, output, session){
     if(file.exists(file.path(region$data_dir, 'isolated'))) return()
     new_region <- find_region(region$current)
     # Check if the new_region is not null, and contains 'all-trips' subfolder
-    new_data_dir <- ifelse ((!is.null(new_region) && region$all_trips && showing_all_trips()), file.path(data_dir_root, new_region, 'all-trips'), file.path(data_dir_root, new_region))
+    new_data_dir <- ifelse ((!is.null(new_region) && region$all_trips && showing_all_trips()),
+                            file.path(data_dir_root, new_region, 'all-trips'),
+                            file.path(data_dir_root, new_region))
 
     if(!is.null(new_region) && region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
       region$current <- new_region
