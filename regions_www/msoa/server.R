@@ -66,6 +66,8 @@ shinyServer(function(input, output, session){
     if (is.na(region$current)) {
       region$current <- if(isTRUE(query[['r']] %in% regions$Region)){
         query[['r']]
+      } else if (exists("starting_region")) {
+        starting_region
       } else {
         "west-yorkshire"
       }
