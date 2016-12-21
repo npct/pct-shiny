@@ -265,17 +265,16 @@ shinyServer(function(input, output, session){
   # Updates the Local Authority if the map is moved
   # over another region with data
   observe({
-    if(file.exists(file.path(region$data_dir, 'isolated'))) return()
     new_region <- find_region(region$current)
-    new_region_all_trips <- T
-    if (!is.null(new_region))
-      new_region_all_trips <- dir.exists(file.path(data_dir_root, new_region , 'all-trips'))
+    if(is.null(new_region)) return()
+
+    new_region_all_trips <- dir.exists(file.path(data_dir_root, new_region , 'all-trips'))
     # Check if the new_region is not null, and contains 'all-trips' subfolder
-    new_data_dir <- ifelse ((!is.null(new_region) && new_region_all_trips && showing_all_trips()),
+    new_data_dir <- ifelse (new_region_all_trips,
                             file.path(data_dir_root, new_region, 'all-trips'),
                             file.path(data_dir_root, new_region))
 
-    if(!is.null(new_region) && region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
+    if(region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
       region$current <- new_region
       region$data_dir <- new_data_dir
       region$repopulate_region <- F
