@@ -10,6 +10,7 @@ gpg -a --export 51716619E084DAB9 > cran.asc
 apt-key add cran.asc
 rm cran.asc
 echo "deb http://cran.rstudio.com/bin/linux/ubuntu xenial/" | tee -a /etc/apt/sources.list
+sudo apt-get update
 sudo apt-get -yy install r-recommended git gdebi-core
 
 # Install shiny
