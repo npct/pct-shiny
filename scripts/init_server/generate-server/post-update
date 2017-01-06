@@ -1,0 +1,12 @@
+#!/bin/bash
+
+git update-server-info
+DIR=`pwd`
+APP_NAME=shiny_app
+
+sudo rm -rf ${HOME}/${APP_NAME}
+sudo mkdir -p ${HOME}/${APP_NAME}
+sudo git --work-tree ${HOME}/${APP_NAME} --git-dir ${DIR}/.. checkout master -f
+sudo mv -f ${HOME}/${APP_NAME} /var/shiny
+sudo chown -R shiny:shiny /var/shiny
+sudo systemctl restart shiny-server
