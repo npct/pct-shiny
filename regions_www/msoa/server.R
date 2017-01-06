@@ -25,8 +25,7 @@ shiny_root <- file.path("..", "..")
 # expect pct-data as a sibling of pct-shiny
 data_dir_root <- file.path(shiny_root, '..', 'pct-data')
 # packages required
-cran_pkgs <- c("shiny", "rgdal", "rgeos", "leaflet",
-               "DT", "shinyjs", "dplyr", "readr")
+cran_pkgs <- c("shiny", "rgdal", "rgeos", "leaflet", "DT", "shinyjs", "dplyr", "readr")
 
 on_server <- grepl('^/var/shiny/pct-shiny', getwd())
 
@@ -502,7 +501,8 @@ shinyServer(function(input, output, session){
            'satellite' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
            'IMD' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png",
            'opencyclemap' = "https://c.tile.thunderforest.com/cycle/{z}/{x}/{y}.png",
-           'hilliness' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}"
+           'hilliness' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}",
+           "LSOA" = "https://api.mapbox.com/styles/v1/alexfrost/cixluhiik001h2sntuqz86nh7/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWxleGZyb3N0IiwiYSI6IkxWNGlmMjgifQ.1f4F5qrMT0IKQSog8M1TCQ"
     )
   })
 
