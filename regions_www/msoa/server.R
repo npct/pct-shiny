@@ -25,8 +25,8 @@ shiny_root <- file.path("..", "..")
 # expect pct-data as a sibling of pct-shiny
 data_dir_root <- file.path(shiny_root, '..', 'pct-data')
 # packages required
-cran_pkgs <- c("shiny", "RColorBrewer", "httr", "rgdal", "rgeos", "leaflet",
-               "DT", "shinyjs", "sp", "dplyr", "geojsonio", "readr")
+cran_pkgs <- c("shiny", "rgdal", "rgeos", "leaflet",
+               "DT", "shinyjs", "dplyr", "readr")
 
 on_server <- grepl('^/var/shiny/pct-shiny', getwd())
 
