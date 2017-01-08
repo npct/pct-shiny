@@ -23,12 +23,13 @@ sudo apt-get -yy install libcurl4-openssl-dev libgdal-dev gdal-bin libproj-dev l
 
 sudo R -e "install.packages(c('shiny', 'rgdal', 'rgeos', 'leaflet', 'DT', 'shinyjs', 'dplyr', 'readr'), repos='https://cran.rstudio.com/')"
 
-sudo mkdir /var/shiny
-sudo chown -R shiny:shiny /var/shiny
+sudo mkdir /srv/shiny-server/
+sudo chown -R shiny:shiny /srv/shiny-server
 
 cd ${HOME}
 git clone --bare $1
 
-sudo cp -f ${SCRIPT_DIR}/generate-server/post-update ${GIT_DIR}/hooks
+cp -f ${SCRIPT_DIR}/generate-server/post-update ${GIT_DIR}/hooks
 sudo cp -f ${SCRIPT_DIR}/generate-server/shiny-server.conf /etc/shiny-server/shiny-server.conf
-sudo systemctl restart shiny-server
+cd ${SCRIPT_DIR}/generate-server
+./post-update

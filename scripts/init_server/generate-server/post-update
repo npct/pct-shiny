@@ -2,11 +2,13 @@
 
 git update-server-info
 DIR=`pwd`
-APP_NAME=shiny_app
+APP_NAME=$(dirname "$DIR")
+APP_NAME=${APP_NAME##*/}
 
 sudo rm -rf ${HOME}/${APP_NAME}
 sudo mkdir -p ${HOME}/${APP_NAME}
 sudo git --work-tree ${HOME}/${APP_NAME} --git-dir ${DIR}/.. checkout master -f
-sudo mv -f ${HOME}/${APP_NAME} /var/shiny
-sudo chown -R shiny:shiny /var/shiny
+sudo rm -rf /srv/shiny-server/${APP_NAME}
+sudo mv -f ${HOME}/${APP_NAME} /srv/shiny-server/
+sudo chown -R shiny:shiny /srv/shiny-server/
 sudo systemctl restart shiny-server
