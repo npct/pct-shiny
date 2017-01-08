@@ -29,6 +29,6 @@ sudo chown -R shiny:shiny /var/shiny
 cd ${HOME}
 git clone --bare $1
 
-cp -f ${SCRIPT_DIR}/generate-server/post-update ${GIT_DIR}/hooks
+sudo cp -f ${SCRIPT_DIR}/generate-server/post-update ${GIT_DIR}/hooks
 sudo cp -f ${SCRIPT_DIR}/generate-server/shiny-server.conf /etc/shiny-server/shiny-server.conf
 sudo systemctl restart shiny-server
