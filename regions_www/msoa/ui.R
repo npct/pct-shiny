@@ -29,7 +29,8 @@ line_types <- c("None" = "none",
                 "Straight Lines" = "straight_line",
                 "Fast Routes" = "faster_route",
                 "Fast & Quiet Routes" = "routes",
-                "Route Network" = "route_network")
+                "Route Network" = "route_network",
+                "LSOA" = "lsoa_base_map")
 
 attrs_zone <- c("Number of cyclists"    = "slc",
                "Increase in Cycling" = "sic",
@@ -40,8 +41,7 @@ map_base_attrs <- c("Roadmap (Black & White)"   = "roadmap",
                     "Roadmap (OpenCycleMap)" = "opencyclemap",
                     "Satellite" = "satellite",
                     "Index of Deprivation" = "IMD",
-                    "Hilliness" = "hilliness",
-                    "LSOA" = "LSOA")
+                    "Hilliness" = "hilliness")
 
 on_server <- grepl('^/var/shiny/pct-shiny', getwd())
 
