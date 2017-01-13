@@ -40,7 +40,8 @@ map_base_attrs <- c("Roadmap (Black & White)"   = "roadmap",
                     "Roadmap (OpenCycleMap)" = "opencyclemap",
                     "Satellite" = "satellite",
                     "Index of Deprivation" = "IMD",
-                    "Hilliness" = "hilliness")
+                    "Hilliness" = "hilliness",
+                    "LSOA" = "LSOA")
 
 on_server <- grepl('^/var/shiny/pct-shiny', getwd())
 
