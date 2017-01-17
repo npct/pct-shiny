@@ -31,11 +31,23 @@ This is work in progress and is being developed as part of a suite of training m
 Contributions to the project are welcome. This file, for instance, can be edited online at
 <a target="_blank" href="https://github.com/npct/pct-shiny/edit/master/static/manual_body.Rmd">github.com/npct/pct-shiny</a>.
 
+#### Use Manuals
+
 <a target="_blank" href = "https://github.com/npct/pct-shiny/raw/master/static/pct-bike-user-manual-a.pdf">User Manual A</a>
 
 <a target="_blank" href = "https://github.com/npct/pct-shiny/raw/master/static/pct-bike-user-manual-b.pdf">User Manual B</a>
 
 <a target="_blank" href = "https://github.com/npct/pct-shiny/raw/master/static/pct-bike-user-manual-c.pdf">User Manual C</a>
+
+#### Case Studies
+
+<a target="_blank" href = "https://github.com/npct/pct-shiny/raw/master/static/preston-case-study.pdf">Preston Case Study</a>
+
+<a target="_blank" href = "https://github.com/npct/pct-shiny/raw/master/static/rotherhithe-case-study.pdf">Rotherhithe Case Study</a>
+
+<a target="_blank" href = "https://github.com/npct/pct-shiny/raw/master/static/tunbridge-case-study.pdf">Tunbridge Case Study</a>
+
+<a target="_blank" href = "https://github.com/npct/pct-shiny/raw/master/static/west-sussex-case-study.pdf">West Sussex Case Study</a>
 
 
 #### Additional FAQs
