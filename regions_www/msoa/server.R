@@ -103,6 +103,8 @@ shinyServer(function(input, output, session){
   })
 
   region <- reactiveValues(current = NA, data_dir = NA, repopulate_region = F, all_trips = NA)
+  lsoa <- reactiveValues(show = F)
+  show_no_lines <- c("none", "lsoa_base_map")
 
   observe({
     output$production_branch <- renderText({ifelse(production_branch, "true", "false")})
@@ -115,7 +117,6 @@ shinyServer(function(input, output, session){
       shinyjs::show("trip_panel")
     }
   })
-
 
   observe({
     # Create a reactive expression on the type of trips dropdown menu
@@ -186,6 +187,7 @@ shinyServer(function(input, output, session){
 
   # Select and sort lines within a bounding box - given by flows_bb()
   sort_lines <- function(lines, group_name, nos){
+    if(group_name %in% show_no_lines) return(NULL)
     if(!line_data() %in% names(lines)) return(NULL)
     # If other than route network lines are selected, subset them by the bounding box
     if (group_name != "route_network"){
@@ -308,19 +310,14 @@ shinyServer(function(input, output, session){
     leafletProxy("map")  %>% clearGroup(., c("straight_line", "quieter_route", "faster_route", "route_network")) %>%
       removeShape(., "highlighted")
 
-    switch(input$line_type,
-           'none' = to_plot$ldata <<- NULL,
-           'routes'= to_plot$ldata <<- sort_lines(to_plot$faster_route, input$line_type, input$nos_lines),
-           to_plot$ldata <<- sort_lines(to_plot[[input$line_type]], input$line_type, input$nos_lines)
-    )
-
-    switch(input$line_type,
-           'routes'= {
-             plot_lines(leafletProxy("map"), sort_lines(to_plot$quieter_route, input$line_type, input$nos_lines), "quieter_route")
-             plot_lines(leafletProxy("map"), to_plot$ldata, "faster_route")
-           },
-           plot_lines(leafletProxy("map"), to_plot$ldata, input$line_type)
-    )
+    if(input$line_type == 'routes') {
+      to_plot$ldata <<- sort_lines(to_plot$faster_route, input$line_type, input$nos_lines)
+      plot_lines(leafletProxy("map"), sort_lines(to_plot$quieter_route, input$line_type, input$nos_lines), "quieter_route")
+      plot_lines(leafletProxy("map"), to_plot$ldata, "faster_route")
+    } else {
+      to_plot$ldata <<- sort_lines(to_plot[[input$line_type]], input$line_type, input$nos_lines)
+      plot_lines(leafletProxy("map"), to_plot$ldata, input$line_type)
+    }
 
     if(input$line_type == 'route_network')
       updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 20, label = "Percent (%) of Network")
@@ -338,7 +335,7 @@ shinyServer(function(input, output, session){
     if(is.null(input$map_zoom) ) return()
     region$repopulate_region
     input$map_base
-    if(input$map_zoom < 11 || input$line_type == 'none')
+    if(input$map_zoom < 11 || input$line_type %in% show_no_lines)
       hideGroup(leafletProxy("map"), "centres")
     else
       showGroup(leafletProxy("map"), "centres")
@@ -349,7 +346,8 @@ shinyServer(function(input, output, session){
   observe({
     region$repopulate_region
     input$map_base
-    show_zone_popup <- input$line_type == 'none'
+    line_type <- isolate(input$line_type)
+    show_zone_popup <- input$line_type %in% show_no_lines
     popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
     leafletProxy("map")  %>% clearGroup(., c("zones", "centres")) %>%
       addPolygons(.,  data = to_plot$zones
@@ -371,17 +369,18 @@ shinyServer(function(input, output, session){
       # By default hide the centroids
       hideGroup(., "centres") %>%
       {
-        switch(isolate(input$line_type),
-               'none' = NULL,
-               'routes'= {
-                 hideGroup(., c("quieter_route", "faster_route") ) %>% showGroup(., c("quieter_route", "faster_route"))
-               },
-               hideGroup(., isolate(input$line_type)) %>% showGroup(., isolate(input$line_type))
-        )
+        if(!line_type %in% show_no_lines) {
+          switch(line_type,
+                 'routes'= {
+                   hideGroup(., c("quieter_route", "faster_route") ) %>% showGroup(., c("quieter_route", "faster_route"))
+                 },
+                 hideGroup(., line_type) %>% showGroup(., line_type)
+          )
+        }
       }
 
     # Display centroids when zoom level is greater than 11 and lines are selected
-    if (isTRUE(isolate(input$map_zoom) >= 11 && isolate(input$line_type) != 'none'))
+    if (isTRUE(isolate(input$map_zoom) >= 11 && !line_type %in% show_no_lines))
       showGroup(leafletProxy("map"), "centres")
   })
 
@@ -452,7 +451,7 @@ shinyServer(function(input, output, session){
     # Also when user moves to a new region
     region$repopulate_region
 
-    if (input$line_type != 'none'){
+    if (! input$line_type %in% show_no_lines){
       if (input$line_type == "rnet"){
         updateCheckboxInput(session, "freeze", value = T)
         disable("freeze")
@@ -496,13 +495,13 @@ shinyServer(function(input, output, session){
   }
   # Updates map tile according to the selected map base
   map_tile_url <- reactive({
+    lsoa$show <- input$line_type == "lsoa_base_map"
     switch(input$map_base,
            'roadmap' = "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
            'satellite' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
            'IMD' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png",
            'opencyclemap' = "https://c.tile.thunderforest.com/cycle/{z}/{x}/{y}.png",
-           'hilliness' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}",
-           "LSOA" = "https://api.mapbox.com/styles/v1/alexfrost/cixluhiik001h2sntuqz86nh7/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWxleGZyb3N0IiwiYSI6IkxWNGlmMjgifQ.1f4F5qrMT0IKQSog8M1TCQ"
+           'hilliness' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}"
     )
   })
 
@@ -570,9 +569,14 @@ shinyServer(function(input, output, session){
                                        addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
                                                 options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
                                      }else .
-
                                    } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
+      {
+        if (lsoa$show){
+          addTiles(., urlTemplate = "https://{s}.tiles.mapbox.com/v4/alexfrost.0oaowqxv/{z}/{x}/{y}.webp?access_token=pk.eyJ1IjoiYWxleGZyb3N0IiwiYSI6IkxWNGlmMjgifQ.1f4F5qrMT0IKQSog8M1TCQ",
+                   options=tileOptions(opacity = 0.8, maxZoom = 14, reuseTiles = T))
+        } else .
+      } %>%
       mapOptions(zoomToLimits = "first")
   )
 
@@ -631,7 +635,7 @@ shinyServer(function(input, output, session){
       input$line_type
 
       # Only render lines data when any of the Cycling Flows is selected by the user
-      plot_lines_data <- !is.null(to_plot$ldata) && input$line_type != 'none' &&
+      plot_lines_data <- !is.null(to_plot$ldata) && !input$line_type %in% show_no_lines &&
         (!is.null(input$map_bounds)) && input$nos_lines > 0 && (line_data() %in% names(to_plot$ldata@data))
       if(!plot_lines_data){
         # Set the warning message that no lines have been selected by the user
