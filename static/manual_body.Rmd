@@ -35,6 +35,8 @@ Contributions to the project are welcome. This file, for instance, can be edited
 
 <a target="_blank" href = "https://github.com/npct/pct-shiny/raw/master/static/pct-bike-user-manual-b.pdf">User Manual B</a>
 
+<a target="_blank" href = "https://github.com/npct/pct-shiny/raw/master/static/pct-bike-user-manual-c.pdf">User Manual C</a>
+
 
 #### Additional FAQs
 <!-- The NPCT has a [blog](http://pct.bike/wp/), where more [training materials](http://pct.bike/wp/?cat=6) including short videos, are being posted. -->
