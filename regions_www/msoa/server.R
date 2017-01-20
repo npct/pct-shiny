@@ -573,7 +573,7 @@ shinyServer(function(input, output, session){
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
       {
         if (lsoa$show){
-          addTiles(., urlTemplate = "https://{s}.tiles.mapbox.com/v4/alexfrost.0oaowqxv/{z}/{x}/{y}.webp?access_token=pk.eyJ1IjoiYWxleGZyb3N0IiwiYSI6IkxWNGlmMjgifQ.1f4F5qrMT0IKQSog8M1TCQ",
+          addTiles(., urlTemplate = "https://{s}.tiles.mapbox.com/v4/alexfrost.0oaowqxv/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiYWxleGZyb3N0IiwiYSI6IkxWNGlmMjgifQ.1f4F5qrMT0IKQSog8M1TCQ",
                    options=tileOptions(opacity = 0.8, maxZoom = 14, reuseTiles = T))
         } else .
       } %>%
