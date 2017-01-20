@@ -566,9 +566,9 @@ shinyServer(function(input, output, session){
                                    {
                                      if (input$map_base == 'IMD'){
                                        addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
-                                                options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
+                                                options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
                                        addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
-                                                options=tileOptions(opacity = 0.3, maxZoom = 14, reuseTiles = T))
+                                                options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
                                      }else .
                                    } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
