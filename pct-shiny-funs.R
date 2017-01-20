@@ -145,14 +145,7 @@ get_colour_palette <- function(color, bins = 10){
 
 # Generate a series of colours based on the input range
 get_colour_ramp <- function(colors, values) {
-  if(length(colors) == 1){
-    get_colour_palette(colors, 10)[cut(x = values, breaks = zone_fill_breaks)]
-  } else {
-    v <- normalise(values)
-    x <- colorRamp(colors)(v)
-    x[is.na(x)] <- 1
-    rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
-  }
+  get_colour_palette(colors)[cut(x = values, breaks = zone_fill_breaks)]
 }
 
 data_filter <- function(scenario, type){
