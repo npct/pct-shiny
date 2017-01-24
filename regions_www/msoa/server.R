@@ -574,7 +574,7 @@ shinyServer(function(input, output, session){
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
       {
         if (lsoa$show){
-          addTiles(., urlTemplate = "http://35.187.20.58/{z}/{x}/{y}.png",
+          addTiles(., urlTemplate = "http://104.155.44.101/{z}/{x}/{y}.png",
                    options=tileOptions(maxNativeZoom = 13, reuseTiles = T, tms = T))
         } else .
       } %>%
