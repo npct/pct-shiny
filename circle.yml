@@ -7,3 +7,8 @@ deployment:
     branch: master
     commands:
       - git push git@npct0.vs.mythic-beasts.com:pct-shiny $CIRCLE_SHA1:master -f
+  microsim:
+    branch: microsim
+    commands:
+      - git push git@npct0.vs.mythic-beasts.com:pct-shiny $CIRCLE_SHA1:microsim -f
+
