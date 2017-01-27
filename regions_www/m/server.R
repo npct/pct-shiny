@@ -111,7 +111,6 @@ shinyServer(function(input, output, session){
   })
 
   region <- reactiveValues(current = NA, data_dir = NA, repopulate_region = F, all_trips = NA)
-  lsoa <- reactiveValues(show = F)
   show_no_lines <- c("none", "lsoa_base_map")
 
   observe({
@@ -503,7 +502,6 @@ shinyServer(function(input, output, session){
   }
   # Updates map tile according to the selected map base
   map_tile_url <- reactive({
-    lsoa$show <- input$line_type == "lsoa_base_map"
     switch(input$map_base,
            'roadmap' = "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
            'satellite' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
@@ -511,6 +509,15 @@ shinyServer(function(input, output, session){
            'opencyclemap' = "https://c.tile.thunderforest.com/cycle/{z}/{x}/{y}.png",
            'hilliness' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}"
     )
+  })
+
+  observe({
+    if (input$line_type == "lsoa_base_map"){
+      addTiles(leafletProxy("map"), urlTemplate = "http://104.155.44.101/{z}/{x}/{y}.png", layerId = "lsoa_base_map",
+               options=tileOptions(maxNativeZoom = 13, reuseTiles = T, tms = T))
+    } else {
+      removeTiles(leafletProxy("map"), layerId = "lsoa_base_map")
+    }
   })
 
   # Set map attributes
@@ -580,12 +587,6 @@ shinyServer(function(input, output, session){
                                      }else .
                                    } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
-      {
-        if (lsoa$show){
-          addTiles(., urlTemplate = "http://104.155.44.101/{z}/{x}/{y}.png",
-                   options=tileOptions(maxNativeZoom = 13, reuseTiles = T, tms = T))
-        } else .
-      } %>%
       mapOptions(zoomToLimits = "first")
   )
 
