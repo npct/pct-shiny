@@ -24,8 +24,11 @@ zcols <- "RdYlBu" # for colourbrewer scale (see get_colour_ramp in pct-shiny-fun
 shiny_root <- file.path("..", "..")
 # expect pct-data as a sibling of pct-shiny
 data_dir_root <- file.path(shiny_root, '..', 'pct-data')
-# packages required
-cran_pkgs <- c("shiny", "rgdal", "rgeos", "leaflet", "DT", "shinyjs", "dplyr", "readr")
+
+# Packages, only reguarly used packages are loaded into the global space
+# the others must be installed but are used with the package prefix, e.g. DT::
+available_locally_pkgs <- c("shiny", "leaflet", "sp")
+must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs", "dplyr", "readr", "geojsonio", "DT")
 
 on_server <- grepl('^/var/shiny/pct-shiny', getwd())
 
@@ -33,7 +36,12 @@ data_sha <- as.character(readLines(file.path(shiny_root, "data_sha")))
 
 if(!on_server){
   source(file.path(shiny_root, "scripts", "init.R"))
-  init_dev_env(data_dir_root, data_sha, cran_pkgs, shiny_root)
+  init_dev_env(data_dir_root, data_sha, c(available_locally_pkgs, must_be_installed_pkgs), shiny_root)
+}
+
+installed <- must_be_installed_pkgs %in% installed.packages()
+if(length(must_be_installed_pkgs[!installed]) > 0){
+  stop(paste(c("Missing packages:", must_be_installed_pkgs[!installed]), collapse = " "))
 }
 
 # Check if we are on the production server (npt followed by any number of digits (only) is a prod machine)
@@ -41,13 +49,13 @@ production_branch <- grepl("npt\\d*$", Sys.info()["nodename"])
 
 repo_sha <- as.character(readLines(file.path(shiny_root, "repo_sha")))
 
-lapply(cran_pkgs, library, character.only = T)
+lapply(available_locally_pkgs, library, character.only = T)
 
 # Functions
 source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
 
 # Static files
-regions <- readOGR(dsn = file.path(shiny_root, "regions_www/regions.geojson"), layer = "OGRGeoJSON")
+regions <- rgdal::readOGR(dsn = file.path(shiny_root, "regions_www/regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 codebook_l = readr::read_csv(file.path(shiny_root, "static", "codebook_lines.csv"))
 codebook_z = readr::read_csv(file.path(shiny_root, "static", "codebook_zones.csv"))
@@ -194,7 +202,7 @@ shinyServer(function(input, output, session){
       poly <- flows_bb()
       if(is.null(poly)) return(NULL)
       poly <- spTransform(poly, CRS(proj4string(lines)))
-      keep <- gContains(poly, lines,byid=TRUE )
+      keep <- rgeos::gContains(poly, lines,byid=TRUE )
       if(all(!keep)) return(NULL)
       lines_in_bb <- lines[drop(keep), ]
       # Sort by the absolute values
@@ -212,14 +220,14 @@ shinyServer(function(input, output, session){
   find_region <- function(current_region){
     bb <- map_bb()
     if(is.null(bb)) return(NULL)
-    regions_bb_intersects <- gIntersects(bb, regions, byid=T)
+    regions_bb_intersects <- rgeos::gIntersects(bb, regions, byid=T)
     # return NULL if centre is outside the shapefile
     if(all(drop(!regions_bb_intersects))) return(NULL)
 
     current_region_visible <- current_region %in% tolower(regions[drop(regions_bb_intersects), ]$Region)
     if(current_region_visible) return(NULL)
 
-    regions_map_center_in <- gContains(regions, gCentroid(bb, byid=T), byid=T)
+    regions_map_center_in <- rgeos::gContains(regions, rgeos::gCentroid(bb, byid=T), byid=T)
     if(all(drop(!regions_map_center_in))) return(NULL)
     tolower(regions[drop(regions_map_center_in), ]$Region[1])
   }
@@ -684,7 +692,6 @@ shinyServer(function(input, output, session){
       content = function(file) { write.csv(signif_sdf(to_plot$straight_line)@data[codebook_l$`Variable name`], file = file) }
     )
 
-
     output$download_z_csv <- downloadHandler(
       filename = function() { "zones.csv"  },
       content = function(file) { write.csv(signif_sdf(to_plot$zones)@data[codebook_z$`Variable name`], file = file) }
@@ -692,27 +699,27 @@ shinyServer(function(input, output, session){
 
     output$download_z_geojson <- downloadHandler(
       filename = function() { "zones.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$zones[codebook_z$`Variable name`]), file = file) }
+      content = function(file) { geojsonio::geojson_write(signif_sdf(to_plot$zones[codebook_z$`Variable name`]), file = file) }
     )
 
     output$download_l_geojson <- downloadHandler(
       filename = function() { "lines.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$straight_line[codebook_l$`Variable name`]), file = file) }
+      content = function(file) { geojsonio::geojson_write(signif_sdf(to_plot$straight_line[codebook_l$`Variable name`]), file = file) }
     )
 
     output$download_rf_geojson <- downloadHandler(
       filename = function() { "routes_fast.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$faster_route[codebook_r$`Variable name`]), file = file) }
+      content = function(file) { geojsonio::geojson_write(signif_sdf(to_plot$faster_route[codebook_r$`Variable name`]), file = file) }
     )
 
     output$download_rq_geojson <- downloadHandler(
       filename = function() { "routes_quiet.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$quieter_route[codebook_r$`Variable name`]), file = file) }
+      content = function(file) { geojsonio::geojson_write(signif_sdf(to_plot$quieter_route[codebook_r$`Variable name`]), file = file) }
     )
 
     output$download_rnet_geojson <- downloadHandler(
       filename = function() { "routes_network.geojson"  },
-      content = function(file) { geojson_write(signif_sdf(to_plot$route_network[codebook_rnet$`Variable name`]), file = file) }
+      content = function(file) { geojsonio::geojson_write(signif_sdf(to_plot$route_network[codebook_rnet$`Variable name`]), file = file) }
     )
 
     output$download_l_rds <- downloadHandler(
