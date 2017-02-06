@@ -668,7 +668,7 @@ shinyServer(function(input, output, session){
       lines_to_plot <- to_plot$ldata@data[,unname(line_col_names)]
       decimal_line_cols <- which(vapply(lines_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
       DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names, rownames = FALSE) %>%
-        formatRound(columns = decimal_line_cols, digits=2)
+        DT::formatRound(columns = decimal_line_cols, digits=2)
     })
 
     # Creates data for the zones datatable
@@ -684,7 +684,7 @@ shinyServer(function(input, output, session){
       decimal_zone_cols <- which(vapply(zones_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
       DT::datatable(zones_to_plot, options = list(pageLength = 10),
                     colnames = zone_col_names, rownames = FALSE) %>%
-        formatRound(columns = decimal_zone_cols, digits=2)
+        DT::formatRound(columns = decimal_zone_cols, digits=2)
     })
 
     output$download_l_csv <- downloadHandler(
