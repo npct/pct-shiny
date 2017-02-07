@@ -31,7 +31,7 @@ This is work in progress and is being developed as part of a suite of training m
 Contributions to the project are welcome. This file, for instance, can be edited online at
 <a target="_blank" href="https://github.com/npct/pct-shiny/edit/master/static/manual_body.Rmd">github.com/npct/pct-shiny</a>.
 
-#### Use Manuals
+#### User Manuals
 
 <a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/pct-bike-user-manual-a.pdf">User Manual A</a>
 
@@ -48,6 +48,8 @@ Contributions to the project are welcome. This file, for instance, can be edited
 <a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/tunbridge-case-study.pdf">Tunbridge Case Study</a>
 
 <a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/west-sussex-case-study.pdf">West Sussex Case Study</a>
+
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/cornwall-case-study.pdf">Cornwall Case Study</a>
 
 
 #### Additional FAQs
