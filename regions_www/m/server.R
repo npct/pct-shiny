@@ -513,7 +513,8 @@ shinyServer(function(input, output, session){
 
   observe({
     if (input$line_type == "lsoa_base_map"){
-      addTiles(leafletProxy("map"), urlTemplate = "http://104.155.44.101/{z}/{x}/{y}.png", layerId = "lsoa_base_map",
+      urlTemplate <- paste0("http://npttile.vs.mythic-beasts.com/", input$scenario, "/{z}/{x}/{y}.png")
+      addTiles(leafletProxy("map"), urlTemplate = urlTemplate, layerId = "lsoa_base_map",
                options=tileOptions(maxNativeZoom = 13, reuseTiles = T, tms = T))
     } else {
       removeTiles(leafletProxy("map"), layerId = "lsoa_base_map")
