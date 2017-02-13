@@ -81,7 +81,7 @@ shinyUI(
                      checkboxInput("show_zones", "Show Zones", value = T)
             ),
             conditionalPanel(
-              condition = "input.line_type != 'none'",
+              condition = "input.line_type != 'none' && input.line_type != 'lsoa_base_map'",
               tags$div(title="Untick to update lines when you move the map",
                        checkboxInput("freeze", "Freeze Lines", value = F)
               ),
