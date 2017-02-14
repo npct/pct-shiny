@@ -512,6 +512,7 @@ shinyServer(function(input, output, session){
   })
 
   observe({
+    input$map_base
     if (input$line_type == "lsoa_base_map"){
       urlTemplate <- paste0("http://npttile.vs.mythic-beasts.com/", input$scenario, "/{z}/{x}/{y}.png")
       addTiles(leafletProxy("map"), urlTemplate = urlTemplate, layerId = "lsoa_base_map",
