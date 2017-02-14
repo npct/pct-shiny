@@ -354,10 +354,12 @@ shinyServer(function(input, output, session){
     region$repopulate_region
     input$map_base
     line_type <- isolate(input$line_type)
-    show_zone_popup <- input$line_type %in% show_no_lines
-    popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
-    leafletProxy("map")  %>% clearGroup(., c("zones", "centres")) %>%
-      addPolygons(.,  data = to_plot$zones
+
+    clearGroup(leafletProxy("map"), c("zones", "centres"))
+    if(input$show_zones) {
+      show_zone_popup <- input$line_type %in% show_no_lines
+      popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
+      addPolygons(leafletProxy("map"),  data = to_plot$zones
                   , weight = 2
                   , fillOpacity = transp_rate()
                   , opacity = 0.2
@@ -366,15 +368,16 @@ shinyServer(function(input, output, session){
                   , group = "zones"
                   , popup = popup
                   , options = pathOptions(clickable = show_zone_popup)
-                  , layerId = paste0(to_plot$zones[['geo_code']], '-', "zones")) %>%
-      addCircleMarkers(., data = to_plot$cents, radius = normalise(to_plot$cents$all, min = 1, max = 8),
-                       color = get_line_colour("centres"), group = "centres", opacity = 0.5,
-                       popup = centroid_popup(to_plot$cents, input$scenario, zone_attr(), showing_all_trips())) %>%
-      # Hide and Show line layers, so that they are displayed as the top layer in the map.
-      # Leaflet's function bringToBack() or bringToFront() (see http://leafletjs.com/reference.html#path)
-      # don't seem to exist for R
-      # By default hide the centroids
-      hideGroup(., "centres") %>%
+                  , layerId = paste0(to_plot$zones[['geo_code']], '-', "zones"))
+    }
+    addCircleMarkers(leafletProxy("map"), data = to_plot$cents, radius = normalise(to_plot$cents$all, min = 1, max = 8),
+                     color = get_line_colour("centres"), group = "centres", opacity = 0.5,
+                     popup = centroid_popup(to_plot$cents, input$scenario, zone_attr(), showing_all_trips()))
+    # Hide and Show line layers, so that they are displayed as the top layer in the map.
+    # Leaflet's function bringToBack() or bringToFront() (see http://leafletjs.com/reference.html#path)
+    # don't seem to exist for R
+    # By default hide the centroids
+    leafletProxy("map") %>% hideGroup(., "centres") %>%
       {
         if(!line_type %in% show_no_lines) {
           switch(line_type,
