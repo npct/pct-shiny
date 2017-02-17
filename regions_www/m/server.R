@@ -36,8 +36,8 @@ data_sha <- as.character(readLines(file.path(shiny_root, "data_sha")))
 
 # Create a df to store LSOA legend information
 lsoa_legend_df <- data.frame(
-  colours = c("#000000", "#9C9C9C", "#9C9C9C", "#FFFF73", "#FFFF73", "#AFFF00", "#AFFF00", "#00FFFF", "#00FFFF", "#30B0FF", "#30B0FF", "#2E5FFF", "#2E5FFF", "#0000FF", "#0000FF", "#FF00C5"),
-  labels = c( "0", "1", "2-9", "10", "11-49", "50", "51-99", "100", "101-249", "250", "251-499", "500", "501-999", "1000", "1001-1999", "2000+" )
+  colours = c("#000000", "#9C9C9C", "#FFFF73", "#AFFF00", "#00FFFF", "#30B0FF", "#2E5FFF", "#0000FF", "#FF00C5"),
+  labels = c( "0", "1-9", "10-49", "50-99", "100-249", "250-499", "500-999", "1000-1999", "2000+" )
 )
 
 
