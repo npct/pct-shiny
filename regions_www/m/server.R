@@ -34,6 +34,13 @@ on_server <- grepl('^/var/shiny/pct-shiny', getwd())
 
 data_sha <- as.character(readLines(file.path(shiny_root, "data_sha")))
 
+# Create a df to store LSOA legend information
+lsoa_legend_df <- data.frame(
+  colours = c("#000000", "#9C9C9C", "#9C9C9C", "#FFFF73", "#FFFF73", "#AFFF00", "#AFFF00", "#00FFFF", "#00FFFF", "#30B0FF", "#30B0FF", "#2E5FFF", "#2E5FFF", "#0000FF", "#0000FF", "#FF00C5"),
+  labels = c( "0", "1", "2-9", "10", "11-49", "50", "51-99", "100", "101-249", "250", "251-499", "500", "501-999", "1000", "1001-1999", "2000+" )
+)
+
+
 if(!on_server){
   source(file.path(shiny_root, "scripts", "init.R"))
   init_dev_env(data_dir_root, data_sha, c(available_locally_pkgs, must_be_installed_pkgs), shiny_root)
@@ -600,8 +607,9 @@ shinyServer(function(input, output, session){
     input$map_base
     leafletProxy("map") %>% clearControls(.)
     title <- ifelse(showing_all_trips(), "% trips cycled", "% cycling to work")
-    if (input$show_zones) {
-      leafletProxy("map") %>% addLegend("topleft", colors = get_colour_palette(zcols, 10),
+    if (input$show_zones){
+      leafletProxy("map") %>%
+        addLegend("topleft", colors = get_colour_palette(zcols, 10),
                                         labels = c("0-1%",
                                                    "2-3%",
                                                    "4-6%",
@@ -615,6 +623,16 @@ shinyServer(function(input, output, session){
                                         title = title,
                                         opacity = 0.5
       )
+    }
+    if (!input$show_zones && input$line_type == "lsoa_base_map"){
+      leafletProxy("map") %>%
+      addLegend("topleft", colors = lsoa_legend_df$colours,
+                labels = lsoa_legend_df$labels,
+                title = "# of cyclists on route (LSOA)",
+                opacity = 0.5
+      )
+
+
     }
   })
 
