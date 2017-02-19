@@ -531,7 +531,7 @@ shinyServer(function(input, output, session){
                  options=tileOptions(maxNativeZoom = 13, reuseTiles = T, tms = T)) %>%
         addLegend("topleft", layerId= "lsoa_leg", colors = lsoa_legend_df$colours,
                   labels = lsoa_legend_df$labels,
-                  title = "Cyclists on route newtwork",
+                  title = "Cyclists on route network",
                   opacity = 0.5
         )
     } else {
