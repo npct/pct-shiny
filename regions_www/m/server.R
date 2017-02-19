@@ -525,10 +525,17 @@ shinyServer(function(input, output, session){
     input$map_base
     if (input$line_type == "lsoa_base_map"){
       urlTemplate <- paste0("http://npttile.vs.mythic-beasts.com/", input$scenario, "/{z}/{x}/{y}.png")
-      addTiles(leafletProxy("map"), urlTemplate = urlTemplate, layerId = "lsoa_base_map",
-               options=tileOptions(maxNativeZoom = 13, reuseTiles = T, tms = T))
+
+      leafletProxy("map") %>%
+        addTiles(., urlTemplate = urlTemplate, layerId = "lsoa_base_map",
+                 options=tileOptions(maxNativeZoom = 13, reuseTiles = T, tms = T)) %>%
+        addLegend("topleft", layerId= "lsoa_leg", colors = lsoa_legend_df$colours,
+                  labels = lsoa_legend_df$labels,
+                  title = "Cyclists on route newtwork",
+                  opacity = 0.5
+        )
     } else {
-      removeTiles(leafletProxy("map"), layerId = "lsoa_base_map")
+      leafletProxy("map") %>% removeTiles(., layerId = "lsoa_base_map") %>% removeControl("lsoa_leg")
     }
   })
 
@@ -605,11 +612,11 @@ shinyServer(function(input, output, session){
   # Adds map legend
   observe({
     input$map_base
-    leafletProxy("map") %>% clearControls(.)
+    leafletProxy("map") %>% removeControl(layerId = "zone_leg")
     title <- ifelse(showing_all_trips(), "% trips cycled", "% cycling to work")
-    if (input$show_zones){
+    if (input$show_zones) {
       leafletProxy("map") %>%
-        addLegend("topleft", colors = get_colour_palette(zcols, 10),
+        addLegend("topleft", layerId = "zone_leg", colors = get_colour_palette(zcols, 10),
                                         labels = c("0-1%",
                                                    "2-3%",
                                                    "4-6%",
@@ -623,16 +630,6 @@ shinyServer(function(input, output, session){
                                         title = title,
                                         opacity = 0.5
       )
-    }
-    if (!input$show_zones && input$line_type == "lsoa_base_map"){
-      leafletProxy("map") %>%
-      addLegend("topleft", colors = lsoa_legend_df$colours,
-                labels = lsoa_legend_df$labels,
-                title = "# of cyclists on route (LSOA)",
-                opacity = 0.5
-      )
-
-
     }
   })
 
