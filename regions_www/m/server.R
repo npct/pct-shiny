@@ -36,8 +36,8 @@ data_sha <- as.character(readLines(file.path(shiny_root, "data_sha")))
 
 # Create a df to store LSOA legend information
 lsoa_legend_df <- data.frame(
-  colours = c("#000000", "#9C9C9C", "#FFFF73", "#AFFF00", "#00FFFF", "#30B0FF", "#2E5FFF", "#0000FF", "#FF00C5"),
-  labels = c( "0", "1-9", "10-49", "50-99", "100-249", "250-499", "500-999", "1000-1999", "2000+" )
+  colours = c("#9C9C9C", "#FFFF73", "#AFFF00", "#00FFFF", "#30B0FF", "#2E5FFF", "#0000FF", "#FF00C5"),
+  labels = c( "1-9", "10-49", "50-99", "100-249", "250-499", "500-999", "1000-1999", "2000+" )
 )
 
 
@@ -366,16 +366,16 @@ shinyServer(function(input, output, session){
     if(input$show_zones) {
       show_zone_popup <- input$line_type %in% show_no_lines
       popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
-      addPolygons(leafletProxy("map"),  data = to_plot$zones
-                  , weight = 2
-                  , fillOpacity = transp_rate()
-                  , opacity = 0.2
-                  , fillColor = get_colour_ramp(zcols, to_plot$zones[[zone_data()]]/to_plot$zones$all)
-                  , color = "black"
-                  , group = "zones"
-                  , popup = popup
-                  , options = pathOptions(clickable = show_zone_popup)
-                  , layerId = paste0(to_plot$zones[['geo_code']], '-', "zones"))
+      addPolygons(leafletProxy("map"),  data = to_plot$zones,
+                  weight = 2,
+                  fillOpacity = transp_rate(),
+                  opacity = 0.2,
+                  fillColor = get_colour_ramp(zcols, to_plot$zones[[zone_data()]]/to_plot$zones$all),
+                  color = "black",
+                  group = "zones",
+                  popup = popup,
+                  options = pathOptions(clickable = show_zone_popup),
+                  layerId = paste0(to_plot$zones[['geo_code']], '-', "zones"))
     }
     addCircleMarkers(leafletProxy("map"), data = to_plot$cents, radius = normalise(to_plot$cents$all, min = 1, max = 8),
                      color = get_line_colour("centres"), group = "centres", opacity = 0.5,
@@ -385,16 +385,16 @@ shinyServer(function(input, output, session){
     # don't seem to exist for R
     # By default hide the centroids
     leafletProxy("map") %>% hideGroup(., "centres") %>%
-      {
-        if(!line_type %in% show_no_lines) {
-          switch(line_type,
-                 'routes'= {
-                   hideGroup(., c("quieter_route", "faster_route") ) %>% showGroup(., c("quieter_route", "faster_route"))
-                 },
-                 hideGroup(., line_type) %>% showGroup(., line_type)
-          )
-        }
+    {
+      if(!line_type %in% show_no_lines) {
+        switch(line_type,
+               'routes'= {
+                 hideGroup(., c("quieter_route", "faster_route") ) %>% showGroup(., c("quieter_route", "faster_route"))
+               },
+               hideGroup(., line_type) %>% showGroup(., line_type)
+        )
       }
+    }
 
     # Display centroids when zoom level is greater than 11 and lines are selected
     if (isTRUE(isolate(input$map_zoom) >= 11 && !line_type %in% show_no_lines))
@@ -500,14 +500,14 @@ shinyServer(function(input, output, session){
       line_opacity <- 0.5
     }
     popop_fun <- get(popup_fun_name)
-    addPolylines(m, data = sorted_l, color = get_line_colour(group_name)
+    addPolylines(m, data = sorted_l, color = get_line_colour(group_name),
                  # Plot widths proportional to attribute value
                  # Remove NAs from the weights
-                 , weight = normalise(sorted_l[[line_data()]][!is.na(sorted_l[[line_data()]]) ], min = min, max = max)
-                 , opacity = line_opacity
-                 , group = group_name
-                 , popup = popop_fun(sorted_l, input$scenario, showing_all_trips())
-                 , layerId = paste0(sorted_l[['id']], '-', group_name))
+                 weight = normalise(sorted_l[[line_data()]][!is.na(sorted_l[[line_data()]]) ], min = min, max = max),
+                 opacity = line_opacity,
+                 group = group_name,
+                 popup = popop_fun(sorted_l, input$scenario, showing_all_trips()),
+                 layerId = paste0(sorted_l[['id']], '-', group_name))
 
   }
   # Updates map tile according to the selected map base
@@ -525,10 +525,17 @@ shinyServer(function(input, output, session){
     input$map_base
     if (input$line_type == "lsoa_base_map"){
       urlTemplate <- paste0("http://npttile.vs.mythic-beasts.com/", input$scenario, "/{z}/{x}/{y}.png")
-      addTiles(leafletProxy("map"), urlTemplate = urlTemplate, layerId = "lsoa_base_map",
-               options=tileOptions(maxNativeZoom = 13, reuseTiles = T, tms = T))
+
+      leafletProxy("map") %>%
+        addTiles(., urlTemplate = urlTemplate, layerId = "lsoa_base_map",
+                 options=tileOptions(maxNativeZoom = 13, reuseTiles = T, tms = T)) %>%
+        addLegend("topleft", layerId= "lsoa_leg", colors = lsoa_legend_df$colours,
+                  labels = lsoa_legend_df$labels,
+                  title = "Cyclists on route network",
+                  opacity = 0.5
+        )
     } else {
-      removeTiles(leafletProxy("map"), layerId = "lsoa_base_map")
+      leafletProxy("map") %>% removeTiles(., layerId = "lsoa_base_map") %>% removeControl("lsoa_leg")
     }
   })
 
@@ -605,34 +612,24 @@ shinyServer(function(input, output, session){
   # Adds map legend
   observe({
     input$map_base
-    leafletProxy("map") %>% clearControls(.)
+    leafletProxy("map") %>% removeControl(layerId = "zone_leg")
     title <- ifelse(showing_all_trips(), "% trips cycled", "% cycling to work")
-    if (input$show_zones){
+    if (input$show_zones) {
       leafletProxy("map") %>%
-        addLegend("topleft", colors = get_colour_palette(zcols, 10),
-                                        labels = c("0-1%",
-                                                   "2-3%",
-                                                   "4-6%",
-                                                   "7-9%",
-                                                   "10-14%",
-                                                   "15-19%",
-                                                   "20-24%",
-                                                   "25-29%",
-                                                   "30-39%",
-                                                   "40%+"),
-                                        title = title,
-                                        opacity = 0.5
-      )
-    }
-    if (!input$show_zones && input$line_type == "lsoa_base_map"){
-      leafletProxy("map") %>%
-      addLegend("topleft", colors = lsoa_legend_df$colours,
-                labels = lsoa_legend_df$labels,
-                title = "# of cyclists on route (LSOA)",
-                opacity = 0.5
-      )
-
-
+        addLegend("topleft", layerId = "zone_leg", colors = get_colour_palette(zcols, 10),
+                  labels = c("0-1%",
+                             "2-3%",
+                             "4-6%",
+                             "7-9%",
+                             "10-14%",
+                             "15-19%",
+                             "20-24%",
+                             "25-29%",
+                             "30-39%",
+                             "40%+"),
+                  title = title,
+                  opacity = 0.5
+        )
     }
   })
 
