@@ -6,7 +6,7 @@ $(document).ready(function(){
   $.getJSON("/regions.geojson").done(function(statesData) {
     var map = L.map('map').setView([ 53, -0.4], 6);
 
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
+    L.tileLayer('http://{s}.tiles.wmflabs.org/bw-mapnik/{z}/{x}/{y}.png', {
       maxZoom: 18,
       attribution: '<a href="http://leafletjs.com" target = "_blank">Leaflet</a> | ' +
       'Map data &copy; <a href="http://openstreetmap.org" target = "_blank">OpenStreetMap</a> contributors | ' +
