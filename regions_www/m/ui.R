@@ -19,32 +19,32 @@ library(shiny)
 library(leaflet)
 library(shinyjs)
 
-scenarios <- c(  "Census 2011 Cycling" = "olc"
-               , "Government Target"   = "govtarget"
-               , "Gender equality"     = "gendereq"
-               , "Go Dutch"            = "dutch"
-               , "Ebikes"              = "ebike"
+scenarios <- c("Census 2011 Cycling" = "olc",
+               "Government Target"   = "govtarget",
+               "Gender equality"     = "gendereq",
+               "Go Dutch"            = "dutch",
+               "Ebikes"              = "ebike"
                )
 
-line_types <- c(  "None"                 = "none"
-                , "Straight Lines"       = "straight_line"
-                , "Fast Routes"          = "faster_route"
-                , "Fast & Quiet Routes"  = "routes"
-                , "Route Network (MSOA)" = "route_network"
-                , "Route Network (LSOA)" = "lsoa_base_map"
+line_types <- c("None"                 = "none",
+                "Straight Lines"       = "straight_line",
+                "Fast Routes"          = "faster_route",
+                "Fast & Quiet Routes"  = "routes",
+                "Route Network (MSOA)" = "route_network",
+                "Route Network (LSOA)" = "lsoa_base_map"
                 )
 
-attrs_zone <- c(  "Number of cyclists" = "slc"
-                , "Increase in Cycling" = "sic"
-                , "HEAT Value"          = "slvalue_heat"
-                , "CO2 reduction"       = "sico2"
+attrs_zone <- c("Number of cyclists" = "slc",
+                "Increase in Cycling" = "sic",
+                "HEAT Value"          = "slvalue_heat",
+                "CO2 reduction"       = "sico2"
                 )
 
-map_base_attrs <- c(  "Roadmap (Black & White)" = "roadmap"
-                    , "Roadmap (OpenCycleMap)"  = "opencyclemap"
-                    , "Satellite"               = "satellite"
-                    , "Index of Deprivation"    = "IMD"
-                    , "Hilliness"               = "hilliness"
+map_base_attrs <- c("Roadmap (Black & White)" = "roadmap",
+                    "Roadmap (OpenCycleMap)"  = "opencyclemap",
+                    "Satellite"               = "satellite",
+                    "Index of Deprivation"    = "IMD",
+                    "Hilliness"               = "hilliness"
                     )
 
 on_server <- grepl('^/var/shiny/pct-shiny', getwd())
