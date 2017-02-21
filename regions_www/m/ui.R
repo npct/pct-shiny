@@ -31,7 +31,7 @@ line_types <- c(  "None"                 = "none"
                 , "Fast Routes"          = "faster_route"
                 , "Fast & Quiet Routes"  = "routes"
                 , "Route Network (MSOA)" = "route_network"
-                # , "Route Network (LSOA)" = "lsoa_base_map"
+                , "Route Network (LSOA)" = "lsoa_base_map"
                 )
 
 attrs_zone <- c(  "Number of cyclists" = "slc"
