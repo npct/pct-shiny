@@ -10,9 +10,7 @@ $(document).ready(function(){
       maxZoom: 18,
       attribution: '<a href="http://leafletjs.com" target = "_blank">Leaflet</a> | ' +
       'Map data &copy; <a href="http://openstreetmap.org" target = "_blank">OpenStreetMap</a> contributors | ' +
-      '<a href="http://creativecommons.org/licenses/by-sa/2.0/" target = "_blank">CC-BY-SA</a> | ' +
-      'Imagery © <a href="http://mapbox.com" target = "_blank">Mapbox</a>',
-      id: 'mapbox.light'
+      '<a href="http://creativecommons.org/licenses/by-sa/2.0/" target = "_blank">CC-BY-SA</a>'
     }).addTo(map);
 
     // Don't show the 'Leaflet' text. Attribution overload
