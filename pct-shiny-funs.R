@@ -145,14 +145,7 @@ get_colour_palette <- function(color, bins = 10){
 
 # Generate a series of colours based on the input range
 get_colour_ramp <- function(colors, values) {
-  if(length(colors) == 1){
-    get_colour_palette(colors, 10)[cut(x = values, breaks = zone_fill_breaks)]
-  } else {
-    v <- normalise(values)
-    x <- colorRamp(colors)(v)
-    x[is.na(x)] <- 1
-    rgb(x[,1], x[,2], x[,3], maxColorValue = 255)
-  }
+  get_colour_palette(colors)[cut(x = values, breaks = zone_fill_breaks)]
 }
 
 data_filter <- function(scenario, type){
@@ -160,7 +153,7 @@ data_filter <- function(scenario, type){
 }
 
 # Popup function for straight line data in html table
-straight_popup <- function(data, scenario, all_trips){
+straight_line_popup <- function(data, scenario, all_trips){
 
   # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
   data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
@@ -255,8 +248,13 @@ route_type_label <- NULL
 route_type_label[['fastest']] <- 'Direct'
 route_type_label[['quietest']] <- 'Quiet'
 
+#
+none_popup <- function(){
+  # noop
+}
+
 # Route popup function
-route_popup <- function(data, scenario, all_trips){
+routes_popup <- function(data, scenario, all_trips){
 
   ifelse(("rqincr" %in% colnames(data@data)), route_type <-'quiet', route_type <-'fast')
 
@@ -401,7 +399,7 @@ route_popup <- function(data, scenario, all_trips){
 
 
 # Network Route popup function
-network_route_popup <- function(data, scenario, all_trips){
+route_network_popup <- function(data, scenario, all_trips){
   ############ % increase in distance vs. fastest route ONLY FOR QUIETEST ??
 
   if(scenario == 'olc') {
