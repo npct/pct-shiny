@@ -321,17 +321,17 @@ shinyServer(function(input, output, session){
     input$show_zones
     region$repopulate_region
 
-    line_type <- ifelse(input$line_type == 'routes', "faster_route", input$line_type)
+    line_type <- ifelse(input$line_type == 'routes', "quieter_route", input$line_type)
     local_lines <- sort_lines(to_plot[[line_type]], input$line_type, input$nos_lines)
 
     if (is.null(to_plot$ldata) || (!is.null(to_plot$ldata) && !identical(to_plot$ldata, local_lines))){
       leafletProxy("map")  %>% clearGroup(., c("straight_line", "quieter_route", "faster_route", "route_network")) %>%
         removeShape(., "highlighted")
       to_plot$ldata <<- local_lines
-      if(input$line_type == 'routes') {
-        plot_lines(leafletProxy("map"), sort_lines(to_plot$quieter_route, "quieter_route", input$nos_lines), "quieter_route")
-      }
       plot_lines(leafletProxy("map"), to_plot$ldata, line_type)
+      if(input$line_type == 'routes') {
+        plot_lines(leafletProxy("map"), sort_lines(to_plot$faster_route, "faster_route", input$nos_lines), "faster_route")
+      }
     }
 
     if(input$line_type == 'route_network')
