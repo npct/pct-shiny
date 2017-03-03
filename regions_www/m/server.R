@@ -208,9 +208,7 @@ shinyServer(function(input, output, session){
       poly <- flows_bb()
       if(is.null(poly)) return(NULL)
       poly <- spTransform(poly, CRS(proj4string(lines)))
-      keep <- rgeos::gContains(poly, lines,byid=TRUE )
-      if(all(!keep)) return(NULL)
-      lines_in_bb <- lines[drop(keep), ]
+      lines_in_bb <- lines[poly, ]
       # Sort by the absolute values
       lines_in_bb[ tail(order(abs(lines_in_bb[[line_data()]])), nos), ]
     }else{
