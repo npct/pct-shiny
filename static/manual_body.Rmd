@@ -31,209 +31,31 @@ This is work in progress and is being developed as part of a suite of training m
 Contributions to the project are welcome. This file, for instance, can be edited online at
 <a target="_blank" href="https://github.com/npct/pct-shiny/edit/master/static/manual_body.Rmd">github.com/npct/pct-shiny</a>.
 
+#### User Manuals
 
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/pct-bike-user-manual-a.pdf">User Manual A</a>
+
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/pct-bike-user-manual-b.pdf">User Manual B</a>
+
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/pct-bike-user-manual-c.pdf">User Manual C</a>
+
+#### Case Studies
+
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/preston-case-study.pdf">Preston Case Study</a>
+
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/rotherhithe-case-study.pdf">Rotherhithe Case Study</a>
+
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/tunbridge-case-study.pdf">Tunbridge Case Study</a>
+
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/west-sussex-case-study.pdf">West Sussex Case Study</a>
+
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/cornwall-case-study.pdf">Cornwall Case Study</a>
+
+
+#### Additional FAQs
 <!-- The NPCT has a [blog](http://pct.bike/wp/), where more [training materials](http://pct.bike/wp/?cat=6) including short videos, are being posted. -->
 
-[1\. How should the tool be used?](javascript:toggleElement('helptable'))
-
-<div id="helptable" style="display:none">
-
-The tool can be used in many different ways depending on the aims of the user. The tool is primarily designed to be used interactively. By switching between different scenarios, for example, one can see how the distribution of cycling can be expected to change as cycling grows. By switching between line types, you can see whether or not 'desire lines' of high demand are supplied with quiet and direct routes.
-
-By experimenting with the 'Freeze lines' option and zooming into specific areas of interest, the level of cycling at more local levels can be explored. By setting the basemap to 'Satellite' and zooming in, space available create space for cycling can be seen.
-
-The PCT works on a region-by-region basis. The url corresponds to the region you are looking at, which can be selected from the
- <a target="_blank" href="http://pct.bike">home page</a>. <a target="_blank" href="http://pct.bike/west-yorkshire/">pct.bike/west-yorkshire/</a>,
-for example, shows West Yorkshire. If you move the map's extent outside the region's boundary, the PCT will jump to a new region.
-
-Overall, there are many ways that the tool can be used to improve cycling provision. It is likely that more features will be added in future versions The table below explains the various options in the interactive map.
-
-<table class="table table-hover table-responsive">
-
-<tbody>
-
-<tr>
-
-<td style="vertical-align: top; width: 1054px;"><span style="font-weight: bold; text-decoration: underline;">Scenario:</span>  
-
-1.  Census 2011 Reported Cycle Commuting
-2.  Government Target: this scenario is based on the UK government's proposed target (as set out in its draft
-<a target="_blank" href="https://www.gov.uk/government/uploads/system/uploads/attachment_data/file/364791/141015_Cycling_Delivery_Plan.pdf">Cycling Delivery Plan</a>) to double cycling in England. Taking population increases and trip rate decreases into account, the target implies doubling the proportion of trips made by cycling nationwide. Trips that have a large distances or that already have a high rate of cycling will see cycling increase less than two-fold; trips with a below average current rate of cycling but high potential (based on the distance) will see cycling increase more than two-fold.
-3.  Gender equality: Women have the same cycling rate as men
-4.  Go Dutch: Cycling propensity at the levels seen in the Netherlands
-5.  Electric bicycles: Willingness to cycle longer trips increases with widespread use of electric bicycles
-
-</td>
-
-<td style="vertical-align: top; width: 535px;">![Scenario Selection](/www/img/help/scenario-selection.png)  
-</td>
-
-</tr>
-
-<tr>
-
-<td style="vertical-align: top; width: 1054px;"><span style="font-weight: bold; text-decoration: underline;">Zone Attribute</span>  
-
-1.  Scenario Level of Cycling is the model predicted rate of cycling in the given area for the chosen scenario
-2.  Scenario Increase in Cycling is the corresponding number of additional cycle commuters over and above Census 2011
-3.  None: No zone attribute is displayed
-
-</td>
-
-<td style="vertical-align: top; width: 535px;">![Zone Attribute](/www/img/help/zone-attribute.png)  
-</td>
-
-</tr>
-
-<tr>
-
-<td style="vertical-align: top; width: 1054px;"><span style="font-weight: bold; text-decoration: underline;">Cycling Flows</span>  
-
-1.  Straight Lines between the population weighted centroids of Census Medium Super Output Areas
-2.  'Fastest' Route using 
-<a target="_blank" href="http://www.cyclestreets.net/journey/help/howitworks/">Cycle Streets Routing</a>
-
-3.  'Fastest' and 'Quietest' Routes using Cycle Streets Routing
-
-</td>
-
-<td style="vertical-align: top; width: 535px;">![Cycling Flows](/www/img/help/cycling-flows.png)  
-</td>
-
-</tr>
-
-<tr>
-
-<td style="vertical-align: top; width: 1054px;">
-
-<span style="font-weight: bold; text-decoration: underline;">Freeze Lines</span>
-
-1.  Ticked: The top cycling flows shown remain those calculated based on the visible map area when the box was ticked
-2.  Unticked: If the visible map area changes, flows are recalculated accordingly
-
-</td>
-
-<td style="vertical-align: top; width: 535px;">![Fixed Lines](/www/img/help/freeze-lines.png)  
-</td>
-
-</tr>
-
-<tr>
-
-<td style="vertical-align: top; width: 1054px;">
-
-<span style="font-weight: bold; text-decoration: underline;">Line Attribute</span>
-
-1.  Scenario Level of Cycling is the model predicted rate of cycling between an origin destination pair for the chosen scenario
-2.  Scenario Increase in Cycling is the corresponding number of additional cycle commuters that can be expected between the origin destination pair
-
-</td>
-
-<td style="vertical-align: top; width: 535px;">![Line Attribute](/www/img/help/line-attribute.png)  
-</td>
-
-</tr>
-
-<tr>
-
-<td style="vertical-align: top; width: 1054px;"><span style="font-weight: bold; text-decoration: underline;">Flows to Show</span>  
-When viewing flows, this slider selects how many of the of the top 50 are shown</td>
-
-<td style="vertical-align: top; width: 535px;">![Number of Lines to Show](/www/img/help/number-of-lines.png)  
-</td>
-
-</tr>
-
-<tr>
-
-<td style="vertical-align: top; width: 1054px;">
-
-<span style="font-weight: bold; text-decoration: underline;">Fastest Route</span> The purple line represents the 'Fastest' cycling route calculated by CycleStreets between the population weighted centroid of two zones. Once selected the following information is displayed:
-
-1.  Total commutes 2011: The total number of commuting trips between these two zones
-2.  Cycling 2011: Reported cycle commutes between these two zones
-3.  Scenario Cycling: The model predicted rate of cycling between an origin destination pair for the chosen scenario
-4.  Scenario Increase: The difference between the Census 2011 Cycling and the Scenario
-5.  Route Distance: The route distance in km between the centre of the zones
-
-<span style="font-weight: bold; text-decoration: underline;"></span></td>
-
-<td style="vertical-align: top; width: 535px;">![Direct Route](/www/img/help/direct-route.png)  
-</td>
-
-</tr>
-
-<tr>
-
-<td style="vertical-align: top;">
-
-<span style="font-weight: bold; text-decoration: underline;">Quiet Route</span> The light blue line represents the 'Quietest' cycling route calculated by CycleStreets between the population weighted centroid of two zones. Once selected the following information is displayed:
-
-1.  Total commutes 2011: The total number of commuting trips between these two zones
-2.  Cycling 2011: Reported cycle commutes between these two zones
-3.  Scenario Cycling: The model predicted rate of cycling between an origin destination pair for the chosen scenario
-4.  Scenario Increase: The difference between the Census 2011 Cycling and the Scenario
-5.  Route Distance: The route distance in km between the centre of the zones
-
-</td>
-
-<td style="vertical-align: top;">![Quiet Route](/www/img/help/quiet-route.png)  
-</td>
-
-</tr>
-
-<tr>
-
-<td style="vertical-align: top;">
-
-<span style="font-weight: bold; text-decoration: underline;">Straight Lines</span> The red line represents a straight line between the population weighted centroid of two zones. Once selected the following information is displayed:
-
-1.  Total commutes 2011: The total number of commuting trips between these two zones
-2.  Cycling 2011: Reported cycle commutes between these two zones
-3.  Scenario Cycling: The model predicted rate of cycling between an origin destination pair for the chosen scenario
-4.  Scenario Increase: The difference between the Census 2011 Cycling and the Scenario
-5.  Route Distance: The route distance in km between the centre of the zones
-
-</td>
-
-<td style="vertical-align: top;">![Straight Line](/www/img/help/straight-line-popup.png)  
-</td>
-
-</tr>
-
-<tr>
-
-<td style="vertical-align: top;">
-
-<span style="font-weight: bold; text-decoration: underline;">Zone Information</span> Zone information is displayed on clicking on the black circle in the centre of each zone:
-
-1.  Zone: Zone name according to the Census
-2.  Scenario Level of Cycling: the model predicted rate of cycling in the given area for the chosen scenario
-3.  Scenario Increase in Cycling: the corresponding number of additional cycle commuters over and above Census 2011
-4.  Hilliness: Shows the average hilliness of the zone from CycleStreets.net.
-
-</td>
-
-<td style="vertical-align: top;">![Zone](/www/img/help/zone-popup.png)  
-</td>
-
-</tr>
-
-<tr>
-
-<td style="vertical-align: top;"><span style="font-weight: bold; text-decoration: underline;">Zone Attribute Legend</span> The legend shows quartiles for the displayed zone attribute according to the scenario selected.</td>
-
-<td style="vertical-align: top;">![Legend](/www/img/help/legend.png)</td>
-
-</tr>
-
-</tbody>
-
-</table>
-
-</div>
-
-[2\. Does hilliness matter for cycling? Do the Dutch just cycle more because the Netherlands is flatter?](javascript:toggleElement('a1'))
+[1\. Does hilliness matter for cycling? Do the Dutch just cycle more because the Netherlands is flatter?](javascript:toggleElement('a1'))
 
 <div id="a1" style="display:none">
 
@@ -294,7 +116,7 @@ We estimated what would happen to cycling levels in England if England had the s
 
 </div>
 
-[3\. How does propensity to cycle differ between England and the Netherlands?](javascript:toggleElement('a2'))
+[2\. How does propensity to cycle differ between England and the Netherlands?](javascript:toggleElement('a2'))
 
 <div id="a2" style="display:none">
 
@@ -367,7 +189,7 @@ In both countries, the probability of cycling falls rapidly as trip distance inc
 
 </div>
 
-[4\. Why focus on the direct routes?](javascript:toggleElement('a3'))
+[3\. Why focus on the direct routes?](javascript:toggleElement('a3'))
 
 <div id="a3" style="display:none">
 
@@ -412,7 +234,7 @@ Thus we have chosen to present the 'direct' as the most first choice for creatin
 
 </div>
 
-[5\. What are the estimates of future cycling rate based on?](javascript:toggleElement('a4'))
+[4\. What are the estimates of future cycling rate based on?](javascript:toggleElement('a4'))
 
 <div id="a4" style="display:none">
 
@@ -429,87 +251,3 @@ By experimenting with the 'Freeze lines' option and zooming into specific areas 
 Overall, there are many ways that the tool can be used to improve cycling provision. It is likely that more features will be added in future versions (if you have any suggestions, please [get in touch](mailto:npct@npct.org.uk)). The table below explains the various options in the interactive map.
 
 </div>
-
-[6\. How to download and use the data from the PCT?](javascript:toggleElement('a5'))
-
-<div id="a5" style="display:none">
-
-<!-- This section is work in progress. -->
-
-The data underlying the PCT can be downloaded by clicking on the the Lines tab. Data can be downloaded in 3 formats: 
-
-- `.Rds`: This includes geographical and attribute data in R's native file format. After the file has been downloaded, `.Rds` files can be loaded using the R function `readRDS()`.
-
-- `.geojson`: This is an open data format for geographical and attribute data. `.geojson` files can be opened using the open source software [QGIS](http://www.qgis.org/en/site/), which can be installed for free.
-
-- `.csv`: This is a standard format for tabular data and can be opened in standard spreadsheet programs such as [LibreOffice Calc](https://www.libreoffice.org/discover/calc/) and Microsoft Excel.
-
-The PCT's native file format is `.Rds` because it is fast and light. Loading these into into R is illustrated below for the lines data (called 'l.Rds') for West Yorkshire:
-
-```{r, eval=FALSE}
-desire_lines = readRDS("l.Rds")
-```
-
-```{r, eval=FALSE}
-library(sp) # load sp package for spatial data
-plot(desire_lines)
-```
-
-
-
-For more information about using the geographic data in QGIS, please refer to the official [QGIS Training Manual](http://docs.qgis.org/2.8/en/docs/training_manual/index.html). 
-
-</div>
-
-[7\. How to create custom scenarios?](javascript:toggleElement('a7'))
-
-<div id="a7" style="display:none">
-
-To create custom scenarios you need to 'build' new input data for the PCT and have a version of the tool running on your computer (not on a remote server). The steps to install working versions of the PCT and the build scripts on your computer are well described in the README files associated with the pct-load and pct-shiny GitHub repositories. These can be seen from the NPCT team's GitHub page: 
-<a target="_blank" href="https://github.com/npct">github.com/npct</a>.
-
-To create custom scenarios, the key dataset to modify is 'l.Rds', a SpatialLinesDataFrame (an R object class) that exists in each region. In the *root directory* of the RStudio project for the `pct-load` folder (which can be opened by opening the `pct-load.Rproj` file), this could be loaded for kent, for example, with the folowing commands, resulting in the follow plot:
-
-```{r}
-library(sp) # load spatial library 
-```
-
-```{r, eval=FALSE}
-# Load the OD-based 'desire lines' for Kent
-l = readRDS("../pct-data/kent/l.Rds")
-plot(l) # plot the result
-```
-
-```{r echo=FALSE, eval=FALSE}
-# Run manually to update figure
-l = readRDS("../pct-data/kent/l.Rds")
-png("www/img/help/kent-1.png")
-plot(l)
-dev.off()
-```
-
-![](/www/img/help/kent-1.png)
-
-By modifying the values of the variables associated with each line (e.g. `l$Bicycle`, representing the current level of cycling) in this dataset, new scenarios can be created. Let's change the Government Target scenario so that the level of cycling is proportional to the inverse of distance, minus the average hilliness of the fastest route. This contrived example could be acheived with the following command:
-
-```{r, eval=FALSE}
-l$govtarget_slc =       # modify the scenario level of cycling for Government Target
-  0.5 / l$dist_fast -   # set proportional to the inverse of distance
-  l$avslope / 100       # minus the average gradient (percent)
-```
-
-We plan to add more documentation to ease the creation of locally specific scenarios and the deployment of the PCT for use in other custom regions, cities and countries where OD data is available.
-
-</div>
-
-<!-- [8\. How can the PCT be used to build a business case for cycling?](javascript:toggleElement('a8'))
-
-<div id="a8" style="display:none">
-
-This section is work in progress.
-
-</div> -->
-
-</div>
-
-

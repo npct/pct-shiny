@@ -1,0 +1,9 @@
+#!/bin/bash
+
+git update-server-info
+
+BRANCH=`git rev-parse --abbrev-ref HEAD`
+
+git --work-tree /home/git/pct-shiny --git-dir /home/git/pct-shiny show ${BRANCH}:scripts/publish-pct-shiny > /home/git/bin/publish-pct-shiny
+git --work-tree /home/git/pct-shiny --git-dir /home/git/pct-shiny show ${BRANCH}:scripts/update-server > /home/git/bin/update-server
+/home/git/bin/publish-pct-shiny ${BRANCH}

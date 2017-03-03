@@ -1,0 +1,119 @@
+.help-block  {
+  font-size: 10px;
+}
+
+.navbar-nav>li {
+    float: left;
+}
+
+div.outer {
+  position: fixed;
+  top: 41px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding: 0;
+}
+
+.rbox  {
+  font-size: 10px;
+}
+
+.selectize-dropdown,
+.selectize-input,
+.selectize-input input,
+option {
+  font-size: 11px;
+}
+
+select::-ms-expand {
+  width:12px;
+  border:none;
+  background:#fff;
+}
+
+select.form-control {
+  font-size: 11px;
+}
+
+select {
+  border: 1px solid #999;
+  border-radius: 8px;
+  padding: 8px;
+}
+
+/* only apply this to firefox: */
+@-moz-document url-prefix() {
+  /* Normally you can just apply this to all 'select's not just a classs selector */
+  select.form-control {
+    /* This removes the native down arrow: */
+    -moz-appearance: none;
+    text-indent: 0.01px;
+    text-overflow: "";
+    /* Add a new down arrow, probably shouldn't hotlink: */
+    background-image: url("https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-chevron-down-16.png");
+    background-position: right 8px center;
+    background-repeat: no-repeat;
+  }
+}
+
+label {
+  font-size: 12px;
+}
+
+.recalculating{
+  opacity: 1.0;
+}
+
+#cite {
+  position: relative;
+  bottom: 25px;
+  left: 120px;
+  font-size: 12px;
+  float: left;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+body {
+  max-width: unset !important;
+}
+
+#dft {
+  margin-bottom: 10px;
+}
+
+.htab  {
+  font-size: 12px;
+}
+
+
+/*
+Temporarily disabling center alignment of tables for model-output tab
+table {
+  margin: 0 auto;
+}
+*/
+
+
+/*
+Add CSS for tables. Taken from:
+https://onlinecourses.science.psu.edu/statprogram/markdown
+*/
+
+.model_output_table th {
+  background-color:#E0E0E0 ;
+  border-bottom:1px solid black;
+  padding:5px;
+}
+.model_output_table td {
+  border-bottom:1px dotted black;
+  padding:5px;
+}
+.model_output_table table{
+  border-collapse:collapse;
+  border: 1px solid black;
+}
+
+

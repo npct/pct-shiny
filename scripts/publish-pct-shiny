@@ -1,33 +1,42 @@
 #!/bin/bash
 
 # (C) 2016 NPTC
-# Written by Pete Stevens of Mythic Beasts Ltd to support NPTC production
-# deployment
+# Written by Pete Stevens of Mythic Beasts Ltd and Nikolai Berkoff
+# to support NPTC production deployment
 
 set +e
 
-if [[ $(hostname -s) = "npct0" ]]; then
-  BRANCH="master"
-else
-  BRANCH="production"
-fi
+VAR_DIR="/home/git/var-shiny/"
+WAIT_SECONDS=0
+BRANCH=$1
+SHINY_APP_DIR="pct-shiny"
+DATA_GIT="pct-data"
+
+while [ "$WAIT_SECONDS" -lt 120 -a -e ${VAR_DIR}.deploy-shiny-lock ]; do
+  echo "Currently deploying. Waiting for ${VAR_DIR}.deploy-shiny-lock for another $((120-WAIT_SECONDS)) seconds"
+  WAIT_SECONDS=$((WAIT_SECONDS+5))
+  sleep 5
+done
+
+touch ${VAR_DIR}.deploy-shiny-lock
 
 export PATH=$PATH:/home/git/bin
 
-echo "Check out the latest version into our temp directory"
-rm -rf /home/git/var-shiny/pct-shiny
-mkdir -p /home/git/var-shiny/pct-shiny
-git --work-tree /home/git/var-shiny/pct-shiny --git-dir /home/git/pct-shiny checkout ${BRANCH} -f
-git --git-dir /home/git/pct-shiny rev-parse --short HEAD > /home/git/var-shiny/pct-shiny/repo_sha
-
-DATASHA=`cat /home/git/var-shiny/pct-shiny/data_sha`
-echo "The data sha is ${DATASHA}"
+echo "Check out the latest version of ${BRANCH} into our temp directory"
+rm -rf ${VAR_DIR}${SHINY_APP_DIR}
+mkdir -p ${VAR_DIR}${SHINY_APP_DIR}
+git --git-dir /home/git/pct-shiny --work-tree ${VAR_DIR}${SHINY_APP_DIR} checkout ${BRANCH} -f
+git --git-dir /home/git/pct-shiny rev-parse --short HEAD > ${VAR_DIR}${SHINY_APP_DIR}/repo_sha
 
 echo "Git fetch the data"
-git --git-dir /home/git/pct-data fetch https://github.com/npct/pct-data.git
-rm -rf /home/git/var-shiny/pct-data
-mkdir /home/git/var-shiny/pct-data
-git --work-tree /home/git/var-shiny/pct-data --git-dir /home/git/pct-data checkout $DATASHA -f
+git --git-dir /home/git/${DATA_GIT} fetch https://github.com/npct/${DATA_GIT}.git
+
+DATASHA=`cat ${VAR_DIR}${SHINY_APP_DIR}/data_sha`
+
+echo "Checkout ${DATASHA} version of the data"
+rm -rf ${VAR_DIR}${DATA_GIT}
+mkdir ${VAR_DIR}${DATA_GIT}
+git --git-dir /home/git/${DATA_GIT} --work-tree ${VAR_DIR}${DATA_GIT} checkout $DATASHA -f
 
 if [[ $(hostname -s) = "npct0" ]]; then
   update-server npct0
@@ -36,3 +45,5 @@ else
   update-server npt1.vs.mythic-beasts.com
   update-server npt2.vs.mythic-beasts.com
 fi
+
+rm ${VAR_DIR}.deploy-shiny-lock

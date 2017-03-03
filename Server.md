@@ -95,8 +95,9 @@ First the dependencies
 ```
 
 Install the R packages,
+
 ```
- R -e "install.packages(c('RColorBrewer', 'httr', 'rgdal', 'rgeos', 'leaflet', 'DT', 'rmarkdown'), repos='https://cran.rstudio.com/')"
+ R -e "install.packages(c("shiny", "rgdal", "rgeos", "leaflet", "DT", "shinyjs", "dplyr", "readr"), repos = 'https://cran.rstudio.com/')"
 ```
 
 Now configure it to serve npt
