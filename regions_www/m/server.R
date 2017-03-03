@@ -321,25 +321,18 @@ shinyServer(function(input, output, session){
     input$show_zones
     region$repopulate_region
 
-    if(input$line_type == 'routes') {
-      local_lines <- sort_lines(to_plot$faster_route, input$line_type, input$nos_lines)
-      if (is.null(to_plot$ldata) || (!is.null(to_plot$ldata) && !identical(to_plot$ldata, local_lines))){
-        leafletProxy("map")  %>% clearGroup(., c("straight_line", "quieter_route", "faster_route", "route_network")) %>%
-          removeShape(., "highlighted")
-        to_plot$ldata <<- local_lines
-        plot_lines(leafletProxy("map"), sort_lines(to_plot$quieter_route, input$line_type, input$nos_lines), "quieter_route")
-        plot_lines(leafletProxy("map"), to_plot$ldata, "faster_route")
-      }
-    } else {
-      local_lines <- sort_lines(to_plot[[input$line_type]], input$line_type, input$nos_lines)
-      if (is.null(to_plot$ldata) || (!is.null(to_plot$ldata) && !identical(to_plot$ldata, local_lines))){
-        leafletProxy("map")  %>% clearGroup(., c("straight_line", "quieter_route", "faster_route", "route_network")) %>%
-          removeShape(., "highlighted")
-        to_plot$ldata <<- local_lines
-        plot_lines(leafletProxy("map"), to_plot$ldata, input$line_type)
-      }
-    }
+    line_type <- ifelse(input$line_type == 'routes', "faster_route", input$line_type)
+    local_lines <- sort_lines(to_plot[[line_type]], input$line_type, input$nos_lines)
 
+    if (is.null(to_plot$ldata) || (!is.null(to_plot$ldata) && !identical(to_plot$ldata, local_lines))){
+      leafletProxy("map")  %>% clearGroup(., c("straight_line", "quieter_route", "faster_route", "route_network")) %>%
+        removeShape(., "highlighted")
+      to_plot$ldata <<- local_lines
+      if(input$line_type == 'routes') {
+        plot_lines(leafletProxy("map"), sort_lines(to_plot$quieter_route, "quieter_route", input$nos_lines), "quieter_route")
+      }
+      plot_lines(leafletProxy("map"), to_plot$ldata, line_type)
+    }
 
     if(input$line_type == 'route_network')
       updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 20, label = "Percent (%) of Network")
