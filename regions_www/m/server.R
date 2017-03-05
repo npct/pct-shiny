@@ -245,14 +245,14 @@ shinyServer(function(input, output, session){
     })
   })
 
-  observeEvent(input$map_geojson_mouseover,{
+  observeEvent(input$map_geojson_mouseover$properties, {
     event <- input$map_geojson_mouseover
     new_region <- find_region(event$lng, event$lat, region$current)
-    if(is.null(new_region)) return()
+    if(is.null(new_region) || isTRUE(region$popup == new_region)) return()
     removePopup(leafletProxy("map"), "new-region")
-
+    region$popup <- new_region
     addPopups(leafletProxy("map") , event$lng, event$lat, paste("Click to view", new_region), layerId = "new-region",
-              options = popupOptions(closeButton = FALSE))
+              options = popupOptions(closeButton = F, autoPan = F, closeOnClick = T, zoomAnimation = F))
   })
 
   # Updates the Local Authority if the map is moved
