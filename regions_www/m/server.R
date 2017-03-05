@@ -252,10 +252,13 @@ shinyServer(function(input, output, session){
     leafletProxy("map") %>% removePopup(., "new-region") %>% removeShape(., "new-region-outline")
 
     region$popup <- new_region
+
+    new_region <- gsub("(^|-)([[:alpha:]])", " \\U\\2", new_region, perl=TRUE)
+    new_region <- gsub("(Of|And) ", "\\L\\1 ", new_region, perl=TRUE)
     leafletProxy("map") %>%
-      addPopups(. , event$lng, event$lat, paste("Click to view", new_region), layerId = "new-region",
+      addPopups(. , event$lng, event$lat, paste0("Click to view", new_region), layerId = "new-region",
                 options = popupOptions(closeButton = F, autoPan = F, closeOnClick = T, zoomAnimation = F)) %>%
-      addPolygons(., data = regions[regions$Region == new_region,], layerId = "new-region-outline")
+      addPolygons(., data = regions[regions$Region == region$popup,], layerId = "new-region-outline")
   })
 
   observeEvent(input$map_zoom, {
