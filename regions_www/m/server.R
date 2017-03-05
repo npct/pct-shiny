@@ -221,20 +221,13 @@ shinyServer(function(input, output, session){
 
   }
 
-  # Finds the Local Authority shown inside the map bounds
-  find_region <- function(current_region){
-    bb <- map_bb()
-    if(is.null(bb)) return(NULL)
-    regions_bb_intersects <- rgeos::gIntersects(bb, regions, byid=T)
-    # return NULL if centre is outside the shapefile
-    if(all(drop(!regions_bb_intersects))) return(NULL)
-
-    current_region_visible <- current_region %in% tolower(regions[drop(regions_bb_intersects), ]$Region)
-    if(current_region_visible) return(NULL)
-
-    regions_map_center_in <- rgeos::gContains(regions, rgeos::gCentroid(bb, byid=T), byid=T)
-    if(all(drop(!regions_map_center_in))) return(NULL)
-    tolower(regions[drop(regions_map_center_in), ]$Region[1])
+  find_region <- function(lng, lat, current_region){
+    if(is.null(lng) || is.null(lat)) return(NULL)
+    point <- SpatialPoints(cbind(lng, lat), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
+    regions_mouse_center_in <- rgeos::gContains(regions, point, byid=T)
+    mouse_region <- regions[drop(regions_mouse_center_in), ]$Region[1]
+    if(is.na(mouse_region) || tolower(mouse_region) == current_region) return(NULL)
+    mouse_region
   }
 
   attrs_zone <- c("Scenario Level of Cycling (SLC)" =    "slc",
@@ -254,15 +247,34 @@ shinyServer(function(input, output, session){
 
   observeEvent(input$map_geojson_mouseover,{
     event <- input$map_geojson_mouseover
+    new_region <- find_region(event$lng, event$lat, region$current)
+    if(is.null(new_region)) return()
     removePopup(leafletProxy("map"), "new-region")
-    if (is.null(event))
-      return()
-    point <- SpatialPoints(cbind(event$lng, event$lat), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
-    regions_mouse_center_in <- rgeos::gContains(regions, point, byid=T)
-    mouse_region <- regions[drop(regions_mouse_center_in), ]$Region[1]
-    if(is.na(mouse_region) || tolower(mouse_region) == region$current) return(NULL)
-    addPopups(leafletProxy("map") , event$lng, event$lat, paste("You are over", mouse_region), layerId = "new-region",
+
+    addPopups(leafletProxy("map") , event$lng, event$lat, paste("Click to view", new_region), layerId = "new-region",
               options = popupOptions(closeButton = FALSE))
+  })
+
+  # Updates the Local Authority if the map is moved
+  # over another region with data
+  observeEvent(input$map_geojson_click, {
+    event <- input$map_geojson_mouseover
+    new_region <- find_region(event$lng, event$lat, region$current)
+    if(is.null(new_region)) return()
+
+    new_region_all_trips <- dir.exists(file.path(data_dir_root, new_region , 'all-trips'))
+    # Check if the new_region is not null, and contains 'all-trips' subfolder
+    new_data_dir <- ifelse (new_region_all_trips,
+                            file.path(data_dir_root, new_region, 'all-trips'),
+                            file.path(data_dir_root, new_region))
+
+    if(region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
+      region$current <- new_region
+      region$data_dir <- new_data_dir
+      region$repopulate_region <- F
+      if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
+        updateCheckboxInput(session, "freeze", value = F)
+    }
   })
 
   observe({ # For highlighting the clicked line
@@ -301,27 +313,6 @@ shinyServer(function(input, output, session){
                        opacity = 0.4, layerId = "highlighted")
       }
     })
-  })
-
-  # Updates the Local Authority if the map is moved
-  # over another region with data
-  observe({
-    new_region <- find_region(region$current)
-    if(is.null(new_region)) return()
-
-    new_region_all_trips <- dir.exists(file.path(data_dir_root, new_region , 'all-trips'))
-    # Check if the new_region is not null, and contains 'all-trips' subfolder
-    new_data_dir <- ifelse (new_region_all_trips,
-                            file.path(data_dir_root, new_region, 'all-trips'),
-                            file.path(data_dir_root, new_region))
-
-    if(region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
-      region$current <- new_region
-      region$data_dir <- new_data_dir
-      region$repopulate_region <- F
-      if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
-        updateCheckboxInput(session, "freeze", value = F)
-    }
   })
 
   # Plot if lines change
