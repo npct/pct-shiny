@@ -219,16 +219,15 @@ shinyServer(function(input, output, session){
       nos <- nos / 100 * nrow(lines)
       lines[ tail(order(abs(lines[[line_data()]])), nos), ]
     }
-
   }
 
   find_region <- function(lng, lat, current_region){
     if(is.null(lng) || is.null(lat)) return(NULL)
     point <- SpatialPoints(cbind(lng, lat), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
-    regions_mouse_center_in <- rgeos::gContains(regions, point, byid=T)
-    mouse_region <- regions[drop(regions_mouse_center_in), ]$Region[1]
-    if(is.na(mouse_region) || tolower(mouse_region) == current_region) return(NULL)
-    mouse_region
+    lat_lng_region_bool <- rgeos::gContains(regions, point, byid=T)
+    lat_lng_region <- regions[drop(lat_lng_region_bool), ]$Region[1]
+    if(is.na(lat_lng_region) || tolower(lat_lng_region) == current_region) return(NULL)
+    lat_lng_region
   }
 
   attrs_zone <- c("Scenario Level of Cycling (SLC)" =    "slc",
