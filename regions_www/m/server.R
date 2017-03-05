@@ -40,7 +40,6 @@ lsoa_legend_df <- data.frame(
   labels = c( "1-9", "10-49", "50-99", "100-249", "250-499", "500-999", "1000-1999", "2000+" )
 )
 
-
 if(!on_server){
   source(file.path(shiny_root, "scripts", "init.R"))
   init_dev_env(data_dir_root, data_sha, c(available_locally_pkgs, must_be_installed_pkgs), shiny_root)
@@ -251,6 +250,19 @@ shinyServer(function(input, output, session){
       else
         HTML("<strong>No model output files are available for this region</strong>")
     })
+  })
+
+  observeEvent(input$map_geojson_mouseover,{
+    event <- input$map_geojson_mouseover
+    removePopup(leafletProxy("map"), "new-region")
+    if (is.null(event))
+      return()
+    point <- SpatialPoints(cbind(event$lng, event$lat), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
+    regions_mouse_center_in <- rgeos::gContains(regions, point, byid=T)
+    mouse_region <- regions[drop(regions_mouse_center_in), ]$Region[1]
+    if(is.na(mouse_region) || tolower(mouse_region) == region$current) return(NULL)
+    addPopups(leafletProxy("map") , event$lng, event$lat, paste("You are over", mouse_region), layerId = "new-region",
+              options = popupOptions(closeButton = FALSE))
   })
 
   observe({ # For highlighting the clicked line
@@ -607,6 +619,7 @@ shinyServer(function(input, output, session){
                                      }else .
                                    } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
+      addGeoJSON(., readr::read_file(file.path(shiny_root, "regions_www/regions.geojson")), opacity = 0.0, fillOpacity = 0) %>%
       mapOptions(zoomToLimits = "first")
   )
 
