@@ -114,6 +114,7 @@ shinyServer(function(input, output, session){
     region$all_trips <- dir.exists(file.path(data_dir_root, region$current , 'all-trips'))
 
     region$repopulate_region <- T
+    leafletProxy("map") %>% removePopup(., "new-region") %>% removeShape(., "new-region-outline")
   })
 
   region <- reactiveValues(current = NA, data_dir = NA, repopulate_region = F, all_trips = NA)
@@ -245,43 +246,47 @@ shinyServer(function(input, output, session){
     })
   })
 
-  observeEvent(input$map_geojson_mouseover$properties, {
+  observeEvent(input$map_geojson_mouseover, {
     event <- input$map_geojson_mouseover
     new_region <- find_region(event$lng, event$lat, region$current)
     if(is.null(new_region) || isTRUE(region$popup == new_region)) return()
-    removePopup(leafletProxy("map"), "new-region")
+    leafletProxy("map") %>% removePopup(., "new-region") %>% removeShape(., "new-region-outline")
+
     region$popup <- new_region
-    addPopups(leafletProxy("map") , event$lng, event$lat, paste("Click to view", new_region), layerId = "new-region",
-              options = popupOptions(closeButton = F, autoPan = F, closeOnClick = T, zoomAnimation = F))
+    leafletProxy("map") %>%
+      addPopups(. , event$lng, event$lat, paste("Click to view", new_region), layerId = "new-region",
+                options = popupOptions(closeButton = F, autoPan = F, closeOnClick = T, zoomAnimation = F)) %>%
+      addPolygons(., data = regions[regions$Region == new_region,], layerId = "new-region-outline")
   })
 
-  # Updates the Local Authority if the map is moved
-  # over another region with data
-  observeEvent(input$map_geojson_click, {
-    event <- input$map_geojson_mouseover
-    new_region <- find_region(event$lng, event$lat, region$current)
-    if(is.null(new_region)) return()
-
-    new_region_all_trips <- dir.exists(file.path(data_dir_root, new_region , 'all-trips'))
-    # Check if the new_region is not null, and contains 'all-trips' subfolder
-    new_data_dir <- ifelse (new_region_all_trips,
-                            file.path(data_dir_root, new_region, 'all-trips'),
-                            file.path(data_dir_root, new_region))
-
-    if(region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
-      region$current <- new_region
-      region$data_dir <- new_data_dir
-      region$repopulate_region <- F
-      if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
-        updateCheckboxInput(session, "freeze", value = F)
-    }
+  observeEvent(input$map_zoom, {
+    removePopup(leafletProxy("map"), "new-region")
   })
 
-  observe({ # For highlighting the clicked line
+  observeEvent(input$map_shape_click, { # For highlighting the clicked line
     event <- input$map_shape_click
     if (is.null(event) || event$id == "highlighted")
       return()
-    e_lat_lng <- paste0(event$lat,event$lng)
+    if(event$id == "new-region-outline") {
+      new_region <- find_region(event$lng, event$lat, region$current)
+      if(is.null(new_region)) return()
+
+      new_region_all_trips <- dir.exists(file.path(data_dir_root, new_region , 'all-trips'))
+      # Check if the new_region is not null, and contains 'all-trips' subfolder
+      new_data_dir <- ifelse (new_region_all_trips,
+                              file.path(data_dir_root, new_region, 'all-trips'),
+                              file.path(data_dir_root, new_region))
+
+      if(region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
+        region$current <- new_region
+        region$data_dir <- new_data_dir
+        region$repopulate_region <- F
+        if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
+          updateCheckboxInput(session, "freeze", value = F)
+      }
+      return()
+    }
+    e_lat_lng <- paste0(event$lat, event$lng)
 
     # Fix bug when a line has been clicked then the click event is
     # re-emmited when the map is moved
