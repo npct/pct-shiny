@@ -40,7 +40,6 @@ lsoa_legend_df <- data.frame(
   labels = c( "1-9", "10-49", "50-99", "100-249", "250-499", "500-999", "1000-1999", "2000+" )
 )
 
-
 if(!on_server){
   source(file.path(shiny_root, "scripts", "init.R"))
   init_dev_env(data_dir_root, data_sha, c(available_locally_pkgs, must_be_installed_pkgs), shiny_root)
@@ -115,6 +114,7 @@ shinyServer(function(input, output, session){
     region$all_trips <- dir.exists(file.path(data_dir_root, region$current , 'all-trips'))
 
     region$repopulate_region <- T
+    leafletProxy("map") %>% removePopup(., "new-region") %>% removeShape(., "new-region-outline")
   })
 
   region <- reactiveValues(current = NA, data_dir = NA, repopulate_region = F, all_trips = NA)
@@ -219,23 +219,15 @@ shinyServer(function(input, output, session){
       nos <- nos / 100 * nrow(lines)
       lines[ tail(order(abs(lines[[line_data()]])), nos), ]
     }
-
   }
 
-  # Finds the Local Authority shown inside the map bounds
-  find_region <- function(current_region){
-    bb <- map_bb()
-    if(is.null(bb)) return(NULL)
-    regions_bb_intersects <- rgeos::gIntersects(bb, regions, byid=T)
-    # return NULL if centre is outside the shapefile
-    if(all(drop(!regions_bb_intersects))) return(NULL)
-
-    current_region_visible <- current_region %in% tolower(regions[drop(regions_bb_intersects), ]$Region)
-    if(current_region_visible) return(NULL)
-
-    regions_map_center_in <- rgeos::gContains(regions, rgeos::gCentroid(bb, byid=T), byid=T)
-    if(all(drop(!regions_map_center_in))) return(NULL)
-    tolower(regions[drop(regions_map_center_in), ]$Region[1])
+  find_region <- function(lng, lat, current_region){
+    if(is.null(lng) || is.null(lat)) return(NULL)
+    point <- SpatialPoints(cbind(lng, lat), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
+    lat_lng_region_bool <- rgeos::gContains(regions, point, byid=T)
+    lat_lng_region <- regions[drop(lat_lng_region_bool), ]$Region[1]
+    if(is.na(lat_lng_region) || tolower(lat_lng_region) == current_region) return(NULL)
+    lat_lng_region
   }
 
   attrs_zone <- c("Scenario Level of Cycling (SLC)" =    "slc",
@@ -253,11 +245,50 @@ shinyServer(function(input, output, session){
     })
   })
 
-  observe({ # For highlighting the clicked line
+  observeEvent(input$map_geojson_mouseover, {
+    event <- input$map_geojson_mouseover
+    new_region <- find_region(event$lng, event$lat, region$current)
+    if(is.null(new_region) || isTRUE(region$popup == new_region)) return()
+    leafletProxy("map") %>% removePopup(., "new-region") %>% removeShape(., "new-region-outline")
+
+    region$popup <- new_region
+
+    new_region <- gsub("(^|-)([[:alpha:]])", " \\U\\2", new_region, perl=TRUE)
+    new_region <- gsub("(Of|And) ", "\\L\\1 ", new_region, perl=TRUE)
+    leafletProxy("map") %>%
+      addPopups(. , event$lng, event$lat, paste0("Click to view", new_region), layerId = "new-region",
+                options = popupOptions(closeButton = F, autoPan = F, closeOnClick = T, zoomAnimation = F)) %>%
+      addPolygons(., data = regions[regions$Region == region$popup,], layerId = "new-region-outline")
+  })
+
+  observeEvent(input$map_zoom, {
+    removePopup(leafletProxy("map"), "new-region")
+  })
+
+  observeEvent(input$map_shape_click, { # For highlighting the clicked line
     event <- input$map_shape_click
     if (is.null(event) || event$id == "highlighted")
       return()
-    e_lat_lng <- paste0(event$lat,event$lng)
+    if(event$id == "new-region-outline") {
+      new_region <- find_region(event$lng, event$lat, region$current)
+      if(is.null(new_region)) return()
+
+      new_region_all_trips <- dir.exists(file.path(data_dir_root, new_region , 'all-trips'))
+      # Check if the new_region is not null, and contains 'all-trips' subfolder
+      new_data_dir <- ifelse (new_region_all_trips,
+                              file.path(data_dir_root, new_region, 'all-trips'),
+                              file.path(data_dir_root, new_region))
+
+      if(region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
+        region$current <- new_region
+        region$data_dir <- new_data_dir
+        region$repopulate_region <- F
+        if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
+          updateCheckboxInput(session, "freeze", value = F)
+      }
+      return()
+    }
+    e_lat_lng <- paste0(event$lat, event$lng)
 
     # Fix bug when a line has been clicked then the click event is
     # re-emmited when the map is moved
@@ -289,27 +320,6 @@ shinyServer(function(input, output, session){
                        opacity = 0.4, layerId = "highlighted")
       }
     })
-  })
-
-  # Updates the Local Authority if the map is moved
-  # over another region with data
-  observe({
-    new_region <- find_region(region$current)
-    if(is.null(new_region)) return()
-
-    new_region_all_trips <- dir.exists(file.path(data_dir_root, new_region , 'all-trips'))
-    # Check if the new_region is not null, and contains 'all-trips' subfolder
-    new_data_dir <- ifelse (new_region_all_trips,
-                            file.path(data_dir_root, new_region, 'all-trips'),
-                            file.path(data_dir_root, new_region))
-
-    if(region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
-      region$current <- new_region
-      region$data_dir <- new_data_dir
-      region$repopulate_region <- F
-      if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
-        updateCheckboxInput(session, "freeze", value = F)
-    }
   })
 
   # Plot if lines change
@@ -607,6 +617,7 @@ shinyServer(function(input, output, session){
                                      }else .
                                    } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
+      addGeoJSON(., readr::read_file(file.path(shiny_root, "regions_www/regions.geojson")), opacity = 0.0, fillOpacity = 0) %>%
       mapOptions(zoomToLimits = "first")
   )
 
