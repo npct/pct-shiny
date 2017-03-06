@@ -258,7 +258,6 @@ shinyServer(function(input, output, session){
 
     new_region <- gsub("(^|-)([[:alpha:]])", " \\U\\2", new_region, perl=TRUE)
     new_region <- gsub("(Of|And) ", "\\L\\1 ", new_region, perl=TRUE)
-
     leafletProxy("map") %>%
       addPopups(. , event$lng, event$lat, paste0("Click to view", new_region), layerId = "new-region",
                 options = popupOptions(closeButton = F, autoPan = F, closeOnClick = T, zoomAnimation = F)) %>%
@@ -381,14 +380,6 @@ shinyServer(function(input, output, session){
     if(input$show_zones) {
       show_zone_popup <- input$line_type %in% show_no_lines
       popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
-      # Check if current region has been initlialized and the map zoom is not NULL
-      if (!is.null(region$current) && !is.null(isolate(input$map_zoom))){
-        # Get lat and lng for the centroid of the current region
-        center_dim <- rgeos::gCentroid(regions[regions$Region == region$current,], byid = TRUE)@coords
-        # Set the map view to the centre of the region
-        setView(leafletProxy("map"), lng = center_dim[1, 1], lat = center_dim[1, 2], zoom = isolate(input$map_zoom))
-      }
-
       addPolygons(leafletProxy("map"),  data = to_plot$zones,
                   weight = 2,
                   fillOpacity = transp_rate(),
