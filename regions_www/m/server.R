@@ -279,7 +279,7 @@ shinyServer(function(input, output, session){
                               file.path(data_dir_root, new_region, 'all-trips'),
                               file.path(data_dir_root, new_region))
 
-      if(region$data_dir != new_data_dir && file.exists(new_data_dir) && !file.exists(file.path(new_data_dir, 'isolated'))){
+      if(region$data_dir != new_data_dir && file.exists(new_data_dir)){
         region$current <- new_region
         region$data_dir <- new_data_dir
         region$repopulate_region <- F
