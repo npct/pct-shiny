@@ -63,6 +63,7 @@ source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
 # Static files
 regions <- rgdal::readOGR(dsn = file.path(shiny_root, "regions_www/regions.geojson"), layer = "OGRGeoJSON")
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
+regions$Region <- as.character(regions$Region)
 codebook_l = readr::read_csv(file.path(shiny_root, "static", "codebook_lines.csv"))
 codebook_z = readr::read_csv(file.path(shiny_root, "static", "codebook_zones.csv"))
 codebook_r = readr::read_csv(file.path(shiny_root, "static", "codebook_routes.csv"))
@@ -225,8 +226,10 @@ shinyServer(function(input, output, session){
     if(is.null(lng) || is.null(lat)) return(NULL)
     point <- SpatialPoints(cbind(lng, lat), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
     lat_lng_region_bool <- rgeos::gContains(regions, point, byid=T)
-    lat_lng_region <- regions[drop(lat_lng_region_bool), ]$Region[1]
-    if(is.na(lat_lng_region) || tolower(lat_lng_region) == current_region) return(NULL)
+    # Subset the whole column (not just Region[1])
+    lat_lng_region <- regions[drop(lat_lng_region_bool), ]$Region
+    if(is.null(lat_lng_region) || is.na(lat_lng_region) || length(lat_lng_region) == 0 ||
+       tolower(lat_lng_region) == current_region) return(NULL)
     lat_lng_region
   }
 
@@ -251,7 +254,7 @@ shinyServer(function(input, output, session){
     if(is.null(new_region) || isTRUE(region$popup == new_region)) return()
     leafletProxy("map") %>% removePopup(., "new-region") %>% removeShape(., "new-region-outline")
 
-    region$popup <- new_region
+    region$popup <<- new_region
 
     new_region <- gsub("(^|-)([[:alpha:]])", " \\U\\2", new_region, perl=TRUE)
     new_region <- gsub("(Of|And) ", "\\L\\1 ", new_region, perl=TRUE)
