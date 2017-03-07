@@ -260,6 +260,12 @@ shinyServer(function(input, output, session){
                   layerId = "new-region-outline")
   })
 
+  observeEvent(input$map_shape_mouseout$id, {
+    if(input$map_shape_mouseout$id == "new-region-outline"){
+      leafletProxy("map") %>% removeShape(., "new-region-outline")
+    }
+  })
+
   observeEvent(input$map_shape_click, { # For highlighting the clicked line
     event <- input$map_shape_click
     if (is.null(event) || event$id == "highlighted")
