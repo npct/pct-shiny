@@ -114,7 +114,7 @@ shinyServer(function(input, output, session){
     region$all_trips <- dir.exists(file.path(data_dir_root, region$current , 'all-trips'))
 
     region$repopulate_region <- T
-    leafletProxy("map") %>% removePopup(., "new-region") %>% removeShape(., "new-region-outline")
+    leafletProxy("map") %>% removeShape(., "new-region-outline")
   })
 
   region <- reactiveValues(current = NA, data_dir = NA, repopulate_region = F, all_trips = NA)
@@ -249,20 +249,15 @@ shinyServer(function(input, output, session){
     event <- input$map_geojson_mouseover
     new_region <- find_region(event$lng, event$lat, region$current)
     if(is.null(new_region) || isTRUE(region$popup == new_region)) return()
-    leafletProxy("map") %>% removePopup(., "new-region") %>% removeShape(., "new-region-outline")
+    leafletProxy("map") %>% removeShape(., "new-region-outline")
 
     region$popup <- new_region
 
     new_region <- gsub("(^|-)([[:alpha:]])", " \\U\\2", new_region, perl=TRUE)
     new_region <- gsub("(Of|And) ", "\\L\\1 ", new_region, perl=TRUE)
     leafletProxy("map") %>%
-      addPopups(. , event$lng, event$lat, paste0("Click to view", new_region), layerId = "new-region",
-                options = popupOptions(closeButton = F, autoPan = F, closeOnClick = T, zoomAnimation = F)) %>%
-      addPolygons(., data = regions[regions$Region == region$popup,], layerId = "new-region-outline")
-  })
-
-  observeEvent(input$map_zoom, {
-    removePopup(leafletProxy("map"), "new-region")
+      addPolygons(., data = regions[regions$Region == region$popup,], label = paste0("Click to view", new_region),
+                  layerId = "new-region-outline")
   })
 
   observeEvent(input$map_shape_click, { # For highlighting the clicked line
