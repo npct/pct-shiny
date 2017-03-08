@@ -61,7 +61,7 @@ lapply(available_locally_pkgs, library, character.only = T)
 source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
 
 # Static files
-regions <- rgdal::readOGR(dsn = file.path(shiny_root, "regions_www/regions.geojson"), layer = "OGRGeoJSON")
+regions <- readRDS(file.path(shiny_root, "regions_www/regions-highres.Rds"))
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 codebook_l = readr::read_csv(file.path(shiny_root, "static", "codebook_lines.csv"))
 codebook_z = readr::read_csv(file.path(shiny_root, "static", "codebook_zones.csv"))
