@@ -97,7 +97,6 @@ shinyServer(function(input, output, session){
     to_plot$cents <<- readRDS(file.path(region$data_dir, "c.Rds"))
 
     to_plot$route_network <<- readRDS(file.path(region$data_dir, "rnet.Rds"))
-    to_plot$route_network$id <<- 1:nrow(to_plot$route_network)
 
     to_plot$faster_route <<- readRDS(file.path(region$data_dir, "rf.Rds" ))
     to_plot$faster_route@data <<- cbind(
@@ -107,9 +106,6 @@ shinyServer(function(input, output, session){
     to_plot$quieter_route@data <<- cbind(
       to_plot$quieter_route@data[!(names(to_plot$quieter_route) %in% names(to_plot$straight_line))],
       to_plot$straight_line@data)
-
-    # Add rqincr column to the quiet data
-    to_plot$quieter_route@data$rqincr <<- to_plot$quieter_route@data$length / to_plot$faster_route@data$length
 
     region$all_trips <- dir.exists(file.path(data_dir_root, region$current , 'all-trips'))
 
