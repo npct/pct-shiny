@@ -248,15 +248,13 @@ shinyServer(function(input, output, session){
   observeEvent(input$map_geojson_mouseover, {
     event <- input$map_geojson_mouseover
     new_region <- find_region(event$lng, event$lat, region$current)
-    if(is.null(new_region) || isTRUE(region$popup == new_region)) return()
+    if(is.null(new_region)) return()
     leafletProxy("map") %>% removeShape(., "new-region-outline")
 
-    region$popup <- new_region
-
-    new_region <- gsub("(^|-)([[:alpha:]])", " \\U\\2", new_region, perl=TRUE)
-    new_region <- gsub("(Of|And) ", "\\L\\1 ", new_region, perl=TRUE)
+    new_region_prety <- gsub("(^|-)([[:alpha:]])", " \\U\\2", new_region, perl=TRUE)
+    new_region_prety <- gsub("(Of|And) ", "\\L\\1 ", new_region_prety, perl=TRUE)
     leafletProxy("map") %>%
-      addPolygons(., data = regions[regions$Region == region$popup,], label = paste0("Click to view", new_region),
+      addPolygons(., data = regions[regions$Region == new_region,], label = paste0("Click to view", new_region_prety),
                   layerId = "new-region-outline")
   })
 
