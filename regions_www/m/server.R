@@ -594,15 +594,13 @@ shinyServer(function(input, output, session){
                                      }else .
                                    } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
-      ## Add all regions boundary in the beginning but set its opacity to a minimum
       addPolygons(data = regions, weight = 0.1,
                   color = "#000000",
-                  fillColor = "aliceblue",
+                  fillColor = "aliceblue", #get_colour_ramp(zcols, as.numeric(regions$pcycle)),
                   fillOpacity = 0.01,
                   opacity = 0.3,
                   label = paste("Click to view", get_pretty_region_name(regions$Region)),
                   labelOptions = labelOptions(direction = 'auto'),
-                  # On highlight widen the boundary and fill the polygons
                   highlightOptions = highlightOptions(
                     color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
                     bringToFront = TRUE, sendToBack = TRUE),
