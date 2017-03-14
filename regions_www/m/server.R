@@ -264,9 +264,10 @@ shinyServer(function(input, output, session){
     event <- input$map_shape_click
     if (is.null(event) || event$id == "highlighted")
       return()
-    if(grepl("new_region", event$id)){
-      new_region <- strsplit(event$id, " ")[[1]][2]
+    if(event$id == "new-region-outline") {
+      new_region <- find_region(event$lng, event$lat, region$current)
       if(is.null(new_region)) return()
+
       new_region_all_trips <- dir.exists(file.path(data_dir_root, new_region , 'all-trips'))
       # Check if the new_region is not null, and contains 'all-trips' subfolder
       new_data_dir <- ifelse (new_region_all_trips,
@@ -611,20 +612,7 @@ shinyServer(function(input, output, session){
                                      }else .
                                    } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
-      addPolygons(data = regions, weight = 0.1,
-                  color = "#000000",
-                  fillColor = "aliceblue", #get_colour_ramp(zcols, as.numeric(regions$pcycle)),
-                  fillOpacity = 0.01,
-                  opacity = 0.3,
-                  label = paste0("Click to view", regions$Region),
-                  labelOptions = labelOptions(direction = 'auto'),
-                  highlightOptions = highlightOptions(
-                    color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
-                    bringToFront = TRUE, sendToBack = TRUE),
-                  options = pathOptions(clickable = T),
-                  layerId = paste("new_region", regions$Region),
-                  group = "regions-zones") %>%
-      #addGeoJSON(., readr::read_file(file.path(shiny_root, "regions_www/regions.geojson")), opacity = 0.0, fillOpacity = 0) %>%
+      addGeoJSON(., readr::read_file(file.path(shiny_root, "regions_www/regions.geojson")), opacity = 0.0, fillOpacity = 0) %>%
       mapOptions(zoomToLimits = "first")
   )
 
