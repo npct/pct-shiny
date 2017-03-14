@@ -264,9 +264,7 @@ shinyServer(function(input, output, session){
     event <- input$map_shape_click
     if (is.null(event) || event$id == "highlighted")
       return()
-    # Check if the event$id is called from the "new_region" polygons
     if(grepl("new_region", event$id)){
-      # Split the id to identify the region name
       new_region <- strsplit(event$id, " ")[[1]][2]
       if(is.null(new_region)) return()
       new_region_all_trips <- dir.exists(file.path(data_dir_root, new_region , 'all-trips'))
@@ -618,7 +616,7 @@ shinyServer(function(input, output, session){
                   fillColor = "aliceblue", #get_colour_ramp(zcols, as.numeric(regions$pcycle)),
                   fillOpacity = 0.01,
                   opacity = 0.3,
-                  label = paste("Click to view", get_pretty_region_name(regions$Region)),
+                  label = paste0("Click to view", regions$Region),
                   labelOptions = labelOptions(direction = 'auto'),
                   highlightOptions = highlightOptions(
                     color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
@@ -626,6 +624,7 @@ shinyServer(function(input, output, session){
                   options = pathOptions(clickable = T),
                   layerId = paste("new_region", regions$Region),
                   group = "regions-zones") %>%
+      #addGeoJSON(., readr::read_file(file.path(shiny_root, "regions_www/regions.geojson")), opacity = 0.0, fillOpacity = 0) %>%
       mapOptions(zoomToLimits = "first")
   )
 

@@ -3,13 +3,6 @@ sc_name_df <- data.frame(
   sc_s_name = c("olc", "govtarget","gendereq","dutch", "ebike")
 )
 
-get_pretty_region_name <- function(region_name){
-
-  new_region_pretty <- gsub("(^|-)([[:alpha:]])", " \\U\\2", region_name, perl=TRUE)
-  new_region_pretty <- gsub("(Of|And) ", "\\L\\1 ", new_region_pretty, perl=TRUE)
-  new_region_pretty
-}
-
 get_scenario_name <- function(sc_name, all_trips){
   if (sc_name == "olc" && all_trips){
     "Current travel patterns"
