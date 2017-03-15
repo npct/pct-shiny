@@ -518,6 +518,29 @@ shinyServer(function(input, output, session){
 
   observe({
     input$map_base
+    region$repopulate_region
+
+
+    #Remove old regions polygons
+    leafletProxy("map") %>% clearGroup(., "regions-zones")
+
+    ## Add all regions boundary in the beginning but set its opacity to a minimum
+    addPolygons(leafletProxy("map"),
+                data = regions[regions$Region != region$current,], weight = 0.1,
+                color = "#000000",
+                fillColor = "aliceblue",
+                fillOpacity = 0.01,
+                opacity = 0.3,
+                label = paste("Click to view", get_pretty_region_name(regions[regions$Region != region$current,]$Region)),
+                labelOptions = labelOptions(direction = 'auto'),
+                # On highlight widen the boundary and fill the polygons
+                highlightOptions = highlightOptions(
+                  color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
+                  bringToFront = TRUE, sendToBack = TRUE),
+                options = pathOptions(clickable = T),
+                layerId = paste("new_region", regions[regions$Region != region$current,]$Region),
+                group = "regions-zones")
+
     if (input$line_type == "lsoa_base_map"){
       urlTemplate <- paste0("http://npttile.vs.mythic-beasts.com/", input$scenario, "/{z}/{x}/{y}.png")
 
@@ -592,27 +615,29 @@ shinyServer(function(input, output, session){
 
   #Redraw zone polygons when regions is switched, as the current region should not be highlighted
   observe({
-    region$current
 
-    #Remove old regions polygons
-    leafletProxy("map") %>% clearGroup(., "regions-zones")
-
-    ## Add all regions boundary in the beginning but set its opacity to a minimum
-    addPolygons(leafletProxy("map"),
-                data = regions[regions$Region != region$current,], weight = 0.1,
-                color = "#000000",
-                fillColor = "aliceblue",
-                fillOpacity = 0.01,
-                opacity = 0.3,
-                label = paste("Click to view", get_pretty_region_name(regions[regions$Region != region$current,]$Region)),
-                labelOptions = labelOptions(direction = 'auto'),
-                # On highlight widen the boundary and fill the polygons
-                highlightOptions = highlightOptions(
-                  color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
-                  bringToFront = TRUE, sendToBack = TRUE),
-                options = pathOptions(clickable = T),
-                layerId = paste("new_region", regions[regions$Region != region$current,]$Region),
-                group = "regions-zones")
+    # region$repopulate_region
+    # input$map_base
+    #
+    # #Remove old regions polygons
+    # leafletProxy("map") %>% clearGroup(., "regions-zones")
+    #
+    # ## Add all regions boundary in the beginning but set its opacity to a minimum
+    # addPolygons(leafletProxy("map"),
+    #             data = regions[regions$Region != region$current,], weight = 0.1,
+    #             color = "#000000",
+    #             fillColor = "aliceblue",
+    #             fillOpacity = 0.01,
+    #             opacity = 0.3,
+    #             label = paste("Click to view", get_pretty_region_name(regions[regions$Region != region$current,]$Region)),
+    #             labelOptions = labelOptions(direction = 'auto'),
+    #             # On highlight widen the boundary and fill the polygons
+    #             highlightOptions = highlightOptions(
+    #               color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
+    #               bringToFront = TRUE, sendToBack = TRUE),
+    #             options = pathOptions(clickable = T),
+    #             layerId = paste("new_region", regions[regions$Region != region$current,]$Region),
+    #             group = "regions-zones")
 
   })
 
