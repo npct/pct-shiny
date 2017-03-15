@@ -520,6 +520,7 @@ shinyServer(function(input, output, session){
     input$map_base
     region$repopulate_region
 
+    #Redraw zone polygons when regions is switched, as the current region should not be highlighted
 
     #Remove old regions polygons
     leafletProxy("map") %>% clearGroup(., "regions-zones")
@@ -612,34 +613,6 @@ shinyServer(function(input, output, session){
       setView(., lng = to_plot$center_dim[1, 1], lat = to_plot$center_dim[1, 2], zoom = 10) %>%
       mapOptions(zoomToLimits = "never")
   )
-
-  #Redraw zone polygons when regions is switched, as the current region should not be highlighted
-  observe({
-
-    # region$repopulate_region
-    # input$map_base
-    #
-    # #Remove old regions polygons
-    # leafletProxy("map") %>% clearGroup(., "regions-zones")
-    #
-    # ## Add all regions boundary in the beginning but set its opacity to a minimum
-    # addPolygons(leafletProxy("map"),
-    #             data = regions[regions$Region != region$current,], weight = 0.1,
-    #             color = "#000000",
-    #             fillColor = "aliceblue",
-    #             fillOpacity = 0.01,
-    #             opacity = 0.3,
-    #             label = paste("Click to view", get_pretty_region_name(regions[regions$Region != region$current,]$Region)),
-    #             labelOptions = labelOptions(direction = 'auto'),
-    #             # On highlight widen the boundary and fill the polygons
-    #             highlightOptions = highlightOptions(
-    #               color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
-    #               bringToFront = TRUE, sendToBack = TRUE),
-    #             options = pathOptions(clickable = T),
-    #             layerId = paste("new_region", regions[regions$Region != region$current,]$Region),
-    #             group = "regions-zones")
-
-  })
 
 
   observe({
