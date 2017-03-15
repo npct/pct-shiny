@@ -263,7 +263,7 @@ none_popup <- function(){
 # Route popup function
 routes_popup <- function(data, scenario, all_trips){
 
-  ifelse(("rq_incr" %in% colnames(data@data)), route_type <-'quiet', route_type <-'fast')
+  ifelse(("rqincr" %in% colnames(data@data)), route_type <-'quiet', route_type <-'fast')
 
   # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
   data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
@@ -370,8 +370,8 @@ routes_popup <- function(data, scenario, all_trips){
     if(scenario == 'olc')
       quiet_route_label <-  paste(quiet_route_label, " (baseline)")
 
-    # Keep rq_incr in a local variable
-    val <- data$rq_incr
+    # Keep rqincr in a local variable
+    val <- data$rqincr
     # Replace NAs with 0
     val[is.na(val)] <- 0
     # Convert it into percent
