@@ -520,6 +520,26 @@ shinyServer(function(input, output, session){
     input$map_base
     region$repopulate_region
 
+    if (input$line_type == "lsoa_base_map"){
+      urlTemplate <- paste0("http://npttile.vs.mythic-beasts.com/", input$scenario, "/{z}/{x}/{y}.png")
+
+      leafletProxy("map") %>%
+        addTiles(., urlTemplate = urlTemplate, layerId = "lsoa_base_map",
+                 options=tileOptions(maxNativeZoom = 13, reuseTiles = T, tms = T)) %>%
+        addLegend("topleft", layerId= "lsoa_leg", colors = lsoa_legend_df$colours,
+                  labels = lsoa_legend_df$labels,
+                  title = "Cyclists on route network",
+                  opacity = 0.5
+        )
+    } else {
+      leafletProxy("map") %>% removeTiles(., layerId = "lsoa_base_map") %>% removeControl("lsoa_leg")
+    }
+  })
+
+  observe({
+    input$map_base
+    region$repopulate_region
+
     #Redraw zone polygons when regions is switched, as the current region should not be highlighted
 
     #Remove old regions polygons
@@ -541,21 +561,6 @@ shinyServer(function(input, output, session){
                 options = pathOptions(clickable = T),
                 layerId = paste("new_region", regions[regions$Region != region$current,]$Region),
                 group = "regions-zones")
-
-    if (input$line_type == "lsoa_base_map"){
-      urlTemplate <- paste0("http://npttile.vs.mythic-beasts.com/", input$scenario, "/{z}/{x}/{y}.png")
-
-      leafletProxy("map") %>%
-        addTiles(., urlTemplate = urlTemplate, layerId = "lsoa_base_map",
-                 options=tileOptions(maxNativeZoom = 13, reuseTiles = T, tms = T)) %>%
-        addLegend("topleft", layerId= "lsoa_leg", colors = lsoa_legend_df$colours,
-                  labels = lsoa_legend_df$labels,
-                  title = "Cyclists on route network",
-                  opacity = 0.5
-        )
-    } else {
-      leafletProxy("map") %>% removeTiles(., layerId = "lsoa_base_map") %>% removeControl("lsoa_leg")
-    }
   })
 
   # Set map attributes
