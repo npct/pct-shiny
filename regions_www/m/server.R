@@ -376,6 +376,7 @@ shinyServer(function(input, output, session){
     leafletProxy("map") %>% hideGroup(., "centres") %>%
     {
       if(!line_type %in% show_no_lines) {
+
         switch(line_type,
                'routes'= {
                  hideGroup(., c("quieter_route", "faster_route") ) %>% showGroup(., c("quieter_route", "faster_route"))
@@ -580,29 +581,39 @@ shinyServer(function(input, output, session){
   output$map <- renderLeaflet(
     leaflet() %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
-      ## Add all regions boundary in the beginning but set its opacity to a minimum
-      addPolygons(data = regions, weight = 0.1,
-                  color = "#000000",
-                  fillColor = "aliceblue",
-                  fillOpacity = 0.01,
-                  opacity = 0.3,
-                  label = paste("Click to view", get_pretty_region_name(regions$Region)),
-                  labelOptions = labelOptions(direction = 'auto'),
-                  # On highlight widen the boundary and fill the polygons
-                  highlightOptions = highlightOptions(
-                    color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
-                    bringToFront = TRUE, sendToBack = TRUE),
-                  options = pathOptions(clickable = T),
-                  layerId = paste("new_region", regions$Region),
-                  group = "regions-zones") %>%
       setView(., lng = to_plot$center_dim[1, 1], lat = to_plot$center_dim[1, 2], zoom = 10) %>%
       mapOptions(zoomToLimits = "never")
-
   )
+
+  #Redraw zone polygons when regions is switched, as the current region should not be highlighted
+  observe({
+    region$current
+
+    #Remove old regions polygons
+    leafletProxy("map") %>% clearGroup(., "regions-zones")
+    ## Add all regions boundary in the beginning but set its opacity to a minimum
+    addPolygons(leafletProxy("map"),
+                data = regions[regions$Region != region$current,], weight = 0.1,
+                color = "#000000",
+                fillColor = "aliceblue",
+                fillOpacity = 0.01,
+                opacity = 0.3,
+                label = paste("Click to view", get_pretty_region_name(regions$Region)),
+                labelOptions = labelOptions(direction = 'auto'),
+                # On highlight widen the boundary and fill the polygons
+                highlightOptions = highlightOptions(
+                  color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
+                  bringToFront = TRUE, sendToBack = TRUE),
+                options = pathOptions(clickable = T),
+                layerId = paste("new_region", regions$Region),
+                group = "regions-zones")
+
+  })
 
 
   observe({
     input$map_base
+    region$current
 
     addTiles(leafletProxy("map"), urlTemplate = map_tile_url(),
              attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
