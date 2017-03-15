@@ -577,23 +577,8 @@ shinyServer(function(input, output, session){
   })
 
   # Initialize the leaflet map
-  output$map = renderLeaflet(
+  output$map <- renderLeaflet(
     leaflet() %>%
-      addTiles(., urlTemplate = map_tile_url(),
-               attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
-               Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
-               Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-               options=tileOptions(opacity = ifelse(isolate(input$map_base) == "IMD", 0.3, 1),
-                                   minZoom = 7,
-                                   maxZoom = ifelse(isolate(input$map_base) == "IMD", 14, 18), reuseTiles = T)) %>%
-                                   {
-                                     if (isolate(input$map_base) == 'IMD'){
-                                       addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
-                                                options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
-                                       addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
-                                                options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
-                                     }else .
-                                   } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
       ## Add all regions boundary in the beginning but set its opacity to a minimum
       addPolygons(data = regions, weight = 0.1,
@@ -610,9 +595,32 @@ shinyServer(function(input, output, session){
                   options = pathOptions(clickable = T),
                   layerId = paste("new_region", regions$Region),
                   group = "regions-zones") %>%
-      setView(., lng = to_plot$center_dim[1, 1], lat = to_plot$center_dim[1, 2], zoom = 10)
+      setView(., lng = to_plot$center_dim[1, 1], lat = to_plot$center_dim[1, 2], zoom = 10) %>%
+      mapOptions(zoomToLimits = "never")
 
   )
+
+
+  observe({
+    input$map_base
+
+    addTiles(leafletProxy("map"), urlTemplate = map_tile_url(),
+             attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
+             Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
+             Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+             options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
+                                 minZoom = 7,
+                                 maxZoom = ifelse(input$map_base == "IMD", 14, 18), reuseTiles = T)) %>%
+                                 {
+                                   if (input$map_base == 'IMD'){
+                                     addTiles(leafletProxy("map"), urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
+                                              options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
+                                     addTiles(leafletProxy("map"), urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
+                                              options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
+                                   }else .
+                                 }
+
+  })
 
   # Adds map legend
   observe({
