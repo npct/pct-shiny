@@ -358,7 +358,7 @@ shinyServer(function(input, output, session){
 
     clearGroup(leafletProxy("map"), c("zones", "centres"))
     if(input$show_zones) {
-      show_zone_popup <- input$line_type %in% show_no_lines
+      show_zone_popup <- line_type %in% show_no_lines
       popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
       addPolygons(leafletProxy("map"),  data = to_plot$zones,
                   weight = 2,
