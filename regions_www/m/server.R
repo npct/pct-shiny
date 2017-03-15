@@ -108,7 +108,8 @@ shinyServer(function(input, output, session){
       to_plot$straight_line@data)
 
     region$all_trips <- dir.exists(file.path(data_dir_root, region$current , 'all-trips'))
-
+    # Identify the centre of the current region
+    to_plot$center_dim <<- rgeos::gCentroid(regions[regions$Region == region$current,], byid = TRUE)@coords
     region$repopulate_region <- T
 
   })
@@ -609,7 +610,8 @@ shinyServer(function(input, output, session){
                   options = pathOptions(clickable = T),
                   layerId = paste("new_region", regions$Region),
                   group = "regions-zones") %>%
-      mapOptions(zoomToLimits = "first")
+      setView(., lng = to_plot$center_dim[1, 1], lat = to_plot$center_dim[1, 2], zoom = 10)
+
   )
 
   # Adds map legend
