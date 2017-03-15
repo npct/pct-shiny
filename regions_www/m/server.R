@@ -62,6 +62,7 @@ source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
 
 # Static files
 regions <- readRDS(file.path(shiny_root, "regions_www/regions-highres.Rds"))
+regions$Region <- as.character(regions$Region)
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 codebook_l = readr::read_csv(file.path(shiny_root, "static", "codebook_lines.csv"))
 codebook_z = readr::read_csv(file.path(shiny_root, "static", "codebook_zones.csv"))
@@ -97,6 +98,7 @@ shinyServer(function(input, output, session){
     to_plot$cents <<- readRDS(file.path(region$data_dir, "c.Rds"))
 
     to_plot$route_network <<- readRDS(file.path(region$data_dir, "rnet.Rds"))
+    to_plot$route_network$id <<- 1:nrow(to_plot$route_network)
 
     to_plot$faster_route <<- readRDS(file.path(region$data_dir, "rf.Rds" ))
     to_plot$faster_route@data <<- cbind(
@@ -106,6 +108,9 @@ shinyServer(function(input, output, session){
     to_plot$quieter_route@data <<- cbind(
       to_plot$quieter_route@data[!(names(to_plot$quieter_route) %in% names(to_plot$straight_line))],
       to_plot$straight_line@data)
+
+    # Add rqincr column to the quiet data
+    to_plot$quieter_route@data$rqincr <<- to_plot$quieter_route@data$length / to_plot$faster_route@data$length
 
     region$all_trips <- dir.exists(file.path(data_dir_root, region$current , 'all-trips'))
     # Identify the centre of the current region
@@ -353,7 +358,7 @@ shinyServer(function(input, output, session){
 
     clearGroup(leafletProxy("map"), c("zones", "centres"))
     if(input$show_zones) {
-      show_zone_popup <- input$line_type %in% show_no_lines
+      show_zone_popup <- line_type %in% show_no_lines
       popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
       addPolygons(leafletProxy("map"),  data = to_plot$zones,
                   weight = 2,
@@ -376,6 +381,7 @@ shinyServer(function(input, output, session){
     leafletProxy("map") %>% hideGroup(., "centres") %>%
     {
       if(!line_type %in% show_no_lines) {
+
         switch(line_type,
                'routes'= {
                  hideGroup(., c("quieter_route", "faster_route") ) %>% showGroup(., c("quieter_route", "faster_route"))
@@ -512,6 +518,8 @@ shinyServer(function(input, output, session){
 
   observe({
     input$map_base
+    region$repopulate_region
+
     if (input$line_type == "lsoa_base_map"){
       urlTemplate <- paste0("http://npttile.vs.mythic-beasts.com/", input$scenario, "/{z}/{x}/{y}.png")
 
@@ -526,6 +534,33 @@ shinyServer(function(input, output, session){
     } else {
       leafletProxy("map") %>% removeTiles(., layerId = "lsoa_base_map") %>% removeControl("lsoa_leg")
     }
+  })
+
+  observe({
+    input$map_base
+    region$repopulate_region
+
+    #Redraw zone polygons when regions is switched, as the current region should not be highlighted
+
+    #Remove old regions polygons
+    leafletProxy("map") %>% clearGroup(., "regions-zones")
+
+    ## Add all regions boundary in the beginning but set its opacity to a minimum
+    addPolygons(leafletProxy("map"),
+                data = regions[regions$Region != region$current,], weight = 0.1,
+                color = "#000000",
+                fillColor = "aliceblue",
+                fillOpacity = 0.01,
+                opacity = 0.3,
+                label = paste("Click to view", get_pretty_region_name(regions[regions$Region != region$current,]$Region)),
+                labelOptions = labelOptions(direction = 'auto'),
+                # On highlight widen the boundary and fill the polygons
+                highlightOptions = highlightOptions(
+                  color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
+                  bringToFront = TRUE, sendToBack = TRUE),
+                options = pathOptions(clickable = T),
+                layerId = paste("new_region", regions[regions$Region != region$current,]$Region),
+                group = "regions-zones")
   })
 
   # Set map attributes
@@ -580,29 +615,14 @@ shinyServer(function(input, output, session){
   output$map <- renderLeaflet(
     leaflet() %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
-      ## Add all regions boundary in the beginning but set its opacity to a minimum
-      addPolygons(data = regions, weight = 0.1,
-                  color = "#000000",
-                  fillColor = "aliceblue",
-                  fillOpacity = 0.01,
-                  opacity = 0.3,
-                  label = paste("Click to view", get_pretty_region_name(regions$Region)),
-                  labelOptions = labelOptions(direction = 'auto'),
-                  # On highlight widen the boundary and fill the polygons
-                  highlightOptions = highlightOptions(
-                    color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
-                    bringToFront = TRUE, sendToBack = TRUE),
-                  options = pathOptions(clickable = T),
-                  layerId = paste("new_region", regions$Region),
-                  group = "regions-zones") %>%
       setView(., lng = to_plot$center_dim[1, 1], lat = to_plot$center_dim[1, 2], zoom = 10) %>%
       mapOptions(zoomToLimits = "never")
-
   )
 
 
   observe({
     input$map_base
+    region$current
 
     addTiles(leafletProxy("map"), urlTemplate = map_tile_url(),
              attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
