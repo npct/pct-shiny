@@ -108,9 +108,10 @@ shinyServer(function(input, output, session){
       to_plot$straight_line@data)
 
     region$all_trips <- dir.exists(file.path(data_dir_root, region$current , 'all-trips'))
-
+    # Identify the centre of the current region
+    to_plot$center_dim <<- rgeos::gCentroid(regions[regions$Region == region$current,], byid = TRUE)@coords
     region$repopulate_region <- T
-    leafletProxy("map") %>% removeShape(., "new-region-outline")
+
   })
 
   region <- reactiveValues(current = NA, data_dir = NA, repopulate_region = F, all_trips = NA)
@@ -241,33 +242,15 @@ shinyServer(function(input, output, session){
     })
   })
 
-  observeEvent(input$map_geojson_mouseover, {
-    event <- input$map_geojson_mouseover
-    new_region <- find_region(event$lng, event$lat, region$current)
-    if(is.null(new_region)) return()
-    leafletProxy("map") %>% removeShape(., "new-region-outline")
-
-    new_region_prety <- gsub("(^|-)([[:alpha:]])", " \\U\\2", new_region, perl=TRUE)
-    new_region_prety <- gsub("(Of|And) ", "\\L\\1 ", new_region_prety, perl=TRUE)
-    leafletProxy("map") %>%
-      addPolygons(., data = regions[regions$Region == new_region,], label = paste0("Click to view", new_region_prety),
-                  layerId = "new-region-outline")
-  })
-
-  observeEvent(input$map_shape_mouseout$id, {
-    if(input$map_shape_mouseout$id == "new-region-outline"){
-      leafletProxy("map") %>% removeShape(., "new-region-outline")
-    }
-  })
-
   observeEvent(input$map_shape_click, { # For highlighting the clicked line
     event <- input$map_shape_click
     if (is.null(event) || event$id == "highlighted")
       return()
-    if(event$id == "new-region-outline") {
-      new_region <- find_region(event$lng, event$lat, region$current)
+    # Check if the event$id is called from the "new_region" polygons
+    if(grepl("new_region", event$id)){
+      # Split the id to identify the region name
+      new_region <- strsplit(event$id, " ")[[1]][2]
       if(is.null(new_region)) return()
-
       new_region_all_trips <- dir.exists(file.path(data_dir_root, new_region , 'all-trips'))
       # Check if the new_region is not null, and contains 'all-trips' subfolder
       new_data_dir <- ifelse (new_region_all_trips,
@@ -594,27 +577,50 @@ shinyServer(function(input, output, session){
   })
 
   # Initialize the leaflet map
-  output$map = renderLeaflet(
+  output$map <- renderLeaflet(
     leaflet() %>%
-      addTiles(., urlTemplate = map_tile_url(),
-               attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
-               Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
-               Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-               options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
-                                   minZoom = 7,
-                                   maxZoom = ifelse(input$map_base == "IMD", 14, 18), reuseTiles = T)) %>%
-                                   {
-                                     if (input$map_base == 'IMD'){
-                                       addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
-                                                options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
-                                       addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
-                                                options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
-                                     }else .
-                                   } %>%
       addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
-      addGeoJSON(., readr::read_file(file.path(shiny_root, "regions_www/regions.geojson")), opacity = 0.0, fillOpacity = 0) %>%
-      mapOptions(zoomToLimits = "first")
+      ## Add all regions boundary in the beginning but set its opacity to a minimum
+      addPolygons(data = regions, weight = 0.1,
+                  color = "#000000",
+                  fillColor = "aliceblue",
+                  fillOpacity = 0.01,
+                  opacity = 0.3,
+                  label = paste("Click to view", get_pretty_region_name(regions$Region)),
+                  labelOptions = labelOptions(direction = 'auto'),
+                  # On highlight widen the boundary and fill the polygons
+                  highlightOptions = highlightOptions(
+                    color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
+                    bringToFront = TRUE, sendToBack = TRUE),
+                  options = pathOptions(clickable = T),
+                  layerId = paste("new_region", regions$Region),
+                  group = "regions-zones") %>%
+      setView(., lng = to_plot$center_dim[1, 1], lat = to_plot$center_dim[1, 2], zoom = 10) %>%
+      mapOptions(zoomToLimits = "never")
+
   )
+
+
+  observe({
+    input$map_base
+
+    addTiles(leafletProxy("map"), urlTemplate = map_tile_url(),
+             attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
+             Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
+             Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+             options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
+                                 minZoom = 7,
+                                 maxZoom = ifelse(input$map_base == "IMD", 14, 18), reuseTiles = T)) %>%
+                                 {
+                                   if (input$map_base == 'IMD'){
+                                     addTiles(leafletProxy("map"), urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
+                                              options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
+                                     addTiles(leafletProxy("map"), urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
+                                              options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
+                                   }else .
+                                 }
+
+  })
 
   # Adds map legend
   observe({
