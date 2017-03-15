@@ -62,6 +62,7 @@ source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
 
 # Static files
 regions <- readRDS(file.path(shiny_root, "regions_www/regions-highres.Rds"))
+regions$Region <- as.character(regions$Region)
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 codebook_l = readr::read_csv(file.path(shiny_root, "static", "codebook_lines.csv"))
 codebook_z = readr::read_csv(file.path(shiny_root, "static", "codebook_zones.csv"))
@@ -595,6 +596,7 @@ shinyServer(function(input, output, session){
 
     #Remove old regions polygons
     leafletProxy("map") %>% clearGroup(., "regions-zones")
+
     ## Add all regions boundary in the beginning but set its opacity to a minimum
     addPolygons(leafletProxy("map"),
                 data = regions[regions$Region != region$current,], weight = 0.1,
@@ -602,14 +604,14 @@ shinyServer(function(input, output, session){
                 fillColor = "aliceblue",
                 fillOpacity = 0.01,
                 opacity = 0.3,
-                label = paste("Click to view", get_pretty_region_name(regions$Region)),
+                label = paste("Click to view", get_pretty_region_name(regions[regions$Region != region$current,]$Region)),
                 labelOptions = labelOptions(direction = 'auto'),
                 # On highlight widen the boundary and fill the polygons
                 highlightOptions = highlightOptions(
                   color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
                   bringToFront = TRUE, sendToBack = TRUE),
                 options = pathOptions(clickable = T),
-                layerId = paste("new_region", regions$Region),
+                layerId = paste("new_region", regions[regions$Region != region$current,]$Region),
                 group = "regions-zones")
 
   })
