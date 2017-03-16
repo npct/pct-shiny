@@ -33,11 +33,11 @@ Contributions to the project are welcome. This file, for instance, can be edited
 
 #### User Manuals
 
-<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/pct-bike-user-manual-a.pdf">User Manual A</a>
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/pct-bike-user-manual-a.pdf">User Manual A: Overview</a>
 
-<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/pct-bike-user-manual-b.pdf">User Manual B</a>
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/pct-bike-user-manual-b.pdf">User Manual B: Using the PCT interface and data</a>
 
-<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/pct-bike-user-manual-c.pdf">User Manual C</a>
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/pct-bike-user-manual-c.pdf">User Manual C: PCT methods</a>
 
 #### Case Studies
 
