@@ -45,6 +45,9 @@
     jQuery(document).ready(function(){
       $("#includedContent").load("manual_body.html");
       $("#includedNav").load("nav.html");
+      if (!window.location.href.match(/pct.bike/)) {
+        $("body").prepend($("<div>").load("test-banner.html"));
+      }
     });
   </script>
 </head>

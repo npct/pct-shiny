@@ -25,17 +25,18 @@
     </style>
     <script>
       if (window.hljs && document.readyState && document.readyState === "complete") {
-        window.setTimeout(function() {
-          hljs.initHighlighting();
-        }, 0);
+        hljs.initHighlighting();
       };
       $(document).ready(function(){
         $("#includedNav").load("nav.html");
+        if (!window.location.href.match(/pct.bike/)) {
+          $("body").prepend($("<div>").load("test-banner.html"));
+        }
         if (typeof(ga) !== "undefined"){
           $('navbar a').each(function() {
             ga('send', 'event', 'front-nav', $(this).data('value'));
           });
-        };
+        }
       });
     </script>
 
