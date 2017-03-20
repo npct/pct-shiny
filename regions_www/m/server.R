@@ -511,7 +511,7 @@ shinyServer(function(input, output, session){
            'roadmap' = "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
            'satellite' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
            'IMD' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png",
-           'opencyclemap' = "https://c.tile.thunderforest.com/cycle/{z}/{x}/{y}.png",
+           'opencyclemap' = "https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=feae177da543411c9efa64160305212d",
            'hilliness' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}"
     )
   })
