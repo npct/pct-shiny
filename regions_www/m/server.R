@@ -629,16 +629,15 @@ shinyServer(function(input, output, session){
              Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
              options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
                                  minZoom = 7,
-                                 maxZoom = ifelse(input$map_base == "IMD", 14, 18), reuseTiles = T)) %>%
-                                 {
-                                   if (input$map_base == 'IMD'){
-                                     addTiles(leafletProxy("map"), urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
-                                              options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
-                                     addTiles(leafletProxy("map"), urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
-                                              options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
-                                   }else .
-                                 }
+                                 maxZoom = ifelse(input$map_base == "IMD", 14, 18), reuseTiles = T))
 
+    if (input$map_base == 'IMD'){
+      leafletProxy("map") %>%
+        addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
+                 options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T)) %>%
+        addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
+                 options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
+    }
     leafletProxy("map") %>% hideGroup(., "lsoa_base_map") %>% showGroup(., "lsoa_base_map")
   })
 
