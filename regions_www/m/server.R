@@ -517,14 +517,13 @@ shinyServer(function(input, output, session){
   })
 
   observe({
-    input$map_base
     region$repopulate_region
 
     if (input$line_type == "lsoa_base_map"){
       urlTemplate <- paste0("http://npttile.vs.mythic-beasts.com/", input$scenario, "/{z}/{x}/{y}.png")
 
       leafletProxy("map") %>%
-        addTiles(., urlTemplate = urlTemplate, layerId = "lsoa_base_map",
+        addTiles(., urlTemplate = urlTemplate, layerId = "lsoa_base_map", group = "lsoa_base_map",
                  options=tileOptions(maxNativeZoom = 13, reuseTiles = T, tms = T)) %>%
         addLegend("topleft", layerId= "lsoa_leg", colors = lsoa_legend_df$colours,
                   labels = lsoa_legend_df$labels,
@@ -640,6 +639,7 @@ shinyServer(function(input, output, session){
                                    }else .
                                  }
 
+    leafletProxy("map") %>% hideGroup(., "lsoa_base_map") %>% showGroup(., "lsoa_base_map")
   })
 
   # Adds map legend
