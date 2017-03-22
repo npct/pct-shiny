@@ -260,6 +260,25 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     // Add census as the default layer
     olc.addTo(map);
 
+    var heat_govt = L.geoJson(la, {
+      style: mapStyle("govtarget_sldeath_heat"),
+      onEachFeature: onEachFeature("govtarget_sldeath_heat")
+    });
+
+    var heat_gendereq = L.geoJson(la, {
+      style: mapStyle("gendereq_sldeath_heat"),
+      onEachFeature: onEachFeature("gendereq_sldeath_heat")
+    });
+
+
+    var var_layers = {
+      "Govt target Heat": heat_govt,
+      "Gender Equity Heat": heat_gendereq
+    };
+
+    L.control.layers(var_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+
+
     var legend = L.control({position: 'topleft'});
 
     legend.onAdd = function (map) {
@@ -291,6 +310,7 @@ var map = L.map('map').setView([ 53, -0.4], 6);
   };
 
   legend.addTo(map);
+
 </script>
 
 </body>
