@@ -623,17 +623,15 @@ shinyServer(function(input, output, session){
     input$map_base
     region$current
 
-    addTiles(leafletProxy("map"), urlTemplate = map_tile_url(),
+    leafletProxy("map") %>% addTiles(., urlTemplate = map_tile_url(), layerId = "background",
              attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
              Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
              Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
              options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
-                                 minZoom = 7,
-                                 maxZoom = ifelse(input$map_base == "IMD", 14, 18), reuseTiles = T))
-
+                                 minZoom = 7, reuseTiles = T,
+                                 maxZoom = ifelse(input$map_base == "IMD", 14, 18)))
     if (input$map_base == 'IMD'){
-      leafletProxy("map") %>%
-        addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
+        leafletProxy("map") %>% addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
                  options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T)) %>%
         addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
                  options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
