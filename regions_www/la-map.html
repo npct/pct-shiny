@@ -292,31 +292,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
       };
     }
 
-    var olc = L.geoJson(la, {
-      style: mapStyle("bicycle"),
-      onEachFeature: onEachFeature("bicycle")
-    });
-
-    var govtarget = L.geoJson(la, {
-      style: mapStyle("govtarget_slc"),
-      onEachFeature: onEachFeature("govtarget_slc")
-    });
-
-    var gendereq = L.geoJson(la, {
-      style: mapStyle("gendereq_slc"),
-      onEachFeature: onEachFeature("gendereq_slc")
-    });
-
-    var dutch = L.geoJson(la, {
-      style: mapStyle("dutch_slc"),
-      onEachFeature: onEachFeature("dutch_slc")
-    });
-
-    var ebike = L.geoJson(la, {
-      style: mapStyle("ebike_slc"),
-      onEachFeature: onEachFeature("ebike_slc")
-    });
-
     var map_layers = {
       "Census 2011": L.tileLayer(''),
       "Government Target": L.tileLayer(''),
@@ -329,21 +304,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
 
     // Add census as the default layer
     //olc.addTo(map);
-
-    var cycling = L.geoJson(la, {
-      style: mapStyle(combined_var_name),
-      onEachFeature: onEachFeature(combined_var_name)
-    });
-
-    var heat = L.geoJson(la, {
-      style: mapStyle(combined_var_name),
-      onEachFeature: onEachFeature(combined_var_name)
-    });
-
-    var CO2 = L.geoJson(la, {
-      style: mapStyle(combined_var_name),
-      onEachFeature: onEachFeature(combined_var_name)
-    });
 
     var var_layers = {
       "Cycling": L.tileLayer(''),
