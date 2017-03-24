@@ -134,7 +134,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
           onEachFeature: onEachFeature(combined_var_name)
       }).addTo(map);
 
-
     });
 
     function data_filter(scenario, type){
@@ -196,11 +195,30 @@ var map = L.map('map').setView([ 53, -0.4], 6);
       var regionText;
 
       if(scenario !== undefined && props) {
-        regionText = '<b>' + capitalize(props.name) + '</b><br />' + precise_round(props[scenario], 1) + '  % in ' + info.scenarioMap[scenario];
+        var scenario_name = "2011 Census";
+        if (scenario.indexOf('govtarget') !== -1)
+          scenario_name = "Government Target";
+        else if (scenario.indexOf('dutch') !== -1)
+          scenario_name = "Go Dutch";
+        else if (scenario.indexOf('ebike') !== -1)
+          scenario_name = "Ebike"
+
+        regionText = '<b>' + capitalize(props.name) + '</b><br />' + precise_round(props[scenario], 1) + '  % in ' + scenario_name;
       } else {
-        regionText = 'Hover over a LA';
+        regionText = '<h4>Hover over a LA</h4>';
       }
-      this._div.innerHTML = '<h4>Cycling to work</h4>' + regionText;
+
+      var variable_title = '';
+      if(scenario !== undefined){
+        if (scenario.indexOf('bicycle') !== -1)
+          variable_title = '<h4>Cycling to work</h4>'
+        else if (scenario.indexOf('_heat') !== -1)
+          variable_title = '<h4>HEAT</h4>';
+        else if(scenario.indexOf('sico2') !== -1)
+          variable_title = '<h4>CO2</h4>';
+      }
+
+      this._div.innerHTML =  variable_title + regionText;
     };
 
     // Capitalize all words in a region except 'and' and 'of'
@@ -267,7 +285,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     }
 
     function onEachFeature(property) {
-      console.log("onEachFeature - " + property)
       return function(feature, layer) {
         layer.on({
           mouseover: highlightFeature(property),
