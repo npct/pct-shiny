@@ -506,15 +506,16 @@ shinyServer(function(input, output, session){
 
   }
   # Updates map tile according to the selected map base
-  map_tile_url <- reactive({
+  map_tile <- reactive({
     switch(input$map_base,
-           'roadmap' = "http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
-           'satellite' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-           'IMD' =  "http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png",
-           'opencyclemap' = "https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=feae177da543411c9efa64160305212d",
-           'hilliness' = "http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}"
+           'roadmap' = list(url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", zoom = 18),
+           'satellite' = list(url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", zoom=18),
+           'IMD' =  list(url="http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png", zoom=14),
+           'opencyclemap' = list(url="https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=feae177da543411c9efa64160305212d", zoom=18),
+           'hilliness' = list(url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", zoom=13)
     )
   })
+
 
   observe({
     region$repopulate_region
@@ -618,18 +619,16 @@ shinyServer(function(input, output, session){
       mapOptions(zoomToLimits = "never")
   )
 
-
   observe({
     input$map_base
     region$current
-
-    leafletProxy("map") %>% addTiles(., urlTemplate = map_tile_url(), layerId = "background",
+    leafletProxy("map") %>% addTiles(., urlTemplate = map_tile()$url, layerId = "background",
              attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
              Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
              Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
              options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
                                  minZoom = 7, reuseTiles = T, maxZoom = 18,
-                                 maxNativeZoom = ifelse(input$map_base == "IMD", 14, 18))) %>%
+                                 maxNativeZoom = map_tile()$zoom)) %>%
       clearGroup(., "imd_background")
     if (input$map_base == 'IMD'){
       imdTileOptions <- tileOptions(opacity = 0.3, minZoom = 7, maxNativeZoom = 14, reuseTiles = T)
