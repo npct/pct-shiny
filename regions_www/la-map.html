@@ -290,8 +290,10 @@ var map = L.map('map').setView([ 53, -0.4], 6);
       };
     }
 
+    var default_scenario = L.tileLayer('');
+
     var map_layers = {
-      "Census 2011": L.tileLayer(''),
+      "Census 2011": default_scenario,
       "Government Target": L.tileLayer(''),
       "Gender equality": L.tileLayer(''),
       "Go Dutch": L.tileLayer(''),
@@ -301,15 +303,19 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     L.control.layers(map_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
     // Add census as the default layer
-    //olc.addTo(map);
+    default_scenario.addTo(map);
+
+    var default_var = L.tileLayer('');
 
     var var_layers = {
-      "Cycling": L.tileLayer(''),
+      "Cycling": default_var,
       "HEAT": L.tileLayer(''),
       "CO2" : L.tileLayer('')
     };
 
     L.control.layers(var_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+
+    default_var.addTo(map);
 
     // Add census as the default layer
     //cycling.addTo(map);
