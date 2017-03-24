@@ -11,7 +11,8 @@
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-ui.min.js"></script>
 
 
 <style>
@@ -131,10 +132,11 @@ var map = L.map('map').setView([ 53, -0.4], 6);
 
       console.log(e.name + ' - ' + data_filter(selectedLayer, selectedVariable));
 
+      L.geoJson(la, {
+        style: mapStyle(combined_var_name),
+        onEachFeature: onEachFeature(combined_var_name)
+      }).addTo(map);
 
-      //olc.clearLayers(); // inherited from LayerGroup
-      //olc.addData(newData);
-      //selectedLayer = e.name;
     });
 
     function data_filter(scenario, type){
@@ -316,17 +318,17 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     });
 
     var map_layers = {
-      "Census 2011": olc,
-      "Government Target": govtarget,
-      "Gender equality": gendereq,
-      "Go Dutch": dutch,
-      "Ebikes": ebike
+      "Census 2011": L.tileLayer(''),
+      "Government Target": L.tileLayer(''),
+      "Gender equality": L.tileLayer(''),
+      "Go Dutch": L.tileLayer(''),
+      "Ebikes": L.tileLayer('')
     };
 
     L.control.layers(map_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
     // Add census as the default layer
-    olc.addTo(map);
+    //olc.addTo(map);
 
     var cycling = L.geoJson(la, {
       style: mapStyle(combined_var_name),
@@ -344,15 +346,15 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     });
 
     var var_layers = {
-      "Cycling": cycling,
-      "HEAT": heat,
-      "CO2" : CO2
+      "Cycling": L.tileLayer(''),
+      "HEAT": L.tileLayer(''),
+      "CO2" : L.tileLayer('')
     };
 
     L.control.layers(var_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
     // Add census as the default layer
-    cycling.addTo(map);
+    //cycling.addTo(map);
 
     var legend = L.control({position: 'topleft'});
 
