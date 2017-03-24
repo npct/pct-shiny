@@ -123,10 +123,8 @@ var map = L.map('map').setView([ 53, -0.4], 6);
       else if(e.name == "CO2")
         selectedVariable = "sico2"
 
-      //if (selectedLayer == "olc" && selectedVariable == "slc")
-      //  selectededVariable = "olc"
-
-      //data_filter(selectedLayer, selectedVariable)
+      // Remove previous layer
+      map.removeLayer(e);
 
       combined_var_name = data_filter(selectedLayer, selectedVariable);//selectedLayer + '_' + selectedVariable;
 
