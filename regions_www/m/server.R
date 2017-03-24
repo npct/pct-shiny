@@ -628,13 +628,16 @@ shinyServer(function(input, output, session){
              Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
              Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
              options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
-                                 minZoom = 7, reuseTiles = T,
-                                 maxZoom = ifelse(input$map_base == "IMD", 14, 18)))
+                                 minZoom = 7, reuseTiles = T, maxZoom = 18,
+                                 maxNativeZoom = ifelse(input$map_base == "IMD", 14, 18))) %>%
+      clearGroup(., "imd_background")
     if (input$map_base == 'IMD'){
-        leafletProxy("map") %>% addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png",
-                 options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T)) %>%
-        addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png",
-                 options=tileOptions(opacity = 0.3, minZoom = 7, maxZoom = 14, reuseTiles = T))
+      imdTileOptions <- tileOptions(opacity = 0.3, minZoom = 7, maxNativeZoom = 14, reuseTiles = T)
+      leafletProxy("map") %>%
+        addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png", group = "imd_background",
+                 options=imdTileOptions) %>%
+        addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png", group = "imd_background",
+                 options=imdTileOptions)
     }
     leafletProxy("map") %>% hideGroup(., "lsoa_base_map") %>% showGroup(., "lsoa_base_map")
   })
