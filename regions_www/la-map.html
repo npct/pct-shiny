@@ -87,6 +87,70 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     // Don't show the 'Leaflet' text. Attribution overload
     map.attributionControl.setPrefix('');
 
+    var selectedLayer = "olc";
+    var selectedVariable = "slc"
+    var combined_var_name = "bicycle"
+
+     map.on('baselayerchange', function (e) {
+       /*
+       r map_layers = {
+      "Census 2011": olc,
+      "Government Target": govtarget,
+      "Gender equality": gendereq,
+      "Go Dutch": dutch,
+      "Ebikes": ebike
+
+      "Cycling": cycling,
+      "HEAT": heat,
+      "CO2" : CO2
+       */
+      if (e.name == "Census 2011")
+        selectedLayer = "olc"
+      else if(e.name == "Government Target")
+        selectedLayer = "govtarget"
+      else if(e.name == "Gender equality")
+        selectedLayer = "gendereq"
+      else if(e.name == "Go Dutch")
+        selectedLayer = "dutch"
+      else if(e.name == "Ebikes")
+        selectedLayer = "ebike"
+
+      if(e.name == "Cycling")
+        selectedVariable = "slc"
+      else if(e.name == "HEAT")
+        selectedVariable = "sivalue_heat"
+      else if(e.name == "CO2")
+        selectedVariable = "sico2"
+
+      //if (selectedLayer == "olc" && selectedVariable == "slc")
+      //  selectededVariable = "olc"
+
+      //data_filter(selectedLayer, selectedVariable)
+
+      combined_var_name = data_filter(selectedLayer, selectedVariable);//selectedLayer + '_' + selectedVariable;
+
+      console.log(e.name + ' - ' + data_filter(selectedLayer, selectedVariable));
+
+
+      olc.clearLayers(); // inherited from LayerGroup
+      layer.addData(newData);
+      //selectedLayer = e.name;
+    });
+
+    function data_filter(scenario, type){
+      if(scenario == "olc" && type == "slc")
+       return "bicycle";
+      else
+       return scenario + '_' + type;
+    }
+
+    function get_type(scenario){
+      if(scenario == 'Census 2011')
+        return 'olc';
+      else
+        return 'slc';
+    }
+
 
     // control that shows region info on hover
     var info = L.control();
@@ -130,6 +194,7 @@ var map = L.map('map').setView([ 53, -0.4], 6);
 
     info.update = function (props, scenario) {
       var regionText;
+
       if(scenario !== undefined && props) {
         regionText = '<b>' + capitalize(props.name) + '</b><br />' + precise_round(props[scenario], 1) + '  % in ' + info.scenarioMap[scenario];
       } else {
@@ -169,6 +234,8 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     var polyFillOpacity = polyOpacity = 0.8;
     var polyDashArry = '';
 
+
+
     function highlightFeature(property) {
       return function(e) {
         var layer = e.target;
@@ -200,6 +267,7 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     }
 
     function onEachFeature(property) {
+      console.log("onEachFeature - " + property)
       return function(feature, layer) {
         layer.on({
           mouseover: highlightFeature(property),
@@ -260,24 +328,31 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     // Add census as the default layer
     olc.addTo(map);
 
-    var heat_govt = L.geoJson(la, {
-      style: mapStyle("govtarget_sldeath_heat"),
-      onEachFeature: onEachFeature("govtarget_sldeath_heat")
+    var cycling = L.geoJson(la, {
+      style: mapStyle(combined_var_name),
+      onEachFeature: onEachFeature(combined_var_name)
     });
 
-    var heat_gendereq = L.geoJson(la, {
-      style: mapStyle("gendereq_sldeath_heat"),
-      onEachFeature: onEachFeature("gendereq_sldeath_heat")
+    var heat = L.geoJson(la, {
+      style: mapStyle(combined_var_name),
+      onEachFeature: onEachFeature(combined_var_name)
     });
 
+    var CO2 = L.geoJson(la, {
+      style: mapStyle(combined_var_name),
+      onEachFeature: onEachFeature(combined_var_name)
+    });
 
     var var_layers = {
-      "Govt target Heat": heat_govt,
-      "Gender Equity Heat": heat_gendereq
+      "Cycling": cycling,
+      "HEAT": heat,
+      "CO2" : CO2
     };
 
     L.control.layers(var_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
+    // Add census as the default layer
+    cycling.addTo(map);
 
     var legend = L.control({position: 'topleft'});
 
