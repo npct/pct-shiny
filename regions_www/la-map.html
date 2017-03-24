@@ -210,7 +210,7 @@ var map = L.map('map').setView([ 53, -0.4], 6);
 
       var variable_title = '';
       if(scenario !== undefined){
-        if (scenario.indexOf('bicycle') !== -1)
+        if (scenario.indexOf('bicycle') !== -1 || scenario.indexOf('slc') !== -1)
           variable_title = '<h4>Cycling to work</h4>'
         else if (scenario.indexOf('_heat') !== -1)
           variable_title = '<h4>HEAT</h4>';
