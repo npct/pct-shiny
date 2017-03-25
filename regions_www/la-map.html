@@ -191,8 +191,11 @@ var map = L.map('map').setView([ 53, -0.4], 6);
       ebike_slc: "Ebike"
     };
 
-    info.update = function (props, scenario) {
+    info.update = function (props, all_var, scenario) {
       var regionText;
+
+      if (all_var !== undefined)
+        console.log("all_var " + all_var)
 
       if(scenario !== undefined && props) {
         var scenario_name = "2011 Census";
@@ -268,8 +271,8 @@ var map = L.map('map').setView([ 53, -0.4], 6);
         if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
           layer.bringToFront();
         }
-
-        info.update(layer.feature.properties, property);
+        // Add the variable 'all'
+        info.update(layer.feature.properties, layer.feature.properties.all, property);
       };
     }
 
