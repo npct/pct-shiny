@@ -194,10 +194,10 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     info.update = function (props, all_var, scenario) {
       var regionText;
 
-      if (all_var !== undefined)
-        console.log("all_var " + all_var)
+      //if ()
+        //console.log("all_var " + all_var)
 
-      if(scenario !== undefined && props) {
+      if(scenario !== undefined && all_var !== undefined && props) {
         var scenario_name = "2011 Census";
         if (scenario.indexOf('govtarget') !== -1)
           scenario_name = "Government Target";
@@ -206,7 +206,7 @@ var map = L.map('map').setView([ 53, -0.4], 6);
         else if (scenario.indexOf('ebike') !== -1)
           scenario_name = "Ebike"
 
-        regionText = '<b>' + capitalize(props.name) + '</b><br />' + precise_round(props[scenario], 1) + '  % in ' + scenario_name;
+        regionText = '<b>' + capitalize(props.name) + '</b><br />' + precise_round((props[scenario] / all_var * 100), 1) + '  % in ' + scenario_name;
       } else {
         regionText = '<h4>Hover over an LA</h4>';
       }
@@ -305,7 +305,7 @@ var map = L.map('map').setView([ 53, -0.4], 6);
           color: polyColor,
           dashArray: polyDashArry,
           fillOpacity: polyFillOpacity,
-          fillColor: getColor(feature.properties[property])
+          fillColor: getColor(feature.properties[property] / feature.properties.all * 100)
         };
       };
     }
