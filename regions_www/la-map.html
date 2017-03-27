@@ -206,7 +206,13 @@ var map = L.map('map').setView([ 53, -0.4], 6);
         else if (scenario.indexOf('ebike') !== -1)
           scenario_name = "Ebike"
 
-        regionText = '<b>' + capitalize(props.name) + '</b><br />' + precise_round((props[scenario] / all_var * 100), 1) + '  % in ' + scenario_name;
+
+        var var_value = precise_round((props[scenario] / all_var * 100), 1);
+        if(scenario.indexOf('sivalue_heat') !== -1 || scenario.indexOf('sico2') !== -1){
+          var_value = precise_round((props[scenario] * 10000 / all_var), 2);
+        }
+
+        regionText = '<b>' + capitalize(props.name) + '</b><br />' +  var_value + '  % in ' + scenario_name;
       } else {
         regionText = '<h4>Hover over an LA</h4>';
       }
