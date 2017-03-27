@@ -94,18 +94,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     var featureGroup = null;
 
      map.on('baselayerchange', function (e) {
-       /*
-       r map_layers = {
-      "Census 2011": olc,
-      "Government Target": govtarget,
-      "Gender equality": gendereq,
-      "Go Dutch": dutch,
-      "Ebikes": ebike
-
-      "Cycling": cycling,
-      "HEAT": heat,
-      "CO2" : CO2
-       */
       if (e.name == "Census 2011")
         selectedLayer = "olc"
       else if(e.name == "Government Target")
@@ -120,12 +108,12 @@ var map = L.map('map').setView([ 53, -0.4], 6);
       if(e.name == "Cycling")
         selectedVariable = "slc"
       else if(e.name == "HEAT")
-        selectedVariable = "sivalue_heat"
+        selectedVariable = "sideath_heat"
       else if(e.name == "CO2")
         selectedVariable = "sico2"
 
 
-      combined_var_name = data_filter(selectedLayer, selectedVariable);//selectedLayer + '_' + selectedVariable;
+      combined_var_name = data_filter(selectedLayer, selectedVariable);
 
       featureGroup ? featureGroup.clearLayers() : "";
 
@@ -194,9 +182,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     info.update = function (props, all_var, scenario) {
       var regionText;
 
-      //if ()
-        //console.log("all_var " + all_var)
-
       if(scenario !== undefined && all_var !== undefined && props) {
         var scenario_name = "2011 Census";
         if (scenario.indexOf('govtarget') !== -1)
@@ -208,7 +193,7 @@ var map = L.map('map').setView([ 53, -0.4], 6);
 
 
         var var_value = precise_round((props[scenario] / all_var * 100), 1);
-        if(scenario.indexOf('sivalue_heat') !== -1 || scenario.indexOf('sico2') !== -1){
+        if(scenario.indexOf('sideath_heat') !== -1 || scenario.indexOf('sico2') !== -1){
           var_value = precise_round((props[scenario] * 10000 / all_var), 2);
         }
 
