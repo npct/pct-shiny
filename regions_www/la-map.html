@@ -95,6 +95,24 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     var featureGroup = null;
 
      map.on('baselayerchange', function (e) {
+
+/*       if (e.name !== 'Census 2011') {
+          if (!map.hasLayer(non_census_var)){
+            console.log(e.name + " Removing census_var and adding non_census_var")
+            this.removeControl(census_var);
+            non_census_var.addTo(this);
+          }
+          //map.census_var.enable();
+      } else { // Or switch to the positive legend...
+          console.log(e.name + " Removing non_census_var and adding census_var")
+          this.removeControl(non_census_var);
+          census_var.addTo(this);
+      }
+
+      console.log(" examining " + e.name)
+
+*/
+
       if (e.name == "Census 2011")
         selectedLayer = "olc"
       else if(e.name == "Government Target")
@@ -105,6 +123,8 @@ var map = L.map('map').setView([ 53, -0.4], 6);
         selectedLayer = "dutch"
       else if(e.name == "Ebikes")
         selectedLayer = "ebike"
+
+             // Switch to the negative legend...
 
       if(e.name == "Cycling")
         selectedVariable = "slc"
@@ -123,11 +143,11 @@ var map = L.map('map').setView([ 53, -0.4], 6);
           onEachFeature: onEachFeature(combined_var_name)
       }).addTo(map);
 
-      // Switch to the Population legend...
+      // Switch to the negative legend...
       if (selectedVariable === "sideath_heat" || selectedVariable === 'sico2') {
           this.removeControl(positive_legend);
           negative_legend.addTo(this);
-      } else { // Or switch to the Population Change legend...
+      } else { // Or switch to the positive legend...
           this.removeControl(negative_legend);
           positive_legend.addTo(this);
       }
@@ -209,6 +229,27 @@ var map = L.map('map').setView([ 53, -0.4], 6);
       div.innerHTML = labels.join('<br>');
       return div;
     };
+
+
+    var default_census_var = L.tileLayer('');
+
+    var census_var_layers = {
+      "Cycling": default_census_var
+    };
+
+    var census_var = L.control.layers(census_var_layers, null, {collapsed: false}, {position: 'topleft'});
+
+    var default_non_census_var = L.tileLayer('');
+
+    var non_census_var_layers = {
+      "Cycling": default_non_census_var,
+      "HEAT": L.tileLayer(''),
+      "CO2" : L.tileLayer('')
+    };
+
+    var non_census_var = L.control.layers(non_census_var_layers, null, {collapsed: false}, {position: 'topleft'});
+
+
 
     // control that shows region info on hover
     var info = L.control();
@@ -307,6 +348,7 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     }
 
     info.addTo(map);
+
 
     function getColor(d) {
       return d >= 40  ? '#4575B4' :
@@ -411,17 +453,9 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     // Add census as the default layer
     default_scenario.addTo(map);
 
-    var default_var = L.tileLayer('');
+    non_census_var.addTo(map);
+    default_non_census_var.addTo(map);
 
-    var var_layers = {
-      "Cycling": default_var,
-      "HEAT": L.tileLayer(''),
-      "CO2" : L.tileLayer('')
-    };
-
-    L.control.layers(var_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
-
-    default_var.addTo(map);
 
     // Add census as the default layer
     //cycling.addTo(map);
