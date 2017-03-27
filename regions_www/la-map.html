@@ -270,7 +270,18 @@ var map = L.map('map').setView([ 53, -0.4], 6);
           var_value = precise_round((props[scenario] * 10000 / all_var), 2);
         }
 
-        regionText = '<b>' + capitalize(props.name) + '</b><br />' +  var_value + '  % in ' + scenario_name;
+        var message = var_value + '% cycling to work'
+        if(scenario.indexOf('sideath_heat') !== -1){
+          message = var_value + ' deaths avoided/10,000 commuters/year' + '<br/>' +
+                    + precise_round((props[scenario]), 2) + ' deaths avoided/year in total'
+        }else if(scenario.indexOf('sico2') !== -1){
+          message = var_value + ' tonnes CO2e/10,000 commuters/year' + '<br/>' +
+                    + precise_round((props[scenario]), 2) + ' CO2e/year in total'
+        }
+
+
+
+        regionText = '<b>' + capitalize(props.name) + ', ' + scenario_name + '</b><br />' +  message;
       } else {
         regionText = '<h4>Hover over an LA</h4>';
       }
