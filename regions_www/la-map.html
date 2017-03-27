@@ -330,9 +330,9 @@ var map = L.map('map').setView([ 53, -0.4], 6);
         if (scenario.indexOf('bicycle') !== -1 || scenario.indexOf('slc') !== -1)
           variable_title = '<h4>Cycling to work</h4>'
         else if (scenario.indexOf('_heat') !== -1)
-          variable_title = '<h4>HEAT</h4>';
+          variable_title = '<h4>HEAT impacts</h4>';
         else if(scenario.indexOf('sico2') !== -1)
-          variable_title = '<h4>CO2</h4>';
+          variable_title = '<h4>Carbon impacts</h4>';
       }
 
       this._div.innerHTML =  variable_title + regionText;
