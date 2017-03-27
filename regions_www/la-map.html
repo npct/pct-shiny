@@ -88,6 +88,7 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     // Don't show the 'Leaflet' text. Attribution overload
     map.attributionControl.setPrefix('');
 
+
     var selectedLayer = "olc";
     var selectedVariable = "slc"
     var combined_var_name = "bicycle"
@@ -122,6 +123,16 @@ var map = L.map('map').setView([ 53, -0.4], 6);
           onEachFeature: onEachFeature(combined_var_name)
       }).addTo(map);
 
+      // Switch to the Population legend...
+      console.log(selectedVariable)
+      if (selectedVariable === "sideath_heat" || selectedVariable === 'sico2') {
+          this.removeControl(positive_legend);
+          negative_legend.addTo(this);
+      } else { // Or switch to the Population Change legend...
+          this.removeControl(negative_legend);
+          positive_legend.addTo(this);
+      }
+
     });
 
     function data_filter(scenario, type){
@@ -138,6 +149,68 @@ var map = L.map('map').setView([ 53, -0.4], 6);
         return 'slc';
     }
 
+    var positive_legend = L.control({position: 'topleft'});
+
+    positive_legend.onAdd = function (map) {
+
+      var div = L.DomUtil.create('div', 'info-box legend'),
+        // zone_fill_breaks = c(0, 1.5, 3.5, 6.5, 9.5, 14.5, 19.5, 24.5, 29.5, 100) / 100  # The bins used for the scale
+        grades = [0, 2, 4, 7, 10, 15, 20, 25, 30, 40],
+        bin_labels = ["0-1%",
+          "2-3%",
+          "4-6%",
+          "7-9%",
+          "10-14%",
+          "15-19%",
+          "20-24%",
+          "25-29%",
+          "30-39%",
+          "40%+"],
+
+      labels = [],
+      from;
+      for (var i = 0; i < grades.length; i++) {
+        from = grades[i];
+        labels.push(
+            '<i style="background:' + getColor(from + 1) + '"></i> ' +
+          bin_labels[i]);
+      }
+        div.innerHTML = labels.join('<br>');
+        return div;
+    };
+
+    positive_legend.addTo(map);
+
+
+    var negative_legend = L.control({position: 'topleft'});
+    negative_legend.onAdd = function (map) {
+
+      var div = L.DomUtil.create('div', 'info-box legend'),
+        // zone_fill_breaks = c(0, 1.5, 3.5, 6.5, 9.5, 14.5, 19.5, 24.5, 29.5, 100) / 100  # The bins used for the scale
+        grades = [0, -2, -4, -7, -10, -15, -20, -25, -30, -40],
+        bin_labels = ["0 -> -1%",
+          "-2 -> -3%",
+          "-4 -> -6%",
+          "-7 -> -9%",
+          "-10 -> -14%",
+          "-15 -> -19%",
+          "-20 -> -24%",
+          "-25 -> -29%",
+          "-30 -> -39%",
+          "-40%+"],
+
+      labels = [],
+      from;
+      for (var i = 0; i < grades.length; i++) {
+        from = grades[i];
+        //console.log("from " + from + "getcolor " +  ((from * -1) + 1))
+        labels.push(
+            '<i style="background:' + getColor(((from * -1) + 1)) + '"></i> ' +
+          bin_labels[i]);
+      }
+      div.innerHTML = labels.join('<br>');
+      return div;
+    };
 
     // control that shows region info on hover
     var info = L.control();
@@ -296,9 +369,24 @@ var map = L.map('map').setView([ 53, -0.4], 6);
           color: polyColor,
           dashArray: polyDashArry,
           fillOpacity: polyFillOpacity,
-          fillColor: getColor(feature.properties[property] / feature.properties.all * 100)
+          fillColor: getNormalizedColor(property, feature.properties[property], feature.properties.all)
         };
       };
+    }
+
+
+    function getNormalizedColor(prop, prop_value, all_var){
+
+        if (prop !== undefined && prop_value !== undefined && all_var !== undefined){
+          var var_value = getColor(prop_value / all_var * 100);
+          if(prop.indexOf('sideath_heat') !== -1 || prop.indexOf('sico2') !== -1){
+            var_value = getColor( -1 * (prop_value * 10000 / all_var));
+          }
+
+          //console.log(prop + " - " + prop_value + " - " + all_var + " - " + var_value);
+          return var_value;
+        }
+        return 0;
     }
 
     var default_scenario = L.tileLayer('');
@@ -330,38 +418,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
 
     // Add census as the default layer
     //cycling.addTo(map);
-
-    var legend = L.control({position: 'topleft'});
-
-    legend.onAdd = function (map) {
-
-      var div = L.DomUtil.create('div', 'info-box legend'),
-        // zone_fill_breaks = c(0, 1.5, 3.5, 6.5, 9.5, 14.5, 19.5, 24.5, 29.5, 100) / 100  # The bins used for the scale
-        grades = [0, 2, 4, 7, 10, 15, 20, 25, 30, 40],
-        bin_labels = ["0-1%",
-          "2-3%",
-          "4-6%",
-          "7-9%",
-          "10-14%",
-          "15-19%",
-          "20-24%",
-          "25-29%",
-          "30-39%",
-          "40%+"],
-
-      labels = [],
-      from;
-    for (var i = 0; i < grades.length; i++) {
-      from = grades[i];
-      labels.push(
-          '<i style="background:' + getColor(from + 1) + '"></i> ' +
-        bin_labels[i]);
-    }
-    div.innerHTML = labels.join('<br>');
-    return div;
-  };
-
-  legend.addTo(map);
 
 </script>
 
