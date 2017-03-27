@@ -124,7 +124,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
       }).addTo(map);
 
       // Switch to the Population legend...
-      console.log(selectedVariable)
       if (selectedVariable === "sideath_heat" || selectedVariable === 'sico2') {
           this.removeControl(positive_legend);
           negative_legend.addTo(this);
@@ -203,7 +202,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
       from;
       for (var i = 0; i < grades.length; i++) {
         from = grades[i];
-        //console.log("from " + from + "getcolor " +  ((from * -1) + 1))
         labels.push(
             '<i style="background:' + getColor(((from * -1) + 1)) + '"></i> ' +
           bin_labels[i]);
@@ -393,8 +391,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
           if(prop.indexOf('sideath_heat') !== -1 || prop.indexOf('sico2') !== -1){
             var_value = getColor( -1 * (prop_value * 10000 / all_var));
           }
-
-          //console.log(prop + " - " + prop_value + " - " + all_var + " - " + var_value);
           return var_value;
         }
         return 0;
