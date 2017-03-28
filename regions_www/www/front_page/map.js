@@ -91,20 +91,6 @@ $(document).ready(function(){
         d >= 0   ? '#A50026' :
         '#313695';
 
-      // return d > 40  ? '#313695' :
-      //   d > 30  ? '#4575B4' :
-      //   d > 25  ? '#74ADD1' :
-      //   d > 20  ? '#ABD9E9' :
-      //   d > 15   ? '#C6DBEF' :
-      //   d > 10   ? '#ffffbf' :
-      //   d > 7   ? '#FEE090' :
-      //   d > 4   ? '#FDAE61' :
-      //   d > 2   ? '#F46D43' :
-      //   d > 0   ? '#D73027' :
-      //   '#A50026';
-      // grades = [0, 2, 4, 7, 10, 15, 20, 25, 30, 40]
-      // zone_fill_breaks = c(0, 1, 2, 4, 6, 8, 10, 14, 20, 60) / 100 # The bins used for the scale
-      // [0, 3, 6, 12, 20, 40],
     }
 
     var polyColor = 'black';
