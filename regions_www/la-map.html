@@ -144,12 +144,19 @@ var map = L.map('map').setView([ 53, -0.4], 6);
       }).addTo(map);
 
       // Switch to the negative legend...
-      if (selectedVariable === "sideath_heat" || selectedVariable === 'sico2') {
-          this.removeControl(positive_legend);
-          negative_legend.addTo(this);
-      } else { // Or switch to the positive legend...
-          this.removeControl(negative_legend);
-          positive_legend.addTo(this);
+      if (selectedVariable === "sideath_heat") {
+          this.removeControl(cycling_legend);
+          this.removeControl(co2_legend);
+          heat_legend.addTo(this);
+      }
+      else if(selectedVariable === 'sico2'){
+          this.removeControl(cycling_legend);
+          this.removeControl(heat_legend);
+          co2_legend.addTo(this);
+      } else {
+          this.removeControl(heat_legend);
+          this.removeControl(co2_legend);
+          cycling_legend.addTo(this);
       }
 
     });
@@ -168,9 +175,9 @@ var map = L.map('map').setView([ 53, -0.4], 6);
         return 'slc';
     }
 
-    var positive_legend = L.control({position: 'topleft'});
+    var cycling_legend = L.control({position: 'topleft'});
 
-    positive_legend.onAdd = function (map) {
+    cycling_legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info-box legend'),
         // zone_fill_breaks = c(0, 1.5, 3.5, 6.5, 9.5, 14.5, 19.5, 24.5, 29.5, 100) / 100  # The bins used for the scale
@@ -198,32 +205,63 @@ var map = L.map('map').setView([ 53, -0.4], 6);
         return div;
     };
 
-    positive_legend.addTo(map);
+    cycling_legend.addTo(map);
 
 
-    var negative_legend = L.control({position: 'topleft'});
-    negative_legend.onAdd = function (map) {
+    var heat_legend = L.control({position: 'topleft'});
+    heat_legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info-box legend'),
-        // zone_fill_breaks = c(0, 1.5, 3.5, 6.5, 9.5, 14.5, 19.5, 24.5, 29.5, 100) / 100  # The bins used for the scale
-        grades = [0, -2, -4, -7, -10, -15, -20, -25, -30, -40],
-        bin_labels = ["0 to -1%",
-          "-2 to -3%",
-          "-4 to -6%",
-          "-7 to -9%",
-          "-10 to -14%",
-          "-15 to -19%",
-          "-20 to -24%",
-          "-25 to -29%",
-          "-30 to -39%",
-          "-40%+"],
+      // grades = [-0.98, -0.87, -0.75, -0.64, -0.53, -0.41, -0.3, -0.19, -0.07,  0.02],
+      grades = [-0.99, -0.88, -0.76, -0.65, -0.54, -0.42, -0.31, -0.20, -0.08,  0.03],
+      //grades = [0.03, -0.08, -0.20, -0.31, -0.42, -0.54, -0.65, -0.76, -0.88  , -0.99],
+        bin_labels = ["0.03+",
+          "-0.08 to 0.02",
+          "-0.20 to -0.09",
+          "-0.31 to -0.21",
+          "-0.42 to -0.32",
+          "-0.54 to -0.43",
+          "-0.65 to -0.55",
+          "-0.76 to -0.66",
+          "-0.88 to -0.77",
+          "-0.99 to -0.89"],
 
       labels = [],
       from;
-      for (var i = 0; i < grades.length; i++) {
-        from = grades[i];
+      for (var i = 0; i < grades.length ; i++) {
+        from = grades[(grades.length - 1) - i];
+        //console.log(i + ' - ' + bin_labels[i] + ' - ' + from + ' - ' + getColor(from, grades));
         labels.push(
-            '<i style="background:' + getColor(((from * -1) + 1)) + '"></i> ' +
+            '<i style="background:' + getColor(from, grades) + '"></i> ' +
+          bin_labels[i]);
+      }
+      div.innerHTML = labels.join('<br>');
+      return div;
+    };
+
+    var co2_legend = L.control({position: 'topleft'});
+    co2_legend.onAdd = function (map) {
+
+      var div = L.DomUtil.create('div', 'info-box legend'),
+      grades = [-680, -600, -530, -450, -380, -300, -230, -150,  -80,  0],
+        bin_labels = ["0+",
+          "-80 to -149",
+          "-150 to -229",
+          "-230 to -299",
+          "-300 to -379",
+          "-380 to -449",
+          "-450 to -529",
+          "-530 to -599",
+          "-600 to -679",
+          "-680+"],
+
+      labels = [],
+      from;
+      for (var i = 0; i < grades.length ; i++) {
+        from = grades[(grades.length - 1) - i];
+        //console.log(i + ' - ' + bin_labels[i] + ' - ' + from + ' - ' + getColor(from, grades));
+        labels.push(
+            '<i style="background:' + getColor(from, grades) + '"></i> ' +
           bin_labels[i]);
       }
       div.innerHTML = labels.join('<br>');
@@ -318,8 +356,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
                     + Math.round(props[scenario]) + ' CO2e/year in total'
         }
 
-
-
         regionText = '<b>' + capitalize(props.name) + ', ' + scenario_name + '</b><br />' +  message;
       } else {
         regionText = '<h4>Hover over an LA</h4>';
@@ -350,18 +386,36 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     info.addTo(map);
 
 
-    function getColor(d) {
-      return d >= 40  ? '#4575B4' :
-        d >= 30  ? '#74ADD1' :
-        d >= 25  ? '#ABD9E9' :
-        d >= 20  ? '#C6DBEF' :
-        d >= 15  ? '#ffffbf' :
-        d >= 10  ? '#FEE090' :
-        d >= 7   ? '#FDAE61' :
-        d >= 4   ? '#F46D43' :
-        d >= 2   ? '#D73027' :
-        d >= 0   ? '#A50026' :
-        '#313695';
+    function getColor(d, color_bin) {
+      if (color_bin === undefined){
+        return d >= 40  ? '#4575B4' :
+          d >= 30  ? '#74ADD1' :
+          d >= 25  ? '#ABD9E9' :
+          d >= 20  ? '#C6DBEF' :
+          d >= 15  ? '#ffffbf' :
+          d >= 10  ? '#FEE090' :
+          d >= 7   ? '#FDAE61' :
+          d >= 4   ? '#F46D43' :
+          d >= 2   ? '#D73027' :
+          d >= 0   ? '#A50026' :
+          '#313695';
+      }else{
+
+        // var col_bin = [-0.99, -0.88, -0.76, -0.65, -0.54, -0.42, -0.31, -0.20, -0.08,  0.03]
+        // -0.05  -  #A50026
+
+        return d <= color_bin[0]  ? '#4575B4' :
+          d <= color_bin[1] ? '#74ADD1' :
+          d <= color_bin[2] ? '#ABD9E9' :
+          d <= color_bin[3] ? '#C6DBEF' :
+          d <= color_bin[4] ? '#ffffbf' :
+          d <= color_bin[5] ? '#FEE090' :
+          d <= color_bin[6] ? '#FDAE61' :
+          d <= color_bin[7] ? '#F46D43' :
+          d <= color_bin[8] ? '#D73027' :
+          d <= color_bin[9]  ? '#A50026' :
+          '#D73027';
+      }
 
     }
 
@@ -431,7 +485,12 @@ var map = L.map('map').setView([ 53, -0.4], 6);
         if (prop !== undefined && prop_value !== undefined && all_var !== undefined){
           var var_value = getColor(prop_value / all_var * 100);
           if(prop.indexOf('sideath_heat') !== -1 || prop.indexOf('sico2') !== -1){
-            var_value = getColor( -1 * (prop_value * 10000 / all_var));
+            var col_bin = [-0.89, -0.77, -0.66, -0.55, -0.43, -0.32, -0.21, -0.09,  0.04, Infinity];
+            if (prop.indexOf('sico2') !== -1)
+              col_bin = [-600, -530, -450, -380, -300, -230, -150,  -80,  0, Infinity];
+            var_value = getColor( precise_round((prop_value * 10000 / all_var), 2), col_bin);
+            //precise_round((props[scenario] * 10000 / all_var), 2)
+            //console.log(precise_round((prop_value * 10000 / all_var), 2) + '  -  ' + var_value)
           }
           return var_value;
         }
