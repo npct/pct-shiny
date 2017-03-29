@@ -244,7 +244,7 @@ var map = L.map('map').setView([ 53, -0.4], 6);
 
       var div = L.DomUtil.create('div', 'info-box legend'),
       grades = [-680, -600, -530, -450, -380, -300, -230, -150,  -80,  0],
-        bin_labels = ["0+",
+        bin_labels = ["-79+",
           "-80 to -149",
           "-150 to -229",
           "-230 to -299",
@@ -487,9 +487,8 @@ var map = L.map('map').setView([ 53, -0.4], 6);
           if(prop.indexOf('sideath_heat') !== -1 || prop.indexOf('sico2') !== -1){
             var col_bin = [-0.89, -0.77, -0.66, -0.55, -0.43, -0.32, -0.21, -0.09,  0.04, Infinity];
             if (prop.indexOf('sico2') !== -1)
-              col_bin = [-600, -530, -450, -380, -300, -230, -150,  -80,  0, Infinity];
+              col_bin = [-680, -600, -530, -450, -380, -300, -230, -150,  -80,  -0.02];
             var_value = getColor( precise_round((prop_value * 10000 / all_var), 2), col_bin);
-            //precise_round((props[scenario] * 10000 / all_var), 2)
             //console.log(precise_round((prop_value * 10000 / all_var), 2) + '  -  ' + var_value)
           }
           return var_value;
