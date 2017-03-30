@@ -11,8 +11,11 @@
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
+<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
 <script type="text/javascript" src="https://code.jquery.com/jquery-ui.min.js"></script>
+-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
 
 <style>
@@ -68,6 +71,20 @@
 .legend { text-align: left; line-height: 18px; color: #555; }
 .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }</style>
 
+
+<script type="text/javascript">
+/*window.onload = function() {
+    if (window.jQuery) {
+        // jQuery is loaded
+        alert("Yeah!");
+    } else {
+        // jQuery is not loaded
+        alert("Doesn't Work");
+    }
+}
+*/
+</script>
+
 </head>
 <body>
 
@@ -95,6 +112,16 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     var featureGroup = null;
 
      map.on('baselayerchange', function (e) {
+
+       /*
+       if (e.name !== 'Census 2011') {
+         non_census_var.toggle();
+       } else {
+         non_census_var.toggle();
+
+       }
+       */
+
 
 /*       if (e.name !== 'Census 2011') {
           if (!map.hasLayer(non_census_var)){
@@ -135,6 +162,40 @@ var map = L.map('map').setView([ 53, -0.4], 6);
 
 
       combined_var_name = data_filter(selectedLayer, selectedVariable);
+      // Disable CO2 and HEAT for Census 2011 scenario
+      if (combined_var_name == "bicycle") {
+          //console.log("global " + selectedLayer + ' ' + selectedVariable)
+         // Disable HEAT and CO2 radio buttons
+         $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
+            //console.log($(this).parent().text().trim() + ' ' + $(this).parent().text().trim().length);
+            if ($(this).parent().text().trim() == "HEAT" || $(this).parent().text().trim() == "CO2"){
+                $(this).attr('disabled', true);
+            }
+        });
+       }else{
+          $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
+              $(this).attr('disabled', false);
+          });
+       }
+
+      // Disable census 2011 when HEAT or CO2 is selected
+      if (selectedVariable != "slc") {
+         $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
+            if ($(this).parent().text().trim() == "Census 2011"){
+                $(this).attr('disabled', true);
+            }
+        });
+       }
+
+      // Enable cycling variable for census 2011
+      if (selectedVariable == "slc") {
+         $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
+            if ($(this).parent().text().trim() == "Cycling"){
+                $(this).attr('disabled', true);
+            }
+        });
+       }
+
 
       featureGroup ? featureGroup.clearLayers() : "";
 
@@ -158,6 +219,8 @@ var map = L.map('map').setView([ 53, -0.4], 6);
           this.removeControl(co2_legend);
           cycling_legend.addTo(this);
       }
+
+
 
     });
 
@@ -517,6 +580,45 @@ var map = L.map('map').setView([ 53, -0.4], 6);
 
     // Add census as the default layer
     //cycling.addTo(map);
+
+
+    // use jQuery to listen for checkbox change event
+    $("input:radio").on('change', function() {
+      var radio = $(this).parent().text();
+      //var layer = radio.data().layer;
+
+      //console.log(radio)
+      //console.log($(this).val())
+
+      //$(":input").prop("disabled", true);
+
+      /* // toggle the layer
+      if (checkbox):is('checked') {
+          map.addLayer(layer);
+      } else {
+        map.removeLayer(layer);
+      }*/
+
+  })
+
+
+  /*
+        $('input[name="leaflet-base-layers"]').change(function () {
+    // Remove unchecked layers
+      console.log("global " + selectedLayer + ' ' + selectedVariable)
+
+      $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
+        console.log($(this).parent().text())
+        if ($(this).parent().text() == "HEAT" || $(this).parent().text() == "CO2"){
+          $(this).attr('disabled', true);
+        }
+
+      });
+
+    });
+
+  */
+
 
 </script>
 
