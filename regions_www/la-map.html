@@ -113,18 +113,18 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
       if(e.name == "Cycling")
         selectedVariable = "slc"
-      else if(e.name == "HEAT")
+      else if(e.name == "Health")
         selectedVariable = "sideath_heat"
       else if(e.name == "CO2")
         selectedVariable = "sico2"
 
 
       combined_var_name = data_filter(selectedLayer, selectedVariable);
-      // Disable CO2 and HEAT for Census 2011 scenario
+      // Disable CO2 and Health for Census 2011 scenario
       if (combined_var_name == "bicycle") {
-         // Disable HEAT and CO2 radio buttons
+         // Disable Health and CO2 radio buttons
          $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
-            if ($(this).parent().text().trim() == "HEAT" || $(this).parent().text().trim() == "CO2"){
+            if ($(this).parent().text().trim() == "Health" || $(this).parent().text().trim() == "CO2"){
                 $(this).attr('disabled', true);
             }
         });
@@ -134,7 +134,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
           });
        }
 
-      // Disable census 2011 when HEAT or CO2 is selected
+      // Disable census 2011 when Health or CO2 is selected
       if (selectedVariable != "slc") {
          $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
             if ($(this).parent().text().trim() == "Census 2011"){
@@ -164,14 +164,14 @@ var map = L.map('map').setView([ 53, -0.4], 7);
       if (selectedVariable === "sideath_heat") {
           this.removeControl(cycling_legend);
           this.removeControl(co2_legend);
-          heat_legend.addTo(this);
+          health_legend.addTo(this);
       }
       else if(selectedVariable === 'sico2'){
           this.removeControl(cycling_legend);
-          this.removeControl(heat_legend);
+          this.removeControl(health_legend);
           co2_legend.addTo(this);
       } else {
-          this.removeControl(heat_legend);
+          this.removeControl(health_legend);
           this.removeControl(co2_legend);
           cycling_legend.addTo(this);
       }
@@ -226,8 +226,8 @@ var map = L.map('map').setView([ 53, -0.4], 7);
     cycling_legend.addTo(map);
 
 
-    var heat_legend = L.control({position: 'topleft'});
-    heat_legend.onAdd = function (map) {
+    var health_legend = L.control({position: 'topleft'});
+    health_legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info-box legend'),
       grades = [-0.99, -0.88, -0.76, -0.65, -0.54, -0.42, -0.31, -0.20, -0.08,  0.03],
@@ -295,7 +295,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
     var non_census_var_layers = {
       "Cycling": default_non_census_var,
-      "HEAT": L.tileLayer(''),
+      "Health": L.tileLayer(''),
       "CO2" : L.tileLayer('')
     };
 
@@ -378,7 +378,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
         if (scenario.indexOf('bicycle') !== -1 || scenario.indexOf('slc') !== -1)
           variable_title = '<h4>Cycling to work</h4>'
         else if (scenario.indexOf('_heat') !== -1)
-          variable_title = '<h4>HEAT impacts</h4>';
+          variable_title = '<h4>Health impacts</h4>';
         else if(scenario.indexOf('sico2') !== -1)
           variable_title = '<h4>Carbon impacts</h4>';
       }
