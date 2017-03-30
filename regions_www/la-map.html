@@ -11,9 +11,6 @@
 
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-ui.min.js"></script>
--->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
@@ -73,16 +70,6 @@
 
 
 <script type="text/javascript">
-/*window.onload = function() {
-    if (window.jQuery) {
-        // jQuery is loaded
-        alert("Yeah!");
-    } else {
-        // jQuery is not loaded
-        alert("Doesn't Work");
-    }
-}
-*/
 </script>
 
 </head>
@@ -113,33 +100,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
 
      map.on('baselayerchange', function (e) {
 
-       /*
-       if (e.name !== 'Census 2011') {
-         non_census_var.toggle();
-       } else {
-         non_census_var.toggle();
-
-       }
-       */
-
-
-/*       if (e.name !== 'Census 2011') {
-          if (!map.hasLayer(non_census_var)){
-            console.log(e.name + " Removing census_var and adding non_census_var")
-            this.removeControl(census_var);
-            non_census_var.addTo(this);
-          }
-          //map.census_var.enable();
-      } else { // Or switch to the positive legend...
-          console.log(e.name + " Removing non_census_var and adding census_var")
-          this.removeControl(non_census_var);
-          census_var.addTo(this);
-      }
-
-      console.log(" examining " + e.name)
-
-*/
-
       if (e.name == "Census 2011")
         selectedLayer = "olc"
       else if(e.name == "Government Target")
@@ -150,8 +110,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
         selectedLayer = "dutch"
       else if(e.name == "Ebikes")
         selectedLayer = "ebike"
-
-             // Switch to the negative legend...
 
       if(e.name == "Cycling")
         selectedVariable = "slc"
@@ -164,10 +122,8 @@ var map = L.map('map').setView([ 53, -0.4], 6);
       combined_var_name = data_filter(selectedLayer, selectedVariable);
       // Disable CO2 and HEAT for Census 2011 scenario
       if (combined_var_name == "bicycle") {
-          //console.log("global " + selectedLayer + ' ' + selectedVariable)
          // Disable HEAT and CO2 radio buttons
          $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
-            //console.log($(this).parent().text().trim() + ' ' + $(this).parent().text().trim().length);
             if ($(this).parent().text().trim() == "HEAT" || $(this).parent().text().trim() == "CO2"){
                 $(this).attr('disabled', true);
             }
@@ -243,7 +199,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     cycling_legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info-box legend'),
-        // zone_fill_breaks = c(0, 1.5, 3.5, 6.5, 9.5, 14.5, 19.5, 24.5, 29.5, 100) / 100  # The bins used for the scale
         grades = [0, 2, 4, 7, 10, 15, 20, 25, 30, 40],
         bin_labels = ["0 to 1%",
           "2 to 3%",
@@ -275,9 +230,7 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     heat_legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info-box legend'),
-      // grades = [-0.98, -0.87, -0.75, -0.64, -0.53, -0.41, -0.3, -0.19, -0.07,  0.02],
       grades = [-0.99, -0.88, -0.76, -0.65, -0.54, -0.42, -0.31, -0.20, -0.08,  0.03],
-      //grades = [0.03, -0.08, -0.20, -0.31, -0.42, -0.54, -0.65, -0.76, -0.88  , -0.99],
         bin_labels = ["0.03+",
           "-0.08 to 0.02",
           "-0.20 to -0.09",
@@ -293,7 +246,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
       from;
       for (var i = 0; i < grades.length ; i++) {
         from = grades[(grades.length - 1) - i];
-        //console.log(i + ' - ' + bin_labels[i] + ' - ' + from + ' - ' + getColor(from, grades));
         labels.push(
             '<i style="background:' + getColor(from, grades) + '"></i> ' +
           bin_labels[i]);
@@ -322,7 +274,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
       from;
       for (var i = 0; i < grades.length ; i++) {
         from = grades[(grades.length - 1) - i];
-        //console.log(i + ' - ' + bin_labels[i] + ' - ' + from + ' - ' + getColor(from, grades));
         labels.push(
             '<i style="background:' + getColor(from, grades) + '"></i> ' +
           bin_labels[i]);
@@ -349,8 +300,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
     };
 
     var non_census_var = L.control.layers(non_census_var_layers, null, {collapsed: false}, {position: 'topleft'});
-
-
 
     // control that shows region info on hover
     var info = L.control();
@@ -464,9 +413,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
           '#313695';
       }else{
 
-        // var col_bin = [-0.99, -0.88, -0.76, -0.65, -0.54, -0.42, -0.31, -0.20, -0.08,  0.03]
-        // -0.05  -  #A50026
-
         return d <= color_bin[0]  ? '#4575B4' :
           d <= color_bin[1] ? '#74ADD1' :
           d <= color_bin[2] ? '#ABD9E9' :
@@ -552,7 +498,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
             if (prop.indexOf('sico2') !== -1)
               col_bin = [-680, -600, -530, -450, -380, -300, -230, -150,  -80,  -0.02];
             var_value = getColor( precise_round((prop_value * 10000 / all_var), 2), col_bin);
-            //console.log(precise_round((prop_value * 10000 / all_var), 2) + '  -  ' + var_value)
           }
           return var_value;
         }
@@ -576,49 +521,6 @@ var map = L.map('map').setView([ 53, -0.4], 6);
 
     non_census_var.addTo(map);
     default_non_census_var.addTo(map);
-
-
-    // Add census as the default layer
-    //cycling.addTo(map);
-
-
-    // use jQuery to listen for checkbox change event
-    $("input:radio").on('change', function() {
-      var radio = $(this).parent().text();
-      //var layer = radio.data().layer;
-
-      //console.log(radio)
-      //console.log($(this).val())
-
-      //$(":input").prop("disabled", true);
-
-      /* // toggle the layer
-      if (checkbox):is('checked') {
-          map.addLayer(layer);
-      } else {
-        map.removeLayer(layer);
-      }*/
-
-  })
-
-
-  /*
-        $('input[name="leaflet-base-layers"]').change(function () {
-    // Remove unchecked layers
-      console.log("global " + selectedLayer + ' ' + selectedVariable)
-
-      $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
-        console.log($(this).parent().text())
-        if ($(this).parent().text() == "HEAT" || $(this).parent().text() == "CO2"){
-          $(this).attr('disabled', true);
-        }
-
-      });
-
-    });
-
-  */
-
 
 </script>
 
