@@ -82,7 +82,9 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
     L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
       maxZoom: 18,
-      attribution: '<a href="http://leafletjs.com" target = "_blank">Leaflet</a> | ' +
+      attribution: '<a href="https://rawgit.com/npct/pct-shiny/master/regions_www/laresults.csv" target = "_blank">Data</a> | ' +
+      '<a href="https://rawgit.com/npct/pct-shiny/master/regions_www/lacodebook.csv" target = "_blank">Codebook</a> | ' +
+      '<a href="http://leafletjs.com" target = "_blank">Leaflet</a> | ' +
       'Map data &copy; <a href="http://openstreetmap.org" target = "_blank">OpenStreetMap</a> contributors | ' +
       '<a href="http://creativecommons.org/licenses/by-sa/2.0/" target = "_blank">CC-BY-SA</a>'
     }).addTo(map);
