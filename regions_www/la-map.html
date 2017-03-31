@@ -211,7 +211,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
           "30 to 39%",
           "40%+"],
 
-      labels = [],
+      labels = ['<strong> Cycling % </strong>'],
       from;
       for (var i = 0; i < grades.length; i++) {
         from = grades[i];
@@ -243,7 +243,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
         "-0.88 to -0.77",
         "-0.99 to -0.89"],
 
-      labels = [],
+      labels = ['<strong> Deaths avoided<br>per 10,000 commuters </strong>'],
       from;
       for (var i = 0; i < grades.length ; i++) {
         from = grades[(grades.length - 1) - i];
@@ -271,7 +271,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
           "-600 to -679",
           "-680+"],
 
-      labels = [],
+      labels = ['<strong> TCO2e reduction<br>per 10,000 commuters </strong>'],
       from;
       for (var i = 0; i < grades.length ; i++) {
         from = grades[(grades.length - 1) - i];
