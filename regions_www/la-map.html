@@ -213,6 +213,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
       labels = ['<strong> Cycling % </strong>'],
       from;
+      //div.title = "Enter Tooltip Here";
       for (var i = 0; i < grades.length; i++) {
         from = grades[i];
         labels.push(
@@ -259,17 +260,17 @@ var map = L.map('map').setView([ 53, -0.4], 7);
     co2_legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info-box legend'),
-      grades = [-680, -600, -530, -450, -380, -300, -230, -150,  -80,  0],
-        bin_labels = ["-79+",
-          "-80 to -149",
-          "-150 to -229",
-          "-230 to -299",
-          "-300 to -379",
-          "-380 to -449",
-          "-450 to -529",
-          "-530 to -599",
-          "-600 to -679",
-          "-680+"],
+      grades = [-680, -605, -530, -455, -380, -305, -230, -155,  -79, -4],
+      bin_labels = ["-4 to -78",
+        "-79 to -154",
+        "-155 to -229",
+        "-230 to -304",
+        "-305 to -379",
+        "-380 to -454",
+        "-455 to -529",
+        "-530 to -604",
+        "-605 to -679",
+        "-680+"],
 
       labels = ['<strong> TCO2e reduction<br>per 10,000 commuters </strong>'],
       from;
@@ -499,7 +500,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
             //grades = [-0.99, -0.88, -0.77, -0.66, -0.55, -0.45, -0.34, -0.23, -0.12,  -0.01]
             var col_bin = [-0.89, -0.78, -0.67, -0.56, -0.46, -0.35, -0.24, -0.13,  -0.02, Infinity];
             if (prop.indexOf('sico2') !== -1)
-              col_bin = [-680, -600, -530, -450, -380, -300, -230, -150,  -80,  -0.02];
+              col_bin = [-680, -605, -530, -455, -380, -305, -230, -155,  -79, -4];
             var_value = getColor( precise_round((prop_value * 10000 / all_var), 2), col_bin);
           }
           return var_value;
