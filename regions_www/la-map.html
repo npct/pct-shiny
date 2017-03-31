@@ -494,7 +494,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
     function getNormalizedColor(prop, prop_value, all_var){
 
         if (prop !== undefined && prop_value !== undefined && all_var !== undefined){
-          var var_value = getColor(prop_value / all_var * 100);
+          var var_value = getColor(Math.round(prop_value / all_var * 100));
           if(prop.indexOf('sideath_heat') !== -1 || prop.indexOf('sico2') !== -1){
             //grades = [-0.99, -0.88, -0.77, -0.66, -0.55, -0.45, -0.34, -0.23, -0.12,  -0.01]
             var col_bin = [-0.89, -0.78, -0.67, -0.56, -0.46, -0.35, -0.24, -0.13,  -0.02, Infinity];
