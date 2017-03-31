@@ -230,17 +230,18 @@ var map = L.map('map').setView([ 53, -0.4], 7);
     health_legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info-box legend'),
-      grades = [-0.99, -0.88, -0.76, -0.65, -0.54, -0.42, -0.31, -0.20, -0.08,  0.03],
-        bin_labels = ["0.03+",
-          "-0.08 to 0.02",
-          "-0.20 to -0.09",
-          "-0.31 to -0.21",
-          "-0.42 to -0.32",
-          "-0.54 to -0.43",
-          "-0.65 to -0.55",
-          "-0.76 to -0.66",
-          "-0.88 to -0.77",
-          "-0.99 to -0.89"],
+      grades = [-0.99, -0.88, -0.77, -0.66, -0.55, -0.45, -0.34, -0.23, -0.12,  -0.01],
+      //grades = [-0.99, -0.88, -0.76, -0.65, -0.54, -0.42, -0.31, -0.20, -0.08,  0.03],
+      bin_labels = ["0 to -0.01",
+        "-0.12 to -0.02",
+        "-0.23 to -0.09",
+        "-0.34 to -0.21",
+        "-0.45 to -0.32",
+        "-0.55 to -0.43",
+        "-0.66 to -0.55",
+        "-0.77 to -0.66",
+        "-0.88 to -0.77",
+        "-0.99 to -0.89"],
 
       labels = [],
       from;
@@ -495,7 +496,8 @@ var map = L.map('map').setView([ 53, -0.4], 7);
         if (prop !== undefined && prop_value !== undefined && all_var !== undefined){
           var var_value = getColor(prop_value / all_var * 100);
           if(prop.indexOf('sideath_heat') !== -1 || prop.indexOf('sico2') !== -1){
-            var col_bin = [-0.89, -0.77, -0.66, -0.55, -0.43, -0.32, -0.21, -0.09,  0.04, Infinity];
+            //grades = [-0.99, -0.88, -0.77, -0.66, -0.55, -0.45, -0.34, -0.23, -0.12,  -0.01]
+            var col_bin = [-0.89, -0.78, -0.67, -0.56, -0.46, -0.35, -0.24, -0.13,  -0.02, Infinity];
             if (prop.indexOf('sico2') !== -1)
               col_bin = [-680, -600, -530, -450, -380, -300, -230, -150,  -80,  -0.02];
             var_value = getColor( precise_round((prop_value * 10000 / all_var), 2), col_bin);
