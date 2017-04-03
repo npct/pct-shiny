@@ -100,6 +100,16 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
     map.options.minZoom = 5;
 
+    var home = {
+      lat: 53,
+      lng: -0.4,
+      zoom: 7
+    };
+
+    L.easyButton('fa-home', function(btn, map){
+      map.setView([home.lat, home.lng], home.zoom);
+    },'Reset view to default').addTo(map);
+
     var selectedLayer = "olc";
     var selectedVariable = "slc"
     var combined_var_name = "bicycle"
