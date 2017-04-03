@@ -92,6 +92,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
     // Don't show the 'Leaflet' text. Attribution overload
     map.attributionControl.setPrefix('');
 
+    map.options.minZoom = 5;
 
     var selectedLayer = "olc";
     var selectedVariable = "slc"
