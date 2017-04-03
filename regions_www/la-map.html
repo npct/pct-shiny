@@ -112,7 +112,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
 
     L.easyButton('fa-map-marker', function (){
-      map.locate({setView: true});
+      map.locate({setView: true, maxZoom: 10});
     },'Set view to your current location').addTo(map);
 
 
