@@ -120,6 +120,37 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
 
       combined_var_name = data_filter(selectedLayer, selectedVariable);
+
+      setControls();
+
+      featureGroup ? featureGroup.clearLayers() : "";
+
+      featureGroup = L.geoJson(la, {
+          style: mapStyle(combined_var_name),
+          onEachFeature: onEachFeature(combined_var_name)
+      }).addTo(map);
+
+      // Switch to the negative legend...
+      if (selectedVariable === "sideath_heat") {
+          this.removeControl(cycling_legend);
+          this.removeControl(co2_legend);
+          health_legend.addTo(this);
+      }
+      else if(selectedVariable === 'sico2'){
+          this.removeControl(cycling_legend);
+          this.removeControl(health_legend);
+          co2_legend.addTo(this);
+      } else {
+          this.removeControl(health_legend);
+          this.removeControl(co2_legend);
+          cycling_legend.addTo(this);
+      }
+
+
+
+    });
+
+    function setControls(){
       // Disable CO2 and Health for Census 2011 scenario
       if (combined_var_name == "bicycle") {
          // Disable Health and CO2 radio buttons
@@ -151,34 +182,13 @@ var map = L.map('map').setView([ 53, -0.4], 7);
             }
         });
        }
+    }
 
 
-      featureGroup ? featureGroup.clearLayers() : "";
+    map.on('moveend', function (){
+      setControls();
 
-      featureGroup = L.geoJson(la, {
-          style: mapStyle(combined_var_name),
-          onEachFeature: onEachFeature(combined_var_name)
-      }).addTo(map);
-
-      // Switch to the negative legend...
-      if (selectedVariable === "sideath_heat") {
-          this.removeControl(cycling_legend);
-          this.removeControl(co2_legend);
-          health_legend.addTo(this);
-      }
-      else if(selectedVariable === 'sico2'){
-          this.removeControl(cycling_legend);
-          this.removeControl(health_legend);
-          co2_legend.addTo(this);
-      } else {
-          this.removeControl(health_legend);
-          this.removeControl(co2_legend);
-          cycling_legend.addTo(this);
-      }
-
-
-
-    });
+    })
 
     function data_filter(scenario, type){
       if(scenario == "olc" && type == "slc")
