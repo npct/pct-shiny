@@ -110,6 +110,12 @@ var map = L.map('map').setView([ 53, -0.4], 7);
       map.setView([home.lat, home.lng], home.zoom);
     },'Reset view to default').addTo(map);
 
+
+    L.easyButton('fa-map-marker', function (){
+      map.locate({setView: true});
+    },'Set view to your current location').addTo(map);
+
+
     var selectedLayer = "olc";
     var selectedVariable = "slc"
     var combined_var_name = "bicycle"
