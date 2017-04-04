@@ -180,11 +180,9 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
     });
 
-
-
-        var nameLayer = L.geoJson(la, {
-        style: mapStyle('name'),
-        onEachFeature: onEachFeature('name')
+    var nameLayer = L.geoJson(la, {
+      style: mapStyle('name'),
+      onEachFeature: onEachFeature('name')
     });
 
     var searchControl = new L.Control.Search({
@@ -204,22 +202,8 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
   	searchControl.on('search:locationfound', function(e) {
 
-  	  //e.layer.openPopup();
-
-  		//console.log('search:locationfound', );
-  		//map.removeLayer(this._markerSearch)
-
-  		/*e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
-  		if(e.layer._popup)
-  			e.layer.openPopup();
-  		*/
-
   	}).on('search:collapsed', function(e) {
 
-  		/*nameLayer.eachLayer(function(layer) {	//restore feature color
-  			nameLayer.resetStyle(layer);
-  		});
-  		*/
   	});
 
 
@@ -296,7 +280,6 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
       labels = ['<strong> Cycling % </strong>'],
       from;
-      //div.title = "Enter Tooltip Here";
       for (var i = 0; i < grades.length; i++) {
         from = grades[i];
         labels.push(
@@ -314,7 +297,6 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
       var div = L.DomUtil.create('div', 'info-box legend'),
       grades = [-0.99, -0.88, -0.77, -0.66, -0.55, -0.45, -0.34, -0.23, -0.12,  -0.01],
-      //grades = [-0.99, -0.88, -0.76, -0.65, -0.54, -0.42, -0.31, -0.20, -0.08,  0.03],
       bin_labels = ["0 to -0.01",
         "-0.12 to -0.02",
         "-0.23 to -0.09",
@@ -610,9 +592,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
     map.addControl(searchControl);  //inizialize search control
 
-
 </script>
 
 </body>
 </html>
-
