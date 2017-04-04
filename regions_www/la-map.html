@@ -176,7 +176,8 @@ var map = L.map('map').setView([ 53, -0.4], 7);
           cycling_legend.addTo(this);
       }
 
-
+      this.removeControl(searchControl);  //inizialize search control)
+      this.addControl(searchControl);  //inizialize search control)
 
     });
 
@@ -589,8 +590,6 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
     non_census_var.addTo(map);
     default_non_census_var.addTo(map);
-
-    map.addControl(searchControl);  //inizialize search control
 
 </script>
 
