@@ -108,7 +108,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
     L.easyButton('fa-home', function(btn, map){
       map.setView([home.lat, home.lng], home.zoom);
-    },'Reset view to default').addTo(map);
+    },'Reset view to default', {position: 'bottomleft'}).addTo(map);
 
 
     L.easyButton('fa-map-marker', function (){
