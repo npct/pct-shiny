@@ -7,8 +7,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
-
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -18,6 +16,10 @@
 <script src="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.js"></script>
 
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+
+<link rel="stylesheet" href="www/la-map-resources/leaflet-search.css" />
+<link rel="stylesheet" href="www/la-map-resources/style.css" />
+
 
 <style>
  body {
@@ -70,7 +72,9 @@
 .info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; }
 .info h4 { margin: 0 0 5px; color: #777; }
 .legend { text-align: left; line-height: 18px; color: #555; }
-.legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }</style>
+.legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }
+
+</style>
 
 
 <script type="text/javascript">
@@ -81,8 +85,11 @@
 
 <div id='map'></div>
 <script type="text/javascript" src="la.js"></script>
+<script src="www/la-map-resources/leaflet-search.js"></script>
+<link rel="stylesheet" href = "www/la-map-resources/leaflet-search.src.css">
 
 <script type="text/javascript">
+
 
 var map = L.map('map').setView([ 53, -0.4], 7);
 
@@ -173,6 +180,49 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
     });
 
+
+
+        var nameLayer = L.geoJson(la, {
+        style: mapStyle('name'),
+        onEachFeature: onEachFeature('name')
+    });
+
+    var searchControl = new L.Control.Search({
+  		layer: nameLayer,
+  		propertyName: 'name',
+  		marker: false,
+  		autoCollapse: true,
+		  autoType: true,
+		  minLength: 1,
+		  circleLocation:true,
+  		moveToLocation: function(latlng, title, map) {
+  			//map.fitBounds( latlng.layer.getBounds() );
+  			var zoom = map.getBoundsZoom(latlng.layer.getBounds());
+    			map.setView(latlng, zoom); // access the zoom
+  		}
+  	});
+
+  	searchControl.on('search:locationfound', function(e) {
+
+  	  //e.layer.openPopup();
+
+  		//console.log('search:locationfound', );
+  		//map.removeLayer(this._markerSearch)
+
+  		/*e.layer.setStyle({fillColor: '#3f0', color: '#0f0'});
+  		if(e.layer._popup)
+  			e.layer.openPopup();
+  		*/
+
+  	}).on('search:collapsed', function(e) {
+
+  		/*nameLayer.eachLayer(function(layer) {	//restore feature color
+  			nameLayer.resetStyle(layer);
+  		});
+  		*/
+  	});
+
+
     function setControls(){
       // Disable CO2 and Health for Census 2011 scenario
       if (combined_var_name == "bicycle") {
@@ -258,7 +308,6 @@ var map = L.map('map').setView([ 53, -0.4], 7);
     };
 
     cycling_legend.addTo(map);
-
 
     var health_legend = L.control({position: 'topleft'});
     health_legend.onAdd = function (map) {
@@ -558,6 +607,9 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
     non_census_var.addTo(map);
     default_non_census_var.addTo(map);
+
+    map.addControl(searchControl);  //inizialize search control
+
 
 </script>
 
