@@ -106,7 +106,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
       zoom: 7
     };
 
-    L.easyButton('fa-home', function(btn, map){
+    L.easyButton('fa-undo', function(btn, map){
       map.setView([home.lat, home.lng], home.zoom);
     },'Reset view to default', {position: 'bottomleft'}).addTo(map);
 
