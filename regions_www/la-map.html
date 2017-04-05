@@ -88,8 +88,7 @@
 
 <script type="text/javascript">
 
-
-var map = L.map('map').setView([ 53, -0.4], 7);
+    var map = L.map('map').setView([ 53, -0.4], 7);
 
     L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
       maxZoom: 18,
@@ -116,7 +115,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
       map.locate({setView: true, maxZoom: 10});
     },'Set view to your current location').addTo(map);
 
-        var nameLayer = L.geoJson(la, {
+    var nameLayer = L.geoJson(la, {
       style: mapStyle('name'),
       onEachFeature: onEachFeature('name')
     });
