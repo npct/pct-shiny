@@ -158,6 +158,9 @@ var map = L.map('map').setView([ 53, -0.4], 7);
           onEachFeature: onEachFeature(combined_var_name)
       }).addTo(map);
 
+      this.removeControl(searchControl);  //inizialize search control)
+      this.addControl(searchControl);  //inizialize search control)
+
       // Switch to the negative legend...
       if (selectedVariable === "sideath_heat") {
           this.removeControl(cycling_legend);
@@ -174,8 +177,6 @@ var map = L.map('map').setView([ 53, -0.4], 7);
           cycling_legend.addTo(this);
       }
 
-      this.removeControl(searchControl);  //inizialize search control)
-      this.addControl(searchControl);  //inizialize search control)
 
     });
 
