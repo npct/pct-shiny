@@ -113,7 +113,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
     L.easyButton('fa-undo', function(btn, map){
       map.setView([home.lat, home.lng], home.zoom);
-    },'Reset view to default', {position: 'bottomleft'}).addTo(map);
+    },'Reset view to default', {position: 'bottomright'}).addTo(map);
 
 
     L.easyButton('fa-map-marker', function (){
@@ -170,11 +170,11 @@ var map = L.map('map').setView([ 53, -0.4], 7);
       else if(selectedVariable === 'sico2'){
           this.removeControl(cycling_legend);
           this.removeControl(health_legend);
-          co2_legend.addTo(this);
+          co2_legend.addTo(this, {position: 'bottomleft'});
       } else {
           this.removeControl(health_legend);
           this.removeControl(co2_legend);
-          cycling_legend.addTo(this);
+          cycling_legend.addTo(this, {position: 'bottomleft'});
       }
 
 
@@ -261,7 +261,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
         return 'slc';
     }
 
-    var cycling_legend = L.control({position: 'topleft'});
+    var cycling_legend = L.control({position: 'bottomleft'});
 
     cycling_legend.onAdd = function (map) {
 
@@ -292,7 +292,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
     cycling_legend.addTo(map);
 
-    var health_legend = L.control({position: 'topleft'});
+    var health_legend = L.control({position: 'bottomleft'});
     health_legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info-box legend'),
@@ -320,7 +320,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
       return div;
     };
 
-    var co2_legend = L.control({position: 'topleft'});
+    var co2_legend = L.control({position: 'bottomleft'});
     co2_legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info-box legend'),
