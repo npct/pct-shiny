@@ -111,14 +111,42 @@ var map = L.map('map').setView([ 53, -0.4], 7);
       zoom: 7
     };
 
-    L.easyButton('fa-undo', function(btn, map){
-      map.setView([home.lat, home.lng], home.zoom);
-    },'Reset view to default', {position: 'bottomright'}).addTo(map);
-
 
     L.easyButton('fa-map-marker', function (){
       map.locate({setView: true, maxZoom: 10});
     },'Set view to your current location').addTo(map);
+
+        var nameLayer = L.geoJson(la, {
+      style: mapStyle('name'),
+      onEachFeature: onEachFeature('name')
+    });
+
+    var searchControl = new L.Control.Search({
+  		layer: nameLayer,
+  		propertyName: 'name',
+  		marker: false,
+  		autoCollapse: true,
+		  autoType: true,
+		  minLength: 1,
+		  circleLocation:true,
+  		moveToLocation: function(latlng, title, map) {
+  			//map.fitBounds( latlng.layer.getBounds() );
+  			var zoom = map.getBoundsZoom(latlng.layer.getBounds());
+    			map.setView(latlng, zoom); // access the zoom
+  		}
+  	});
+
+  	searchControl.on('search:locationfound', function(e) {
+
+  	}).on('search:collapsed', function(e) {
+
+  	});
+
+  	map.addControl(searchControl);  //inizialize search control)
+
+    L.easyButton('fa-undo', function(btn, map){
+      map.setView([home.lat, home.lng], home.zoom);
+    },'Reset view to default').addTo(map);
 
 
     var selectedLayer = "olc";
@@ -158,9 +186,6 @@ var map = L.map('map').setView([ 53, -0.4], 7);
           onEachFeature: onEachFeature(combined_var_name)
       }).addTo(map);
 
-      this.removeControl(searchControl);  //inizialize search control)
-      this.addControl(searchControl);  //inizialize search control)
-
       // Switch to the negative legend...
       if (selectedVariable === "sideath_heat") {
           this.removeControl(cycling_legend);
@@ -170,41 +195,15 @@ var map = L.map('map').setView([ 53, -0.4], 7);
       else if(selectedVariable === 'sico2'){
           this.removeControl(cycling_legend);
           this.removeControl(health_legend);
-          co2_legend.addTo(this, {position: 'bottomleft'});
+          co2_legend.addTo(this);
       } else {
           this.removeControl(health_legend);
           this.removeControl(co2_legend);
-          cycling_legend.addTo(this, {position: 'bottomleft'});
+          cycling_legend.addTo(this);
       }
 
 
     });
-
-    var nameLayer = L.geoJson(la, {
-      style: mapStyle('name'),
-      onEachFeature: onEachFeature('name')
-    });
-
-    var searchControl = new L.Control.Search({
-  		layer: nameLayer,
-  		propertyName: 'name',
-  		marker: false,
-  		autoCollapse: true,
-		  autoType: true,
-		  minLength: 1,
-		  circleLocation:true,
-  		moveToLocation: function(latlng, title, map) {
-  			//map.fitBounds( latlng.layer.getBounds() );
-  			var zoom = map.getBoundsZoom(latlng.layer.getBounds());
-    			map.setView(latlng, zoom); // access the zoom
-  		}
-  	});
-
-  	searchControl.on('search:locationfound', function(e) {
-
-  	}).on('search:collapsed', function(e) {
-
-  	});
 
 
     function setControls(){
@@ -261,7 +260,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
         return 'slc';
     }
 
-    var cycling_legend = L.control({position: 'bottomleft'});
+    var cycling_legend = L.control({position: 'topleft'});
 
     cycling_legend.onAdd = function (map) {
 
@@ -292,7 +291,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
 
     cycling_legend.addTo(map);
 
-    var health_legend = L.control({position: 'bottomleft'});
+    var health_legend = L.control({position: 'topleft'});
     health_legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info-box legend'),
@@ -320,7 +319,7 @@ var map = L.map('map').setView([ 53, -0.4], 7);
       return div;
     };
 
-    var co2_legend = L.control({position: 'bottomleft'});
+    var co2_legend = L.control({position: 'topleft'});
     co2_legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info-box legend'),
