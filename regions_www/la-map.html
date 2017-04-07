@@ -19,6 +19,9 @@
 
 <link rel="stylesheet" href="www/la-map-resources/leaflet-search.css" />
 
+<script type="text/javascript" src="www/la-map-resources/leaflet-control-credits.js"></script>
+<link rel="stylesheet" href="www/la-map-resources/leaflet-control-credits.css" />
+
 <style>
  body {
   padding: 0;
@@ -587,6 +590,12 @@
 
     non_census_var.addTo(map);
     default_non_census_var.addTo(map);
+
+    var credctrl = L.controlCredits({
+      image: "www/android-icon-36x36.png",
+      link: "http://www.pct.bike/",
+      text: "Part of the Propensity <br/>of Cycling (PCT) project"
+    }).addTo(map);
 
 </script>
 
