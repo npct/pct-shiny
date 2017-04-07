@@ -41,6 +41,14 @@ Contributions to the project are welcome. This file, for instance, can be edited
 
 #### Case Studies
 
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/cornwall-case-study.pdf">Cornwall Case Study</a>
+
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/ealing-case-study.pdf">Ealing Case Study</a>
+
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/greater-manchester-case-study.pdf">Greater Manchester Case Study</a>
+
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/hounslow-case-study.pdf">Hounslow Case Study</a>
+
 <a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/preston-case-study.pdf">Preston Case Study</a>
 
 <a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/rotherhithe-case-study.pdf">Rotherhithe Case Study</a>
@@ -48,8 +56,6 @@ Contributions to the project are welcome. This file, for instance, can be edited
 <a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/tunbridge-case-study.pdf">Tunbridge Case Study</a>
 
 <a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/west-sussex-case-study.pdf">West Sussex Case Study</a>
-
-<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/cornwall-case-study.pdf">Cornwall Case Study</a>
 
 
 #### Additional FAQs
