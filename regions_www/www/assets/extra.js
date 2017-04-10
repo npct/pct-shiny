@@ -27,7 +27,7 @@ $(window).load(function() {
 
   var initMap = function(){
     if($(map).data('leaflet-map')){
-      // l_map is the leaflet map object see http://leafletjs.com/reference.html
+      // l_map is the leaflet map object see https://leafletjs.com/reference.html
       var l_map = $(map).data('leaflet-map');
       L.control.scale().addTo(l_map);
       $('select, input').each(function() {

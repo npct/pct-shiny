@@ -13,7 +13,7 @@
 #     GNU Affero General Public License for more details.
 #
 #     You should have received a copy of the GNU Affero General Public License
-#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#     along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # # # # #
 # Setup #
@@ -375,7 +375,7 @@ shinyServer(function(input, output, session){
                      color = get_line_colour("centres"), group = "centres", opacity = 0.5,
                      popup = centroid_popup(to_plot$cents, input$scenario, zone_attr(), showing_all_trips()))
     # Hide and Show line layers, so that they are displayed as the top layer in the map.
-    # Leaflet's function bringToBack() or bringToFront() (see http://leafletjs.com/reference.html#path)
+    # Leaflet's function bringToBack() or bringToFront() (see https://leafletjs.com/reference.html#path)
     # don't seem to exist for R
     # By default hide the centroids
     leafletProxy("map") %>% hideGroup(., "centres") %>%
@@ -508,11 +508,11 @@ shinyServer(function(input, output, session){
   # Updates map tile according to the selected map base
   map_tile <- reactive({
     switch(input$map_base,
-           'roadmap' = list(url="http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", zoom = 18),
-           'satellite' = list(url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", zoom=18),
-           'IMD' =  list(url="http://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png", zoom=14),
+           'roadmap' = list(url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png", zoom = 18),
+           'satellite' = list(url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", zoom=18),
+           'IMD' = list(url="https://tiles.oobrien.com/imd2015_eng/{z}/{x}/{y}.png", zoom=14),
            'opencyclemap' = list(url="https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=feae177da543411c9efa64160305212d", zoom=18),
-           'hilliness' = list(url="http://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", zoom=13)
+           'hilliness' = list(url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", zoom=13)
     )
   })
 
@@ -521,7 +521,7 @@ shinyServer(function(input, output, session){
     region$repopulate_region
 
     if (input$line_type == "lsoa_base_map"){
-      urlTemplate <- paste0("http://npttile.vs.mythic-beasts.com/", input$scenario, "/{z}/{x}/{y}.png")
+      urlTemplate <- paste0("https://npttile.vs.mythic-beasts.com/", input$scenario, "/{z}/{x}/{y}.png")
 
       leafletProxy("map") %>%
         addTiles(., urlTemplate = urlTemplate, layerId = "lsoa_base_map", group = "lsoa_base_map",
@@ -633,9 +633,9 @@ shinyServer(function(input, output, session){
     if (input$map_base == 'IMD'){
       imdTileOptions <- tileOptions(opacity = 0.3, minZoom = 7, maxNativeZoom = 14, reuseTiles = T)
       leafletProxy("map") %>%
-        addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png", group = "imd_background",
+        addTiles(., urlTemplate = "https://tiles.oobrien.com/shine_urbanmask_dark/{z}/{x}/{y}.png", group = "imd_background",
                  options=imdTileOptions) %>%
-        addTiles(., urlTemplate = "http://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png", group = "imd_background",
+        addTiles(., urlTemplate = "https://tiles.oobrien.com/shine_labels_cdrc/{z}/{x}/{y}.png", group = "imd_background",
                  options=imdTileOptions)
     }
     leafletProxy("map") %>% hideGroup(., "lsoa_base_map") %>% showGroup(., "lsoa_base_map")
