@@ -433,17 +433,17 @@
 
         regionText = '<b>' + capitalize(props.name) + ', ' + scenario_name + '</b><br />' +  message;
       } else {
-        regionText = '<b>Hover over a local authority</b>';
+        regionText = '<b>Hover over a local authority</b><br/>';
       }
 
       var variable_title = '';
       if(scenario !== undefined){
         if (scenario.indexOf('bicycle') !== -1 || scenario.indexOf('slc') !== -1)
-          variable_title = '<b>Cycling to work</b>'
+          variable_title = '<b>Cycling to work</b><br/>'
         else if (scenario.indexOf('_heat') !== -1)
-          variable_title = '<b>Health Impacts - Deaths Avoided</b>';
+          variable_title = '<b>Health Impacts - Deaths Avoided</b><br/>';
         else if(scenario.indexOf('sico2') !== -1)
-          variable_title = '<b>Carbon Impacts - CO2 Reduction</b>';
+          variable_title = '<b>Carbon Impacts - CO2 Reduction</b><br/>';
       }
 
       this._div.innerHTML =  variable_title + regionText;
