@@ -47,7 +47,7 @@
   height: 130px;
 }
 
-.info h4 {
+.info b {
   margin: 0 0 5px;
   color: #777;
 }
@@ -433,17 +433,17 @@
 
         regionText = '<b>' + capitalize(props.name) + ', ' + scenario_name + '</b><br />' +  message;
       } else {
-        regionText = '<h4>Hover over a local authority</h4>';
+        regionText = '<b>Hover over a local authority</b>';
       }
 
       var variable_title = '';
       if(scenario !== undefined){
         if (scenario.indexOf('bicycle') !== -1 || scenario.indexOf('slc') !== -1)
-          variable_title = '<h4>Cycling to work</h4>'
+          variable_title = '<b>Cycling to work</b>'
         else if (scenario.indexOf('_heat') !== -1)
-          variable_title = '<h4>Health Impacts - Deaths Avoided</h4>';
+          variable_title = '<b>Health Impacts - Deaths Avoided</b>';
         else if(scenario.indexOf('sico2') !== -1)
-          variable_title = '<h4>Carbon Impacts - CO2 Reduction</h4>';
+          variable_title = '<b>Carbon Impacts - CO2 Reduction</b>';
       }
 
       this._div.innerHTML =  variable_title + regionText;
