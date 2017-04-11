@@ -557,7 +557,7 @@ shinyServer(function(input, output, session){
                 # On highlight widen the boundary and fill the polygons
                 highlightOptions = highlightOptions(
                   color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
-                  bringToFront = TRUE, sendToBack = TRUE),
+                  bringToFront = F, sendToBack = TRUE),
                 options = pathOptions(clickable = T),
                 layerId = paste("new_region", regions[regions$Region != region$current,]$Region),
                 group = "regions-zones")
