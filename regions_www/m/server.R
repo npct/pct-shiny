@@ -510,7 +510,7 @@ shinyServer(function(input, output, session){
     switch(input$map_base,
            'roadmap' = list(url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png", zoom = 18),
            'satellite' = list(url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", zoom=18),
-           'IMD' = list(url="https://npttile.vs.mythic-beasts.com/imd/imd2015_eng/{z}/{x}/{y}.png", zoom=14),
+           'IMD' = list(url="https://maps.cdrc.ac.uk/tiles/imd2015_eng/{z}/{x}/{y}.png", zoom=14),
            'opencyclemap' = list(url="https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=feae177da543411c9efa64160305212d", zoom=18),
            'hilliness' = list(url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", zoom=13)
     )
@@ -633,9 +633,9 @@ shinyServer(function(input, output, session){
     if (input$map_base == 'IMD'){
       imdTileOptions <- tileOptions(opacity = 0.3, minZoom = 7, maxNativeZoom = 14, reuseTiles = T)
       leafletProxy("map") %>%
-        addTiles(., urlTemplate = "https://npttile.vs.mythic-beasts.com/imd/shine_urbanmask_dark/{z}/{x}/{y}.png", group = "imd_background",
+        addTiles(., urlTemplate = "https://maps.cdrc.ac.uk/tiles/shine_urbanmask_dark/{z}/{x}/{y}.png", group = "imd_background",
                  options=imdTileOptions) %>%
-        addTiles(., urlTemplate = "https://npttile.vs.mythic-beasts.com/imd/shine_labels_cdrc/{z}/{x}/{y}.png", group = "imd_background",
+        addTiles(., urlTemplate = "https://maps.cdrc.ac.uk/tiles/shine_labels_cdrc/{z}/{x}/{y}.png", group = "imd_background",
                  options=imdTileOptions)
     }
     leafletProxy("map") %>% hideGroup(., "lsoa_base_map") %>% showGroup(., "lsoa_base_map")
