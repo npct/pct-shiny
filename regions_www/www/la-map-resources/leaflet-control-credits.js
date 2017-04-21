@@ -15,10 +15,9 @@ L.controlCredits = function(t) {
         var i = L.DomUtil.create("div", "leaflet-credits-control", i);
         i.style.backgroundImage = "url(" + this.options.image + ")", this.options.width && (i.style.paddingRight = this.options.width + "px"), this.options.height && (i.style.height = this.options.height + "px");
         var o = L.DomUtil.create("a", "", i);
-        return o.target = "_blank", o.href = this.options.link, o.innerHTML = this.options.text, i.link = o, L.DomEvent.addListener(i, "mousedown", L.DomEvent.stopPropagation).addListener(i, "click", L.DomEvent.stopPropagation).addListener(i, "dblclick", L.DomEvent.stopPropagation).addListener(i, "click", function() {
-            var t = this.link;
-            L.DomUtil.hasClass(t, "leaflet-credits-showlink") ? L.DomUtil.removeClass(t, "leaflet-credits-showlink") : L.DomUtil.addClass(t, "leaflet-credits-showlink")
-        }), this._container = i, this._link = o, i
+        L.DomUtil.addClass(o,'leaflet-credits-showlink');
+        return o.target = "_blank", o.href = this.options.link, o.innerHTML = this.options.text, i.link = o,
+        this._container = i, this._link = o, i
     },
     setText: function(t) {
         this._link.innerHTML = t
