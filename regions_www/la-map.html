@@ -21,9 +21,6 @@
 
 <link rel="stylesheet" href="www/la-map-resources/leaflet-search.css" />
 
-<script type="text/javascript" src="www/la-map-resources/leaflet-control-credits.js"></script>
-<link rel="stylesheet" href="www/la-map-resources/leaflet-control-credits.css" />
-
 <style>
  body {
   padding: 0;
@@ -69,6 +66,27 @@
 .leaflet-control-layers label {
   margin-bottom: initial;
 }
+
+.leaflet-credits-control {
+    margin-right:0 !important;
+    margin-bottom:21px !important;
+
+    height:39px;        /* defined in the JavaScript code */
+    padding-right: 39px;
+
+    background-image:none; /* defined in the JavaScript code */
+    background-repeat:no-repeat;
+    background-position:100% 0;
+
+    background-color:white;
+    opacity:0.90;
+    border-radius:5px;
+    border:3px solid white;
+    border-bottom-width: 0;
+
+    cursor:pointer;
+}
+
 </style>
 
 <script type="text/javascript">
@@ -77,7 +95,16 @@
 </head>
 <body>
 
-<div id='map'></div>
+<div id='map'>
+  <div class="leaflet-bottom leaflet-right">
+    <a class="leaflet-credits-showlink" target="_blank" href="//pct.bike">
+      <div class="leaflet-control leaflet-credits-control" style="background-image: url(&quot;www/android-icon-36x36.png&quot;);">
+        Part of the Propensity to<br>Cycle Tool (PCT) project
+      </div>
+    </a>
+  </div>
+</div>
+
 <script type="text/javascript" src="www/la-map-resources/la.js"></script>
 <script src="www/la-map-resources/leaflet-search.js"></script>
 <script src="www/assets/google-analytics.js"></script>
@@ -586,13 +613,6 @@
 
     non_census_var.addTo(map);
     default_non_census_var.addTo(map);
-
-    var credctrl = L.controlCredits({
-      image: "www/android-icon-36x36.png",
-      link: "//pct.bike",
-      text: "Part of the Propensity to<br/>Cycle Tool (PCT) project"
-    }).addTo(map);
-
 
     L.easyButton('fa fa-external-link', function(btn, map){
       window.open("http://www.cedar.iph.cam.ac.uk/resources/evidence/eb-14-englands-cycling-potential/");
