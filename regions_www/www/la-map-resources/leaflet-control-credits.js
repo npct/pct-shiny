@@ -16,10 +16,11 @@ L.controlCredits = function(t) {
         i.style.backgroundImage = "url(" + this.options.image + ")", this.options.width && (i.style.paddingRight = this.options.width + "px"), this.options.height && (i.style.height = this.options.height + "px");
         var o = L.DomUtil.create("a", "", i);
         L.DomUtil.addClass(o,'leaflet-credits-showlink');
+        var lurl = this.options.link;
         i.onclick = function(){
-          window.open(o.href, "_blank");
+          window.open(lurl, "_blank");
         }
-        return o.target = "_blank", o.innerHTML = this.options.text, i.link = o,
+        return o.target = "_blank", o.innerHTML = this.options.text,
         this._container = i, this._link = o, i
     },
     setText: function(t) {
