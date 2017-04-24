@@ -19,7 +19,7 @@ L.controlCredits = function(t) {
         i.onclick = function(){
           window.open(o.href, "_blank");
         }
-        return o.target = "_blank", o.href = this.options.link, o.innerHTML = this.options.text, i.link = o,
+        return o.target = "_blank", o.innerHTML = this.options.text, i.link = o,
         this._container = i, this._link = o, i
     },
     setText: function(t) {
