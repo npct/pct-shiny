@@ -16,6 +16,9 @@ L.controlCredits = function(t) {
         i.style.backgroundImage = "url(" + this.options.image + ")", this.options.width && (i.style.paddingRight = this.options.width + "px"), this.options.height && (i.style.height = this.options.height + "px");
         var o = L.DomUtil.create("a", "", i);
         L.DomUtil.addClass(o,'leaflet-credits-showlink');
+        i.onclick = function(){
+          window.open(o.href, "_blank");
+        }
         return o.target = "_blank", o.href = this.options.link, o.innerHTML = this.options.text, i.link = o,
         this._container = i, this._link = o, i
     },
