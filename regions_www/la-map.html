@@ -77,7 +77,8 @@
 </head>
 <body>
 
-<div id='map'></div>
+<div id="map"></div>
+
 <script type="text/javascript" src="www/la-map-resources/la.js"></script>
 <script src="www/la-map-resources/leaflet-search.js"></script>
 <script src="www/assets/google-analytics.js"></script>
@@ -570,6 +571,7 @@
     }
 
     var default_scenario = L.tileLayer('');
+    default_scenario.bindTooltip('Tooltipaksjdaslkdjalsskdjaskldjalskjdlaskjdlaskjdlaskjdlakjdslkajdlkja');
 
     var map_layers = {
       "Census 2011": default_scenario,
@@ -579,7 +581,22 @@
       "Ebikes": L.tileLayer('')
     };
 
+    //map_layers;
+
     L.control.layers(map_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+
+    /*
+    var load = L.Control.extend({
+      options: {position: 'topright'},
+      onAdd: function(map) {
+        var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-load');
+        container.title = "Enter Tooltip Here";
+        }
+    });
+
+    load.addTo(map);
+
+    */
 
     // Add census as the default layer
     default_scenario.addTo(map);
