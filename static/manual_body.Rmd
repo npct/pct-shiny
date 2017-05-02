@@ -26,7 +26,7 @@ Welcome to the **User Manual** for the Propensity to Cycle Tool (PCT).
 
 This was last built on `r Sys.Date()`.
 
-The material here was developed during 2016 and 2017 for use in training. To request more information or provide feedback, please [email us at pct@pct.bike](mailto:pct@pct.bike?Subject=Manual) or report issues on our
+The material here was developed during 2016 and 2017 for use in training. To request more information or provide feedback, please email us at [pct@pct.bike](mailto:pct@pct.bike?Subject=Manual) or report issues on our
 <a target="_blank" href="https://github.com/npct/pct-shiny/issues">GitHub issue tracker</a>.
 Contributions to the project are welcome. This file, for instance, can be found online at
 <a target="_blank" href="https://github.com/npct/pct-shiny/edit/master/static/manual_body.Rmd">github.com/npct/pct-shiny</a>.
