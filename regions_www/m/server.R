@@ -61,7 +61,7 @@ lapply(available_locally_pkgs, library, character.only = T)
 source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
 
 # Static files
-regions <- readRDS(file.path(shiny_root, "regions_www/regions-highres.Rds"))
+regions <- readRDS(file.path(shiny_root, "static", "regions-highres.Rds"))
 regions$Region <- as.character(regions$Region)
 regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
 codebook_l = readr::read_csv(file.path(shiny_root, "static", "codebook_lines.csv"))
@@ -515,7 +515,6 @@ shinyServer(function(input, output, session){
            'hilliness' = list(url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", zoom=13)
     )
   })
-
 
   observe({
     region$repopulate_region
