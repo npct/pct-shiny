@@ -26,9 +26,9 @@ Welcome to the **User Manual** for the Propensity to Cycle Tool (PCT).
 
 This was last built on `r Sys.Date()`.
 
-This is work in progress and is being developed as part of a suite of training materials during 2016. To request more information or provide feedback, please [email us at pct@pct.bike](mailto:pct@pct.bike?Subject=Manual) or report issues on our
+The material here was developed during 2016 and 2017 for use in training. To request more information or provide feedback, please email us at [pct@pct.bike](mailto:pct@pct.bike?Subject=Manual) or report issues on our
 <a target="_blank" href="https://github.com/npct/pct-shiny/issues">GitHub issue tracker</a>.
-Contributions to the project are welcome. This file, for instance, can be edited online at
+Contributions to the project are welcome. This file, for instance, can be found online at
 <a target="_blank" href="https://github.com/npct/pct-shiny/edit/master/static/manual_body.Rmd">github.com/npct/pct-shiny</a>.
 
 #### User Manuals
@@ -38,6 +38,8 @@ Contributions to the project are welcome. This file, for instance, can be edited
 <a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/pct-bike-user-manual-b.pdf">User Manual B: Using the PCT interface and data</a>
 
 <a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/pct-bike-user-manual-c.pdf">User Manual C: PCT methods</a>
+
+<a target="_blank" href = "https://rawgit.com/npct/pct-shiny/master/static/pct-bike-user-manual-d.pdf">User Manual D: using the PCT in business cases</a>
 
 #### Case Studies
 
