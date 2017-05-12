@@ -24,6 +24,10 @@
 <script type="text/javascript" src="www/la-map-resources/leaflet-control-credits.js"></script>
 <link rel="stylesheet" href="www/la-map-resources/leaflet-control-credits.css" />
 
+<script type="text/javascript" src="www/la-map-resources/L.Control.SlideMenu.js"></script>
+<link rel="stylesheet" href="www/la-map-resources/L.Control.SlideMenu.css" />
+
+
 <style>
  body {
   padding: 0;
@@ -597,6 +601,13 @@
     L.easyButton('fa fa-external-link', function(btn, map){
       window.open("http://www.cedar.iph.cam.ac.uk/resources/evidence/eb-14-englands-cycling-potential/");
     },'Read local-authority evidence briefing', {position: 'bottomleft'}).addTo(map);
+
+
+    // contents
+    var right = '<h1>Information</h1>';
+    var contents = '<hr><h2>The four scenarios</h2> Four scenarios of change were developed to help planners understand which areas and routes have the highest potential for cycling under different sets of assumptions: <br><strong>Government Target</strong>, which assumes that cycling levels double nationally, and uses trip distance and hilliness to predict which trips would switch. <br><strong>Gender Equality</strong>, in which women have the same propensity to cycle a given trip as men.<br> <strong>Go Dutch</strong> draws on Dutch Travel Survey data to estimate what cycling levels one would observe if England acquired Dutch cycling infrastructure and Dutch cycling culture, but kept its current trip distances and hilliness.<br> <strong>Ebikes</strong> takes Go Dutch even further, and uses additional data on how ebike ownership encourages longer trips and overcomes hilliness.';
+    var slideMenu = L.control.slideMenu('', {position: 'topright', menuposition: 'topright', width: '30%', delay: '10'}).addTo(map);
+    slideMenu.setContents(right + contents);
 
 </script>
 
