@@ -22,7 +22,7 @@ L.Control.SlideMenu = L.Control.extend({
     onAdd: function (map) {
         this._container = L.DomUtil.create('div', 'leaflet-control-slidemenu leaflet-bar leaflet-control');
         var link = L.DomUtil.create('a', 'leaflet-bar-part leaflet-bar-part-single', this._container);
-        link.title = 'Menu';
+        link.title = 'Further information';
         L.DomUtil.create('span', 'fa fa-bars', link);
 
         this._menu = L.DomUtil.create('div', 'leaflet-menu', map._container);
