@@ -9,5 +9,10 @@
 .Rproj.user
 README.html
 .RData
-pct-data/
+/regions_www/tabs/download_params_sha_current.rds
+/regions_www/tabs/download_params_region_current.rds
+/regions_www/tabs/download_national_current.html
+/regions_www/tabs/download_region_current.html
+/regions_www/m/download_national.md
+/regions_www/m/download_regional.md
 repo_sha

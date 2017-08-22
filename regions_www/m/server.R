@@ -19,467 +19,399 @@
 # Setup #
 # # # # #
 
-# Colours
-zcols <- "RdYlBu" # for colourbrewer scale (see get_colour_ramp in pct-shiny-funs.R)
-shiny_root <- file.path("..", "..")
-# expect pct-data as a sibling of pct-shiny
-data_dir_root <- file.path(shiny_root, '..', 'pct-data')
+## Functions
+source("pct_shiny_funs.R", local = T)
 
-# Packages, only reguarly used packages are loaded into the global space
-# the others must be installed but are used with the package prefix, e.g. DT::
+## Packages (Only regularly used packages are loaded into the global space, the others must be installed but are used with the package prefix, e.g. DT::)
 available_locally_pkgs <- c("shiny", "leaflet", "sp")
 must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs", "dplyr", "readr", "geojsonio", "DT")
 
+## Path directories to load data (expect regional data as a sibling of interface_root)
+interface_root <- file.path("..", "..")
+data_regional_root <-  file.path(interface_root, '..', 'pct-outputs-regional')
+data_national_root <-  file.path(interface_root, '..', 'pct-outputs-national')
+
+## Regional sha file [Anna question: next 7 lines added by me, wasn't clear to me otherwise how read the latest master branch? Or was the intention to set manually?]
+gitArgs_reg <- c("--git-dir", file.path(data_regional_root, ".git"), "rev-parse", "--short", "HEAD", ">", file.path(interface_root, "outputs_regional_sha"))
+if (.Platform$OS.type == "windows"){
+  shell(paste(append("git", gitArgs_reg), collapse = " "), wait = T)
+} else {
+  system2("git", gitArgs_reg, wait = T)
+}
+outputs_regional_sha <- as.character(readLines(file.path(interface_root, "outputs_regional_sha")))
+
+## Check if working on server and if not initiate environment (including packages)
 on_server <- grepl('^/var/shiny/pct-shiny', getwd())
-
-data_sha <- as.character(readLines(file.path(shiny_root, "data_sha")))
-
-# Create a df to store LSOA legend information
-lsoa_legend_df <- data.frame(
-  colours = c("#9C9C9C", "#FFFF73", "#AFFF00", "#00FFFF", "#30B0FF", "#2E5FFF", "#0000FF", "#FF00C5"),
-  labels = c( "1-9", "10-49", "50-99", "100-249", "250-499", "500-999", "1000-1999", "2000+" )
-)
-
-if(!on_server){
-  source(file.path(shiny_root, "scripts", "init.R"))
-  init_dev_env(data_dir_root, data_sha, c(available_locally_pkgs, must_be_installed_pkgs), shiny_root)
+if (!on_server) {
+  source(file.path(interface_root, "scripts", "init.R"))
+  init_dev_env(interface_root, data_regional_root, outputs_regional_sha,c(available_locally_pkgs, must_be_installed_pkgs))
 }
 
+repo_sha <-  as.character(readLines(file.path(interface_root, "repo_sha")))
+
+# Apply local packages, and check correct packages installed
+lapply(available_locally_pkgs, library, character.only = T)
 installed <- must_be_installed_pkgs %in% installed.packages()
-if(length(must_be_installed_pkgs[!installed]) > 0){
-  stop(paste(c("Missing packages:", must_be_installed_pkgs[!installed]), collapse = " "))
+if (length(must_be_installed_pkgs[!installed]) > 0) {
+  stop(paste(c(
+    "Missing packages:", must_be_installed_pkgs[!installed]
+  ), collapse = " "))
 }
 
-# Check if we are on the production server (npt followed by any number of digits (only) is a prod machine)
+# Save current sha, required for files to be downloaded
+download_sha <- data.frame(repo_sha = repo_sha)
+saveRDS(download_sha, file="../tabs/download_params_sha_current.rds")
+
+## Check if we are on the production [live] server (npt followed by any number of digits (only) is a prod machine)
 production_branch <- grepl("npt\\d*$", Sys.info()["nodename"])
 
-repo_sha <- as.character(readLines(file.path(shiny_root, "repo_sha")))
+## Load region boundaries
+regions <- rgdal::readOGR(file.path(interface_root, "regions_www/pct_regions_highres.geojson"), layer = "OGRGeoJSON")
+regions$region_name <- as.character(regions$region_name)
 
-lapply(available_locally_pkgs, library, character.only = T)
+## Define zone colours from colourbrewer + number of bins and breaks used
+# Set minimum just below zero, otherwise zero is unassigned
+zcolourscale <-  "RdYlBu"
+zbins_commute <- 10
+zbreaks_commute = c(-0.001, 1.5, 3.5, 6.5, 9.5, 14.5, 19.5, 24.5, 29.5, 39.5,100) / 100
+zbins_school <- 11
+zbreaks_school = c(-0.001, 1.5, 3.5, 6.5, 9.5, 14.5, 19.5, 24.5, 29.5, 39.5, 49.5, 100) / 100
 
-# Functions
-source(file.path(shiny_root, "pct-shiny-funs.R"), local = T)
-
-# Static files
-regions <- readRDS(file.path(shiny_root, "regions_www/regions-highres.Rds"))
-regions$Region <- as.character(regions$Region)
-regions <- spTransform(regions, CRS("+init=epsg:4326 +proj=longlat"))
-codebook_l = readr::read_csv(file.path(shiny_root, "static", "codebook_lines.csv"))
-codebook_z = readr::read_csv(file.path(shiny_root, "static", "codebook_zones.csv"))
-codebook_r = readr::read_csv(file.path(shiny_root, "static", "codebook_routes.csv"))
-codebook_rnet = readr::read_csv(file.path(shiny_root, "static", "codebook_rnet.csv"))
+## Create a df to store LSOA legend information
+# ANNA NOTE: CURRENTLY WRITTEN FOR COMMUTE - ULTIMATELY MAKE VARIABLE BY PURPOSE
+lsoa_legend_df <- data.frame(
+  colours = c("#9C9C9C", "#FFFF73", "#AFFF00", "#00FFFF",
+              "#30B0FF", "#2E5FFF", "#0000FF", "#FF00C5"),
+  labels = c("1-9", "10-49", "50-99", "100-249",
+             "250-499", "500-999", "1000-1999", "2000+")
+)
 
 # # # # # # # #
 # shinyServer #
 # # # # # # # #
-shinyServer(function(input, output, session){
-  # To set initialize to_plot
-  observe({
-    query <- parseQueryString(session$clientData$url_search)
+shinyServer(function(input, output, session) {
 
-    if (is.na(region$current)) {
-      region$current <- if(isTRUE(query[['r']] %in% regions$Region)){
-        query[['r']]
-      } else if (exists("starting_region")) {
-        starting_region
-      } else {
-        "west-yorkshire"
-      }
-      region$data_dir <- file.path(data_dir_root, region$current)
-      region$all_trips <- dir.exists(file.path(data_dir_root, region$current , 'all-trips'))
-    }
+  ##############
+  # FUNCTIONS TO CUSTOMISE RIGHT HAND MENU BY PURPOSE/SCENARIO [NB changes here may need to be made to UI too!]
+  ##############
+  ## Define purposes and geographies available depending on region
+  update_purposegeog <- function(purposes_present, geographies_present) {
+    # Identify locally available purposes and update list accordingly
+    local_purposes <- c(
+      "Commuting"  = "commute" ,
+      "School travel"  = "school" ,
+      "All trips"  = "alltrips"
+    )
+    local_purposes <- local_purposes[purposes_present]
+    updateSelectInput(session, "purpose", choices = local_purposes, selected = input$purpose)
 
-    session$sendCustomMessage("regionchange", region$current)
-    region$data_dir
-    region$repopulate_region
-
-    to_plot$straight_line <<- readRDS(file.path(region$data_dir, "l.Rds"))
-    to_plot$zones <<- readRDS(file.path(region$data_dir, "z.Rds"))
-    to_plot$cents <<- readRDS(file.path(region$data_dir, "c.Rds"))
-
-    to_plot$route_network <<- readRDS(file.path(region$data_dir, "rnet.Rds"))
-    to_plot$route_network$id <<- 1:nrow(to_plot$route_network)
-
-    to_plot$faster_route <<- readRDS(file.path(region$data_dir, "rf.Rds" ))
-    to_plot$faster_route@data <<- cbind(
-      to_plot$faster_route@data[!(names(to_plot$faster_route) %in% names(to_plot$straight_line))],
-      to_plot$straight_line@data)
-    to_plot$quieter_route <<- readRDS(file.path(region$data_dir, "rq.Rds"))
-    to_plot$quieter_route@data <<- cbind(
-      to_plot$quieter_route@data[!(names(to_plot$quieter_route) %in% names(to_plot$straight_line))],
-      to_plot$straight_line@data)
-
-    # Add rqincr column to the quiet data
-    to_plot$quieter_route@data$rqincr <<- to_plot$quieter_route@data$length / to_plot$faster_route@data$length
-
-    region$all_trips <- dir.exists(file.path(data_dir_root, region$current , 'all-trips'))
-    # Identify the centre of the current region
-    to_plot$center_dim <<- rgeos::gCentroid(regions[regions$Region == region$current,], byid = TRUE)@coords
-    region$repopulate_region <- T
-
-  })
-
-  region <- reactiveValues(current = NA, data_dir = NA, repopulate_region = F, all_trips = NA)
-  show_no_lines <- c("none", "lsoa_base_map")
-
-  observe({
-    output$production_branch <- renderText({ifelse(production_branch, "true", "false")})
-    # If a region does not have an 'all-trips'directory, hide the trip panel
-    if (!region$all_trips){
-      # hide trip_panel
-      shinyjs::hide("trip_panel")
-    }else{
-      # show trip_panel
-      shinyjs::show("trip_panel")
-    }
-  })
-
-  observe({
-    # Create a reactive expression on the type of trips dropdown menu
-    input$trip_type
-
-    # Check if the data folder of a specific region contains a subfolder called 'all-trip'
-    # If it does, only then load 'all-trip' data or load defaul commute data
-    if (region$all_trips){
-      if (showing_all_trips()){
-
-        update_labels("all")
-        region$data_dir <- file.path(data_dir_root, isolate(region$current), 'all-trips')
-      }
-      else{
-
-        update_labels("commute")
-        region$data_dir <- file.path(data_dir_root, isolate(region$current))
-      }
-      region$repopulate_region <- F
-    }else{
-      update_labels("commute")
-    }
-  })
-
-  update_labels <- function(type_of_commute){
-
-    if (type_of_commute == "all"){
-      # Update the name of the scenarios when user switches to 'all-trip'
-      local_scenarios <- c("Current travel patterns" = "olc",
-                           "Government Target" = "govtarget",
-                           "Gender equality" = "gendereq",
-                           "Go Dutch" = "dutch",
-                           "Ebikes" = "ebike")
-      updateSelectInput(session, "scenario", choices = local_scenarios, selected = input$scenario)
-
-      # Update the names of the sorting options for lines
-      local_attrs_zone <- c("Number of cycle trips"    = "slc",
-                            "Increase in Cycling" = "sic",
-                            "HEAT Value"          = "slvalue_heat",
-                            "CO2 reduction"       = "sico2")
-
-      updateSelectInput(session, "line_order", choices = local_attrs_zone, selected = input$line_order)
-
-    }else{
-      # In case the user switches back to 'commute' revert the names of the scenarios
-      local_scenarios <- c("Census 2011 Cycling" = "olc",
-                           "Government Target" = "govtarget",
-                           "Gender equality" = "gendereq",
-                           "Go Dutch" = "dutch",
-                           "Ebikes" = "ebike")
-      updateSelectInput(session, "scenario", choices = local_scenarios, selected = input$scenario)
-
-      # Revert the names of the sorting options for lines
-      local_attrs_zone <- c("Number of cyclists"    = "slc",
-                            "Increase in Cycling" = "sic",
-                            "HEAT Value"          = "slvalue_heat",
-                            "CO2 reduction"       = "sico2")
-      updateSelectInput(session, "line_order", choices = local_attrs_zone, selected = input$line_order)
+    # Identify locally available geographies
+    local_geographies <- c(
+      "Middle Super Output Area"  = "msoa" ,
+      "Lower Super Output Area"  = "lsoa"
+    )
+    local_geographies <- local_geographies[geographies_present]
+    # Update geographies available, and set to default if the currently-selected geography does not exist
+    if (region$geography %in% local_geographies) {
+      updateSelectInput(session, "geography", choices = local_geographies, selected = region$geography)
+    } else {
+      updateSelectInput(session, "geography", choices = local_geographies)
     }
   }
 
-  # For all plotting data
-  to_plot <- NULL
-  # For any other persistent values
-  helper <- NULL
+  ## Define scenarios line types and line orders available, and their labels, depending on purpose
+    update_labels <- function(purpose, geography) {
 
-  helper$e_lat_lng <- ""
-
-  # Select and sort lines within a bounding box - given by flows_bb()
-  sort_lines <- function(lines, group_name, nos){
-    if(group_name %in% show_no_lines) return(NULL)
-    if(!line_data() %in% names(lines)) return(NULL)
-    # If other than route network lines are selected, subset them by the bounding box
-    if (group_name != "route_network"){
-      poly <- flows_bb()
-      if(is.null(poly)) return(NULL)
-      poly <- spTransform(poly, CRS(proj4string(lines)))
-      keep <- rgeos::gIntersects(poly, lines,byid=TRUE )
-      if(all(!keep)) return(NULL)
-      lines_in_bb <- lines[drop(keep), ]
-      # Sort by the absolute values
-      lines_in_bb[ tail(order(abs(lines_in_bb[[line_data()]])), nos), ]
-    }else{
-      # For the route network, just sort them according to the percentage of display
-      # Sort by the absolute values
-      nos <- nos / 100 * nrow(lines)
-      lines[ tail(order(abs(lines[[line_data()]])), nos), ]
-    }
-  }
-
-  find_region <- function(lng, lat, current_region){
-    if(is.null(lng) || is.null(lat)) return(NULL)
-    point <- SpatialPoints(cbind(lng, lat), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
-    lat_lng_region_bool <- rgeos::gContains(regions, point, byid=T)
-    lat_lng_region <- regions[drop(lat_lng_region_bool), ]$Region[1]
-    if(is.na(lat_lng_region) || tolower(lat_lng_region) == current_region) return(NULL)
-    lat_lng_region
-  }
-
-  attrs_zone <- c("Scenario Level of Cycling (SLC)" =    "slc",
-                  "Scenario Increase in Cycling (SIC)" = "sic")
-
-  # Read model-output.html, if it exists, for the loaded region
-  observe({
-    output$m_output <- renderUI({
-      model_file <- file.path(data_dir_root, data_dir(), "model-output.html")
-      #model_file <- file.path(region$data_dir, "model-output.html")
-      if (file.exists(model_file))
-        includeHTML(model_file)
-      else
-        HTML("<strong>No model output files are available for this region</strong>")
-    })
-  })
-
-  observeEvent(input$map_shape_click, { # For highlighting the clicked line
-    event <- input$map_shape_click
-    if (is.null(event) || event$id == "highlighted")
-      return()
-    # Check if the event$id is called from the "new_region" polygons
-    if(grepl("new_region", event$id)){
-      # Split the id to identify the region name
-      new_region <- strsplit(event$id, " ")[[1]][2]
-      if(is.null(new_region)) return()
-      new_region_all_trips <- dir.exists(file.path(data_dir_root, new_region , 'all-trips'))
-      # Check if the new_region is not null, and contains 'all-trips' subfolder
-      new_data_dir <- ifelse (new_region_all_trips,
-                              file.path(data_dir_root, new_region, 'all-trips'),
-                              file.path(data_dir_root, new_region))
-
-      if(region$data_dir != new_data_dir && file.exists(new_data_dir)){
-        region$current <- new_region
-        region$data_dir <- new_data_dir
-        region$repopulate_region <- F
-        if(input$freeze) # If we change the map data then lines should not be frozen to the old map data
-          updateCheckboxInput(session, "freeze", value = F)
-      }
-      return()
-    }
-    e_lat_lng <- paste0(event$lat, event$lng)
-
-    # Fix bug when a line has been clicked then the click event is
-    # re-emmited when the map is moved
-    if( e_lat_lng == helper$e_lat_lng)
-      return()
-    helper$e_lat_lng <<- e_lat_lng
-
-    isolate({
-      id_group_name <- unlist(strsplit(event$id, "-"))
-      id <- id_group_name[1]
-      group_name <- id_group_name[2]
-
-      if (event$group == "centres"){
-        addPolygons(leafletProxy("map"), data = to_plot$zones[to_plot$z$geo_code == id,],
-                    fill = F,
-                    color = get_line_colour("centres") ,
-                    opacity = 0.7,
-                    layerId = "highlighted")
-      } else if (event$group == "zones"){
-        addPolygons(leafletProxy("map"), data = to_plot$zones[to_plot$z$geo_code == id,],
-                    fill = FALSE,
-                    color = "black",
-                    opacity = 0.7 ,
-                    layerId = "highlighted")
-      } else {
-        line <- to_plot[[group_name]][to_plot[[group_name]]$id == id,]
-        if (!is.null(line))
-          addPolylines(leafletProxy("map"), data = line, color = "white",
-                       opacity = 0.4, layerId = "highlighted")
-      }
-    })
-  })
-
-  # Plot if lines change
-  observe({
-    # Needed to force lines to be redrawn when scenario, zone or base map changes
-    input$scenario
-    input$map_base
-    region$data_dir
-    input$show_zones
-    region$repopulate_region
-
-    line_type <- ifelse(input$line_type == 'routes', "quieter_route", input$line_type)
-    local_lines <- sort_lines(to_plot[[line_type]], input$line_type, input$nos_lines)
-
-    if (is.null(to_plot$ldata) || (!is.null(to_plot$ldata) && !identical(to_plot$ldata, local_lines))){
-      leafletProxy("map")  %>% clearGroup(., c("straight_line", "quieter_route", "faster_route", "route_network")) %>%
-        removeShape(., "highlighted")
-      to_plot$ldata <<- local_lines
-      plot_lines(leafletProxy("map"), to_plot$ldata, line_type)
-      if(input$line_type == 'routes') {
-        plot_lines(leafletProxy("map"), sort_lines(to_plot$faster_route, "faster_route", input$nos_lines), "faster_route")
-      }
-    }
-
-    if(input$line_type == 'route_network')
-      updateSliderInput(session, inputId = "nos_lines", min = 10, max= 50, step = 20, label = "Percent (%) of Network")
-    else{
-      if (input$line_order == "slc")
-        updateSliderInput(session, inputId = "nos_lines", min = 1, max = 200, step = 1,  label = "Top N Lines (most cycled)")
-      else
-        updateSliderInput(session, inputId = "nos_lines", min = 1, max = 200, step = 1,  label = "Top N Lines")
-    }
-
-  })
-
-  # This code displays centroids if zoom level is greater than 11 and lines are displayed
-  observe({
-    if(is.null(input$map_zoom) ) return()
-    region$repopulate_region
-    input$map_base
-    if(input$map_zoom < 11 || input$line_type %in% show_no_lines)
-      hideGroup(leafletProxy("map"), "centres")
-    else
-      showGroup(leafletProxy("map"), "centres")
-  })
-
-
-  # Displays zone popups when no lines are selected
-  observe({
-    region$repopulate_region
-    input$map_base
-    line_type <- isolate(input$line_type)
-
-    clearGroup(leafletProxy("map"), c("zones", "centres"))
-    if(input$show_zones) {
-      show_zone_popup <- line_type %in% show_no_lines
-      popup <- if(show_zone_popup) zone_popup(to_plot$zones, input$scenario, zone_attr(), showing_all_trips())
-      addPolygons(leafletProxy("map"),  data = to_plot$zones,
-                  weight = 2,
-                  fillOpacity = transp_rate(),
-                  opacity = 0.2,
-                  fillColor = get_colour_ramp(zcols, to_plot$zones[[zone_data()]]/to_plot$zones$all),
-                  color = "black",
-                  group = "zones",
-                  popup = popup,
-                  options = pathOptions(clickable = show_zone_popup),
-                  layerId = paste0(to_plot$zones[['geo_code']], '-', "zones"))
-    }
-    addCircleMarkers(leafletProxy("map"), data = to_plot$cents, radius = normalise(to_plot$cents$all, min = 1, max = 8),
-                     color = get_line_colour("centres"), group = "centres", opacity = 0.5,
-                     popup = centroid_popup(to_plot$cents, input$scenario, zone_attr(), showing_all_trips()))
-    # Hide and Show line layers, so that they are displayed as the top layer in the map.
-    # Leaflet's function bringToBack() or bringToFront() (see https://leafletjs.com/reference.html#path)
-    # don't seem to exist for R
-    # By default hide the centroids
-    leafletProxy("map") %>% hideGroup(., "centres") %>%
-    {
-      if(!line_type %in% show_no_lines) {
-
-        switch(line_type,
-               'routes'= {
-                 hideGroup(., c("quieter_route", "faster_route") ) %>% showGroup(., c("quieter_route", "faster_route"))
-               },
-               hideGroup(., line_type) %>% showGroup(., line_type)
+    if (purpose == "commute") {
+      local_scenarios <- c(
+        "Census 2011 Cycling" = "olc",
+        "Government Target"   = "govtarget",
+        "Gender equality"     = "gendereq",
+        "Go Dutch"            = "dutch",
+        "Ebikes"              = "ebike"
+      )
+      if (geography == "msoa") {
+        local_line_types <- c("None"             = "none",
+                              "Straight Lines"         = "straight_lines",
+                              "Fast Routes"            = "routes_fast",
+                              "Fast & Quieter Routes"  = "routes",
+                              "Route Network (MSOA)"   = "route_network",
+                              "Route Network (LSOA)"   = "lsoa_base_map"
+        )
+      } else if (geography == "lsoa") {
+        local_line_types <- c("None"             = "none",
+                              "Straight Lines"         = "straight_lines",
+                              "Fast Routes"            = "routes_fast",
+                              "Fast & Quieter Routes"  = "routes",
+                              "Route Network (LSOA)"   = "lsoa_base_map"
         )
       }
+
+      local_line_order <- c(
+        "Number of cyclists"  = "slc",
+        "Increase in cyclists" = "sic",
+        "HEAT Value"          = "slvalue_heat",
+        "CO2 reduction"       = "sico2"
+      )
+    } else if (purpose == "school") {
+      local_scenarios <- c(
+        "Current travel patterns" = "olc",
+        "Government Target"       = "govtarget",
+        "Go Dutch"                = "dutch"
+      )
+      local_line_types <- c("None"                   = "none",
+                            "Route Network (LSOA)"   = "route_network"
+      )
+      local_line_order <- c(
+        "Number of cycle trips" = "slc",
+        "Increase in cyclists"   = "sic"
+      )
+
+    } else if (purpose == "alltrips") {
+      local_scenarios <- c(
+        "Current travel patterns" = "olc",
+        "Government Target"       = "govtarget",
+        "Gender equality"         = "gendereq",
+        "Go Dutch"                = "dutch",
+        "Ebikes"                  = "ebike"
+      )
+      local_line_types <- c("None"                   = "none",
+                            "Straight Lines"         = "straight_lines",
+                            "Fast Routes"            = "routes_fast",
+                            "Fast & Quieter Routes"  = "routes",
+                            "Route Network (MSOA)"   = "route_network"
+      )
+      local_line_order <- c(
+        "Number of cycle trips" = "slc",
+        "Increase in Cycling"   = "sic",
+        "HEAT Value"            = "slvalue_heat",
+        "CO2 reduction"         = "sico2"
+      )
+
     }
 
-    # Display centroids when zoom level is greater than 11 and lines are selected
-    if (isTRUE(isolate(input$map_zoom) >= 11 && !line_type %in% show_no_lines))
-      showGroup(leafletProxy("map"), "centres")
+    # Update line options available, and set to default if the currently-selected option does not exist
+    if (input$scenario %in% local_scenarios) {
+      updateSelectInput(session, "scenario", choices = local_scenarios, selected = input$scenario)
+    } else {
+      updateSelectInput(session, "scenario", choices = local_scenarios)
+    }
+
+    if (input$line_type %in% local_line_types) {
+      updateSelectInput(session, "line_type", choices = local_line_types, selected = input$line_type)
+    } else {
+      updateSelectInput(session, "line_type", choices = local_line_types)
+    }
+
+    if (input$line_order %in% local_line_order) {
+      updateSelectInput(session, "line_order", choices = local_line_order, selected = input$line_order)
+    } else {
+      updateSelectInput(session, "line_order", choices = local_line_order)
+    }
+
+  }
+
+  ##############
+  # Initialise region and to_plot, and update right hand menu by region/purpose
+  ##############
+
+  ## Create region, to_plot and (for persistent geographical values) helper
+  region <- reactiveValues(current = NA, data_dir = NA, geography = NA, repopulate_region = F, purposes_present = NA)
+  to_plot <- NULL
+  helper <- NULL
+  helper$e_lat_lng <- ""
+
+  ## Set  values of region
+  observe({
+    region$current
+    region$data_dir
+    region$geography
+    region$repopulate_region
+    region$purposes_present
+    input$purpose
+
+    # Identify region
+    query <- parseQueryString(session$clientData$url_search)
+    if (is.na(region$current)) {
+      region$current <- if (isTRUE(query[['r']] %in% regions$region_name)) {
+        query[['r']]
+      } else {
+        "isle-of-wight"
+      }
+    }
+
+    # Notify browser to update URL to reflect new region
+    session$sendCustomMessage("regionchange", region$current)
+
+    # Define region geography, forcing a default in cases where the geography is not available
+    if (input$purpose =="commute") {
+      if (input$geography %in% c("msoa", "lsoa")) {
+        region$geography <<- input$geography
+      } else {
+        region$geography <<- "msoa"
+      }
+    } else if (input$purpose =="school") {
+      if (input$geography %in% c("lsoa")) {
+        region$geography <<- input$geography
+      } else {
+        region$geography <<- "lsoa"
+      }
+    } else if (input$purpose =="alltrips") {
+      if (input$geography %in% c("msoa")) {
+        region$geography <<- input$geography
+      } else {
+        region$geography <<- "msoa"
+      }
+    }
+
+    # Set data_dir
+    region$data_dir <<- file.path(data_regional_root, input$purpose, region$geography, region$current)
+
+    # Identify that region repopulation has happened
+    region$repopulate_region <<- T
+
+    # Identify purposes and geographies available in region
+    purposes_list <- c("commute", "school", "alltrips")
+    region$purposes_present <<- (dir.exists(file.path(data_regional_root, purposes_list, "msoa", region$current)) | dir.exists(file.path(data_regional_root, purposes_list, "lsoa", region$current)))
+    geographies_list <- c("msoa", "lsoa")
+    region$geographies_present <<- dir.exists(file.path(data_regional_root, input$purpose, geographies_list, region$current))
+    update_purposegeog(region$purposes_present, region$geographies_present)
+
+    # Identify the centre of the current region, save in to_plot
+    to_plot$center_dim <<- rgeos::gCentroid(regions[regions$region_name == region$current, ], byid = TRUE)@coords
+
+    # Load data to to_plot (if data exists - this varies by purpose/geography)
+    if (file.exists(file.path(region$data_dir, "z.Rds"))) {
+      to_plot$zones <<- readRDS(file.path(region$data_dir, "z.Rds"))
+    } else {
+      to_plot$zones <<- NULL
+    }
+
+    if (file.exists(file.path(region$data_dir, "c.Rds"))) {
+      to_plot$centroids <<- readRDS(file.path(region$data_dir,  "c.Rds"))
+    } else {
+      to_plot$centroids <<- NULL
+    }
+
+    if (file.exists(file.path(region$data_dir, "l.Rds"))) {
+      to_plot$straight_lines <<- readRDS(file.path(region$data_dir, "l.Rds"))
+    } else {
+      to_plot$straight_lines <<- NULL
+    }
+
+    if (file.exists(file.path(region$data_dir, "rf.Rds"))) {
+      to_plot$routes_fast <<- readRDS(file.path(region$data_dir, "rf.Rds"))
+    } else {
+      to_plot$routes_fast <<- NULL
+    }
+
+    if (file.exists(file.path(region$data_dir, "rq.Rds"))) {
+      to_plot$routes_quieter <<- readRDS(file.path(region$data_dir, "rq.Rds"))
+      # Merge in scenario data for quiet routes - don't want this in download but need for line sorting
+      # ANNA SELF: COULD TRY TO DO WITH ID INSTEAD
+      to_plot$routes_quieter@data <<- cbind(
+        to_plot$routes_quieter@data[!(names(to_plot$routes_quieter) %in% names(to_plot$straight_lines))],
+        to_plot$straight_lines@data)
+      # Add is_quiet column to identify quieter, as opposed to faster, data - used in routes pop-up
+      to_plot$routes_quieter@data$is_quiet <<- T
+    } else {
+      to_plot$routes_quieter <<- NULL
+    }
+
+    if (file.exists(file.path(region$data_dir, "rnet.Rds"))) {
+      to_plot$route_network <<- readRDS(file.path(region$data_dir, "rnet.Rds"))
+      to_plot$route_network$id <<- to_plot$route_network$local_id
+   } else {
+     to_plot$route_network <<- NULL
+   }
+
+  })
+
+  ## Update labels according to purpose
+  # NB don't have as part of above 'observes' otherwise those re-run when scenario changes, even though data all the same
+  observe({
+    update_labels(input$purpose, region$geography)
   })
 
 
-  # Return the right directory name based on type of trips
-  data_dir <- reactive({
-    if (region$all_trips && input$trip_type == 'All')
-      paste(region$current, "all-trips", sep = "/")
-    else
-      region$current
-  })
-
-  # Set transparency of zones to 0.5 when displayed, otherwise 0
-  transp_rate <- reactive({
-    if (input$show_zones) 0.5 else 0.0
-  })
-
-  # Identify suffix of lines variables
-  line_attr <- reactive({
-    if(input$scenario == 'olc') 'olc'
-    else if (input$line_type != 'route_network') input$line_order
-    else 'slc'
-  })
-
-  showing_all_trips <- reactive({ isTRUE(input$trip_type == 'All') })
-
-  # Identify suffix of zones variables
-  zone_attr <- reactive({
-    if(input$scenario == 'olc') 'olc' else 'slc'
-  })
-
-  # Identify complete name of lines variable
-  line_data <- reactive({
-    data_filter(input$scenario, line_attr())
-  })
-
-  # Identify complete name of zones variable
-  zone_data <- reactive({
-    data_filter(input$scenario, zone_attr())
-  })
-
-  # Returns the map bounding box
+  ##############
+  # Define BB
+  ##############
+  ## Returns the map bounding box [default lat/long PCT projection]
   map_bb <- reactive({
-    if (is.null(input$map_bounds)){ return (NULL)}
-    lat <- c(input$map_bounds$west , input$map_bounds$east, input$map_bounds$east, input$map_bounds$west )
+    if (is.null(input$map_bounds)) {
+      return (NULL)
+    }
+    lat <- c(input$map_bounds$west, input$map_bounds$east, input$map_bounds$east, input$map_bounds$west)
     lng <- c(input$map_bounds$north, input$map_bounds$north, input$map_bounds$south, input$map_bounds$south)
     c1 <- cbind(lat, lng)
-    r1 <- rbind(c1, c1[1, ])
-    bounds <- SpatialPolygons(list(Polygons(list(Polygon(r1)), 'bb')), proj4string=CRS("+init=epsg:4326 +proj=longlat"))
-    proj4string(bounds)=CRS("+init=epsg:4326 +proj=longlat")
+    r1 <- rbind(c1, c1[1,])
+    bounds <- SpatialPolygons(list(Polygons(list(Polygon(r1)), 'bb')),
+                              proj4string = CRS("+init=epsg:4326 +proj=longlat"))
+    proj4string(bounds) = CRS("+init=epsg:4326 +proj=longlat")
     bounds
   })
 
-  # Updates the bounding box (bb) to the current map bb unless the map is frozen
-  # Returns a bb
+  ## Updates the bounding box (bb) to the current map bb unless the map is frozen (freeze lines on)
   flows_bb <- reactive({
-    if(!input$freeze || is.null(helper$bb)){
+    if (!input$freeze || is.null(helper$bb)) {
       helper$bb <<- map_bb()
     }
     helper$bb
   })
 
-  # Set freeze checkbox to false when lines are route_network, otherwise to true
-  # Also disable freeze checkbox for route_network
-  observe({
-    # Build a reactive expression for lines
-    input$line_type
-    # Also when user moves to a new region
-    region$repopulate_region
 
-    if (! input$line_type %in% show_no_lines){
-      if (input$line_type == "rnet"){
-        updateCheckboxInput(session, "freeze", value = T)
-        disable("freeze")
-      }
-      else if (input$line_type != "rnet" && isolate(input$freeze)){
-        updateCheckboxInput(session, "freeze", value = F)
-        enable("freeze")
-      }
-    }
+  ##############
+  # Select, sort and plot lines
+  ##############
+  ## Identify suffix + complete name of lines variables
+  line_attr <- reactive({
+    if (input$scenario == 'olc')
+      'olc'
+    else if (input$line_type != 'route_network')
+      input$line_order
+    else
+      'slc'
+  })
+  line_data <- reactive({
+    data_filter(input$scenario, line_attr())
   })
 
-  # Adds polylines on the map, depending on types and number of lines
-  plot_lines <- function(m, sorted_l, group_name){
-    if(is.null(sorted_l)) return()
+  ## Define when not to give option to sort by lines [NB also hard-written into ui ]
+  show_no_lines <- c("none", "lsoa_base_map")
 
-    if (group_name == "route_network") {
+  ## Select and sort lines within flows_bb bounding box
+  sort_lines <- function(lines, line_type, nos) {
+    if (line_type %in% show_no_lines)
+      return(NULL)
+    if (!line_data() %in% names(lines))
+      return(NULL)
+    # If other than route network lines are selected, subset them by the bounding box
+    if (line_type != "route_network") {
+      poly <- flows_bb()
+      if (is.null(poly))
+        return(NULL)
+      poly <- spTransform(poly, CRS(proj4string(lines)))
+      keep <- rgeos::gIntersects(poly, lines, byid = TRUE)
+      if (all(!keep))
+        return(NULL)
+      lines_in_bb <- lines[drop(keep),]
+      # Sort by the absolute values
+      lines_in_bb[tail(order(abs(lines_in_bb[[line_data()]])), nos),]
+    } else{
+      # For the route network, just sort them according to the percentage of display
+      # Sort by the absolute values
+      nos <- nos / 100 * nrow(lines)
+      lines[tail(order(abs(lines[[line_data()]])), nos),]
+    }
+  }
+
+  ## Adds polylines on the map, depending on types and number of lines
+  plot_lines <- function(m, sorted_l, line_type) {
+    if (is.null(sorted_l))
+      return()
+
+    if (line_type == "route_network") {
       min <- 1
       max <- 20
     } else {
@@ -488,335 +420,666 @@ shinyServer(function(input, output, session){
     }
 
     line_opacity <- 0.8
-    popup_fun_name <- paste0(group_name, "_popup")
+    popup_fun_name <- paste0("popup_", line_type)
 
-    if (group_name == 'quieter_route' || group_name == 'faster_route') {
-      popup_fun_name <- "routes_popup"
+    if (line_type == 'routes_quieter' || line_type == 'routes_fast') {
+      popup_fun_name <- "popup_routes"
       line_opacity <- 0.5
     }
     popop_fun <- get(popup_fun_name)
-    addPolylines(m, data = sorted_l, color = get_line_colour(group_name),
-                 # Plot widths proportional to attribute value
-                 # Remove NAs from the weights
-                 weight = normalise(sorted_l[[line_data()]][!is.na(sorted_l[[line_data()]]) ], min = min, max = max),
-                 opacity = line_opacity,
-                 group = group_name,
-                 popup = popop_fun(sorted_l, input$scenario, showing_all_trips()),
-                 layerId = paste0(sorted_l[['id']], '-', group_name))
+    addPolylines(
+      m,
+      data = sorted_l,
+      color = get_line_colour(line_type),
+      # Plot widths proportional to attribute value, removing NAs
+      weight = normalise(sorted_l[[line_data()]][!is.na(sorted_l[[line_data()]])], min = min, max = max),
+      opacity = line_opacity,
+      group = line_type,
+      popup = popop_fun(sorted_l, input$scenario, input$purpose),
+      layerId = paste0(sorted_l[['id']], '-', line_type)
+    )
 
   }
-  # Updates map tile according to the selected map base
-  map_tile <- reactive({
-    switch(input$map_base,
-           'roadmap' = list(url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png", zoom = 18),
-           'satellite' = list(url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", zoom=18),
-           'IMD' = list(url="https://maps.cdrc.ac.uk/tiles/imd2015_eng/{z}/{x}/{y}.png", zoom=14),
-           'opencyclemap' = list(url="https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=feae177da543411c9efa64160305212d", zoom=18),
-           'hilliness' = list(url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", zoom=13)
-    )
+
+  ## Plot if lines change
+  observe({
+    # Needed to force lines to be redrawn when purpose, geography, scenario, zone or base map changes
+    input$purpose
+    region$geography
+    input$scenario
+    input$show_zones
+    input$map_base
+    input$line_type
+    region$data_dir
+    region$repopulate_region
+
+    line_type <- ifelse(input$line_type == 'routes', "routes_quieter", input$line_type)
+    local_lines <-  sort_lines(to_plot[[line_type]], input$line_type, input$nos_lines)
+
+    if (is.null(to_plot$ldata) || (!is.null(to_plot$ldata) && (!identical(to_plot$ldata, local_lines) || !identical(to_plot$scenario, input$scenario)))) {
+      leafletProxy("map")  %>% clearGroup(.,
+                                          c("straight_lines",
+                                            "routes_quieter",
+                                            "routes_fast",
+                                            "route_network"
+                                          )) %>%
+        removeShape(., "highlighted")
+      to_plot$ldata <<- local_lines
+      # Include current scenario in to_plot as the set of lines to plot may not change when the scenario alters, and so otherwise don't update
+      to_plot$scenario <<- input$scenario
+      plot_lines(leafletProxy("map"), to_plot$ldata, line_type)
+      # Additionally plot fast routes on top of quieter if selected 'fast & quieter'
+      if (input$line_type == 'routes') {
+        plot_lines(leafletProxy("map"),sort_lines(to_plot$routes_fast, "routes_fast", input$nos_lines),"routes_fast")
+      }
+    }
+
+    if (input$line_type == 'route_network')
+      updateSliderInput(
+        session,
+        inputId = "nos_lines",
+        min = 10,
+        max = 50,
+        step = 20,
+        label = "Percent (%) of Network"
+      )
+    else{
+      if (input$line_order == "slc")
+        updateSliderInput(
+          session,
+          inputId = "nos_lines",
+          min = 1,
+          max = 200,
+          step = 1,
+          label = "Top N Lines (most cycled)"
+        )
+      else
+        updateSliderInput(
+          session,
+          inputId = "nos_lines",
+          min = 1,
+          max = 200,
+          step = 1,
+          label = "Top N Lines"
+        )
+    }
+
   })
 
 
+  ##############
+  # Plot zones and  centroids
+  ##############
+
+  ## Set transparency of zones to 0.5 when displayed, otherwise 0
+  transp_rate <- reactive({
+    if (input$show_zones)
+      0.5
+    else
+      0.0
+  })
+
+  ## Identify suffix + complete name  of zones  variables
+  zone_attr <- reactive({
+    if (input$scenario == 'olc')
+      'olc'
+    else
+      'slc'
+  })
+  zone_data <- reactive({
+    data_filter(input$scenario, zone_attr())
+  })
+
+
+  ## Displays zones and centroids
   observe({
+    input$purpose
+    region$geography
+    input$scenario
+    line_type <<- isolate(input$line_type)
+    input$map_base
+    input$map_zoom
+    region$data_dir
     region$repopulate_region
 
-    if (input$line_type == "lsoa_base_map"){
-      urlTemplate <- paste0("https://npttile.vs.mythic-beasts.com/", input$scenario, "/{z}/{x}/{y}.png")
+    clearGroup(leafletProxy("map"), c("zones", "centroids"))
+    ## Display zones
+    if (input$show_zones && !is.null(to_plot$zones)) {
+      # Define bins and breaks (by purpose)
+      if (input$purpose == "commute" || input$purpose=="alltrips") {
+        zbins <- zbins_commute
+        zbreaks <- zbreaks_commute
+      } else if (input$purpose == "school") {
+        zbins <- zbins_school
+        zbreaks <- zbreaks_school
+      }
+      # Show zones when no lines are selected
+      show_zone_popup <- (line_type %in% show_no_lines)
+      popup <-
+        if (show_zone_popup)
+          popup_zones(to_plot$zones, input$scenario, input$purpose)
+      addPolygons(
+        leafletProxy("map"),
+        data = to_plot$zones,
+        weight = 2,
+        fillOpacity = transp_rate(),
+        opacity = 0.2,
+        fillColor = get_colour_ramp(zcolourscale, zbins, (to_plot$zones[[zone_data()]] /to_plot$zones$all), zbreaks),
+        color = "black",
+        group = "zones",
+        popup = popup,
+        options = pathOptions(clickable = show_zone_popup),
+        layerId = paste0(to_plot$zones[['geo_code']], '-', "zones")
+      )
+    }
+    ## Define centroids (if exist) and display when zoom level is greater than 11 and lines are selected
+    if (!is.null(to_plot$centroids)) {
+      addCircleMarkers(leafletProxy("map"), data = to_plot$centroids,
+                       radius = normalise(to_plot$centroids$all, min = 1, max = 8),
+                       color = get_line_colour("centroids"), group = "centroids", opacity = 0.5,
+                       popup = popup_centroids(to_plot$centroids, input$scenario, input$purpose),
+                       layerId = paste0(to_plot$centroids[['geo_code']], '-', "centroids")
+      )
+      if (isTRUE((is.null(input$map_zoom)) || input$map_zoom < 11 || (input$line_type %in% show_no_lines) || (input$line_type=="route_network"))) {
+        hideGroup(leafletProxy("map"), "centroids")
+      } else {
+        showGroup(leafletProxy("map"), "centroids")
+      }
+    }
+
+    ## Hide and then re-Show line layers, so that they are displayed as the top layer in the map.
+    # NB Leaflet's function bringToBack() or bringToFront() (see https://leafletjs.com/reference.html#path) don't seem to exist for R
+    leafletProxy("map") %>% {
+      if(!line_type %in% show_no_lines) {
+
+        switch(line_type,
+               'routes'= {
+                 hideGroup(., c("routes_quieter", "routes_fast") ) %>% showGroup(., c("routes_quieter", "routes_fast"))
+               },
+               hideGroup(., line_type) %>% showGroup(., line_type)
+              )
+      }
+    }
+
+  })
+
+
+  ##############
+  # Highlighting - both for regions and for lines
+  ##############
+
+  ## Creating and highlighting alternative regions (only if have the purpose in question)
+  observe({
+    input$map_base
+    region$repopulate_region
+
+    # Remove old region's polygons
+    leafletProxy("map") %>% clearGroup(., "regions-zones")
+
+    # Identify regions that 1) have the input purpose data and 2) are not the current region
+    new_regions_with_purpose <- regions$region_name[(dir.exists(file.path(data_regional_root, input$purpose, region$geography, regions$region_name))) & (!regions$region_name %in% region$current)]
+
+    # Add all eligible regions boundaries in the beginning , but set the opacity to a minimum
+    addPolygons(
+      leafletProxy("map"),
+      data = regions[(regions$region_name %in% new_regions_with_purpose), ],
+      weight = 0.1,
+      color = "#000000",
+      fillColor = "aliceblue",
+      fillOpacity = 0.01,
+      opacity = 0.3,
+      label = paste(
+        "Click to view",
+        get_pretty_region_name(regions[regions$region_name %in% new_regions_with_purpose, ]$region_name)
+      ),
+      labelOptions = labelOptions(direction = 'auto'),
+      # On highlight widen the boundary and fill the polygons
+      highlightOptions = highlightOptions(
+        color = 'grey',
+        opacity = 0.3,
+        weight = 10,
+        fillOpacity = 0.6,
+        bringToFront = F,
+        sendToBack = TRUE
+      ),
+      options = pathOptions(clickable = T),
+      layerId = paste("new_region", regions[regions$region_name %in% new_regions_with_purpose, ]$region_name),
+      group = "regions-zones"
+    )
+  })
+
+  ## Switching to highlighted regions + highlighting pop-ups
+  observeEvent(input$map_shape_click, {
+    # For switching to the clicked region
+    event <- input$map_shape_click
+    if (is.null(event) || event$id == "highlighted")
+      return()
+    # Check if the event$id is called from the "new_region" polygons
+    if (grepl("new_region", event$id)) {
+      # Split the id to identify the region name
+      new_region <- strsplit(event$id, " ")[[1]][2]
+      if (is.null(new_region))
+        return()
+      new_data_dir <- file.path(data_regional_root, input$purpose, region$geography, new_region)
+
+      if (region$data_dir != new_data_dir &&
+          file.exists(new_data_dir)) {
+        region$current <- new_region
+        region$data_dir <- new_data_dir
+        region$repopulate_region <- F
+        if (input$freeze)
+          # If we change the map data then lines should not be frozen to the old map data
+          updateCheckboxInput(session, "freeze", value = F)
+      }
+      return()
+    }
+    e_lat_lng <- paste0(event$lat, event$lng)
+
+    # Fix bug when a line has been clicked then the click event is re-emmited when the map is moved
+    if (e_lat_lng == helper$e_lat_lng)
+      return()
+    helper$e_lat_lng <<- e_lat_lng
+
+    # Highlighting for the pop-ups
+    isolate({
+      id_line_type <- unlist(strsplit(event$id, "-"))
+      id <- id_line_type[1]
+      line_type <- id_line_type[2]
+
+      if (event$group == "centroids") {
+        addPolygons(
+          leafletProxy("map"),
+          data = to_plot$centroids[to_plot$c$geo_code == id, ],
+          fill = F,
+          color = get_line_colour("centroids") ,
+          opacity = 0.7,
+          layerId = "highlighted"
+        )
+      } else if (event$group == "zones") {
+        addPolygons(
+          leafletProxy("map"),
+          data = to_plot$zones[to_plot$z$geo_code == id, ],
+          fill = FALSE,
+          color = "black",
+          opacity = 0.7 ,
+          layerId = "highlighted"
+        )
+      } else {
+        line <- to_plot[[line_type]][to_plot[[line_type]]$id == id, ]
+        if (!is.null(line))
+          addPolylines(
+            leafletProxy("map"),
+            data = line,
+            color = "white",
+            opacity = 0.4,
+            layerId = "highlighted"
+          )
+      }
+    })
+  })
+
+
+  ##############
+  # Rasters +  basemaps
+  ##############
+
+  ## LSOA layer + legend
+  ##ANNA NOTE [NB in future need to make this purpose + geography specific]
+  observe({
+    # region$repopulate_region
+
+    if (input$line_type == "lsoa_base_map") {
+      urlTemplate <- paste0("https://npttile.vs.mythic-beasts.com/",input$scenario,"/{z}/{x}/{y}.png")
 
       leafletProxy("map") %>%
-        addTiles(., urlTemplate = urlTemplate, layerId = "lsoa_base_map", group = "lsoa_base_map",
-                 options=tileOptions(maxNativeZoom = 13, reuseTiles = T, tms = T)) %>%
-        addLegend("topleft", layerId= "lsoa_leg", colors = lsoa_legend_df$colours,
-                  labels = lsoa_legend_df$labels,
-                  title = "Cyclists on route network",
-                  opacity = 0.5
+        addTiles(
+          .,
+          urlTemplate = urlTemplate,
+          layerId = "lsoa_base_map",
+          group = "lsoa_base_map",
+          options = tileOptions(
+            maxNativeZoom = 13,
+            reuseTiles = T,
+            tms = T
+          )
+        ) %>%
+        addLegend(
+          "topleft",
+          layerId = "lsoa_leg",
+          colors = lsoa_legend_df$colours,
+          labels = lsoa_legend_df$labels,
+          title = "Cyclists on route network",
+          opacity = 0.5
         )
     } else {
       leafletProxy("map") %>% removeTiles(., layerId = "lsoa_base_map") %>% removeControl("lsoa_leg")
     }
   })
 
-  observe({
-    input$map_base
-    region$repopulate_region
-
-    #Redraw zone polygons when regions is switched, as the current region should not be highlighted
-
-    #Remove old regions polygons
-    leafletProxy("map") %>% clearGroup(., "regions-zones")
-
-    ## Add all regions boundary in the beginning but set its opacity to a minimum
-    addPolygons(leafletProxy("map"),
-                data = regions[regions$Region != region$current,], weight = 0.1,
-                color = "#000000",
-                fillColor = "aliceblue",
-                fillOpacity = 0.01,
-                opacity = 0.3,
-                label = paste("Click to view", get_pretty_region_name(regions[regions$Region != region$current,]$Region)),
-                labelOptions = labelOptions(direction = 'auto'),
-                # On highlight widen the boundary and fill the polygons
-                highlightOptions = highlightOptions(
-                  color='grey', opacity = 0.3, weight = 10, fillOpacity = 0.6,
-                  bringToFront = F, sendToBack = TRUE),
-                options = pathOptions(clickable = T),
-                layerId = paste("new_region", regions[regions$Region != region$current,]$Region),
-                group = "regions-zones")
-  })
-
-  # Set map attributes
-  output$cite_html <- renderUI({
-    HTML(paste('Ver', a(repo_sha, href= paste0("https://github.com/npct/pct-shiny/tree/", repo_sha), target='_blank'),
-               'released under a', a('GNU Affero GPL', href= "../www/licence.html", target='_blank'),
-               'and funded by the', a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport", target="_blank")
-    ))
-  })
-
-  output$line_codebook <- renderUI({
-    a("Codebook", href = paste(
-      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_lines.csv", sep = "/"),
-      title="This explains the variable names in the downloadable data",
-      onclick="ga('send', 'event', 'download', 'l_codebook');", target='_blank'
+  ## Updates map tile according to the selected map base
+  map_tile <- reactive({
+    switch(
+      input$map_base,
+      'roadmap' = list(url = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png", zoom = 18),
+      'satellite' = list(url = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", zoom = 18),
+      'IMD' = list(url = "https://maps.cdrc.ac.uk/tiles/imd2015_eng/{z}/{x}/{y}.png", zoom = 14),
+      'opencyclemap' = list(url = "https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=feae177da543411c9efa64160305212d", zoom = 18),
+      'hilliness' = list(url = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", zoom = 13)
     )
   })
 
-  output$route_codebook <- renderUI({
-    a("Codebook", href = paste(
-      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
-      title="This explains the variable names in the downloadable data",
-      onclick="ga('send', 'event', 'download', 'route_codebook');", target='_blank'
-    )
-  })
 
-  output$route_codebook_quiet <- renderUI({
-    a("Codebook", href = paste(
-      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_routes.csv", sep = "/"),
-      title="This explains the variable names in the downloadable data",
-      onclick="ga('send', 'event', 'download', 'route_codebook');", target='_blank'
-    )
-  })
+  ##############
+  # Map attribute outputs
+  ##############
 
-  output$route_network_codebook <- renderUI({
-    a("Codebook", href = paste(
-      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_rnet.csv", sep = "/"),
-      title="This explains the variable names in the downloadable data",
-      onclick="ga('send', 'event', 'download', 'route_network_codebook');", target='_blank'
-    )
-  })
-
-  output$zone_codebook <- renderUI({
-    a("Codebook", href = paste(
-      "https://cdn.rawgit.com/npct/pct-shiny", repo_sha, "static", "codebook_zones.csv", sep = "/"),
-      title="This explains the variable names in the downloadable data",
-      onclick="ga('send', 'event', 'download', 'zones_codebook');", target='_blank'
-    )
-  })
-
-  # Initialize the leaflet map
+  ## Initialize the leaflet map
   output$map <- renderLeaflet(
     leaflet() %>%
-      addCircleMarkers(., data = to_plot$cents, radius = 0, group = "centres", opacity = 0.0) %>%
-      setView(., lng = to_plot$center_dim[1, 1], lat = to_plot$center_dim[1, 2], zoom = 10) %>%
+      # Centroids loaded invisibly to tell it the extent of the map
+      # Anna note: centroids do not exist for some purposes like schools - if ever want to *start* in schools layer need to change this to zones
+      # addCircleMarkers( .,
+      #   data = to_plot$centroids,
+      #   radius = 0,
+      #   group = "centroids",
+      #   opacity = 0.0
+      # ) %>%
+      setView(.,
+        lng = to_plot$center_dim[1, 1],
+        lat = to_plot$center_dim[1, 2],
+        zoom = 10
+      ) %>%
       mapOptions(zoomToLimits = "never")
   )
 
+  ## Attribution statement bottom right + define the map base
   observe({
     input$map_base
     region$current
-    leafletProxy("map") %>% addTiles(., urlTemplate = map_tile()$url, layerId = "background",
-             attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
-             Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
-             Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-             options=tileOptions(opacity = ifelse(input$map_base == "IMD", 0.3, 1),
-                                 minZoom = 7, reuseTiles = T, maxZoom = 18,
-                                 maxNativeZoom = map_tile()$zoom)) %>%
+    leafletProxy("map") %>% addTiles(
+      .,
+      urlTemplate = map_tile()$url,
+      layerId = "background",
+      attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
+      Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
+      Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      options = tileOptions(
+        opacity = 1,
+        minZoom = 7,
+        reuseTiles = T,
+        maxZoom = 18,
+        maxNativeZoom = map_tile()$zoom
+      )
+    ) %>%
       clearGroup(., "imd_background")
-    if (input$map_base == 'IMD'){
-      imdTileOptions <- tileOptions(opacity = 0.3, minZoom = 7, maxNativeZoom = 14, reuseTiles = T)
+    if (input$map_base == 'IMD') {
+      imdTileOptions <-
+        tileOptions(
+          opacity = 1,
+          minZoom = 7,
+          reuseTiles = T,
+          maxNativeZoom = 14
+        )
       leafletProxy("map") %>%
-        addTiles(., urlTemplate = "https://maps.cdrc.ac.uk/tiles/shine_urbanmask_dark/{z}/{x}/{y}.png", group = "imd_background",
-                 options=imdTileOptions) %>%
-        addTiles(., urlTemplate = "https://maps.cdrc.ac.uk/tiles/shine_labels_cdrc/{z}/{x}/{y}.png", group = "imd_background",
-                 options=imdTileOptions)
+        addTiles(.,
+                 urlTemplate = "https://maps.cdrc.ac.uk/tiles/shine_urbanmask_dark/{z}/{x}/{y}.png",
+                 group = "imd_background",
+                 options = imdTileOptions) %>%
+        addTiles(.,
+                 urlTemplate = "https://maps.cdrc.ac.uk/tiles/shine_labels_cdrc/{z}/{x}/{y}.png",
+                 group = "imd_background",
+                 options = imdTileOptions)
     }
     leafletProxy("map") %>% hideGroup(., "lsoa_base_map") %>% showGroup(., "lsoa_base_map")
   })
 
-  # Adds map legend
+
+  ## Map version info - text in bottom left
+  output$cite_html <- renderUI({
+    HTML(paste('Version', a(repo_sha, href = paste0("https://github.com/npct/pct-shiny/tree/", repo_sha), target = '_blank'),
+      'released under a', a('GNU Affero GPL', href = "../www/licence.html", target = '_blank'), 'and funded by the',
+      a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport", target = "_blank")
+    ))
+  })
+
+
+  ## Adds map legend for zones
   observe({
-    input$map_base
+    input$purpose
+
+    # Define the legend title
+    if (input$purpose == "commute") { legend_title <- "% cycling to work"}
+    else if (input$purpose == "school") { legend_title <- "% cycling to school" }
+    else if (input$purpose == "alltrips") { legend_title <- "% trips cycled" }
+
     leafletProxy("map") %>% removeControl(layerId = "zone_leg")
-    title <- ifelse(showing_all_trips(), "% trips cycled", "% cycling to work")
-    if (input$show_zones) {
-      leafletProxy("map") %>%
-        addLegend("topleft", layerId = "zone_leg", colors = get_colour_palette(zcols, 10),
-                  labels = c("0-1%",
-                             "2-3%",
-                             "4-6%",
-                             "7-9%",
-                             "10-14%",
-                             "15-19%",
-                             "20-24%",
-                             "25-29%",
-                             "30-39%",
-                             "40%+"),
-                  title = title,
-                  opacity = 0.5
-        )
+    if (input$purpose == "commute" || input$purpose == "alltrips") {
+      title <- legend_title
+      if (input$show_zones) {
+        leafletProxy("map") %>%
+          addLegend(
+            "topleft",
+            layerId = "zone_leg",
+            colors = get_colour_palette(zcolourscale, 10),
+            labels = c("0-1%", "2-3%", "4-6%", "7-9%",
+                      "10-14%", "15-19%", "20-24%",
+                      "25-29%", "30-39%", "40%+"),
+            title = title,
+            opacity = 0.5
+          )
+      }
+    } else if (input$purpose == "school") {
+      title <- legend_title
+      if (input$show_zones) {
+        leafletProxy("map") %>%
+          addLegend(
+            "topleft",
+            layerId = "zone_leg",
+            colors = get_colour_palette(zcolourscale, 11),
+            labels = c("0-1%", "2-3%", "4-6%", "7-9%",
+                       "10-14%", "15-19%", "20-24%",
+                       "25-29%", "30-39%", "40-49%", "50%+"),
+            title = title,
+            opacity = 0.5
+          )
+      }
     }
   })
 
-  # Creates legend as a barplot for IMD map base
+  ## Creates legend as a barplot for IMD map base
   output$imd_legend <- renderPlot({
-    my_lab <- c("Most deprived decile", "2nd", "3rd", "4th", "5th",
-                "6th", "7th", "8th", "9th", "Least deprived decile",
-                "Data missing", "Data not available")
+    my_lab <- c(
+      "Most deprived decile", "2nd", "3rd", "4th", "5th",
+      "6th", "7th", "8th", "9th", "Least deprived decile"
+      )
 
     my_lab <- rev(my_lab)
 
-    my_colors <- c("#a50026","#d73027", "#f46d43","#fdae61","#fee08b",
-                   "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850",
-                   "#006837", "#aaaaaa", "#dddddd")
+    my_colors <-
+      c(
+        "#a50026", "#d73027", "#f46d43", "#fdae61", "#fee08b",
+        "#d9ef8b", "#a6d96a", "#66bd63", "#1a9850", "#006837"
+      )
 
     my_colors <- rev(my_colors)
 
     # Set the labelling of Y-axis to bold
-    par(font.lab = 2, mar=c(0.0,5.8,0.0,1.0))
+    par(font.lab = 2, mar = c(0.0, 5.8, 0.0, 1.0))
 
-    bp <- barplot(rep(1,12), beside = TRUE, col = my_colors,
-                  ylab = "IMD From 2015\nIndex of Multiple Deprivation", horiz = T, axes = F)
+    bp <- barplot(
+      rep(1, 10),
+      beside = TRUE,
+      col = my_colors,
+      ylab = "Index of Multiple \n Deprivation From 2015",
+      horiz = T,
+      axes = F
+    )
 
-    text(0, bp, my_lab, cex=0.8, pos=4, font=2, col = "black")
+    text(
+      0,
+      bp,
+      my_lab,
+      cex = 0.8,
+      pos = 4,
+      font = 2,
+      col = "black"
+    )
   })
 
-  observe({
-    region$repopulate_region
-    # Creates data for the lines datatable
-    output$lines_datatable <- DT::renderDataTable({
-      # Reactive values that must trigger a tabel update
-      region$repopulate_region
-      input$line_type
-
-      # Only render lines data when any of the Cycling Flows is selected by the user
-      plot_lines_data <- !is.null(to_plot$ldata) && !input$line_type %in% show_no_lines &&
-        (!is.null(input$map_bounds)) && input$nos_lines > 0 && (line_data() %in% names(to_plot$ldata@data))
-      if(!plot_lines_data){
-        # Set the warning message that no lines have been selected by the user
-        output$warning_message <- renderUI(HTML("<strong>No lines selected: </strong> Lines must be displayed on map </br>"))
-        # Return an empty data.frame
-        return(data.frame(File=character()))
-      }
-
-      # When route network is selected, show 'no lines available
-      if(input$line_type == 'route_network'){
-        # Set the warning message that no lines have been selected by the user
-        output$warning_message <- renderUI(HTML("<strong>No lines available </strong> </br>"))
-        # Return an empty data.frame
-        return(data.frame(File=character()))
-      }
-
-      # Empty the warning message - as some lines have been selected by the user
-      output$warning_message <- renderUI("")
-
-      # Reuse the lines data stored in the ldata session variable
-      lines_to_plot <- to_plot$ldata@data[,unname(line_col_names)]
-      decimal_line_cols <- which(vapply(lines_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
-      DT::datatable(lines_to_plot, options = list(pageLength = 10), colnames = line_col_names, rownames = FALSE) %>%
-        DT::formatRound(columns = decimal_line_cols, digits=2)
-    })
-
-    # Creates data for the zones datatable
-    output$zones_data_table <- DT::renderDataTable({
-      # Reactive values that must trigger a tabel update
-      region$repopulate_region
-
-      if(is.null(to_plot$zones@data)){
-        return()
-      }
-
-      zones_to_plot <- to_plot$zones@data[,unname(zone_col_names)]
-      decimal_zone_cols <- which(vapply(zones_to_plot, function(x) { is.numeric(x) && as.integer(x) != x }, FUN.VALUE = logical(1)))
-      DT::datatable(zones_to_plot, options = list(pageLength = 10),
-                    colnames = zone_col_names, rownames = FALSE) %>%
-        DT::formatRound(columns = decimal_zone_cols, digits=2)
-    })
-
-    output$download_l_csv <- downloadHandler(
-      filename = function() { "lines.csv"  },
-      content = function(file) { write.csv(signif_sdf(to_plot$straight_line)@data[codebook_l$`Variable name`], file = file) }
-    )
-
-    output$download_z_csv <- downloadHandler(
-      filename = function() { "zones.csv"  },
-      content = function(file) { write.csv(signif_sdf(to_plot$zones)@data[codebook_z$`Variable name`], file = file) }
-    )
-
-    output$download_z_geojson <- downloadHandler(
-      filename = function() { "zones.geojson"  },
-      content = function(file) { geojsonio::geojson_write(signif_sdf(to_plot$zones[codebook_z$`Variable name`]), file = file) }
-    )
-
-    output$download_l_geojson <- downloadHandler(
-      filename = function() { "lines.geojson"  },
-      content = function(file) { geojsonio::geojson_write(signif_sdf(to_plot$straight_line[codebook_l$`Variable name`]), file = file) }
-    )
-
-    output$download_rf_geojson <- downloadHandler(
-      filename = function() { "routes_fast.geojson"  },
-      content = function(file) { geojsonio::geojson_write(signif_sdf(to_plot$faster_route[codebook_r$`Variable name`]), file = file) }
-    )
-
-    output$download_rq_geojson <- downloadHandler(
-      filename = function() { "routes_quiet.geojson"  },
-      content = function(file) { geojsonio::geojson_write(signif_sdf(to_plot$quieter_route[codebook_r$`Variable name`]), file = file) }
-    )
-
-    output$download_rnet_geojson <- downloadHandler(
-      filename = function() { "routes_network.geojson"  },
-      content = function(file) { geojsonio::geojson_write(signif_sdf(to_plot$route_network[codebook_rnet$`Variable name`]), file = file) }
-    )
-
-    output$download_l_rds <- downloadHandler(
-      filename = function() { "lines.Rds"  },
-      content = function(file) { saveRDS(to_plot$straight_line[codebook_l$`Variable name`], file = file) }
-    )
-
-    output$download_rf_rds <- downloadHandler(
-      filename = function() { "routes_fast.Rds"  },
-      content = function(file) { saveRDS(to_plot$faster_route[codebook_r$`Variable name`], file = file) }
-    )
-
-    output$download_rq_rds <- downloadHandler(
-      filename = function() { "routes_quiet.Rds"  },
-      content = function(file) { saveRDS(to_plot$quieter_route[codebook_r$`Variable name`], file = file) }
-    )
-
-    output$download_rnet_rds <- downloadHandler(
-      filename = function() { "routes_network.Rds"  },
-      content = function(file) { saveRDS(to_plot$route_network[codebook_rnet$`Variable name`], file = file) }
-    )
-
-    output$download_z_rds <- downloadHandler(
-      filename = function() { "zones.Rds"  },
-      content = function(file) { saveRDS(to_plot$zones[codebook_z$`Variable name`], file = file) }
-    )
-
-  })
-
-  # Hide/show panels on user-demand
+  ## Hide/show panels on user-demand
   shinyjs::onclick("toggle_panel", shinyjs::toggle(id = "input_panel", anim = FALSE))
-  shinyjs::onclick("toggle_trip_menu", shinyjs::toggle(id = "trip_menu", anim = FALSE))
-  shinyjs::onclick("toggle_map_legend", shinyjs::toggle(id = "map_legend", anim = FALSE))
+  shinyjs::onclick("toggle_imd_legend", shinyjs::toggle(id = "imd_legend", anim = FALSE))
 
-  # Function to add a layers control for the routes, so that users can easily select quiet routes
+  ## Function to add a layers control for the routes, so that users can easily select quiet routes
+  # NB: currently this resets every time scenario changes or lines get redrawn because of map zoom - possibly to revisit
   observe({
     input$line_type
-    if (input$line_type == 'routes'){
+
+    if (input$line_type == 'routes') {
       leafletProxy("map") %>% addLayersControl(
         position = c("bottomright"),
-        overlayGroups = c("quieter_route", "faster_route"),
+        overlayGroups = c("routes_fast", "routes_quieter"),
         options = layersControlOptions(collapsed = T)
       )
-    }else
-      leafletProxy("map") %>% removeLayersControl()
+    } else if (input$line_type != 'routes') {
+      leafletProxy("map") %>% showGroup(c("routes_fast", "routes_quieter")) %>% removeLayersControl()
+    }
   })
+
+  ## Read region_stats.html, if it exists, for the loaded region
+  output$region_stats <- renderUI({
+    input$purpose
+    input$geography
+    region$current
+
+    region_stats_file <-
+      file.path("../tabs/region_stats", input$purpose, input$geography, region$current,
+                "region_stats.html")
+    if (file.exists(region_stats_file))
+      includeHTML(region_stats_file)
+    else
+      HTML("<strong>No statistics available</strong>")
+  })
+
+  ## Read regional data download files
+  # This file updates whenever there is a change to input$region, and content of links also depends on repo_sha
+  output$download_region_current <- renderUI({
+    region$current
+
+    # Create region name for files to be downloaded, so that they are accessible from the download_region.Rmd file
+    download_region <- data.frame(region_name = region$current)
+    saveRDS(download_region, file="../tabs/download_params_region_current.rds")
+
+    knitr::knit2html(quiet = T,
+                     input = file.path("../tabs/download_region.Rmd"),
+                     output = file.path("../tabs/download_region_current.html"),
+                     envir = globalenv(), force_v1 = T
+    )
+    # Re-read html to remove style
+    download_region_file <- file.path("../tabs/download_region_current.html")
+    download_region <- readLines(download_region_file)
+    download_region <- remove_unused_tags(download_region)  # remove style section
+    write(download_region, download_region_file)
+    file.remove(file.path("download_region.md"))
+
+    includeHTML(download_region_file)
+
+  })
+
+
+  ## Create the national data download files
+  # Content of links in this file depend on repo_sha, hence not static and needs to be generated here
+  output$download_national_current <- renderUI({
+
+    knitr::knit2html(quiet = T,
+                     input = file.path("../tabs/download_national.Rmd"),
+                     output = file.path("../tabs/download_national_current.html"),
+                     envir = globalenv(), force_v1 = T
+    )
+    # Re-read html to remove style
+    download_national_file <- file.path("../tabs/download_national_current.html")
+    download_national <- readLines(download_national_file)
+    download_national <- remove_unused_tags(download_national)  # remove style section
+    write(download_national, download_national_file)
+    file.remove(file.path("download_national.md"))
+
+    includeHTML(download_national_file)
+
+  })
+
+  ##############
+  ## Data tables (may remove?)
+  ##############
+
+  # ## Creates data for the lines datatable
+  # output$lines_datatable <- DT::renderDataTable({
+  #   # Reactive values that must trigger a table update
+  #   region$repopulate_region
+  #   input$line_type
+  #
+  #   # Only render lines data when any of the Cycling Flows is selected by the user
+  #   plot_lines_data <-
+  #     !is.null(to_plot$ldata) && !input$line_type %in% show_no_lines &&
+  #     (!is.null(input$map_bounds)) &&
+  #     input$nos_lines > 0 && (line_data() %in% names(to_plot$ldata@data))
+  #   if (!plot_lines_data) {
+  #     # Set the warning message that no lines have been selected by the user
+  #     output$warning_message <-
+  #       renderUI(HTML(
+  #         "<strong>No lines selected: </strong> Lines must be displayed on map </br>"
+  #       ))
+  #     # Return an empty data.frame
+  #     return(data.frame(File = character()))
+  #   }
+  #
+  #   # When route network is selected, show 'no lines available
+  #   if (input$line_type == 'route_network') {
+  #     # Set the warning message that no lines have been selected by the user
+  #     output$warning_message <-
+  #       renderUI(HTML("<strong>No lines available </strong> </br>"))
+  #     # Return an empty data.frame
+  #     return(data.frame(File = character()))
+  #   }
+  #
+  #   # Empty the warning message - as some lines have been selected by the user
+  #   output$warning_message <- renderUI("")
+  #
+  #   # Reuse the lines data stored in the ldata session variable
+  #   lines_to_plot <- to_plot$ldata@data[, unname(line_col_names)]
+  #   decimal_line_cols <-
+  #     which(vapply(lines_to_plot, function(x) {
+  #       is.numeric(x) && as.integer(x) != x
+  #     }, FUN.VALUE = logical(1)))
+  #   DT::datatable(
+  #     lines_to_plot,
+  #     options = list(pageLength = 10),
+  #     colnames = line_col_names,
+  #     rownames = FALSE
+  #   ) %>%
+  #     DT::formatRound(columns = decimal_line_cols, digits = 2)
+  # })
+  #
+  # ## Creates data for the zones datatable
+  # output$zones_data_table <- DT::renderDataTable({
+  #   # Reactive values that must trigger a tabel update
+  #   region$repopulate_region
+  #
+  #   if (is.null(to_plot$zones@data)) {
+  #     return()
+  #   }
+  #
+  #   zones_to_plot <- to_plot$zones@data[, unname(zone_col_names)]
+  #   decimal_zone_cols <-
+  #     which(vapply(zones_to_plot, function(x) {
+  #       is.numeric(x) && as.integer(x) != x
+  #     }, FUN.VALUE = logical(1)))
+  #   DT::datatable(
+  #     zones_to_plot,
+  #     options = list(pageLength = 10),
+  #     colnames = zone_col_names,
+  #     rownames = FALSE
+  #   ) %>%
+  #     DT::formatRound(columns = decimal_zone_cols, digits = 2)
+  # })
+
 })

@@ -1,0 +1,13 @@
+Variable name,Variable Description
+geo_code,Zone code
+geo_name,Zone name
+lad11cd,Local authoriy (2011) code
+lad_name,Local authoriy (2011) name
+all,Total no. children
+bicycle,No. cyclists in School Census 2011
+foot,No. pedestrians in School Census 2011
+car,No. car drivers in School Census 2011
+other,No. other transport users in School Census 2011
+unknown,No.  transport users using an unknown mode in School Census 2011
+govtarget_slc,No. cyclists in Government Target
+dutch_slc,No. cyclists in Go Dutch

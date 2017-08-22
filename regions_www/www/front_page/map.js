@@ -3,7 +3,7 @@
 // http://leafletjs.com/examples/choropleth-example.html
 
 $(document).ready(function(){
-  $.getJSON("/regions.geojson").done(function(statesData) {
+  $.getJSON("/pct_regions_lowres_scenario.geojson").done(function(statesData) {
     var map = L.map('map').setView([ 53, -0.4], 6);
 
     L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
@@ -50,17 +50,17 @@ $(document).ready(function(){
     }
 
     info.scenarioMap = {
-      pcycle: "2011 Census",
-      govtarget_slc: "Government Target",
-      gendereq_slc: "Gender Equality",
-      dutch_slc: "Go Dutch",
-      ebike_slc: "Ebike"
+      bicycle_perc: "2011 Census",
+      govtarget_slc_perc: "Government Target",
+      gendereq_slc_perc: "Gender Equality",
+      dutch_slc_perc: "Go Dutch",
+      ebike_slc_perc: "Ebike"
     };
 
     info.update = function (props, scenario) {
       var regionText;
       if(scenario !== undefined && props) {
-        regionText = '<b>' + capitalize(props.Region) + '</b><br />' + precise_round(props[scenario], 1) + '  % in ' + info.scenarioMap[scenario];
+        regionText = '<b>' + capitalize(props.region_name) + '</b><br />' + precise_round(props[scenario], 1) + '  % in ' + info.scenarioMap[scenario];
       } else {
         regionText = 'Hover over a region';
       }
@@ -152,28 +152,28 @@ $(document).ready(function(){
     }
 
     var olc = L.geoJson(statesData, {
-      style: mapStyle("pcycle"),
-      onEachFeature: onEachFeature("pcycle")
+      style: mapStyle("bicycle_perc"),
+      onEachFeature: onEachFeature("bicycle_perc")
     });
 
     var govtarget = L.geoJson(statesData, {
-      style: mapStyle("govtarget_slc"),
-      onEachFeature: onEachFeature("govtarget_slc")
+      style: mapStyle("govtarget_slc_perc"),
+      onEachFeature: onEachFeature("govtarget_slc_perc")
     });
 
     var gendereq = L.geoJson(statesData, {
-      style: mapStyle("gendereq_slc"),
-      onEachFeature: onEachFeature("gendereq_slc")
+      style: mapStyle("gendereq_slc_perc"),
+      onEachFeature: onEachFeature("gendereq_slc_perc")
     });
 
     var dutch = L.geoJson(statesData, {
-      style: mapStyle("dutch_slc"),
-      onEachFeature: onEachFeature("dutch_slc")
+      style: mapStyle("dutch_slc_perc"),
+      onEachFeature: onEachFeature("dutch_slc_perc")
     });
 
     var ebike = L.geoJson(statesData, {
-      style: mapStyle("ebike_slc"),
-      onEachFeature: onEachFeature("ebike_slc")
+      style: mapStyle("ebike_slc_perc"),
+      onEachFeature: onEachFeature("ebike_slc_perc")
     });
 
     var map_layers = {
@@ -194,7 +194,6 @@ $(document).ready(function(){
     legend.onAdd = function (map) {
 
       var div = L.DomUtil.create('div', 'info-box legend'),
-        // zone_fill_breaks = c(0, 1.5, 3.5, 6.5, 9.5, 14.5, 19.5, 24.5, 29.5, 100) / 100  # The bins used for the scale
         grades = [0, 2, 4, 7, 10, 15, 20, 25, 30, 40],
         bin_labels = ["0-1%",
           "2-3%",
