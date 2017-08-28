@@ -66,7 +66,7 @@ saveRDS(download_sha, file="../tabs/download_params_sha_current.rds")
 production_branch <- grepl("npt\\d*$", Sys.info()["nodename"])
 
 ## Load region boundaries
-regions <- rgdal::readOGR(file.path(interface_root, "regions_www/pct_regions_highres.geojson"), layer = "OGRGeoJSON")
+regions <- rgdal::readOGR(file.path(interface_root, "regions_www/pct_regions_highres.geojson"))
 regions$region_name <- as.character(regions$region_name)
 
 ## Define zone colours from colourbrewer + number of bins and breaks used
