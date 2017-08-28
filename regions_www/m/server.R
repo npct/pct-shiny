@@ -825,8 +825,8 @@ shinyServer(function(input, output, session) {
                  urlTemplate = "https://maps.cdrc.ac.uk/tiles/imd2014_wal/{z}/{x}/{y}.png",
                  group = "imd_extras",
                  options = imdTileOptions) %>%
-      addTiles(.,
-                 urlTemplate = "https://maps.cdrc.ac.uk/tiles/shine_urbanmask_dark/{z}/{x}/{y}.png",
+        addTiles(.,
+                urlTemplate = "https://maps.cdrc.ac.uk/tiles/shine_urbanmask_dark/{z}/{x}/{y}.png",
                  group = "imd_extras",
                  options = imdTileOptions) %>%
         addTiles(.,
