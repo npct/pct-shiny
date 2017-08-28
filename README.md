@@ -11,15 +11,15 @@ To start:
 
 ```sh
 git clone git@github.com:npct/pct-shiny.git
-git clone git@github.com:npct/pct-data.git --depth=1
+git clone git@github.com:npct/pct-outputs-regional.git 
 ```
 
-so that [pct-data](https://github.com/npct/pct-data) is in a sibling folder.
+so that pct-outputs-regional is in a sibling folder.
 
-To create and modify `pct-data` refer to the [pct-load](https://github.com/npct/pct-load), cloned with::
+To create and modify pct-outputs-regional refer to pct-scripts, cloned with::
 
 ```sh
-git clone git@github.com:npct/pct-load.git
+git clone git@github.com:npct/pct-scripts.git
 ```
 
 The `regions_www` folder contains all the current starting regions

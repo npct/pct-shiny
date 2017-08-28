@@ -1,0 +1,64 @@
+Variable name,Variable Description
+lad11cd,Local authoriy (2011) code
+lad_name,Local authoriy (2011) name
+all,Total no. commuters
+bicycle,No. cyclists in Census 2011
+foot,No. pedestrians in Census 2011
+car_driver,No. car drivers in Census 2011
+car_passenger,No. car passengers in Census 2011
+train,No. train users in Census 2011
+light_rail,No. light rail users in Census 2011
+bus,No. bus users in Census 2011
+taxi,No. taxi users in Census 2011
+motorbike,No. motorbikers in Census 2011
+other,No. other transport users in Census 2011
+govtarget_slc,No. cyclists in Government Target
+govtarget_sic,Increase no. cyclists in Government Target vs. Census 2011
+govtarget_slw,No. pedestrians in Government Target
+govtarget_siw,Increase no. pedestrians in Government Target vs. Census 2011
+govtarget_sld,No. car drivers in Government Target
+govtarget_sid,Increase no. car drivers in Government Target vs. Census 2011
+gendereq_slc,No. cyclists in Gender Equality
+gendereq_sic,Increase no. cyclists in Gender Equality vs. Census 2011
+gendereq_slw,No. pedestrians in Gender Equality
+gendereq_siw,Increase no. pedestrians in Gender Equality vs. Census 2011
+gendereq_sld,No. car drivers in Gender Equality
+gendereq_sid,Increase no. car drivers in Gender Equality vs. Census 2011
+dutch_slc,No. cyclists in Go Dutch
+dutch_sic,Increase no. cyclists in Go Dutch vs. Census 2011
+dutch_slw,No. pedestrians in Go Dutch
+dutch_siw,Increase no. pedestrians in Go Dutch vs. Census 2011
+dutch_sld,No. car drivers in Go Dutch
+dutch_sid,Increase no. car drivers in Go Dutch vs. Census 2011
+ebike_slc,No. cyclists in Ebikes
+ebike_sic,Increase no. cyclists in Ebikes vs. Census 2011
+ebike_slw,No. pedestrians in Ebikes
+ebike_siw,Increase no. pedestrians in Go Dutch vs. Census 2011
+ebike_sld,No. car drivers in Ebikes
+ebike_sid,Increase no. car drivers in Ebikes vs. Census 2011
+govtarget_sldeath_heat,Change in deaths/year in Government Target versus 'no cycling'
+govtarget_slvalue_heat,Value (pounds) of change in deaths in Government Target versus 'no cycling' 
+govtarget_sideath_heat,Change in deaths/year in Government Target versus Census 2011
+govtarget_sivalue_heat,Value (pounds) of change in deaths in Government Target versus Census 2011
+gendereq_sldeath_heat,Change in deaths/year in Gender Equality versus 'no cycling'
+gendereq_slvalue_heat,Value (pounds) of change in deaths in Gender Equality versus 'no cycling' 
+gendereq_sideath_heat,Change in deaths/year in Gender Equality versus Census 2011
+gendereq_sivalue_heat,Value (pounds) of change in deaths in Gender Equality versus Census 2011
+dutch_sldeath_heat,Change in deaths/year in Go Dutch versus 'no cycling'
+dutch_slvalue_heat,Value (pounds) of change in deaths in Go Dutch versus 'no cycling' 
+dutch_sideath_heat,Change in deaths/year in Go Dutch versus Census 2011
+dutch_sivalue_heat,Value (pounds) of change in deaths in Go Dutch versus Census 2011
+ebike_sldeath_heat,Change in deaths/year in Ebikes versus 'no cycling'
+ebike_slvalue_heat,Value (pounds) of change in deaths in Ebikes versus 'no cycling' 
+ebike_sideath_heat,Change in deaths/year in Ebikes versus Census 2011
+ebike_sivalue_heat,Value (pounds) of change in deaths in Ebikes versus Census 2011
+govtarget_slco2,Change in CO2/year (kg) in Government Target versus 'no cycling'
+govtarget_sico2,Change in CO2/year (kg) in Government Target versus Census 2011
+gendereq_slco2,Change in CO2/year (kg) in Gender Equality versus 'no cycling'
+gendereq_sico2,Change in CO2/year (kg) in Gender Equality versus Census 2011
+dutch_slco2,Change in CO2/year (kg) in Go Dutch versus 'no cycling'
+dutch_sico2,Change in CO2/year (kg) in Go Dutch versus Census 2011
+ebike_slco2,Change in CO2/year (kg) in Ebikes versus 'no cycling'
+ebike_sico2,Change in CO2/year (kg) in Ebikes versus Census 2011
+perc_rf_dist_u10km,Percent of commuters in zone with fast route commute distance <10km [calculated excluding trips with no fixed work place]
+avslope_perc_u10km,Average fast route gradient (%) of commute trips in zone with fast route distance <10km

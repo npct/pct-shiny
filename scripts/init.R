@@ -1,31 +1,34 @@
-init_dev_env <- function(dataDirRoot, data_sha, cranPkgs, shiny_root) {
-  # Clone the data repo if it do not exist
-  if(!dir.exists(dataDirRoot)) {
-    system2('git', args=c('clone', '--depth=1',
-                          'https://github.com/npct/pct-data.git', dataDirRoot))
+init_dev_env <- function(interface_root, data_regional_root, outputs_regional_sha, cranPkgs) {
+
+  ## Clone the regional data repo if it does not exist
+  if(!dir.exists(data_regional_root)) {
+    system2('git', args=c('clone', '--depth=3',
+                          'https://github.com/npct/pct-outputs-regional.git', data_regional_root))
   } else { # Update the data repo
-    print("Fetching data")
-    system2('git', c("--git-dir", file.path(dataDirRoot, ".git"), "--work-tree",
-                     dataDirRoot, "fetch"), wait = F)
+    print("Fetching regional data")
+    system2('git', c("--git-dir", file.path(data_regional_root, ".git"), "--work-tree",
+                     data_regional_root, "fetch"), wait = F)
   }
 
-  installed <- cranPkgs %in% installed.packages()
-  # install packages that are missing
-  if(length(cranPkgs[!installed]) > 0) install.packages(cranPkgs[!installed], repos='https://cran.rstudio.com/')
-
-  warning("Checking out a the version of the data saved in the data sha")
-
-  sys_message = c("--git-dir", file.path(dataDirRoot, ".git"),
-                  "--work-tree", dataDirRoot, "checkout", data_sha)
-  # Comment the following line to stop auto checkout
+  ## Check out the data in regional sha
+  ## Comment the following lines to stop auto checkout
+  # warning("Checking out the version of the data saved in the regional sha")
+  # sys_message = c("--git-dir", file.path(data_regional_root, ".git"),
+  #                 "--work-tree", data_regional_root, "checkout", outputs_regional_sha)
   # system2("git", sys_message, wait=T)
 
-  gitArgs <- c("rev-parse", "--short", "HEAD", ">", file.path(shiny_root, "repo_sha"))
-
+  ## Get the current repo sha
+  gitArgs <- c("rev-parse", "--short", "HEAD", ">", file.path(interface_root, "repo_sha"))
   # Use shell command for Windows as it's failing with system2 for Windows (giving status 128)
   if (.Platform$OS.type == "windows"){
     shell(paste(append("git", gitArgs), collapse = " "), wait = T)
   } else {
     system2("git", gitArgs, wait = T)
   }
+
+  ## Install packages
+  installed <- cranPkgs %in% installed.packages()
+  # install packages that are missing
+  if(length(cranPkgs[!installed]) > 0) install.packages(cranPkgs[!installed], repos='https://cran.rstudio.com/')
+
 }

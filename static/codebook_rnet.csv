@@ -1,7 +1,0 @@
-Variable name,Variable Description
-bicycle,No. between-zone cyclists using this segment in Census 2011 (see model output tab for details of selected between-zone flows)
-govtarget_slc,No. between-zone cyclists using this segment in Government Target scenario (see model output tab for details of selected between-zone flows)
-gendereq_slc,No. between-zone cyclists using this segment in Gender Equity scenario (see model output tab for details of selected between-zone flows)
-dutch_slc,No. between-zone cyclists using this segment in Go Dutch scenario (see model output tab for details of selected between-zone flows)
-ebike_slc,No. between-zone cyclists using this segment in Ebikes scenario (see model output tab for details of selected between-zone flows)
-Singlezone,Flag identifying whether the segment is fully contained in a single zone (1=yes): if so then there may also be considerable numbers of within-zone cyclists on the segment

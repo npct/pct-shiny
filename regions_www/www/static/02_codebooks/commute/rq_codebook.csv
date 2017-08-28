@@ -1,0 +1,19 @@
+Variable name,Variable Description
+id,Start and end zones
+geo_code1,"Start or end zone 1, zone code"
+geo_code2,"Start or end zone 2, zone code"
+geo_name1,"Start or end zone 1, zone name"
+geo_name2,"Start or end zone 2, zone name"
+lad11cd1,"Start or end local authoriy 1, code"
+lad11cd2,"Start or end local authoriy 2, code"
+lad_name1,"Start or end local authoriy 1, name"
+lad_name2,"Start or end local authoriy 2, name"
+e_dist_km,Straight line distance (km)
+rf_dist_km,Fast route distance (km)
+rq_dist_km,Quiet route distance (km)
+dist_rf_e,Ratio of fast distance / straight line distance
+dist_rq_rf,Ratio of quiet distance / fast distance
+rf_avslope_perc,Average fast route gradient (%)
+rq_avslope_perc,Average quiet route gradient (%)
+rf_time_min,Fast route trip duration (minutes) - one-way duration
+rq_time_min,Quiet route trip duration (minutes) - one-way duration

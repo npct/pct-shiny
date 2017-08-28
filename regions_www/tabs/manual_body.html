@@ -1,0 +1,162 @@
+<script>function toggleElement(id) { if(document.getElementById(id).style.display == 'none') { document.getElementById(id).style.display = ''; } else { document.getElementById(id).style.display = 'none'; } }</script>
+<style><!-- td { border: 0px; } tr.row2 td { padding-top: 100px; } tr.caption td { padding-top: 30px; } --></style>
+
+
+<div class="container">
+  <div class="row maintext" id="maintext">
+    <div class="col-md-2 text-left" style="padding-top:10px;">
+      <div style="padding-bottom:10px;"><a class="manuallinks" href="#manuals">User Manuals</a></div>
+      <div style="padding-bottom:10px;"><a class="manuallinks" href="#casestudies">Case studies</a></div>
+      <div style="padding-bottom:10px;"><a class="manuallinks" href="#faqs">Additional FAQs</a></div>
+    </div>
+
+    <div class="col-md-9">
+
+      <div class="col-md-12 text-left" style="padding-top:10px;">
+        <h3>User Manual for the Propensity to Cycle Tool (PCT)</h3>
+        <p>The material here was developed during 2016 and 2017 for use in training. To request more information or provide feedback, please email us at <a href="mailto:pct@pct.bike?Subject=Manual">pct@pct.bike</a> or report issues on our <a target="_blank" href="https://github.com/npct/pct-shiny/issues">GitHub issue tracker</a>. The PCT also has a <a target="_blank" href="https://blog.pct.bike/">blog</a>, which contains further information on some of the topics featured in the case studies and FAQs.  Contributions to GitHub, the blog or other parts of the project are welcome.</p>
+
+        <div style="padding-top:6px;">
+          <h4><a name="manuals"></a>User Manuals</h4>
+            <ul style="line-height:2.2;">
+              <li><a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-user-manual-a.pdf">User Manual A: Overview</a></li>
+              <li><a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-user-manual-b.pdf">User Manual B: Using the PCT interface and data</a></li>
+              <li><a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-user-manual-c.pdf">User Manual C: PCT methods</a></li>
+              <li><a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-user-manual-d.pdf">User Manual D: using the PCT in business cases</a></li>
+            </ul>
+        </div>
+
+        <div style="padding-top:6px;">
+          <h4><a name="casestudies"></a>Case Studies</h4>
+            <ul style="line-height:2.2;">
+              <li><a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03b_case_studies/cornwall-case-study.pdf">Cornwall Case Study</a></li>
+              <li><a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03b_case_studies/ealing-case-study.pdf">Ealing Case Study</a></li>
+              <li><a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03b_case_studies/greater-manchester-case-study.pdf">Greater Manchester Case Study</a></li>
+              <li><a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03b_case_studies/hounslow-case-study.pdf">Hounslow Case Study</a></li>
+              <li><a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03b_case_studies/preston-case-study.pdf">Preston Case Study</a></li>
+              <li><a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03b_case_studies/rotherhithe-case-study.pdf">Rotherhithe Case Study</a></li>
+              <li><a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03b_case_studies/tunbridge-case-study.pdf">Tunbridge Case Study</a></li>
+              <li><a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03b_case_studies/west-sussex-case-study.pdf">West Sussex Case Study</a></li>
+            </ul>
+        </div>
+
+        <div style="padding-top:6px;">
+          <h4><a name="faqs"></a>Additional FAQs</h4>
+
+            <p><a href="javascript:toggleElement(&#39;a1&#39;)">1. Does hilliness matter for cycling? Do the Dutch just cycle more because the Netherlands is flatter?</a></p>
+              <div id="a1" style="display:none">
+                <p>Hilliness is certainly an important predictor of cycling levels in England, with the probability of cycling a trip falling steadily as the hilliness of the local area increases (Figure 1.1). Overall, people in the tenth of the population in the flattest areas are three times more likely to cycle a trip than the tenth of people in the hilliest areas (2.8% trips cycled vs 0.8%).</p>
+                <div style="margin: 0 auto; text-align: center">
+                  <table cellpadding="5" align="center" border="0" width="70%">
+                    <tbody>
+                      <tr>
+                        <td align="center" valign="center">
+                          <a href="/www/static/03c_FAQ_images/faq1-fig1.png" title="Figure 1.1: Proportion of trips cycled in England, according to the hilliness of the local area"><img src="/www/static/03c_FAQ_images/faq1-fig1.png" /></a>
+                        </td>
+                      </tr>
+                      <tr class="caption">
+                        <td align="center" valign="center" style="padding-bottom:10px;">
+                          <strong>Figure 1.1: Proportion of trips cycled in England, according to the hilliness of the local area</strong>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p>It is also true that the Netherlands is a flatter country than England. As illustrated in Figure 1.2, around 80% of people in the Netherlands live in areas that are below the 20th centile for local hilliness in England. Under 4% of people in the Netherlands in live in areas that are above the 50th centile for hilliness in England. Note that in both England and the Netherlands the local area is defined using administrative areas designed to contain populations of around 1500 individuals.</p>
+                <div style="margin: 0 auto; text-align: center">
+                  <table cellpadding="5" align="center" border="0" width="70%">
+                    <tbody>
+                      <tr>
+                        <td align="center" valign="center">
+                          <a href="/www/static/03c_FAQ_images/faq1-fig2.png" title="Figure 1.2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England."><img src="/www/static/03c_FAQ_images/faq1-fig2.png" /></a>
+                        </td>
+                      </tr>
+                      <tr class="caption">
+                        <td align="center" valign="center" style="padding-bottom:10px;">
+                          <strong>Figure 1.2: Distribution of the population of the Netherlands in terms of the hilliness of their local area, relative to the tenths defined in England.</strong>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p>We estimated what would happen to cycling levels in England if England had the same flat topography as the Netherlands (but the existing infrastructure, travel patterns and cycling cultures). We did this by re-weighting the cycle mode share shown in Figure 1.1 according to the Dutch distribution of hilliness shown in Figure 1.2 i.e. giving much more weight to the cycling levels of those living in the flattest parts of England than those living in the hilliest parts. In this “Dutch levels of hilliness” scenario, the proportion of trips cycled in England rose from 1.7% to 2.6%. This is still ten times lower than the mode share of 26.7% actually observed in the Netherlands. So although hilliness does explain a small part of why the English cycle less than the Dutch, it still leaves a massive difference unexplained. Or to put it another way, only if cycling levels in England were increased ten-fold would “the Netherlands is flatter” become a convincing excuse for England lagging behind.</p>
+              </div>
+
+            <p><a href="javascript:toggleElement(&#39;a2&#39;)">2. How does propensity to cycle differ between England and the Netherlands?</a></p>
+              <div id="a2" style="display:none">
+                <p>People in the Netherlands make 26.7% of trips by bicycle, fifteen times higher than the figure of 1.7% in England. In addition, cycling in England is skewed towards younger, male cyclists (Figure 2.1A). By contrast in the Netherlands cycling remains common into older age, and women are in fact slightly more likely to cycle than men (Figure 2.1B). This means that the difference between England and the Netherlands is particularly large for women and older people (Figure 2.2). For example, whereas the cycle mode share is ‘only’ six times higher in the Netherlands than in England for men in their thirties, it is over 20 times higher for women in their thirties or men in their seventies and eighties. For women in their seventies and eighties, the cycle mode share is over 60 times higher in the Netherlands than in England.</p>
+                <div style="margin: 0 auto; text-align: center">
+                  <table cellpadding="5" align="center" border="0" width="90%">
+                    <tbody>
+                      <tr>
+                        <td align="center" valign="center">
+                          <a href="/www/static/03c_FAQ_images/faq2-fig1.png" title="Figure 2.1: Proportion of trips cycled in England and Netherlands stratified by age and sex"><img src="/www/static/03c_FAQ_images/faq2-fig1.png" /></a>
+                        </td>
+                      </tr>
+                      <tr class="caption">
+                        <td align="center" valign="center">
+                          <strong>Figure 2.1: Proportion of trips cycled in England and Netherlands stratified by age and sex</strong>
+                        </td>
+                      </tr>
+                      <tr class="row2">
+                        <td align="center" valign="center">
+                          <a href="/www/static/03c_FAQ_images/faq2-fig2.png" title="Figure 2.2: Ratio of cycle mode share in the Netherlands versus England, stratified by age and sex"><img src="/www/static/03c_FAQ_images/faq2-fig2.png" /><br />
+                        </a>
+                        </td>
+                      </tr>
+                      <tr class="caption">
+                        <td align="center" valign="center" style="padding-bottom:10px;">
+                        <strong>Figure 2.2: Ratio of cycle mode share in the Netherlands versus England, stratified by age and sex</strong>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p>In both countries, the probability of cycling falls rapidly as trip distance increases. Interestingly, the shape of this distance decay relationship is generally similar between the two countries (Figure 2.3). In other words, the Dutch achieve their higher cycling levels by boosting the relative probability that trips of all distances will be made by bicycle. This indicates that the potential to increase cycling levels in England exists for longer trips (≥ 10km) as well as for the shorter trips that are more often targeted in cycling interventions, perhaps through improved infrastructure or a more widespread adoption of electric cycles. The only noticeable difference between England and the Netherlands is that the Dutch are relatively more likely to cycle short trips ≤ 1.5 miles than the English. Plausibly, this reflects trips being cycled in the Netherlands that are more often walked in England.</p>
+                <div style="margin: 0 auto; text-align: center">
+                  <table cellpadding="5" align="center" border="0" width="80%">
+                    <tbody>
+                      <tr>
+                        <td align="center" valign="center">
+                          <a href="/www/static/03c_FAQ_images/faq2-fig3.png" title="Figure 2.3: &#39;Distance decay&#39; curves in England and the Netherlands, showing the probability that a trip of a given distance will be cycled relative to a trip of 2 miles"><img src="/www/static/03c_FAQ_images/faq2-fig3.png" /></a>
+                        </td>
+                      </tr>
+                      <tr class="caption">
+                        <td align="center" valign="center" >
+                          <strong>Figure 2.3: ‘Distance decay’ curves in England and the Netherlands, showing the probability that a trip of a given distance will be cycled relative to a trip of 2 miles</strong>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            <p><a href="javascript:toggleElement(&#39;a3&#39;)">3. Why focus on the fast routes?</a></p>
+              <div id="a3" style="display:none">
+              <p>We give users the option of seeing either the ‘fast’ or the ‘fast’ and the ‘quieter’ routes on the map (see Figure 3.1 below). Which might cyclists use? These routes come from the journey planner Cyclestreets.net, which helps people plan their cycling route. <a target="_blank" href="http://www.cyclestreets.net/journey/help/howitworks/">CycleStreets.net</a> shows three types of route, ‘fast’, ‘balanced’, and ‘quiet’. Many cyclists currently choose to take a quieter route at the cost of extra time because often the shortest route involves sharing with motor traffic on busy roads. However, even the quieter routes can still involve negotiating busy roads at times. The aim of the PCT is not to predict exactly where people are currently cycling. Rather we are trying to prioritise where to put new infrastructure.</p>
+              <p>For many people, cycling with busy traffic is hugely off-putting. A systematic review carried out for this project found this particularly puts off women, and probably also older people and those riding with children (<a target="_blank" href="http://www.tandfonline.com/doi/full/10.1080/01441647.2016.1200156">Aldred et al 2017</a>).</p>
+              <p>So are the quieter routes for those groups, and the fast routes for others? No, because this project also shows that propensity to cycle declines more rapidly with distance for women and older people. If a quieter route creates a detour such that a 2 mile trip becomes effectively a 3 mile trip, younger men’s propensity to cycle the route will decrease 11%. But for younger women, the decline is 19%, and for older adults (60+) the propensity would decrease by 35%.</p>
+              <p>This hits women’s and older men’s cycling twice: they are less likely than men to want to cycle the fast route, but then are also less likely to be willing to cycle an effectively longer alternative route. It’s likely to be part of the reason for disparities in cycling by age and gender.</p>
+              <p>Improving direct routes will reduce the impact of these safety and time disincentives to utility cycling. So while a good proportion of current cyclists may use the ‘quieter’ route, a big increase in capacity will likely necessitate substantial improvements to the ‘fast’ route, which will then carry many more riders. It is for these reasons that we have chosen to present the ‘fast’ as the most first choice for creating good cycling routes.</p>
+              <div style="margin: 0 auto; text-align: center">
+                <table cellpadding="5" align="center" border="0" width="70%">
+                  <tbody>
+                    <tr>
+                      <td align="center" valign="center">
+                        <a href="www/static/03c_FAQ_images/faq3-fig1.png" title="Figure 3.1: Fast and Quieter Routes between two zones."><img src="/www/static/03c_FAQ_images/faq3-fig1.png" /></a>
+                      </td>
+                    </tr>
+                      <tr class="caption">
+                        <td align="center" valign="center" style="padding-bottom:10px;">
+                         <strong>Figure 3.1: Fast and Quieter Routes between two zones.</strong>
+                        </td>
+                      </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
