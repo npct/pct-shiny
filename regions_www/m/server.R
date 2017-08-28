@@ -538,7 +538,6 @@ shinyServer(function(input, output, session) {
     input$scenario
     line_type <<- isolate(input$line_type)
     input$map_base
-    input$map_zoom
     region$data_dir
     region$repopulate_region
 
@@ -580,7 +579,7 @@ shinyServer(function(input, output, session) {
                        popup = popup_centroids(to_plot$centroids, input$scenario, input$purpose),
                        layerId = paste0(to_plot$centroids[['geo_code']], '-', "centroids")
       )
-      if (isTRUE((is.null(input$map_zoom)) || input$map_zoom < 11 || (input$line_type %in% show_no_lines) || (input$line_type=="route_network"))) {
+      if (isTRUE((is.null(isolate(input$map_zoom))) || isolate(input$map_zoom) < 11 || (input$line_type %in% show_no_lines) || (input$line_type=="route_network"))) {
         hideGroup(leafletProxy("map"), "centroids")
       } else {
         showGroup(leafletProxy("map"), "centroids")
