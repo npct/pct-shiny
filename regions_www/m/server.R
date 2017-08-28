@@ -811,7 +811,7 @@ shinyServer(function(input, output, session) {
         maxNativeZoom = map_tile()$zoom
       )
     ) %>%
-      clearGroup(., "imd_background")
+      clearGroup(., "imd_extras")
     if (input$map_base == 'IMD') {
       imdTileOptions <-
         tileOptions(
@@ -822,13 +822,18 @@ shinyServer(function(input, output, session) {
         )
       leafletProxy("map") %>%
         addTiles(.,
+                 urlTemplate = "https://maps.cdrc.ac.uk/tiles/imd2014_wal/{z}/{x}/{y}.png",
+                 group = "imd_extras",
+                 options = imdTileOptions) %>%
+      addTiles(.,
                  urlTemplate = "https://maps.cdrc.ac.uk/tiles/shine_urbanmask_dark/{z}/{x}/{y}.png",
-                 group = "imd_background",
+                 group = "imd_extras",
                  options = imdTileOptions) %>%
         addTiles(.,
                  urlTemplate = "https://maps.cdrc.ac.uk/tiles/shine_labels_cdrc/{z}/{x}/{y}.png",
-                 group = "imd_background",
+                 group = "imd_extras",
                  options = imdTileOptions)
+
     }
     leafletProxy("map") %>% hideGroup(., "lsoa_base_map") %>% showGroup(., "lsoa_base_map")
   })
@@ -910,7 +915,7 @@ shinyServer(function(input, output, session) {
       rep(1, 10),
       beside = TRUE,
       col = my_colors,
-      ylab = "Index of Multiple \n Deprivation From 2015",
+      ylab = "Index of Multiple \n Deprivation",
       horiz = T,
       axes = F
     )
