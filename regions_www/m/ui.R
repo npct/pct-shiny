@@ -61,8 +61,8 @@ map_base_attrs <- c(
 )
 
 on_server <- grepl('^/var/shiny/pct-shiny', getwd())
-#ANNA NOTE: CHANGE THIS 'pct-shiny'
 production_branch <- grepl("npt\\d*$", Sys.info()["nodename"])
+wales <- TRUE ## ANNA NOTE: FIX THIS TO IDENTIFY 'wales' in URL
 
 shinyUI(
   navbarPage(
@@ -92,6 +92,9 @@ shinyUI(
         ),
         if (!production_branch) {
           includeHTML(file.path("..", "test-banner.html"))
+        },
+        if (wales) {
+          includeHTML(file.path("..", "wales-banner.html"))
         },
         br(),
         leafletOutput("map", width = "100%", height = "95%"),
