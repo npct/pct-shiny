@@ -19,204 +19,203 @@ library(shiny)
 library(leaflet)
 library(shinyjs)
 
-purposes <- c(
-  "Commuting"           = "commute",
-  "School travel"       = "school",
-  "All trips"           = "alltrips"
-)
+scenarios <- c("Census 2011 Cycling" = "olc",
+               "Government Target"   = "govtarget",
+               "Gender equality"     = "gendereq",
+               "Go Dutch"            = "dutch",
+               "Ebikes"              = "ebike"
+               )
 
-geographies <- c("Middle Super Output Area"  = "msoa" ,
-                 "Lower Super Output Area"  = "lsoa")
+line_types <- c("None"                 = "none",
+                "Straight Lines"       = "straight_line",
+                "Fast Routes"          = "faster_route",
+                "Fast & Quiet Routes"  = "routes",
+                "Route Network (MSOA)" = "route_network",
+                "Route Network (LSOA)" = "lsoa_base_map"
+                )
 
-scenarios <- c(
-  "Census 2011 Cycling" = "olc",
-  "Government Target"   = "govtarget",
-  "Gender Equality"     = "gendereq",
-  "Go Dutch"            = "dutch",
-  "Ebikes"              = "ebike"
-)
+attrs_zone <- c("Number of cyclists" = "slc",
+                "Increase in Cycling" = "sic",
+                "HEAT Value"          = "slvalue_heat",
+                "CO2 reduction"       = "sico2"
+                )
 
-line_types <- c(
-  "None"                   = "none",
-  "Straight Lines"         = "straight_lines",
-  "Fast Routes"            = "routes_fast",
-  "Fast & Quieter Routes"  = "routes",
-  "Route Network (MSOA)"   = "route_network",
-  "Route Network (LSOA)"   = "lsoa_base_map"
-)
-
-line_order <- c(
-  "Number of cyclists" = "slc",
-  "Increase in Cycling" = "sic",
-  "HEAT Value"          = "slvalue_heat",
-  "CO2 reduction"       = "sico2"
-)
-
-map_base_attrs <- c(
-  "Roadmap (Black & White)" = "roadmap",
-  "Roadmap (OpenCycleMap)"  = "opencyclemap",
-  "Satellite"               = "satellite",
-  "Index of Deprivation"    = "IMD",
-  "Hilliness"               = "hilliness"
-)
+map_base_attrs <- c("Roadmap (Black & White)" = "roadmap",
+                    "Roadmap (OpenCycleMap)"  = "opencyclemap",
+                    "Satellite"               = "satellite",
+                    "Index of Deprivation"    = "IMD",
+                    "Hilliness"               = "hilliness"
+                    )
 
 on_server <- grepl('^/var/shiny/pct-shiny', getwd())
-#ANNA NOTE: CHANGE THIS 'pct-shiny'
 production_branch <- grepl("npt\\d*$", Sys.info()["nodename"])
 
 shinyUI(
   navbarPage(
     title = "Propensity to Cycle Tool",
-    id = "nav",
+    id="nav",
     tabPanel(
       "Map",
       useShinyjs(),
       div(
-        class = "outer",
+        class="outer",
         tags$head(
-          if (on_server)
-            includeScript("../www/assets/google-analytics.js"),
-          tags$script(
-            id = "locizify",
-            projectid = "cefac43d-1a19-486e-bd7b-d5d2a518cfa4",
-            debug = "false",
-            apikey = "28c19049-fa53-4668-b708-fe92ff732e7c",
-            saveMissing = "true",
-            referencelng = "en",
-            fallbacklng = "en",
-            src = "https://unpkg.com/locizify@^2.0.0"
-          ),
+          if(on_server) includeScript("../www/assets/google-analytics.js"),
           includeScript("../www/assets/extra.js"),
           includeCSS("../www/stylesheet.css"),
           includeHTML(file.path("..", "favicon.html"))
         ),
-        if (!production_branch) {
+        if(!production_branch){
           includeHTML(file.path("..", "test-banner.html"))
         },
         br(),
-        leafletOutput("map", width = "100%", height = "95%"),
+        leafletOutput("map", width="100%", height="95%"),
         absolutePanel(
-          id = "controls",
-          class = "panel panel-default",
-          fixed = TRUE,
-          top = 110,
-          right = 20,
-          width = 180,
-          height = "auto",
-          style = "opacity: 0.9",
-          tags$div(title = "Show/Hide Panel",
-                   a(
-                     id = "toggle_panel",
-                     style = "font-size: 80%",
-                     span(class = "glyphicon glyphicon-circle-arrow-up", "Hide")
-                   )),
+          id = "controls", class = "panel panel-default",
+          fixed = TRUE,  top = 110,  right = 20, width = 180,
+          height = "auto",  style = "opacity: 0.9",
+          tags$div(title="Show/Hide Panel",
+                   a(id = "toggle_panel", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+          ),
           div(
             id = "input_panel",
-            if (!production_branch) {
-              tags$div(title = "Trip purpose:",
-                       selectInput("purpose", "Trip purpose:", purposes, selectize = F))
-            },
-            tags$div(title = "Geography:",
-                       selectInput("geography", "Geography:", geographies, selectize = F)
+            tags$div(title="Scenario (see manual)",
+                     selectInput("scenario", "Scenario:", scenarios, selectize = F)
             ),
-            tags$div(
-              title = "Scenario (see manual)",
-              selectInput("scenario", "Scenario:", scenarios, selectize = F)
+            tags$div(title="Shows the cycling flow between the centres of zones",
+                     selectInput("line_type", "Cycling Flows", line_types, selected = "none", selectize = F)
             ),
-            tags$div(
-              title = "Shows the cycling flow between the centres of zones",
-              selectInput(
-                "line_type",
-                "Cycling Flows:",
-                line_types,
-                selected = "none",
-                selectize = F
-              )
-            ),
-            tags$div(title = "Shows the cycling flow between the centres of zones",
-                     checkboxInput("show_zones", "Show Zones", value = T)),
-
-            conditionalPanel(
-              condition = "input.line_type != 'none' && input.line_type != 'lsoa_base_map' && input.line_type != 'route_network'",
-              tags$div(title = "Untick to update lines when you move the map",
-                       checkboxInput("freeze", "Freeze Lines", value = F))
+            tags$div(title="Shows the cycling flow between the centres of zones",
+                     checkboxInput("show_zones", "Show Zones", value = T)
             ),
             conditionalPanel(
               condition = "input.line_type != 'none' && input.line_type != 'lsoa_base_map'",
-              tags$div(
-                title = "Number of lines to show",
-                sliderInput(
-                  "nos_lines",
-                  label = "Top N Lines (most cycled)",
-                  1,
-                  200,
-                  value = 30,
-                  ticks = F
-                )
+              tags$div(title="Untick to update lines when you move the map",
+                       checkboxInput("freeze", "Freeze Lines", value = F)
+              ),
+              tags$div(title="Number of lines to show",
+                       sliderInput("nos_lines", label = "Top N Lines (most cycled)", 1, 200, value = 30, ticks = F)
               ),
               conditionalPanel(
                 condition = "input.line_type != 'route_network' && input.scenario != 'olc'",
-                tags$div(
-                  title = "Order the top flows by",
-                  selectInput(
-                    "line_order",
-                    "Order lines by",
-                    line_order,
-                    selected = "slc",
-                    selectize = F
-                  )
+                tags$div(title="Order the top flows by",
+                         selectInput("line_order", "Order lines/flows by", attrs_zone, selected = "slc", selectize = F)
                 )
               )
             ),
-            tags$div(
-              title = "Change base of the map",
-              selectInput("map_base", "Map Base:", map_base_attrs, selectize = F)
+            # pointless div to force shiny to set production_branch variable
+            tags$div(style="font-size: 0px", textOutput("production_branch")),
+            tags$div(title="Change base of the map",
+                        selectInput("map_base", "Map Base:", map_base_attrs, selectize = F)
             )
           )
         ),
         conditionalPanel(
-          condition = "input.map_base == 'IMD'",
+          condition = "output.production_branch == 'false'",
           absolutePanel(
-            cursor = "auto",
-            id = "legend",
-            class = "panel panel-default",
-            bottom = 235,
-            left = 5,
-            height = 20,
-            width = 225,
-            draggable = TRUE,
-            style = "opacity: 0.7",
-            tags$div(
-              title = "Show/Hide map legend",
-              a(
-                id = "toggle_imd_legend",
-                style = "font-size: 80%",
-                span(class = "glyphicon glyphicon-circle-arrow-up", "Hide")
-              )
+            cursor = "move", id = "trip_panel", class = "panel panel-default",
+            fixed = TRUE,  top = 530, width = 100, right = 20, draggable = TRUE,
+            height = "auto", style = "opacity: 0.9",
+            tags$div(title="Show/Hide trip types menu",
+                     a(id = "toggle_trip_menu", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
             ),
-            div(
-              id = "imd_legend",
-              tags$div(title = "Index of Multiple Deprivation",
-                       plotOutput(
-                         "imd_legend", width = "100%", height = 180
-                       ))
+            div(id = "trip_menu",
+                radioButtons("trip_type", label = "Trip data", choices = c("Commuting", "All"))
             )
           )
         ),
-        tags$div(id = "cite",
-                 htmlOutput("cite_html"))
+
+        conditionalPanel(
+          condition = "input.map_base == 'IMD'",
+          absolutePanel(
+            cursor = "auto", id = "legend", class = "panel panel-default",
+            bottom = 235, left = 5, height = 20, width = 225, draggable = TRUE,
+            style = "opacity: 0.7",
+            tags$div(title="Show/Hide map legend",
+                     a(id = "toggle_map_legend", style="font-size: 80%", span(class="glyphicon glyphicon-circle-arrow-up", "Hide"))
+            ),
+            div(id = "map_legend",
+                tags$div(title="Index of Multiple Deprivation",
+                   plotOutput("imd_legend", width = "100%", height = 180)
+
+                )
+            )
+          )
+        ),
+        tags$div(id="cite",
+                 htmlOutput("cite_html")
+        )
       )
     ),
+    tabPanel("Lines",
+             br(),
+             br(),
+             p("This tab shows a selection of the Census 2011 and scenario data generated for selected between-zone
+                  lines in the chosen region (see Model Output tab for details of the lines included). The full csv
+                  dataset contains further details concerning mode share in Census 2011; the cycling, walking and driving
+                  levels in each scenario; and the associated health and carbon impacts. You can download the full csv
+                  dataset for the lines and routes here, alongside geographic and attribute data to be read by R (.Rds)
+                  or GIS programs such as QGIS (.geojson)"
+             ),
+             p(
+               "Straight lines geographic file format and attribute data:",
+               downloadLink('download_l_csv', 'CSV'),
+               downloadLink('download_l_geojson', 'GeoJSON'),
+               downloadLink('download_l_rds', 'Rds'),
+               " - ",
+               htmlOutput('line_codebook', inline = T)
+             ),
+             p(
+               "Fast route geographic file format:",
+               downloadLink('download_rf_geojson', 'GeoJSON'),
+               downloadLink('download_rf_rds', 'Rds'),
+               " - ",
+               htmlOutput('route_codebook', inline = T)
+             ),
+             p(
+               "Quiet route geographic file format:",
+               downloadLink('download_rq_geojson', 'GeoJSON'),
+               downloadLink('download_rq_rds', 'Rds'),
+               " - ",
+               htmlOutput('route_codebook_quiet', inline = T)
+             ),
+             p(
+               "Route Network geographic file format and attribute data:",
+               downloadLink('download_rnet_geojson', 'GeoJSON'),
+               downloadLink('download_rnet_rds', 'Rds'),
+               " - ",
+               htmlOutput('route_network_codebook', inline = T)
+             ),
+             uiOutput("warning_message"),
+             DT::dataTableOutput("lines_datatable")
+    ),
+    tabPanel("Zones",
+             br(),
+             br(),
+             p("This tab shows a selection of the Census 2011 and scenario data generated
+                    for all zones in the chosen region. The full csv dataset contains further
+                    details concerning mode share in Census 2011; the cycling, walking and driving
+                    levels in each scenario; and the associated health and carbon impacts.
+                    You can download the full csv dataset for the zones here, alongside geographic
+                    and attribute data to be read by R (.Rds) or GIS programs such as QGIS (.geojson):"),
+             p(
+               downloadLink('download_z_csv', 'CSV'),
+               downloadLink('download_z_geojson', 'GeoJSON'),
+               downloadLink('download_z_rds', 'Rds'),
+               " - ",
+               htmlOutput('zone_codebook', inline = T)
+             ),
 
-    tabPanel("Region stats",
-             htmlOutput("region_stats")),
-    tabPanel("Region data",
-             htmlOutput("download_region_current")),
-    tabPanel("National data",
-             htmlOutput("download_national_current")),
-    tabPanel("Manual",
-             includeHTML(file.path("../tabs/manual_body.html"))),
+             DT::dataTableOutput("zones_data_table")
+    ),
+    tabPanel("Model Output",
+             htmlOutput("m_output")
+    ),
     tabPanel("About",
-             includeHTML(file.path("../tabs/about_body.html")))
+             includeHTML(file.path("..", "about_body.html"))
+    ),
+    tabPanel("Manual",
+             includeHTML(file.path("..", "manual_body.html"))
+    )
   )
 )
