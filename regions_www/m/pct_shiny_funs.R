@@ -669,10 +669,14 @@ download_link_national_data <- function(file, purpose, geography, formats = c('R
 }
 
 download_link_region_data <- function(file, purpose, geography, region, formats = c('Rds', 'geojson', 'csv', 'tif')){
-  base_url = paste("https://github.com/npct/pct-outputs-regional/raw/master", purpose, geography, region, sep = "/")
   all_links <- ""
   for(i in 1:length(formats)){
     format <- formats[i]
+    if(format == 'Rds') {
+      base_url = paste("https://github.com/npct/pct-outputs-regional-R/raw/master", purpose, geography, region, sep = "/")
+    } else {
+      base_url = paste("https://github.com/npct/pct-outputs-regional-notR/raw/master", purpose, geography, region, sep = "/")
+    }
     all_links <- paste(
       all_links, a(format,
                    href= paste0(base_url, "/", file, ".", format),

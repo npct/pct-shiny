@@ -28,7 +28,7 @@ must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs", "dplyr", "readr", "geoj
 
 ## Path directories to load data (expect regional data as a sibling of interface_root)
 interface_root <- file.path("..", "..")
-data_regional_root <-  file.path(interface_root, '..', 'pct-outputs-regional')
+data_regional_root <-  file.path(interface_root, '..', 'pct-outputs-regional-R')
 data_national_root <-  file.path(interface_root, '..', 'pct-outputs-national')
 
 ## Regional sha file [Anna question: next 7 lines added by me, wasn't clear to me otherwise how read the latest master branch? Or was the intention to set manually?]
