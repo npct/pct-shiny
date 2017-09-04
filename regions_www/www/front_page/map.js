@@ -125,7 +125,7 @@ $(document).ready(function(){
     }
 
     function openRegion(e) {
-      window.open(".\/" + e.target.feature.properties.region_name, '_top');
+      window.open(".\/m/?r=" + e.target.feature.properties.region_name, '_top');
     }
 
     function onEachFeature(property) {
