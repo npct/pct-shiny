@@ -37,7 +37,7 @@ echo "Checkout ${DATASHA} version of the data"
 git -C /home/git/${DATA_GIT} checkout $DATASHA -f
 
 if [[ $(hostname -s) = "npct0" ]]; then
-  cp ${VAR_DIR}${SHINY_APP_DIR}/static/robots.txt ${VAR_DIR}${SHINY_APP_DIR}/regions_www/robots.txt
+  cp ${VAR_DIR}${SHINY_APP_DIR}/robots.txt ${VAR_DIR}${SHINY_APP_DIR}/regions_www/robots.txt
   update-server npct0
 else
   echo "Update the first server, then the second"
