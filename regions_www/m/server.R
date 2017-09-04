@@ -60,7 +60,6 @@ if (length(must_be_installed_pkgs[!installed]) > 0) {
 
 # Save current sha, required for files to be downloaded
 download_sha <- data.frame(repo_sha = repo_sha)
-saveRDS(download_sha, file="../tabs/download_params_sha_current.rds")
 
 ## Check if we are on the production [live] server (npt followed by any number of digits (only) is a prod machine)
 production_branch <- grepl("npt\\d*$", Sys.info()["nodename"])
@@ -966,49 +965,16 @@ shinyServer(function(input, output, session) {
   })
 
   ## Read regional data download files
-  # This file updates whenever there is a change to input$region, and content of links also depends on repo_sha
+  # This file updates whenever there is a change to input$region
   output$download_region_current <- renderUI({
-    region$current
-
-    # Create region name for files to be downloaded, so that they are accessible from the download_region.Rmd file
-    download_region <- data.frame(region_name = region$current)
-    saveRDS(download_region, file="../tabs/download_params_region_current.rds")
-
-    knitr::knit2html(quiet = T,
-                     input = file.path("../tabs/download_region.Rmd"),
-                     output = file.path("../tabs/download_region_current.html"),
-                     envir = globalenv(), force_v1 = T
-    )
-    # Re-read html to remove style
-    download_region_file <- file.path("../tabs/download_region_current.html")
-    download_region <- readLines(download_region_file)
-    download_region <- remove_unused_tags(download_region)  # remove style section
-    write(download_region, download_region_file)
-    file.remove(file.path("download_region.md"))
-
-    includeHTML(download_region_file)
-
+    html <- includeHTML(file.path("..", "..", "non_www", "tabs", "download_region.html"))
+    html <- gsub("<!--region_name-->", get_pretty_region_name(region$current), html)
+    gsub("<!--region_url-->", region$current, html)
   })
 
-
   ## Create the national data download files
-  # Content of links in this file depend on repo_sha, hence not static and needs to be generated here
   output$download_national_current <- renderUI({
-
-    knitr::knit2html(quiet = T,
-                     input = file.path("../tabs/download_national.Rmd"),
-                     output = file.path("../tabs/download_national_current.html"),
-                     envir = globalenv(), force_v1 = T
-    )
-    # Re-read html to remove style
-    download_national_file <- file.path("../tabs/download_national_current.html")
-    download_national <- readLines(download_national_file)
-    download_national <- remove_unused_tags(download_national)  # remove style section
-    write(download_national, download_national_file)
-    file.remove(file.path("download_national.md"))
-
-    includeHTML(download_national_file)
-
+    includeHTML(file.path("..", "..", "non_www", "tabs", "download_national.html"))
   })
 
   ##############
