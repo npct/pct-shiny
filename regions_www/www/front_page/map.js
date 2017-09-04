@@ -124,8 +124,8 @@ $(document).ready(function(){
       };
     }
 
-    function zoomToFeature(e) {
-      window.open(e.target.feature.properties.url, '_top');
+    function openRegion(e) {
+      window.open(".\/" + e.target.feature.properties.region_name, '_top');
     }
 
     function onEachFeature(property) {
@@ -133,7 +133,7 @@ $(document).ready(function(){
         layer.on({
           mouseover: highlightFeature(property),
           mouseout: resetHighlight(property, feature),
-          click: zoomToFeature
+          click: openRegion
         });
       };
     }
