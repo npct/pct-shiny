@@ -57,8 +57,15 @@ Install base R
 Pull the npt stuff from git
 ```
  apt-get install git
- git clone https://github.com/npct/pct-shiny
- git clone https://github.com/npct/pct-data
+ su git
+ git clone --bare https://github.com/npct/pct-shiny.git pct-shiny
+ git clone --bare https://github.com/npct/pct-outputs-regional-R.git pct-outputs-regional-R
+ cd pct-outputs-regional-R
+ # Set up so checking out the data git dir uses a different work tree location
+ # This stops us copying a .git directory around on the server
+ git config --bool core.bare false
+ git config core.worktree /home/git/var-shiny/pct-outputs-regional-R/
+ exit
 ```
 
 Install shiny server
@@ -104,8 +111,11 @@ Now configure it to serve npt
 
 ```
  mkdir /var/shiny
- cp -a /root/pct-shiny /root/pct-data /var/shiny
  chown -R shiny:shiny /var/shiny
+ su git
+ git --git-dir /home/git/pct-shiny --work-tree /var/shiny/pct-shiny checkout
+ git -C /home/git/pct-regions-outputs-R --work-tree /var/shiny/pct-regional-outputs-R checkout
+ exit
 ```
 
 Running multiple copies
