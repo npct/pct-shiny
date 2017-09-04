@@ -41,7 +41,7 @@ if (.Platform$OS.type == "windows"){
 outputs_regional_sha <- as.character(readLines(file.path(interface_root, "outputs_regional_sha")))
 
 ## Check if working on server and if not initiate environment (including packages)
-on_server <- grepl('^/var/shiny/pct-shiny', getwd())
+on_server <- grepl("shiny", Sys.info()["user"])
 if (!on_server) {
   source(file.path(interface_root, "scripts", "init.R"))
   init_dev_env(interface_root, data_regional_root, outputs_regional_sha,c(available_locally_pkgs, must_be_installed_pkgs))
