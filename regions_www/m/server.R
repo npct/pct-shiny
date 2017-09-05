@@ -101,26 +101,32 @@ shinyServer(function(input, output, session) {
       "Commuting"  = "commute" ,
       "School travel"  = "school" ,
       "All trips"  = "alltrips"
-    )
-    local_purposes <- local_purposes[purposes_present]
-    updateSelectInput(session, "purpose", choices = local_purposes, selected = input$purpose)
+    )[purposes_present]
+
+    if(input$purpose %in% local_purposes) {
+      selected_purpose <- input$purpose
+    } else {
+      selected_purpose <- local_purposes[1]
+    }
+    updateSelectInput(session, "purpose", choices = local_purposes, selected = selected_purpose)
 
     # Identify locally available geographies
     local_geographies <- c(
       "Middle Super Output Area"  = "msoa" ,
       "Lower Super Output Area"  = "lsoa"
-    )
-    local_geographies <- local_geographies[geographies_present]
+    )[geographies_present]
+
     # Update geographies available, and set to default if the currently-selected geography does not exist
     if (region$geography %in% local_geographies) {
-      updateSelectInput(session, "geography", choices = local_geographies, selected = region$geography)
+      selected_geog <- region$geography
     } else {
-      updateSelectInput(session, "geography", choices = local_geographies)
+      selected_geog <- local_geographies[1]
     }
+    updateSelectInput(session, "geography", choices = local_geographies, selected = selected_geog)
   }
 
   ## Define scenarios line types and line orders available, and their labels, depending on purpose
-    update_labels <- function(purpose, geography) {
+  update_labels <- function(purpose, geography) {
 
     if (purpose == "commute") {
       local_scenarios <- c(
@@ -223,6 +229,9 @@ shinyServer(function(input, output, session) {
 
   ## Set  values of region
   observe({
+    if(is.null(input$geography) || is.null(input$purpose)){
+      return()
+    }
     region$current
     region$data_dir
     region$geography
