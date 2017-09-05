@@ -675,7 +675,8 @@ download_link_region_data <- function(file, purpose, geography, region, formats 
     if(format == 'Rds') {
       base_url = paste("https://github.com/npct/pct-outputs-regional-R/raw/master", purpose, geography, region, sep = "/")
     } else {
-      base_url = paste("https://github.com/npct/pct-outputs-regional-notR/raw/master", purpose, geography, region, sep = "/")
+#      base_url = paste("https://github.com/npct/pct-outputs-regional-notR/raw/master", purpose, geography, region, sep = "/")
+      base_url = paste("https://github.com/npct/pct-outputs-regional/raw/master", purpose, geography, region, sep = "/")
     }
     all_links <- paste(
       all_links, a(format,
