@@ -1,4 +1,12 @@
-$(window).load(function() {
+$(document).ready(function() {
+  if(window.location.hostname !== "www.pct.bike") {
+    $(".test-banner").show();
+  }
+  if(window.location.href.indexOf("r=wales") !== -1) {
+    $(".test-banner").show();
+    $(".test-banner-message").html('This is a trial version of the PCT site that includes a region for Wales with some features missing (LSOA route network and national data downloads are not there for Wales). This trial version will be available until October 2017. Tell us what you think on <a href="mailto:pct@pct.bike">pct@pct.bike</a>.');
+  }
+
   if(typeof ga === "undefined"){
     ga = function(){};
   }
