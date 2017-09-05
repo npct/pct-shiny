@@ -884,8 +884,8 @@ shinyServer(function(input, output, session) {
   ## Creates legend as a barplot for IMD map base
   output$imd_legend <- renderPlot({
     my_lab <- c(
-      "Most deprived decile", "2nd", "3rd", "4th", "5th",
-      "6th", "7th", "8th", "9th", "Least deprived decile"
+      "Most deprived tenth", "2nd", "3rd", "4th", "5th",
+      "6th", "7th", "8th", "9th", "Least deprived tenth"
       )
 
     my_lab <- rev(my_lab)
