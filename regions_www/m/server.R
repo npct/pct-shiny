@@ -31,13 +31,6 @@ interface_root <- file.path("..", "..")
 data_regional_root <-  file.path(interface_root, '..', 'pct-outputs-regional-R')
 data_national_root <-  file.path(interface_root, '..', 'pct-outputs-national')
 
-## Regional sha file [Anna question: next 7 lines added by me, wasn't clear to me otherwise how read the latest master branch? Or was the intention to set manually?]
-gitArgs_reg <- c("--git-dir", file.path(data_regional_root, ".git"), "rev-parse", "--short", "HEAD", ">", file.path(interface_root, "outputs_regional_sha"))
-if (.Platform$OS.type == "windows"){
-  shell(paste(append("git", gitArgs_reg), collapse = " "), wait = T)
-} else {
-  system2("git", gitArgs_reg, wait = T)
-}
 outputs_regional_sha <- as.character(readLines(file.path(interface_root, "outputs_regional_sha")))
 
 ## Check if working on server and if not initiate environment (including packages)
