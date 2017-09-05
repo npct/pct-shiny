@@ -71,7 +71,7 @@ zbins_school <- 11
 zbreaks_school = c(-0.001, 1.5, 3.5, 6.5, 9.5, 14.5, 19.5, 24.5, 29.5, 39.5, 49.5, 100) / 100
 
 ## Create a df to store LSOA legend information
-# ANNA NOTE: CURRENTLY WRITTEN FOR COMMUTE - ULTIMATELY MAKE VARIABLE BY PURPOSE
+# NB: CURRENTLY WRITTEN FOR COMMUTE - ULTIMATELY MAKE VARIABLE BY PURPOSE
 lsoa_legend_df <- data.frame(
   colours = c("#9C9C9C", "#FFFF73", "#AFFF00", "#00FFFF",
               "#30B0FF", "#2E5FFF", "#0000FF", "#FF00C5"),
@@ -301,7 +301,6 @@ shinyServer(function(input, output, session) {
     if (file.exists(file.path(region$data_dir, "rq.Rds"))) {
       to_plot$routes_quieter <<- readRDS(file.path(region$data_dir, "rq.Rds"))
       # Merge in scenario data for quiet routes - don't want this in download but need for line sorting
-      # ANNA SELF: COULD TRY TO DO WITH ID INSTEAD
       to_plot$routes_quieter@data <<- cbind(
         to_plot$routes_quieter@data[!(names(to_plot$routes_quieter) %in% names(to_plot$straight_lines))],
         to_plot$straight_lines@data)
@@ -716,7 +715,7 @@ shinyServer(function(input, output, session) {
   ##############
 
   ## LSOA layer + legend
-  ##ANNA NOTE [NB in future need to make this purpose + geography specific]
+  ## NB in future need to make this purpose + geography specific
   observe({
     # region$repopulate_region
 
@@ -768,8 +767,7 @@ shinyServer(function(input, output, session) {
   ## Initialize the leaflet map
   output$map <- renderLeaflet(
     leaflet() %>%
-      # Centroids loaded invisibly to tell it the extent of the map
-      # Anna note: centroids do not exist for some purposes like schools - if ever want to *start* in schools layer need to change this to zones
+      # Centroids loaded invisibly to tell it the extent of the map - hashed out by Robin
       # addCircleMarkers( .,
       #   data = to_plot$centroids,
       #   radius = 0,
