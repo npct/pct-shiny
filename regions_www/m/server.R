@@ -29,7 +29,6 @@ must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs", "dplyr", "readr", "geoj
 ## Path directories to load data (expect regional data as a sibling of interface_root)
 interface_root <- file.path("..", "..")
 data_regional_root <-  file.path(interface_root, '..', 'pct-outputs-regional-R')
-data_national_root <-  file.path(interface_root, '..', 'pct-outputs-national')
 
 ## Regional sha file [Anna question: next 7 lines added by me, wasn't clear to me otherwise how read the latest master branch? Or was the intention to set manually?]
 gitArgs_reg <- c("--git-dir", file.path(data_regional_root, ".git"), "rev-parse", "--short", "HEAD", ">", file.path(interface_root, "outputs_regional_sha"))
@@ -60,7 +59,6 @@ if (length(must_be_installed_pkgs[!installed]) > 0) {
 
 # Save current sha, required for files to be downloaded
 download_sha <- data.frame(repo_sha = repo_sha)
-saveRDS(download_sha, file="../tabs/download_params_sha_current.rds")
 
 ## Check if we are on the production [live] server (npt followed by any number of digits (only) is a prod machine)
 production_branch <- grepl("npt\\d*$", Sys.info()["nodename"])
@@ -966,124 +964,15 @@ shinyServer(function(input, output, session) {
   })
 
   ## Read regional data download files
-  # This file updates whenever there is a change to input$region, and content of links also depends on repo_sha
+  # This file updates whenever there is a change to input$region
   output$download_region_current <- renderUI({
-    region$current
-
-    # Create region name for files to be downloaded, so that they are accessible from the download_region.Rmd file
-    download_region <- data.frame(region_name = region$current)
-    saveRDS(download_region, file="../tabs/download_params_region_current.rds")
-
-    knitr::knit2html(quiet = T,
-                     input = file.path("../tabs/download_region.Rmd"),
-                     output = file.path("../tabs/download_region_current.html"),
-                     envir = globalenv(), force_v1 = T
-    )
-    # Re-read html to remove style
-    download_region_file <- file.path("../tabs/download_region_current.html")
-    download_region <- readLines(download_region_file)
-    download_region <- remove_unused_tags(download_region)  # remove style section
-    write(download_region, download_region_file)
-    file.remove(file.path("download_region.md"))
-
-    includeHTML(download_region_file)
-
+    html <- includeHTML(file.path("..", "..", "non_www", "tabs", "download_region.html"))
+    html <- gsub("<!--region_name-->", get_pretty_region_name(region$current), html)
+    gsub("<!--region_url-->", region$current, html)
   })
-
 
   ## Create the national data download files
-  # Content of links in this file depend on repo_sha, hence not static and needs to be generated here
   output$download_national_current <- renderUI({
-
-    knitr::knit2html(quiet = T,
-                     input = file.path("../tabs/download_national.Rmd"),
-                     output = file.path("../tabs/download_national_current.html"),
-                     envir = globalenv(), force_v1 = T
-    )
-    # Re-read html to remove style
-    download_national_file <- file.path("../tabs/download_national_current.html")
-    download_national <- readLines(download_national_file)
-    download_national <- remove_unused_tags(download_national)  # remove style section
-    write(download_national, download_national_file)
-    file.remove(file.path("download_national.md"))
-
-    includeHTML(download_national_file)
-
+    includeHTML(file.path("..", "..", "non_www", "tabs", "download_national.html"))
   })
-
-  ##############
-  ## Data tables (may remove?)
-  ##############
-
-  # ## Creates data for the lines datatable
-  # output$lines_datatable <- DT::renderDataTable({
-  #   # Reactive values that must trigger a table update
-  #   region$repopulate_region
-  #   input$line_type
-  #
-  #   # Only render lines data when any of the Cycling Flows is selected by the user
-  #   plot_lines_data <-
-  #     !is.null(to_plot$ldata) && !input$line_type %in% show_no_lines &&
-  #     (!is.null(input$map_bounds)) &&
-  #     input$nos_lines > 0 && (line_data() %in% names(to_plot$ldata@data))
-  #   if (!plot_lines_data) {
-  #     # Set the warning message that no lines have been selected by the user
-  #     output$warning_message <-
-  #       renderUI(HTML(
-  #         "<strong>No lines selected: </strong> Lines must be displayed on map </br>"
-  #       ))
-  #     # Return an empty data.frame
-  #     return(data.frame(File = character()))
-  #   }
-  #
-  #   # When route network is selected, show 'no lines available
-  #   if (input$line_type == 'route_network') {
-  #     # Set the warning message that no lines have been selected by the user
-  #     output$warning_message <-
-  #       renderUI(HTML("<strong>No lines available </strong> </br>"))
-  #     # Return an empty data.frame
-  #     return(data.frame(File = character()))
-  #   }
-  #
-  #   # Empty the warning message - as some lines have been selected by the user
-  #   output$warning_message <- renderUI("")
-  #
-  #   # Reuse the lines data stored in the ldata session variable
-  #   lines_to_plot <- to_plot$ldata@data[, unname(line_col_names)]
-  #   decimal_line_cols <-
-  #     which(vapply(lines_to_plot, function(x) {
-  #       is.numeric(x) && as.integer(x) != x
-  #     }, FUN.VALUE = logical(1)))
-  #   DT::datatable(
-  #     lines_to_plot,
-  #     options = list(pageLength = 10),
-  #     colnames = line_col_names,
-  #     rownames = FALSE
-  #   ) %>%
-  #     DT::formatRound(columns = decimal_line_cols, digits = 2)
-  # })
-  #
-  # ## Creates data for the zones datatable
-  # output$zones_data_table <- DT::renderDataTable({
-  #   # Reactive values that must trigger a tabel update
-  #   region$repopulate_region
-  #
-  #   if (is.null(to_plot$zones@data)) {
-  #     return()
-  #   }
-  #
-  #   zones_to_plot <- to_plot$zones@data[, unname(zone_col_names)]
-  #   decimal_zone_cols <-
-  #     which(vapply(zones_to_plot, function(x) {
-  #       is.numeric(x) && as.integer(x) != x
-  #     }, FUN.VALUE = logical(1)))
-  #   DT::datatable(
-  #     zones_to_plot,
-  #     options = list(pageLength = 10),
-  #     colnames = zone_col_names,
-  #     rownames = FALSE
-  #   ) %>%
-  #     DT::formatRound(columns = decimal_zone_cols, digits = 2)
-  # })
-
 })
