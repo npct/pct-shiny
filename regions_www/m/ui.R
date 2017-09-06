@@ -74,18 +74,7 @@ shinyUI(
       div(
         class = "outer",
         tags$head(
-          if (on_server)
-            includeScript("../www/assets/google-analytics.js"),
-          tags$script(
-            id = "locizify",
-            projectid = "cefac43d-1a19-486e-bd7b-d5d2a518cfa4",
-            debug = "false",
-            apikey = "28c19049-fa53-4668-b708-fe92ff732e7c",
-            saveMissing = "true",
-            referencelng = "en",
-            fallbacklng = "en",
-            src = "https://unpkg.com/locizify@^2.0.0"
-          ),
+          if(on_server) includeScript("../www/assets/google-analytics.js"),
           includeScript("../www/assets/extra.js"),
           includeCSS("../www/stylesheet.css"),
           includeHTML(file.path("..", "favicon.html"))
