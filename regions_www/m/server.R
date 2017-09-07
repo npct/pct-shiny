@@ -30,13 +30,6 @@ must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs", "dplyr", "readr", "geoj
 interface_root <- file.path("..", "..")
 data_regional_root <-  file.path(interface_root, '..', 'pct-outputs-regional-R')
 
-## Regional sha file [Anna question: next 7 lines added by me, wasn't clear to me otherwise how read the latest master branch? Or was the intention to set manually?]
-gitArgs_reg <- c("--git-dir", file.path(data_regional_root, ".git"), "rev-parse", "--short", "HEAD", ">", file.path(interface_root, "outputs_regional_sha"))
-if (.Platform$OS.type == "windows"){
-  shell(paste(append("git", gitArgs_reg), collapse = " "), wait = T)
-} else {
-  system2("git", gitArgs_reg, wait = T)
-}
 outputs_regional_sha <- as.character(readLines(file.path(interface_root, "outputs_regional_sha")))
 
 ## Check if working on server and if not initiate environment (including packages)
@@ -76,7 +69,7 @@ zbins_school <- 11
 zbreaks_school = c(-0.001, 1.5, 3.5, 6.5, 9.5, 14.5, 19.5, 24.5, 29.5, 39.5, 49.5, 100) / 100
 
 ## Create a df to store LSOA legend information
-# ANNA NOTE: CURRENTLY WRITTEN FOR COMMUTE - ULTIMATELY MAKE VARIABLE BY PURPOSE
+# NB: CURRENTLY WRITTEN FOR COMMUTE - ULTIMATELY MAKE VARIABLE BY PURPOSE
 lsoa_legend_df <- data.frame(
   colours = c("#9C9C9C", "#FFFF73", "#AFFF00", "#00FFFF",
               "#30B0FF", "#2E5FFF", "#0000FF", "#FF00C5"),
@@ -306,7 +299,6 @@ shinyServer(function(input, output, session) {
     if (file.exists(file.path(region$data_dir, "rq.Rds"))) {
       to_plot$routes_quieter <<- readRDS(file.path(region$data_dir, "rq.Rds"))
       # Merge in scenario data for quiet routes - don't want this in download but need for line sorting
-      # ANNA SELF: COULD TRY TO DO WITH ID INSTEAD
       to_plot$routes_quieter@data <<- cbind(
         to_plot$routes_quieter@data[!(names(to_plot$routes_quieter) %in% names(to_plot$straight_lines))],
         to_plot$straight_lines@data)
@@ -721,7 +713,7 @@ shinyServer(function(input, output, session) {
   ##############
 
   ## LSOA layer + legend
-  ##ANNA NOTE [NB in future need to make this purpose + geography specific]
+  ## NB in future need to make this purpose + geography specific
   observe({
     # region$repopulate_region
 
@@ -773,8 +765,7 @@ shinyServer(function(input, output, session) {
   ## Initialize the leaflet map
   output$map <- renderLeaflet(
     leaflet() %>%
-      # Centroids loaded invisibly to tell it the extent of the map
-      # Anna note: centroids do not exist for some purposes like schools - if ever want to *start* in schools layer need to change this to zones
+      # Centroids loaded invisibly to tell it the extent of the map - hashed out by Robin
       # addCircleMarkers( .,
       #   data = to_plot$centroids,
       #   radius = 0,
@@ -891,8 +882,8 @@ shinyServer(function(input, output, session) {
   ## Creates legend as a barplot for IMD map base
   output$imd_legend <- renderPlot({
     my_lab <- c(
-      "Most deprived decile", "2nd", "3rd", "4th", "5th",
-      "6th", "7th", "8th", "9th", "Least deprived decile"
+      "Most deprived tenth", "2nd", "3rd", "4th", "5th",
+      "6th", "7th", "8th", "9th", "Least deprived tenth"
       )
 
     my_lab <- rev(my_lab)

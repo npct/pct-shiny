@@ -61,7 +61,6 @@ map_base_attrs <- c(
 )
 
 on_server <- grepl('^/var/shiny/pct-shiny', getwd())
-#ANNA NOTE: CHANGE THIS 'pct-shiny'
 production_branch <- grepl("npt\\d*$", Sys.info()["nodename"])
 
 shinyUI(
@@ -79,9 +78,7 @@ shinyUI(
           includeCSS("../www/stylesheet.css"),
           includeHTML(file.path("..", "favicon.html"))
         ),
-        if (!production_branch) {
-          includeHTML(file.path("..", "test-banner.html"))
-        },
+        includeHTML(file.path("..", "www", "test-banner.html")),
         br(),
         leafletOutput("map", width = "100%", height = "95%"),
         absolutePanel(
