@@ -20,9 +20,7 @@ library(leaflet)
 library(shinyjs)
 
 purposes <- c(
-  "Commuting"           = "commute",
-  "School travel"       = "school",
-  "All trips"           = "alltrips"
+  "Commuting"           = "commute"
 )
 
 geographies <- c("Middle Super Output Area"  = "msoa" ,
