@@ -217,6 +217,8 @@ shinyServer(function(input, output, session) {
   to_plot <- NULL
   helper <- NULL
   helper$e_lat_lng <- ""
+  helper$old_geog <- ""
+  helper$old_purpose <- ""
 
   ## Set  values of region
   observe({
@@ -242,26 +244,28 @@ shinyServer(function(input, output, session) {
 
     # Notify browser to update URL to reflect new region
     session$sendCustomMessage("regionchange", region$current)
-
     # Define region geography, forcing a default in cases where the geography is not available
     if (input$purpose =="commute") {
       if (input$geography %in% c("msoa", "lsoa")) {
-        region$geography <<- input$geography
+        region_geo_change_to <- input$geography
       } else {
-        region$geography <<- "msoa"
+        region_geo_change_to <- "msoa"
       }
     } else if (input$purpose =="school") {
       if (input$geography %in% c("lsoa")) {
-        region$geography <<- input$geography
+        region_geo_change_to <- input$geography
       } else {
-        region$geography <<- "lsoa"
+        region_geo_change_to <- "lsoa"
       }
     } else if (input$purpose =="alltrips") {
       if (input$geography %in% c("msoa")) {
-        region$geography <<- input$geography
+        region_geo_change_to <- input$geography
       } else {
-        region$geography <<- "msoa"
+        region_geo_change_to <- "msoa"
       }
+    }
+    if (is.na(region$geography) || region_geo_change_to != region$geography){
+      region$geography <<- region_geo_change_to
     }
 
     # Set data_dir
@@ -275,7 +279,6 @@ shinyServer(function(input, output, session) {
     region$purposes_present <<- (dir.exists(file.path(data_regional_root, purposes_list, "msoa", region$current)) | dir.exists(file.path(data_regional_root, purposes_list, "lsoa", region$current)))
     geographies_list <- c("msoa", "lsoa")
     region$geographies_present <<- dir.exists(file.path(data_regional_root, input$purpose, geographies_list, region$current))
-    update_purposegeog(region$purposes_present, region$geographies_present)
 
     # Identify the centre of the current region, save in to_plot
     to_plot$center_dim <<- rgeos::gCentroid(regions[regions$region_name == region$current, ], byid = TRUE)@coords
@@ -323,15 +326,27 @@ shinyServer(function(input, output, session) {
    } else {
      to_plot$route_network <<- NULL
    }
-
   })
 
   ## Update labels according to purpose
   # NB don't have as part of above 'observes' otherwise those re-run when scenario changes, even though data all the same
   observe({
+    # massive hack to return early if the geography and purpose haven't actually changed
+    if (helper$old_geog == region$geography && helper$old_purpose == input$purpose) {
+      return()
+    }
+    helper$old_purpose <<- input$purpose
+    helper$old_geog <<- region$geography
     update_labels(input$purpose, region$geography)
   })
 
+  # Only requred to run if the region changes
+  observe({
+    region$current
+    isolate({
+      update_purposegeog(region$purposes_present, region$geographies_present)
+    })
+  })
 
   ##############
   # Define BB
@@ -502,8 +517,7 @@ shinyServer(function(input, output, session) {
           label = "Top N Lines"
         )
     }
-
-  })
+  }, priority = - 10)
 
 
   ##############
