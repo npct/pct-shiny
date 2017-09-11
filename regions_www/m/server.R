@@ -24,7 +24,7 @@ source("pct_shiny_funs.R", local = T)
 
 ## Packages (Only regularly used packages are loaded into the global space, the others must be installed but are used with the package prefix, e.g. DT::)
 available_locally_pkgs <- c("shiny", "leaflet", "sp")
-must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs", "dplyr", "readr", "geojsonio", "DT")
+must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs", "dplyr", "readr", "DT")
 
 ## Path directories to load data (expect regional data as a sibling of interface_root)
 interface_root <- file.path("..", "..")
