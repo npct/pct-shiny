@@ -9,7 +9,7 @@ $(document).ready(function() {
     } else {
       $(".test-banner").hide();
     }
-  }
+  };
 
   testBannerDisplay();
 
