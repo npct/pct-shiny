@@ -9,7 +9,6 @@ You can see the data for Cambridge here,
 
 http://pct.bike/cambridgeshire/
 
-
 ## Servers
 
 We have two 4GB SSD based VMs running the tool (London/Cambridge).
