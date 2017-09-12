@@ -24,7 +24,7 @@ source("pct_shiny_funs.R", local = T)
 
 ## Packages (Only regularly used packages are loaded into the global space, the others must be installed but are used with the package prefix, e.g. DT::)
 available_locally_pkgs <- c("shiny", "leaflet", "sp")
-must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs", "dplyr", "readr", "DT")
+must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs")
 
 ## Path directories to load data (expect regional data as a sibling of interface_root)
 interface_root <- file.path("..", "..")
@@ -872,28 +872,14 @@ shinyServer(function(input, output, session) {
     input$purpose
 
     # Define the legend title
-    if (input_purpose() == "commute") { legend_title <- "% cycling to work"}
-    else if (input_purpose() == "school") { legend_title <- "% cycling to school" }
-    else if (input_purpose() == "alltrips") { legend_title <- "% trips cycled" }
-
+    switch(input_purpose(),
+           "commute" =  { legend_title <- "% cycling to work"},
+           "school" = { legend_title <- "% cycling to school" },
+           "alltrips" = { legend_title <- "% trips cycled" }
+    )
     leafletProxy("map") %>% removeControl(layerId = "zone_leg")
-    if (input_purpose() == "commute" || input_purpose() == "alltrips") {
-      title <- legend_title
-      if (input$show_zones) {
-        leafletProxy("map") %>%
-          addLegend(
-            "topleft",
-            layerId = "zone_leg",
-            colors = get_colour_palette(zcolourscale, 10),
-            labels = c("0-1%", "2-3%", "4-6%", "7-9%",
-                      "10-14%", "15-19%", "20-24%",
-                      "25-29%", "30-39%", "40%+"),
-            title = title,
-            opacity = 0.5
-          )
-      }
-    } else if (input_purpose() == "school") {
-      title <- legend_title
+
+    if (input_purpose() == "school") {
       if (input$show_zones) {
         leafletProxy("map") %>%
           addLegend(
@@ -903,7 +889,21 @@ shinyServer(function(input, output, session) {
             labels = c("0-1%", "2-3%", "4-6%", "7-9%",
                        "10-14%", "15-19%", "20-24%",
                        "25-29%", "30-39%", "40-49%", "50%+"),
-            title = title,
+            title = legend_title,
+            opacity = 0.5
+          )
+      }
+    } else {
+      if (input$show_zones) {
+        leafletProxy("map") %>%
+          addLegend(
+            "topleft",
+            layerId = "zone_leg",
+            colors = get_colour_palette(zcolourscale, 10),
+            labels = c("0-1%", "2-3%", "4-6%", "7-9%",
+                       "10-14%", "15-19%", "20-24%",
+                       "25-29%", "30-39%", "40%+"),
+            title = legend_title,
             opacity = 0.5
           )
       }
