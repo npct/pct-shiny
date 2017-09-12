@@ -82,25 +82,34 @@ lsoa_legend_df <- data.frame(
 # # # # # # # #
 shinyServer(function(input, output, session) {
 
+  input_purpose <- reactive({
+    if(is.null(input$purpose)) {
+      "commute"
+    } else {
+      input$purpose
+    }
+  })
+
   ##############
   # FUNCTIONS TO CUSTOMISE RIGHT HAND MENU BY PURPOSE/SCENARIO [NB changes here may need to be made to UI too!]
   ##############
   ## Define purposes and geographies available depending on region
   update_purposegeog <- function(purposes_present, geographies_present) {
     # Identify locally available purposes and update list accordingly
-    local_purposes <- c(
-      "Commuting"  = "commute" ,
-      "School travel"  = "school" ,
-      "All trips"  = "alltrips"
-    )[purposes_present]
+    if(!is.null(input$purpose)){
+      local_purposes <- c(
+        "Commuting"  = "commute" ,
+        "School travel"  = "school" ,
+        "All trips"  = "alltrips"
+      )[purposes_present]
 
-    if(input$purpose %in% local_purposes) {
-      selected_purpose <- input$purpose
-    } else {
-      selected_purpose <- local_purposes[1]
+      if(input$purpose %in% local_purposes) {
+        selected_purpose <- input$purpose
+      } else {
+        selected_purpose <- local_purposes[1]
+      }
+      updateSelectInput(session, "purpose", choices = local_purposes, selected = selected_purpose)
     }
-    updateSelectInput(session, "purpose", choices = local_purposes, selected = selected_purpose)
-
     # Identify locally available geographies
     local_geographies <- c(
       "Middle Super Output Area"  = "msoa" ,
@@ -222,7 +231,7 @@ shinyServer(function(input, output, session) {
 
   ## Set  values of region
   observe({
-    if(is.null(input$geography) || is.null(input$purpose)){
+    if(is.null(input$geography)){
       return()
     }
     region$current
@@ -245,7 +254,7 @@ shinyServer(function(input, output, session) {
     # Notify browser to update URL to reflect new region
     session$sendCustomMessage("regionchange", region$current)
     # Define region geography, forcing a default in cases where the geography is not available
-    switch(input$purpose,
+    switch(input_purpose(),
      "commute"= {
       if (input$geography %in% c("msoa", "lsoa")) {
         region_geo_change_to <- input$geography
@@ -265,7 +274,7 @@ shinyServer(function(input, output, session) {
     }
 
     # Set data_dir
-    region$data_dir <<- file.path(data_regional_root, input$purpose, region$geography, region$current)
+    region$data_dir <<- file.path(data_regional_root, input_purpose(), region$geography, region$current)
 
     # Identify that region repopulation has happened
     region$repopulate_region <<- T
@@ -274,7 +283,7 @@ shinyServer(function(input, output, session) {
     purposes_list <- c("commute", "school", "alltrips")
     region$purposes_present <<- (dir.exists(file.path(data_regional_root, purposes_list, "msoa", region$current)) | dir.exists(file.path(data_regional_root, purposes_list, "lsoa", region$current)))
     geographies_list <- c("msoa", "lsoa")
-    region$geographies_present <<- dir.exists(file.path(data_regional_root, input$purpose, geographies_list, region$current))
+    region$geographies_present <<- dir.exists(file.path(data_regional_root, input_purpose(), geographies_list, region$current))
 
     # Identify the centre of the current region, save in to_plot
     to_plot$center_dim <<- rgeos::gCentroid(regions[regions$region_name == region$current, ], byid = TRUE)@coords
@@ -336,12 +345,12 @@ shinyServer(function(input, output, session) {
   # NB don't have as part of above 'observes' otherwise those re-run when scenario changes, even though data all the same
   observe({
     # massive hack to return early if the geography and purpose haven't actually changed
-    if (helper$old_geog == region$geography && helper$old_purpose == input$purpose) {
+    if (helper$old_geog == region$geography && helper$old_purpose == input_purpose()) {
       return()
     }
-    helper$old_purpose <<- input$purpose
+    helper$old_purpose <<- input_purpose()
     helper$old_geog <<- region$geography
-    update_labels(input$purpose, region$geography)
+    update_labels(input_purpose(), region$geography)
   }, priority = 1)
 
 
@@ -446,7 +455,7 @@ shinyServer(function(input, output, session) {
       weight = normalise(sorted_l[[line_data()]][!is.na(sorted_l[[line_data()]])], min = min, max = max),
       opacity = line_opacity,
       group = line_type,
-      popup = popop_fun(sorted_l, input$scenario, input$purpose),
+      popup = popop_fun(sorted_l, input$scenario, input_purpose()),
       layerId = paste0(sorted_l[['id']], '-', line_type)
     )
 
@@ -555,18 +564,18 @@ shinyServer(function(input, output, session) {
     ## Display zones
     if (input$show_zones && !is.null(to_plot$zones)) {
       # Define bins and breaks (by purpose)
-      if (input$purpose == "commute" || input$purpose=="alltrips") {
-        zbins <- zbins_commute
-        zbreaks <- zbreaks_commute
-      } else if (input$purpose == "school") {
+      if (input_purpose() == "school") {
         zbins <- zbins_school
         zbreaks <- zbreaks_school
+      } else {
+        zbins <- zbins_commute
+        zbreaks <- zbreaks_commute
       }
       # Show zones when no lines are selected
       show_zone_popup <- (line_type %in% show_no_lines)
       popup <-
         if (show_zone_popup)
-          popup_zones(to_plot$zones, input$scenario, input$purpose)
+          popup_zones(to_plot$zones, input$scenario, input_purpose())
       addPolygons(
         leafletProxy("map"),
         data = to_plot$zones,
@@ -586,7 +595,7 @@ shinyServer(function(input, output, session) {
       addCircleMarkers(leafletProxy("map"), data = to_plot$centroids,
                        radius = normalise(to_plot$centroids$all, min = 1, max = 8),
                        color = get_line_colour("centroids"), group = "centroids", opacity = 0.5,
-                       popup = popup_centroids(to_plot$centroids, input$scenario, input$purpose),
+                       popup = popup_centroids(to_plot$centroids, input$scenario, input_purpose()),
                        layerId = paste0(to_plot$centroids[['geo_code']], '-', "centroids")
       )
       if (isTRUE((is.null(isolate(input$map_zoom))) || isolate(input$map_zoom) < 11 || (input$line_type %in% show_no_lines) || (input$line_type=="route_network"))) {
@@ -626,7 +635,7 @@ shinyServer(function(input, output, session) {
     leafletProxy("map") %>% clearGroup(., "regions-zones")
 
     # Identify regions that 1) have the input purpose data and 2) are not the current region
-    new_regions_with_purpose <- regions$region_name[(dir.exists(file.path(data_regional_root, input$purpose, region$geography, regions$region_name))) & (!regions$region_name %in% region$current)]
+    new_regions_with_purpose <- regions$region_name[(dir.exists(file.path(data_regional_root, input_purpose(), region$geography, regions$region_name))) & (!regions$region_name %in% region$current)]
 
     # Add all eligible regions boundaries in the beginning , but set the opacity to a minimum
     addPolygons(
@@ -669,7 +678,7 @@ shinyServer(function(input, output, session) {
       new_region <- strsplit(event$id, " ")[[1]][2]
       if (is.null(new_region))
         return()
-      new_data_dir <- file.path(data_regional_root, input$purpose, region$geography, new_region)
+      new_data_dir <- file.path(data_regional_root, input_purpose(), region$geography, new_region)
 
       if (region$data_dir != new_data_dir &&
           file.exists(new_data_dir)) {
@@ -862,12 +871,12 @@ shinyServer(function(input, output, session) {
     input$purpose
 
     # Define the legend title
-    if (input$purpose == "commute") { legend_title <- "% cycling to work"}
-    else if (input$purpose == "school") { legend_title <- "% cycling to school" }
-    else if (input$purpose == "alltrips") { legend_title <- "% trips cycled" }
+    if (input_purpose() == "commute") { legend_title <- "% cycling to work"}
+    else if (input_purpose() == "school") { legend_title <- "% cycling to school" }
+    else if (input_purpose() == "alltrips") { legend_title <- "% trips cycled" }
 
     leafletProxy("map") %>% removeControl(layerId = "zone_leg")
-    if (input$purpose == "commute" || input$purpose == "alltrips") {
+    if (input_purpose() == "commute" || input_purpose() == "alltrips") {
       title <- legend_title
       if (input$show_zones) {
         leafletProxy("map") %>%
@@ -882,7 +891,7 @@ shinyServer(function(input, output, session) {
             opacity = 0.5
           )
       }
-    } else if (input$purpose == "school") {
+    } else if (input_purpose() == "school") {
       title <- legend_title
       if (input$show_zones) {
         leafletProxy("map") %>%
@@ -967,7 +976,7 @@ shinyServer(function(input, output, session) {
     region$current
 
     region_stats_file <-
-      file.path("../tabs/region_stats", input$purpose, input$geography, region$current,
+      file.path("../tabs/region_stats", input_purpose(), input$geography, region$current,
                 "region_stats.html")
     if (file.exists(region_stats_file))
       includeHTML(region_stats_file)
