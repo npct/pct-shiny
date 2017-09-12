@@ -2,7 +2,7 @@ $(document).ready(function() {
   var testBannerDisplay = function() {
     if(window.location.href.indexOf("r=wales") !== -1) {
       $(".test-banner").show();
-      $(".test-banner-message").html('This is a trial version of the PCT site that includes a region for Wales with some features missing (LSOA route network and national data downloads are not there for Wales). This trial version will be available until October 2017. Tell us what you think on <a href="mailto:pct@pct.bike">pct@pct.bike</a>.');
+      $(".test-banner-message").html('This is a trial version of the PCT site that includes Wales with some features missing (LSOA route network and national data downloads are not there for Wales). This trial version will be available until October 2017. Tell us what you think on <a href="mailto:pct@pct.bike">pct@pct.bike</a>.');
     } else if(window.location.hostname !== "www.pct.bike") {
       $(".test-banner").show();
       $(".test-banner-message").html('This is the PCT test site. Please do not circulate links to this site. Findings from this site should not be assumed to be reliable without specific agreement from the PCT team. Please use <a href="//www.pct.bike">www.pct.bike</a> instead.');
