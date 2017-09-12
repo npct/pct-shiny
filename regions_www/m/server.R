@@ -324,9 +324,10 @@ shinyServer(function(input, output, session) {
    }
   }, priority = 3)
 
-  # Only requred to run if the region changes
+  # Only requred to run if the region changes (as that affects purpose) or the purpose changes (as that affects geographies)
   observe({
     region$current
+    input$purpose
     isolate({
       update_purposegeog(region$purposes_present, region$geographies_present)
     })
