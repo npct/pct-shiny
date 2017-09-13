@@ -154,10 +154,10 @@ shinyServer(function(input, output, session) {
       }
 
       local_line_order <- c(
-        "Number of cyclists"  = "slc",
+        "Number of cyclists"   = "slc",
         "Increase in cyclists" = "sic",
-        "HEAT Value"          = "slvalue_heat",
-        "CO2 reduction"       = "sico2"
+        "Reduction in deaths"  = "slvalue_heat",
+        "Reduction in CO2"     = "sico2"
       )
     } else if (purpose == "school") {
       local_scenarios <- c(
@@ -189,9 +189,9 @@ shinyServer(function(input, output, session) {
       )
       local_line_order <- c(
         "Number of cycle trips" = "slc",
-        "Increase in Cycling"   = "sic",
-        "HEAT Value"            = "slvalue_heat",
-        "CO2 reduction"         = "sico2"
+        "Increase in cycling"   = "sic",
+        "Reduction in deaths"   = "slvalue_heat",
+        "Reduction in CO2"         = "sico2"
       )
 
     }

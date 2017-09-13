@@ -44,10 +44,10 @@ line_types <- c(
 )
 
 line_order <- c(
-  "Number of cyclists" = "slc",
-  "Increase in Cycling" = "sic",
-  "HEAT Value"          = "slvalue_heat",
-  "CO2 reduction"       = "sico2"
+  "Number of cyclists"   = "slc",
+  "Increase in cyclists" = "sic",
+  "Reduction in deaths"  = "slvalue_heat",
+  "Reduction in CO2"     = "sico2"
 )
 
 map_base_attrs <- c(
