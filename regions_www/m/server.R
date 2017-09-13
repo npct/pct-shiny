@@ -154,10 +154,10 @@ shinyServer(function(input, output, session) {
       }
 
       local_line_order <- c(
-        "Number of cyclists"  = "slc",
+        "Number of cyclists"   = "slc",
         "Increase in cyclists" = "sic",
-        "HEAT Value"          = "slvalue_heat",
-        "CO2 reduction"       = "sico2"
+        "Reduction in deaths"  = "sideath_heat",
+        "Reduction in CO2"     = "sico2"
       )
     } else if (purpose == "school") {
       local_scenarios <- c(
@@ -189,9 +189,9 @@ shinyServer(function(input, output, session) {
       )
       local_line_order <- c(
         "Number of cycle trips" = "slc",
-        "Increase in Cycling"   = "sic",
-        "HEAT Value"            = "slvalue_heat",
-        "CO2 reduction"         = "sico2"
+        "Increase in cycling"   = "sic",
+        "Reduction in deaths"   = "sideath_heat",
+        "Reduction in CO2"      = "sico2"
       )
 
     }
@@ -417,8 +417,13 @@ shinyServer(function(input, output, session) {
       if (all(!keep))
         return(NULL)
       lines_in_bb <- lines[drop(keep),]
-      # Sort by the absolute values
-      lines_in_bb[tail(order(abs(lines_in_bb[[line_data()]])), nos),]
+      # Sort low-to-high for reduction in deaths (can't use absolute values as no. deaths can be a positive number, i.e. health disbenefit)
+      if (grepl(c("sideath_heat"), line_data())) {
+        lines_in_bb[tail(order(lines_in_bb[[line_data()]], decreasing = T), nos),]
+      } else {
+        # sort by absolute values for remainder of things, which all have zero as higher or lower limit
+        lines_in_bb[tail(order(abs(lines_in_bb[[line_data()]])), nos),]
+      }
     } else {
       # For the route network, just sort them according to the percentage of display
       # Sort by the absolute values
