@@ -80,28 +80,31 @@ get_colour_ramp <- function(colourscale, bins = 10, values, breaks) {
 # Get scenario name
 scenario_name_df <- data.frame(
   sc_s_name = c("olc", "govtarget","gendereq","dutch", "ebike"),
-  sc_f_name_commute = c("Census 2011 Cycling", "Government Target", "Gender equality", "Go Dutch", "Ebikes"),
-  sc_f_name_school = c("School Census 2011", "Government Target", "Gender equality", "Go Dutch", "Ebikes"),
+  sc_f_name_commute  = c("Census 2011 Cycling", "Government Target", "Gender equality", "Go Dutch", "Ebikes"),
+  sc_f_name_school   = c("School Census 2011", "Government Target", "Gender equality", "Go Dutch", "Ebikes"),
   sc_f_name_alltrips = c("Current travel patterns", "Government Target", "Gender equality", "Go Dutch", "Ebikes")
 )
 
 get_scenario_name <- function(scenario_name, purpose){
-  if (purpose=="commute") {scenario_name_df$sc_f_name_commute[scenario_name_df$sc_s_name == scenario_name]}
-  else if (purpose=="school") {scenario_name_df$sc_f_name_school[scenario_name_df$sc_s_name == scenario_name]}
-  else if (purpose=="alltrips") {scenario_name_df$sc_f_name_alltrips[scenario_name_df$sc_s_name == scenario_name]}
+  switch(purpose,
+         "commute"  = scenario_name_df$sc_f_name_commute[scenario_name_df$sc_s_name == scenario_name],
+         "school"   = scenario_name_df$sc_f_name_school[scenario_name_df$sc_s_name == scenario_name],
+         "alltrips" = scenario_name_df$sc_f_name_alltrips[scenario_name_df$sc_s_name == scenario_name])
 }
 
 # Get names in pop-ups (variable by purpose)
 text_zone_header <- function(purpose) {
-  if(purpose=="commute") {"All residents living in zone"}
-  else if(purpose=="school") {"All children living in zone"}
-  else if(purpose=="alltrips") {"All trips starting in zone"}
+  switch(purpose,
+         "commute"  = "All residents living in zone",
+         "school"   = "All children living in zone",
+         "alltrips" = "All trips starting in zone")
 }
 
 text_all <- function(purpose) {
-  if(purpose=="commute") {"Total commuters: &nbsp;"}
-  else if(purpose=="school") {"Total children: &nbsp;"}
-  else if(purpose=="alltrips") {"Total weekly no. trips: &nbsp;"}
+  switch(purpose,
+         "commute"  = "Total commuters: &nbsp;",
+         "school"   = "Total children: &nbsp;",
+         "alltrips" = "Total weekly no. trips: &nbsp;")
 }
 
 text_cycle_baseline <- function(purpose){
@@ -110,20 +113,21 @@ text_cycle_baseline <- function(purpose){
 }
 
 text_cycle_scenario <- function(purpose){
-  if(purpose=="commute" | purpose=="school") {"Cyclists (scenario): &nbsp; "}
-  else if(purpose=="alltrips") {"Cycle trips/wk (scenario): &nbsp;"}
+  gsub("baseline", "scenario", text_cycle_baseline(purpose))
 }
 
 text_drive_baseline <- function(purpose){
-  if(purpose=="commute") {"Drivers (baseline): &nbsp; "}
-  else if(purpose=="school") {"Driven by car (baseline): &nbsp;"}
-  else if(purpose=="alltrips") {"Car trips/wk (baseline): &nbsp;"}
+  switch(purpose,
+         "commute"  = "Drivers (baseline): &nbsp; ",
+         "school"   = "Driven by car (baseline): &nbsp;",
+         "alltrips" = "Car trips/wk (baseline): &nbsp;")
 }
 
 text_drive_change <- function(purpose){
-  if(purpose=="commute") {"Change in drivers: &nbsp; "}
-  else if(purpose=="school") {"Change in driven by car: &nbsp;"}
-  else if(purpose=="alltrips") {"Change in car trips/wk: &nbsp;"}
+  switch(purpose,
+         "commute"  = "Change in drivers: &nbsp; ",
+         "school"   = "Change in driven by car: &nbsp;",
+         "alltrips" = "Change in car trips/wk: &nbsp;")
 }
 
 text_cycle_interzone <- function(purpose){
