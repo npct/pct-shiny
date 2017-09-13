@@ -551,17 +551,16 @@ shinyServer(function(input, output, session) {
   })
 
 
-  ## Displays zones and centroids
+  ## Displays zones
   observe({
     input$purpose
     region$geography
     input$scenario
     line_type <<- isolate(input$line_type)
-    input$map_base
     region$data_dir
     region$repopulate_region
 
-    clearGroup(leafletProxy("map"), c("zones", "centroids"))
+    clearGroup(leafletProxy("map"), c("zones"))
     ## Display zones
     if (input$show_zones && !is.null(to_plot$zones)) {
       # Define bins and breaks (by purpose)
@@ -591,20 +590,6 @@ shinyServer(function(input, output, session) {
         layerId = paste0(to_plot$zones[['geo_code']], '-', "zones")
       )
     }
-    ## Define centroids (if exist) and display when zoom level is greater than 11 and lines are selected
-    if (!is.null(to_plot$centroids)) {
-      addCircleMarkers(leafletProxy("map"), data = to_plot$centroids,
-                       radius = normalise(to_plot$centroids$all, min = 1, max = 8),
-                       color = get_line_colour("centroids"), group = "centroids", opacity = 0.5,
-                       popup = popup_centroids(to_plot$centroids, input$scenario, input_purpose()),
-                       layerId = paste0(to_plot$centroids[['geo_code']], '-', "centroids")
-      )
-      if (isTRUE((is.null(isolate(input$map_zoom))) || isolate(input$map_zoom) < 11 || (input$line_type %in% show_no_lines) || (input$line_type=="route_network"))) {
-        hideGroup(leafletProxy("map"), "centroids")
-      } else {
-        showGroup(leafletProxy("map"), "centroids")
-      }
-    }
 
     ## Hide and then re-Show line layers, so that they are displayed as the top layer in the map.
     # NB Leaflet's function bringToBack() or bringToFront() (see https://leafletjs.com/reference.html#path) don't seem to exist for R
@@ -620,6 +605,33 @@ shinyServer(function(input, output, session) {
       }
     }
 
+  })
+
+  ## Define centroids
+  observe({
+    input$purpose
+    region$geography
+    input$scenario
+    input$line_type
+    region$data_dir
+    region$repopulate_region
+    input$map_zoom
+
+    clearGroup(leafletProxy("map"), c("centroids"))
+    # Define centroids (if exist) and display when zoom level is greater or equal to 11 and lines are selected
+    if (!is.null(to_plot$centroids)) {
+      addCircleMarkers(leafletProxy("map"), data = to_plot$centroids,
+                       radius = normalise(to_plot$centroids$all, min = 1, max = 8),
+                       color = get_line_colour("centroids"), group = "centroids", opacity = 0.5,
+                       popup = popup_centroids(to_plot$centroids, input$scenario, input_purpose()),
+                       layerId = paste0(to_plot$centroids[['geo_code']], '-', "centroids")
+      )
+      if (isTRUE((is.null(input$map_zoom)) || input$map_zoom < 11 || (input$line_type %in% show_no_lines) || (input$line_type=="route_network"))) {
+        hideGroup(leafletProxy("map"), "centroids")
+      } else {
+        showGroup(leafletProxy("map"), "centroids")
+      }
+    }
   })
 
 
