@@ -417,8 +417,13 @@ shinyServer(function(input, output, session) {
       if (all(!keep))
         return(NULL)
       lines_in_bb <- lines[drop(keep),]
-      # Sort by the absolute values
-      lines_in_bb[tail(order(abs(lines_in_bb[[line_data()]])), nos),]
+      # Sort low-to-high for reduction in deaths (can't use absolute values as no. deaths can be a positive number, i.e. health disbenefit)
+      if (grepl(c("sideath_heat"), line_data())) {
+        lines_in_bb[tail(order(lines_in_bb[[line_data()]], decreasing = T), nos),]
+      } else {
+        # sort by absolute values for remainder of things, which all have zero as higher or lower limit
+        lines_in_bb[tail(order(abs(lines_in_bb[[line_data()]])), nos),]
+      }
     } else {
       # For the route network, just sort them according to the percentage of display
       # Sort by the absolute values
