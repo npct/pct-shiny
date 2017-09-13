@@ -229,6 +229,14 @@ shinyServer(function(input, output, session) {
   helper$old_geog <- ""
   helper$old_purpose <- ""
 
+  load_data <- function(filepath){
+    if (file.exists(filepath)) {
+      readRDS(filepath)
+    } else {
+      NULL
+    }
+  }
+
   ## Set  values of region
   observe({
     if(is.null(input$geography)){
@@ -289,28 +297,13 @@ shinyServer(function(input, output, session) {
     to_plot$center_dim <<- rgeos::gCentroid(regions[regions$region_name == region$current, ], byid = TRUE)@coords
 
     # Load data to to_plot (if data exists - this varies by purpose/geography)
-    if (file.exists(file.path(region$data_dir, "z.Rds"))) {
-      to_plot$zones <<- readRDS(file.path(region$data_dir, "z.Rds"))
-    } else {
-      to_plot$zones <<- NULL
-    }
-
-    if (file.exists(file.path(region$data_dir, "c.Rds"))) {
-      to_plot$centroids <<- readRDS(file.path(region$data_dir,  "c.Rds"))
-    } else {
-      to_plot$centroids <<- NULL
-    }
-
-    if (file.exists(file.path(region$data_dir, "l.Rds"))) {
-      to_plot$straight_lines <<- readRDS(file.path(region$data_dir, "l.Rds"))
-    } else {
-      to_plot$straight_lines <<- NULL
-    }
-
-    if (file.exists(file.path(region$data_dir, "rf.Rds"))) {
-      to_plot$routes_fast <<- readRDS(file.path(region$data_dir, "rf.Rds"))
-    } else {
-      to_plot$routes_fast <<- NULL
+    to_plot$zones <<- load_data(file.path(region$data_dir, "z.Rds"))
+    to_plot$centroids <<- load_data(file.path(region$data_dir, "c.Rds"))
+    to_plot$straight_lines <<- load_data(file.path(region$data_dir, "l.Rds"))
+    to_plot$routes_fast <<- load_data(file.path(region$data_dir, "rf.Rds"))
+    to_plot$route_network <<- load_data(file.path(region$data_dir, "rnet.Rds"))
+    if(!is.null(to_plot$route_network)){
+      to_plot$route_network$id <<- to_plot$route_network$local_id
     }
 
     if (file.exists(file.path(region$data_dir, "rq.Rds"))) {
@@ -324,14 +317,8 @@ shinyServer(function(input, output, session) {
     } else {
       to_plot$routes_quieter <<- NULL
     }
-
-    if (file.exists(file.path(region$data_dir, "rnet.Rds"))) {
-      to_plot$route_network <<- readRDS(file.path(region$data_dir, "rnet.Rds"))
-      to_plot$route_network$id <<- to_plot$route_network$local_id
-   } else {
-     to_plot$route_network <<- NULL
-   }
   }, priority = 3)
+
 
   # Only requred to run if the region changes (as that affects purpose) or the purpose changes (as that affects geographies)
   observe({
