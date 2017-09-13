@@ -249,9 +249,9 @@ shinyServer(function(input, output, session) {
     region$purposes_present
     input$purpose
 
-    # Identify region
-    query <- parseQueryString(session$clientData$url_search)
+    # Identify region from URL or use a default
     if (is.na(region$current)) {
+      query <- parseQueryString(session$clientData$url_search)
       region$current <- if (isTRUE(query[['r']] %in% regions$region_name)) {
         query[['r']]
       } else {
@@ -261,37 +261,39 @@ shinyServer(function(input, output, session) {
 
     # Notify browser to update URL to reflect new region
     session$sendCustomMessage("regionchange", region$current)
+
     # Define region geography, forcing a default in cases where the geography is not available
     switch(input_purpose(),
-     "commute"= {
-      if (input$geography %in% c("msoa", "lsoa")) {
-        region_geo_change_to <- input$geography
-      } else {
-        region_geo_change_to <- "msoa"
-      }
-    },
-    "school"= {
-      region_geo_change_to <- "lsoa"
-    },
-    "alltrips"= {
-      region_geo_change_to <- "msoa"
-    })
+           "commute"= {
+             if (input$geography %in% c("msoa", "lsoa")) {
+               region_geo_change_to <- input$geography
+             } else {
+               region_geo_change_to <- "msoa"
+             }
+           },
+           "school"= { region_geo_change_to <- "lsoa" },
+           "alltrips"= { region_geo_change_to <- "msoa" }
+    )
+
     # Only trigger geography changes if required.
-    if (is.na(region$geography) || region_geo_change_to != region$geography){
-      region$geography <<- region_geo_change_to
+    if (!identical(region_geo_change_to, region$geography)) {
+      region$geography <- region_geo_change_to
     }
 
     # Set data_dir
-    region$data_dir <<- file.path(data_regional_root, input_purpose(), region$geography, region$current)
+    region$data_dir <- file.path(data_regional_root, input_purpose(), region$geography, region$current)
 
     # Identify that region repopulation has happened
-    region$repopulate_region <<- T
+    region$repopulate_region <- T
 
     # Identify purposes and geographies available in region
     purposes_list <- c("commute", "school", "alltrips")
-    region$purposes_present <<- (dir.exists(file.path(data_regional_root, purposes_list, "msoa", region$current)) | dir.exists(file.path(data_regional_root, purposes_list, "lsoa", region$current)))
+    new_purpose <- (dir.exists(file.path(data_regional_root, purposes_list, "msoa", region$current)) | dir.exists(file.path(data_regional_root, purposes_list, "lsoa", region$current)))
+    if(!identical(new_purpose,region$purposes_present)){
+      region$purposes_present <- new_purpose
+    }
     geographies_list <- c("msoa", "lsoa")
-    region$geographies_present <<- dir.exists(file.path(data_regional_root, input_purpose(), geographies_list, region$current))
+    region$geographies_present <- dir.exists(file.path(data_regional_root, input_purpose(), geographies_list, region$current))
 
     # Identify the centre of the current region, save in to_plot
     to_plot$center_dim <<- rgeos::gCentroid(regions[regions$region_name == region$current, ], byid = TRUE)@coords
