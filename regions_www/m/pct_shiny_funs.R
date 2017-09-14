@@ -10,9 +10,13 @@ get_pretty_region_name <- function(region_name_in, the = T){
     "west-midlands" = "The West Midlands"
   )
   region_name <- gsub("(\\b[[:alpha:]])", "\\U\\1", region_name_in, perl=TRUE)
-  region_name <- gsub("(Of|And|The) ", "\\L\\1 ", region_name, perl=TRUE)
   region_name <- gsub("-", " ", region_name)
-  ifelse(!is.na(regions_thes[region_name_in]), regions_thes[region_name_in], region_name)
+  region_name <- gsub("(Of|And|The) ", "\\L\\1 ", region_name, perl=TRUE)
+  if(the) {
+    ifelse(!is.na(regions_thes[region_name_in]), regions_thes[region_name_in], region_name)
+  } else {
+    region_name
+  }
 }
 
 
