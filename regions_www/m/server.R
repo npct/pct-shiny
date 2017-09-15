@@ -229,6 +229,14 @@ shinyServer(function(input, output, session) {
   helper$old_geog <- ""
   helper$old_purpose <- ""
 
+  load_data <- function(filepath){
+    if (file.exists(filepath)) {
+      readRDS(filepath)
+    } else {
+      NULL
+    }
+  }
+
   ## Set  values of region
   observe({
     if(is.null(input$geography)){
@@ -241,9 +249,9 @@ shinyServer(function(input, output, session) {
     region$purposes_present
     input$purpose
 
-    # Identify region
-    query <- parseQueryString(session$clientData$url_search)
+    # Identify region from URL or use a default
     if (is.na(region$current)) {
+      query <- parseQueryString(session$clientData$url_search)
       region$current <- if (isTRUE(query[['r']] %in% regions$region_name)) {
         query[['r']]
       } else {
@@ -253,64 +261,51 @@ shinyServer(function(input, output, session) {
 
     # Notify browser to update URL to reflect new region
     session$sendCustomMessage("regionchange", region$current)
+
     # Define region geography, forcing a default in cases where the geography is not available
     switch(input_purpose(),
-     "commute"= {
-      if (input$geography %in% c("msoa", "lsoa")) {
-        region_geo_change_to <- input$geography
-      } else {
-        region_geo_change_to <- "msoa"
-      }
-    },
-    "school"= {
-      region_geo_change_to <- "lsoa"
-    },
-    "alltrips"= {
-      region_geo_change_to <- "msoa"
-    })
+           "commute"= {
+             if (input$geography %in% c("msoa", "lsoa")) {
+               region_geo_change_to <- input$geography
+             } else {
+               region_geo_change_to <- "msoa"
+             }
+           },
+           "school"= { region_geo_change_to <- "lsoa" },
+           "alltrips"= { region_geo_change_to <- "msoa" }
+    )
+
     # Only trigger geography changes if required.
-    if (is.na(region$geography) || region_geo_change_to != region$geography){
-      region$geography <<- region_geo_change_to
+    if (!identical(region_geo_change_to, region$geography)) {
+      region$geography <- region_geo_change_to
     }
 
     # Set data_dir
-    region$data_dir <<- file.path(data_regional_root, input_purpose(), region$geography, region$current)
+    region$data_dir <- file.path(data_regional_root, input_purpose(), region$geography, region$current)
 
     # Identify that region repopulation has happened
-    region$repopulate_region <<- T
+    region$repopulate_region <- T
 
     # Identify purposes and geographies available in region
     purposes_list <- c("commute", "school", "alltrips")
-    region$purposes_present <<- (dir.exists(file.path(data_regional_root, purposes_list, "msoa", region$current)) | dir.exists(file.path(data_regional_root, purposes_list, "lsoa", region$current)))
+    new_purpose <- (dir.exists(file.path(data_regional_root, purposes_list, "msoa", region$current)) | dir.exists(file.path(data_regional_root, purposes_list, "lsoa", region$current)))
+    if(!identical(new_purpose,region$purposes_present)){
+      region$purposes_present <- new_purpose
+    }
     geographies_list <- c("msoa", "lsoa")
-    region$geographies_present <<- dir.exists(file.path(data_regional_root, input_purpose(), geographies_list, region$current))
+    region$geographies_present <- dir.exists(file.path(data_regional_root, input_purpose(), geographies_list, region$current))
 
     # Identify the centre of the current region, save in to_plot
     to_plot$center_dim <<- rgeos::gCentroid(regions[regions$region_name == region$current, ], byid = TRUE)@coords
 
     # Load data to to_plot (if data exists - this varies by purpose/geography)
-    if (file.exists(file.path(region$data_dir, "z.Rds"))) {
-      to_plot$zones <<- readRDS(file.path(region$data_dir, "z.Rds"))
-    } else {
-      to_plot$zones <<- NULL
-    }
-
-    if (file.exists(file.path(region$data_dir, "c.Rds"))) {
-      to_plot$centroids <<- readRDS(file.path(region$data_dir,  "c.Rds"))
-    } else {
-      to_plot$centroids <<- NULL
-    }
-
-    if (file.exists(file.path(region$data_dir, "l.Rds"))) {
-      to_plot$straight_lines <<- readRDS(file.path(region$data_dir, "l.Rds"))
-    } else {
-      to_plot$straight_lines <<- NULL
-    }
-
-    if (file.exists(file.path(region$data_dir, "rf.Rds"))) {
-      to_plot$routes_fast <<- readRDS(file.path(region$data_dir, "rf.Rds"))
-    } else {
-      to_plot$routes_fast <<- NULL
+    to_plot$zones <<- load_data(file.path(region$data_dir, "z.Rds"))
+    to_plot$centroids <<- load_data(file.path(region$data_dir, "c.Rds"))
+    to_plot$straight_lines <<- load_data(file.path(region$data_dir, "l.Rds"))
+    to_plot$routes_fast <<- load_data(file.path(region$data_dir, "rf.Rds"))
+    to_plot$route_network <<- load_data(file.path(region$data_dir, "rnet.Rds"))
+    if(!is.null(to_plot$route_network)){
+      to_plot$route_network$id <<- to_plot$route_network$local_id
     }
 
     if (file.exists(file.path(region$data_dir, "rq.Rds"))) {
@@ -324,14 +319,8 @@ shinyServer(function(input, output, session) {
     } else {
       to_plot$routes_quieter <<- NULL
     }
-
-    if (file.exists(file.path(region$data_dir, "rnet.Rds"))) {
-      to_plot$route_network <<- readRDS(file.path(region$data_dir, "rnet.Rds"))
-      to_plot$route_network$id <<- to_plot$route_network$local_id
-   } else {
-     to_plot$route_network <<- NULL
-   }
   }, priority = 3)
+
 
   # Only requred to run if the region changes (as that affects purpose) or the purpose changes (as that affects geographies)
   observe({
