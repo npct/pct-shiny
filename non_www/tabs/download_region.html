@@ -10,7 +10,7 @@
       <div class="col-md-12 text-left" style="padding-top:10px;">
         <h3>Data for <!--region_name--> </h3>
         <p>This page contains data downloads for <!--region_name-->, the region currently displayed on the ‘Map’ tab. These are available as CSV files containing the zone and line baseline and scenario data, and in geographic files that can be read by R (.Rds) or GIS programs such as QGIS (.geojson).</p>
-        <p>Please be aware that equivalent files for different geographies and different regions have <b>the same file name</b> when downloaded (e.g. ‘z.geojson’ for both the MSOA and LSOA regional zones files, for all regions).  To avoid confusion you may want to rename those files or save them in labelled folders.</p>
+        <p>Please be aware that equivalent files for different geographies and different regions have <b>the same file name</b> when downloaded (e.g. ‘z.geojson’ for both the MSOA and LSOA regional zones files, for all regions).  To avoid confusion you may want to rename those files or save them in labelled folders. Note also that when <b>downloading 'csv' files using a Firefox browser</b>, the file will open onscreen in a new webpage.  If you then type "Ctrl + S" the onscreen data will download as a csv file.</p>
       </div>
 
       <div class="col-md-12 text-left" style="padding-top:10px;">
@@ -19,6 +19,9 @@
         <ul>
           <li>
             Zones (MSOA):
+            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/commute/msoa/<!--region_url-->/z_attributes.csv" target="_blank" download="z_attributes.csv" onclick="ga('send', 'event', 'download', 'z_attributes.csv');">
+              csv
+            </a>
             <a href="https://github.com/npct/pct-outputs-regional-R/raw/master/commute/msoa/<!--region_url-->/z.Rds" target="_blank" download="z.Rds" onclick="ga('send', 'event', 'download', 'z.Rds');">
               Rds
             </a>
@@ -31,6 +34,9 @@
           </li>
           <li>
             Zones (LSOA):
+            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/commute/lsoa/<!--region_url-->/z_attributes.csv" target="_blank" download="z_attributes.csv" onclick="ga('send', 'event', 'download', 'z_attributes.csv');">
+              csv
+            </a>
             <a href="https://github.com/npct/pct-outputs-regional-R/raw/master/commute/lsoa/<!--region_url-->/z.Rds" target="_blank" download="z.Rds" onclick="ga('send', 'event', 'download', 'z.Rds');">
               Rds
             </a>

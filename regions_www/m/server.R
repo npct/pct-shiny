@@ -154,10 +154,10 @@ shinyServer(function(input, output, session) {
       }
 
       local_line_order <- c(
-        "Number of cyclists"  = "slc",
+        "Number of cyclists"   = "slc",
         "Increase in cyclists" = "sic",
-        "HEAT Value"          = "slvalue_heat",
-        "CO2 reduction"       = "sico2"
+        "Reduction in deaths"  = "sideath_heat",
+        "Reduction in CO2"     = "sico2"
       )
     } else if (purpose == "school") {
       local_scenarios <- c(
@@ -189,9 +189,9 @@ shinyServer(function(input, output, session) {
       )
       local_line_order <- c(
         "Number of cycle trips" = "slc",
-        "Increase in Cycling"   = "sic",
-        "HEAT Value"            = "slvalue_heat",
-        "CO2 reduction"         = "sico2"
+        "Increase in cycling"   = "sic",
+        "Reduction in deaths"   = "sideath_heat",
+        "Reduction in CO2"      = "sico2"
       )
 
     }
@@ -229,6 +229,14 @@ shinyServer(function(input, output, session) {
   helper$old_geog <- ""
   helper$old_purpose <- ""
 
+  load_data <- function(filepath){
+    if (file.exists(filepath)) {
+      readRDS(filepath)
+    } else {
+      NULL
+    }
+  }
+
   ## Set  values of region
   observe({
     if(is.null(input$geography)){
@@ -241,9 +249,9 @@ shinyServer(function(input, output, session) {
     region$purposes_present
     input$purpose
 
-    # Identify region
-    query <- parseQueryString(session$clientData$url_search)
+    # Identify region from URL or use a default
     if (is.na(region$current)) {
+      query <- parseQueryString(session$clientData$url_search)
       region$current <- if (isTRUE(query[['r']] %in% regions$region_name)) {
         query[['r']]
       } else {
@@ -253,64 +261,51 @@ shinyServer(function(input, output, session) {
 
     # Notify browser to update URL to reflect new region
     session$sendCustomMessage("regionchange", region$current)
+
     # Define region geography, forcing a default in cases where the geography is not available
     switch(input_purpose(),
-     "commute"= {
-      if (input$geography %in% c("msoa", "lsoa")) {
-        region_geo_change_to <- input$geography
-      } else {
-        region_geo_change_to <- "msoa"
-      }
-    },
-    "school"= {
-      region_geo_change_to <- "lsoa"
-    },
-    "alltrips"= {
-      region_geo_change_to <- "msoa"
-    })
+           "commute"= {
+             if (input$geography %in% c("msoa", "lsoa")) {
+               region_geo_change_to <- input$geography
+             } else {
+               region_geo_change_to <- "msoa"
+             }
+           },
+           "school"= { region_geo_change_to <- "lsoa" },
+           "alltrips"= { region_geo_change_to <- "msoa" }
+    )
+
     # Only trigger geography changes if required.
-    if (is.na(region$geography) || region_geo_change_to != region$geography){
-      region$geography <<- region_geo_change_to
+    if (!identical(region_geo_change_to, region$geography)) {
+      region$geography <- region_geo_change_to
     }
 
     # Set data_dir
-    region$data_dir <<- file.path(data_regional_root, input_purpose(), region$geography, region$current)
+    region$data_dir <- file.path(data_regional_root, input_purpose(), region$geography, region$current)
 
     # Identify that region repopulation has happened
-    region$repopulate_region <<- T
+    region$repopulate_region <- T
 
     # Identify purposes and geographies available in region
     purposes_list <- c("commute", "school", "alltrips")
-    region$purposes_present <<- (dir.exists(file.path(data_regional_root, purposes_list, "msoa", region$current)) | dir.exists(file.path(data_regional_root, purposes_list, "lsoa", region$current)))
+    new_purpose <- (dir.exists(file.path(data_regional_root, purposes_list, "msoa", region$current)) | dir.exists(file.path(data_regional_root, purposes_list, "lsoa", region$current)))
+    if(!identical(new_purpose,region$purposes_present)){
+      region$purposes_present <- new_purpose
+    }
     geographies_list <- c("msoa", "lsoa")
-    region$geographies_present <<- dir.exists(file.path(data_regional_root, input_purpose(), geographies_list, region$current))
+    region$geographies_present <- dir.exists(file.path(data_regional_root, input_purpose(), geographies_list, region$current))
 
     # Identify the centre of the current region, save in to_plot
     to_plot$center_dim <<- rgeos::gCentroid(regions[regions$region_name == region$current, ], byid = TRUE)@coords
 
     # Load data to to_plot (if data exists - this varies by purpose/geography)
-    if (file.exists(file.path(region$data_dir, "z.Rds"))) {
-      to_plot$zones <<- readRDS(file.path(region$data_dir, "z.Rds"))
-    } else {
-      to_plot$zones <<- NULL
-    }
-
-    if (file.exists(file.path(region$data_dir, "c.Rds"))) {
-      to_plot$centroids <<- readRDS(file.path(region$data_dir,  "c.Rds"))
-    } else {
-      to_plot$centroids <<- NULL
-    }
-
-    if (file.exists(file.path(region$data_dir, "l.Rds"))) {
-      to_plot$straight_lines <<- readRDS(file.path(region$data_dir, "l.Rds"))
-    } else {
-      to_plot$straight_lines <<- NULL
-    }
-
-    if (file.exists(file.path(region$data_dir, "rf.Rds"))) {
-      to_plot$routes_fast <<- readRDS(file.path(region$data_dir, "rf.Rds"))
-    } else {
-      to_plot$routes_fast <<- NULL
+    to_plot$zones <<- load_data(file.path(region$data_dir, "z.Rds"))
+    to_plot$centroids <<- load_data(file.path(region$data_dir, "c.Rds"))
+    to_plot$straight_lines <<- load_data(file.path(region$data_dir, "l.Rds"))
+    to_plot$routes_fast <<- load_data(file.path(region$data_dir, "rf.Rds"))
+    to_plot$route_network <<- load_data(file.path(region$data_dir, "rnet.Rds"))
+    if(!is.null(to_plot$route_network)){
+      to_plot$route_network$id <<- to_plot$route_network$local_id
     }
 
     if (file.exists(file.path(region$data_dir, "rq.Rds"))) {
@@ -324,18 +319,13 @@ shinyServer(function(input, output, session) {
     } else {
       to_plot$routes_quieter <<- NULL
     }
-
-    if (file.exists(file.path(region$data_dir, "rnet.Rds"))) {
-      to_plot$route_network <<- readRDS(file.path(region$data_dir, "rnet.Rds"))
-      to_plot$route_network$id <<- to_plot$route_network$local_id
-   } else {
-     to_plot$route_network <<- NULL
-   }
   }, priority = 3)
 
-  # Only requred to run if the region changes
+
+  # Only requred to run if the region changes (as that affects purpose) or the purpose changes (as that affects geographies)
   observe({
     region$current
+    input$purpose
     isolate({
       update_purposegeog(region$purposes_present, region$geographies_present)
     })
@@ -416,8 +406,13 @@ shinyServer(function(input, output, session) {
       if (all(!keep))
         return(NULL)
       lines_in_bb <- lines[drop(keep),]
-      # Sort by the absolute values
-      lines_in_bb[tail(order(abs(lines_in_bb[[line_data()]])), nos),]
+      # Sort low-to-high for reduction in deaths (can't use absolute values as no. deaths can be a positive number, i.e. health disbenefit)
+      if (grepl(c("sideath_heat"), line_data())) {
+        lines_in_bb[tail(order(lines_in_bb[[line_data()]], decreasing = T), nos),]
+      } else {
+        # sort by absolute values for remainder of things, which all have zero as higher or lower limit
+        lines_in_bb[tail(order(abs(lines_in_bb[[line_data()]])), nos),]
+      }
     } else {
       # For the route network, just sort them according to the percentage of display
       # Sort by the absolute values
@@ -550,17 +545,16 @@ shinyServer(function(input, output, session) {
   })
 
 
-  ## Displays zones and centroids
+  ## Displays zones
   observe({
     input$purpose
     region$geography
     input$scenario
     line_type <<- isolate(input$line_type)
-    input$map_base
     region$data_dir
     region$repopulate_region
 
-    clearGroup(leafletProxy("map"), c("zones", "centroids"))
+    clearGroup(leafletProxy("map"), c("zones"))
     ## Display zones
     if (input$show_zones && !is.null(to_plot$zones)) {
       # Define bins and breaks (by purpose)
@@ -590,20 +584,6 @@ shinyServer(function(input, output, session) {
         layerId = paste0(to_plot$zones[['geo_code']], '-', "zones")
       )
     }
-    ## Define centroids (if exist) and display when zoom level is greater than 11 and lines are selected
-    if (!is.null(to_plot$centroids)) {
-      addCircleMarkers(leafletProxy("map"), data = to_plot$centroids,
-                       radius = normalise(to_plot$centroids$all, min = 1, max = 8),
-                       color = get_line_colour("centroids"), group = "centroids", opacity = 0.5,
-                       popup = popup_centroids(to_plot$centroids, input$scenario, input_purpose()),
-                       layerId = paste0(to_plot$centroids[['geo_code']], '-', "centroids")
-      )
-      if (isTRUE((is.null(isolate(input$map_zoom))) || isolate(input$map_zoom) < 11 || (input$line_type %in% show_no_lines) || (input$line_type=="route_network"))) {
-        hideGroup(leafletProxy("map"), "centroids")
-      } else {
-        showGroup(leafletProxy("map"), "centroids")
-      }
-    }
 
     ## Hide and then re-Show line layers, so that they are displayed as the top layer in the map.
     # NB Leaflet's function bringToBack() or bringToFront() (see https://leafletjs.com/reference.html#path) don't seem to exist for R
@@ -619,6 +599,33 @@ shinyServer(function(input, output, session) {
       }
     }
 
+  })
+
+  ## Define centroids
+  observe({
+    input$purpose
+    region$geography
+    input$scenario
+    input$line_type
+    region$data_dir
+    region$repopulate_region
+    input$map_zoom
+
+    clearGroup(leafletProxy("map"), c("centroids"))
+    # Define centroids (if exist) and display when zoom level is greater or equal to 11 and lines are selected
+    if (!is.null(to_plot$centroids)) {
+      addCircleMarkers(leafletProxy("map"), data = to_plot$centroids,
+                       radius = normalise(to_plot$centroids$all, min = 1, max = 8),
+                       color = get_line_colour("centroids"), group = "centroids", opacity = 0.5,
+                       popup = popup_centroids(to_plot$centroids, input$scenario, input_purpose()),
+                       layerId = paste0(to_plot$centroids[['geo_code']], '-', "centroids")
+      )
+      if (isTRUE((is.null(input$map_zoom)) || input$map_zoom < 11 || (input$line_type %in% show_no_lines) || (input$line_type=="route_network"))) {
+        hideGroup(leafletProxy("map"), "centroids")
+      } else {
+        showGroup(leafletProxy("map"), "centroids")
+      }
+    }
   })
 
 

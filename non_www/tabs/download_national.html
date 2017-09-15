@@ -10,7 +10,7 @@
       <div class="col-md-12 text-left" style="padding-top:10px;">
         <h3>National Data</h3>
         <p>This page contains data downloads for the whole of England. These are available as CSV files containing the zone and line baseline and scenario data, and in geographic files that can be read by R (.Rds) or GIS programs such as QGIS (.geojson).  Very large geographic files are available in R format only.</p>
-        <p>Please be aware that equivalent files for different geographies have <b>the same file name</b> when downloaded (e.g. ‘z_all.geojson’ for both the MSOA and LSOA national zones files).  To avoid confusion you may want to rename those files or save them in labelled folders.</p>
+        <p>Please be aware that equivalent files for different geographies have <b>the same file name</b> when downloaded (e.g. ‘z_all.geojson’ for both the MSOA and LSOA national zones files).  To avoid confusion you may want to rename those files or save them in labelled folders. Note also that when <b>downloading 'csv' files using a Firefox browser</b>, the file will open onscreen in a new webpage.  If you then type "Ctrl + S" the onscreen data will download as a csv file.</p>
       </div>
 
       <div class="col-md-12 text-left" style="padding-top:10px;">
@@ -18,6 +18,9 @@
         <p>Download the Census 2011 and scenario attribute data for all zones in England.</p>
         <ul>
           <li>Zones (local authorities)*:
+            <a href="https://github.com/npct/pct-outputs-national/raw/master/commute//lad_attributes.csv" target="_blank" download="lad_attributes.csv" onclick="ga('send', 'event', 'download', 'lad_attributes.csv');">
+              csv
+            </a>
             <a href="https://github.com/npct/pct-outputs-national/raw/master/commute//lad.Rds" target="_blank" download="lad.Rds" onclick="ga('send', 'event', 'download', 'lad.Rds');">
               Rds
             </a>
@@ -27,8 +30,10 @@
               Codebook
             </a>
           </li>
-          <li>
-            Zones (MSOA):
+          <li>Zones (MSOA):
+            <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/z_all_attributes.csv" target="_blank" download="z_all_attributes.csv" onclick="ga('send', 'event', 'download', 'z_all_attributes.csv');">
+              csv
+            </a>
             <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/z_all.Rds" target="_blank" download="z_all.Rds" onclick="ga('send', 'event', 'download', 'z_all.Rds');">
               Rds
             </a>
@@ -37,7 +42,7 @@
             </a> -
             <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/z_codebook.csv" target="_blank" download="z_codebook.csv" onclick="ga('send', 'event', 'download', 'z_codebook.csv');">Codebook</a>
           </li>
-          <li>Zones (LSOA): <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/z_all.Rds" target="_blank" download="z_all.Rds" onclick="ga('send', 'event', 'download', 'z_all.Rds');">Rds</a> <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/z_all.geojson" target="_blank" download="z_all.geojson" onclick="ga('send', 'event', 'download', 'z_all.geojson');">geojson</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/z_codebook.csv" target="_blank" download="z_codebook.csv" onclick="ga('send', 'event', 'download', 'z_codebook.csv');">Codebook</a> </li>
+          <li>Zones (LSOA):<a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/z_all_attributes.csv" target="_blank" download="z_all_attributes.csv" onclick="ga('send', 'event', 'download', 'z_all_attributes.csv');">csv</a> <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/z_all.Rds" target="_blank" download="z_all.Rds" onclick="ga('send', 'event', 'download', 'z_all.Rds');">Rds</a> <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/z_all.geojson" target="_blank" download="z_all.geojson" onclick="ga('send', 'event', 'download', 'z_all.geojson');">geojson</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/z_codebook.csv" target="_blank" download="z_codebook.csv" onclick="ga('send', 'event', 'download', 'z_codebook.csv');">Codebook</a> </li>
         </ul>
         <p>* Data aggregated from the LSOA zones file. Note that different units are used for the health economic savings (million pounds not pounds) and carbon savings (tonnes not kilograms of CO2e).</p>
       </div>
