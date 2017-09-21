@@ -137,7 +137,7 @@ text_drive_change <- function(purpose){
 
 text_cycle_interzone <- function(purpose){
   if(purpose=="commute" | purpose=="school")
-    list("cycle" = "Between-zone cyclists*", "*" = "* selected cyclists: see Model Output tab")
+    list("cycle" = "Between-zone cyclists*", "*" = "* selected cyclists: see Region Stats tab")
   else if(purpose=="alltrips")
     list("cycle" = "Between-zone cycle trips/wk* ", "*" = "* selected cycle trips")
 }
