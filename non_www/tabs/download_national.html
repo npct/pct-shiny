@@ -2,8 +2,8 @@
   <div class="row maintext" id="maintext">
     <div class="col-md-2 text-left" style="padding-top:10px;">
       <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natcommutezones">Zones data</a></div>
-      <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natcommutemsoalines">MSOA lines data</a></div>
-      <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natcommutelsoalines">LSOA lines data</a></div>
+      <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natcommutemsoaflows">MSOA flows data</a></div>
+      <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natcommutelsoaflows">LSOA flows data</a></div>
     </div>
 
     <div class="col-md-9">
@@ -48,15 +48,15 @@
       </div>
 
       <div class="col-md-12 text-left" style="padding-top:10px;">
-        <h4>Commuting data for lines</h4>
-        <p>Download the Census 2011 and scenario data for all lines starting or ending in England.</p>
+        <h4>Commuting data for flows</h4>
+        <p>Download the Census 2011 and scenario data for all flows starting or ending in England.</p>
         <p>In the ‘All flows’ files, destinations are grouped as ‘Other’ for origin-destination pairs with a fastest-route distance &gt;30km, or with a destination outside England or Wales. In addition, for the LSOA ‘All flows’ file, destinations are grouped as ‘Under 3’ for origin-destination pairs where the bidirectional number of commuters (by any mode) would be 1 or 2. This is done for data protection reasons.</p>
-        <p>The ‘Straight lines’, ‘Fast route’ and ‘Quieter routes’ files only include between-zone lines with fast route distance under 20km. In addition, the minimum number of commuters (by any mode, in either direction) must be 10 (MSOA) or 5 (LSOA).</p>
+        <p>The ‘Straight lines’, ‘Fast route’ and ‘Quieter routes’ files only include between-zone flows with fast route distance under 20km. In addition, the minimum number of commuters (by any mode, in either direction) must be 10 (MSOA) or 5 (LSOA).</p>
         <p>The LSOA route network includes all between-zone LSOA flows with fast route distance under 20km (with no minimum number of commuters).</p>
       </div>
 
       <div class="col-md-12 text-left" style="padding-top:10px;">
-        <h4><a name="natcommutemsoalines"></a>MSOA-level lines data</h4>
+        <h4><a name="natcommutemsoaflows"></a>MSOA-level flows data</h4>
         <ul>
           <li>All flows (attribute data only):  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/od_all_attributes.csv" target="_blank" download="od_all_attributes.csv" onclick="ga('send', 'event', 'download', 'od_all_attributes.csv');">csv</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'od_l_rf_codebook.csv' );">Codebook</a></li>
           <li>Centroids &amp; within-zone travel:  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/c_all.Rds" target="_blank" download="c_all.Rds" onclick="ga('send', 'event', 'download', 'c_all.Rds');">Rds</a> <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/c_all.geojson" target="_blank" download="c_all.geojson" onclick="ga('send', 'event', 'download', 'c_all.geojson');">geojson</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/c_codebook.csv" target="_blank" download="c_codebook.csv" onclick="ga('send', 'event', 'download', 'c_codebook.csv' );">Codebook</a></li>
@@ -67,7 +67,7 @@
       </div>
 
       <div class="col-md-12 text-left" style="padding-top:10px;">
-        <h4><a name="natcommutelsoalines"></a>LSOA-level lines data</h4>
+        <h4><a name="natcommutelsoaflows"></a>LSOA-level flows data</h4>
         <ul>
           <li>All flows (attribute data only): <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/od_all_attributes.csv" target="_blank" download="od_all_attributes.csv" onclick="ga('send', 'event', 'download', 'od_all_attributes.csv');">csv</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'od_l_rf_codebook.csv');">Codebook</a></li>
           <li>
