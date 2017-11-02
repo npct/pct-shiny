@@ -239,6 +239,7 @@ shinyServer(function(input, output, session) {
 
   ## Set  values of region
   observe({
+    shinyjs::showElement(id = "loading")
     if(is.null(input$geography)){
       return()
     }
@@ -319,21 +320,25 @@ shinyServer(function(input, output, session) {
     } else {
       to_plot$routes_quieter <<- NULL
     }
+    shinyjs::hideElement(id = "loading")
   }, priority = 3)
 
 
   # Only requred to run if the region changes (as that affects purpose) or the purpose changes (as that affects geographies)
   observe({
+    shinyjs::showElement(id = "loading")
     region$current
     input$purpose
     isolate({
       update_purposegeog(region$purposes_present, region$geographies_present)
     })
+    shinyjs::hideElement(id = "loading")
   }, priority =  2)
 
   ## Update labels according to purpose
   # NB don't have as part of above 'observes' otherwise those re-run when scenario changes, even though data all the same
   observe({
+    shinyjs::showElement(id = "loading")
     # massive hack to return early if the geography and purpose haven't actually changed
     if (helper$old_geog == region$geography && helper$old_purpose == input_purpose()) {
       return()
@@ -341,6 +346,7 @@ shinyServer(function(input, output, session) {
     helper$old_purpose <<- input_purpose()
     helper$old_geog <<- region$geography
     update_labels(input_purpose(), region$geography)
+    shinyjs::hideElement(id = "loading")
   }, priority = 1)
 
 
@@ -458,6 +464,7 @@ shinyServer(function(input, output, session) {
 
   ## Plot if lines change
   observe({
+    shinyjs::showElement(id = "loading")
     # Needed to force lines to be redrawn when purpose, geography, scenario, zone or base map changes
     input$purpose
     region$geography
@@ -518,6 +525,7 @@ shinyServer(function(input, output, session) {
           label = "Top N Lines"
         )
     }
+    shinyjs::hideElement(id = "loading")
   }, priority = - 10)
 
 
@@ -753,7 +761,7 @@ shinyServer(function(input, output, session) {
   ## NB in future need to make this purpose + geography specific
   observe({
     # region$repopulate_region
-
+    shinyjs::showElement(id = "loading")
     if (input$line_type == "lsoa_base_map") {
       urlTemplate <- paste0("https://npttile.vs.mythic-beasts.com/",input$scenario,"/{z}/{x}/{y}.png")
 
@@ -780,6 +788,7 @@ shinyServer(function(input, output, session) {
     } else {
       leafletProxy("map") %>% removeTiles(., layerId = "lsoa_base_map") %>% removeControl("lsoa_leg")
     }
+    shinyjs::hideElement(id = "loading")
   })
 
   ## Updates map tile according to the selected map base
@@ -861,6 +870,7 @@ shinyServer(function(input, output, session) {
 
     }
     leafletProxy("map") %>% hideGroup(., "lsoa_base_map") %>% showGroup(., "lsoa_base_map")
+    shinyjs::hide(id = "loading")
   })
 
 
