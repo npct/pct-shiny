@@ -78,6 +78,7 @@ shinyUI(
         ),
         includeHTML(file.path("..", "www", "test-banner.html")),
         br(),
+        div(id="loading", "Loading&#8230;"),
         leafletOutput("map", width = "100%", height = "95%"),
         absolutePanel(
           id = "controls",
