@@ -34,9 +34,19 @@ $(document).ready(function() {
 
   $('select').addClass("form-control");
 
+  var capitalize = function (s){
+    s = s.replace(/-/g, ' ');
+    s = s.toLowerCase().replace( /\b./g, function(a){ return a.toUpperCase(); } );
+    s = s.replace('And', 'and');
+    s = s.replace('Of', 'of');
+    s = s.replace('\'S', '\'s');
+    return s;
+  };
+
   Shiny.addCustomMessageHandler("regionchange", function(newRegion) {
     var newUrl = window.location.origin + window.location.pathname + "?r=" + newRegion;
     history.pushState(newRegion, newRegion, newUrl);
+    document.title = "Propensity to Cycle Tool - " + capitalize(newRegion);
     testBannerDisplay();
   });
 
