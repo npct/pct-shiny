@@ -1,6 +1,10 @@
 Variable name,Variable Description
-geo_code,Zone code
-geo_name,Zone name
+urn, School URN (unique reference number)
+schoolname,school name
+phase,"School phase of education, as designated by the School Census"
+secondary ,School classification into secondary (1) versus primary/early years (0)
+lsoa11cd,LSOA (2011) code
+lsoa11nm,LSOA (2011) name
 lad11cd,Local authoriy (2011) code
 lad_name,Local authoriy (2011) name
 all,Total no. children
