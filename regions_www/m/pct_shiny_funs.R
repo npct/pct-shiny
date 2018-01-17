@@ -136,8 +136,10 @@ text_drive_change <- function(purpose){
 }
 
 text_cycle_interzone <- function(purpose){
-  if(purpose=="commute" | purpose=="school")
+  if(purpose=="commute")
     list("cycle" = "Between-zone cyclists*", "*" = "* selected cyclists: see Region Stats tab")
+  else if(purpose=="school")
+    list("cycle" = "Cyclists* ", "*" = "* selected cyclists: see Region Stats tab")
   else if(purpose=="alltrips")
     list("cycle" = "Between-zone cycle trips/wk* ", "*" = "* selected cycle trips")
 }
@@ -526,11 +528,11 @@ popup_zones <- function(data, scenario, purpose){
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
       <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
-    </tr>
-      <tr>
+     </tr>
+    <tr>
       <td>", text_drive_baseline(purpose), "</td>
-      <td>", data$car, " (", round_percent(data, data$car/data$all), "%) </td>
-    </tr>
+      <td>", data$car_driver, " (", round_percent(data, data$car/data$all), "%) </td>
+     </tr>
   </tbody>
 </table>")
     } else {
@@ -559,6 +561,18 @@ popup_zones <- function(data, scenario, purpose){
    <tr>
      <td>", text_cycle_scenario(purpose), "</td>
      <td>", round(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+   </tr>
+   <tr>
+     <td>", text_drive_change(purpose), "</td>
+     <td>", round(data[[data_filter(scenario, "sid")]]), "</td>
+   </tr>
+  <tr>
+    <td> Change in mean mMETs/child/week: &nbsp; </td>
+     <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "simmet")]], 3), "</td>
+   </tr>
+   <tr>
+     <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
+     <td>", round(data[[data_filter(scenario, "sico2")]] / 1000,1), "</td>
    </tr>
   </tbody>
 </table>")

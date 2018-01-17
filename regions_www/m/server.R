@@ -166,7 +166,7 @@ shinyServer(function(input, output, session) {
         "Go Dutch"                = "dutch"
       )
       local_line_types <- c("None"                   = "none",
-                            "Route Network (LSOA)"   = "route_network"
+                            "Route Network (LSOA, clickable)"   = "route_network"
       )
       local_line_order <- c(
         "Number of cycle trips" = "slc",
