@@ -165,7 +165,7 @@ shinyServer(function(input, output, session) {
         "Government Target"       = "govtarget",
         "Go Dutch"                = "dutch"
       )
-      local_line_types <- c("None"                   = "none",
+      local_line_types <- c("None"  = "none",
                             "Route Network (LSOA, clickable)"   = "route_network"
       )
       local_line_order <- c(
@@ -302,6 +302,7 @@ shinyServer(function(input, output, session) {
     # Load data to to_plot (if data exists - this varies by purpose/geography)
     to_plot$zones <<- load_data(file.path(region$data_dir, "z.Rds"))
     to_plot$centroids <<- load_data(file.path(region$data_dir, "c.Rds"))
+    to_plot$destinations <<- load_data(file.path(region$data_dir, "d.Rds"))
     to_plot$straight_lines <<- load_data(file.path(region$data_dir, "l.Rds"))
     to_plot$routes_fast <<- load_data(file.path(region$data_dir, "rf.Rds"))
     to_plot$route_network <<- load_data(file.path(region$data_dir, "rnet.Rds"))
@@ -530,7 +531,7 @@ shinyServer(function(input, output, session) {
 
 
   ##############
-  # Plot zones and  centroids
+  # Plot zones and centroids
   ##############
 
   ## Set transparency of zones to 0.5 when displayed, otherwise 0
@@ -553,7 +554,7 @@ shinyServer(function(input, output, session) {
   })
 
 
-  ## Displays zones
+  ## Display zones
   observe({
     input$purpose
     region$geography
@@ -636,6 +637,32 @@ shinyServer(function(input, output, session) {
     }
   })
 
+  ## Define destinations
+  observe({
+    input$purpose
+    region$geography
+    input$scenario
+    input$line_type
+    region$data_dir
+    region$repopulate_region
+    input$map_zoom
+
+    clearGroup(leafletProxy("map"), c("destinations"))
+    # Define destinations (if exist) and display when zoom level is greater or equal to 11 and lines are selected
+    if (!is.null(to_plot$destinations)) {
+      addCircleMarkers(leafletProxy("map"), data = to_plot$destinations,
+                       radius = normalise(to_plot$destinations$all, min = 1, max = 8),
+                       color = get_line_colour("destinations"), group = "destinations", opacity = 0.5,
+                       popup = popup_destinations(to_plot$destinations, input$scenario, input_purpose()),
+                       layerId = paste0(to_plot$destinations[['urn']], '-', "destinations")
+      )
+      if (isTRUE((is.null(input$map_zoom)) || input$map_zoom < 11 )) {
+        hideGroup(leafletProxy("map"), "destinations")
+      } else {
+        showGroup(leafletProxy("map"), "destinations")
+      }
+    }
+  })
 
   ##############
   # Highlighting - both for regions and for lines
