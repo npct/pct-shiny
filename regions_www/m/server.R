@@ -1044,13 +1044,17 @@ shinyServer(function(input, output, session) {
   ## Read regional data download files
   # This file updates whenever there is a change to input$region
   output$download_region_current <- renderUI({
-    html <- includeHTML(file.path("..", "..", "non_www", "tabs", "download_region.html"))
+    input_purpose()
+
+    html <- includeHTML(file.path("..", "..", "non_www", "tabs", input_purpose(), "download_region.html"))
     html <- gsub("<!--region_name-->", get_pretty_region_name(region$current), html)
     gsub("<!--region_url-->", region$current, html)
   })
 
   ## Create the national data download files
   output$download_national_current <- renderUI({
-    includeHTML(file.path("..", "..", "non_www", "tabs", "download_national.html"))
+    input_purpose()
+
+    includeHTML(file.path("..", "..", "non_www", "tabs", input_purpose(), "download_national.html"))
   })
 })
