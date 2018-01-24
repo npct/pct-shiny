@@ -479,6 +479,19 @@ shinyServer(function(input, output, session) {
     line_type <- ifelse(input$line_type == 'routes', "routes_quieter", input$line_type)
     local_lines <-  sort_lines(to_plot[[line_type]], input$line_type, input$nos_lines)
 
+    # Filter out zero lines for scenario in question from route network
+    if (input$line_type == "route_network") {
+      if (input$scenario == 'olc') {
+       local_lines <- local_lines[local_lines$bicycle>0,]
+      } else if (input$scenario == 'govtarget') {
+        local_lines <- local_lines[local_lines$govtarget_slc>0,]
+      } else if (input$scenario == 'gendereq') {
+        local_lines <- local_lines[local_lines$gendereq_slc>0,]
+      } else {
+        local_lines <- local_lines[local_lines$dutch_slc>0,] # always >0 for both
+      }
+    }
+
     if (is.null(to_plot$ldata) || (!is.null(to_plot$ldata) && (!identical(to_plot$ldata, local_lines) || !identical(to_plot$scenario, input$scenario)))) {
       leafletProxy("map")  %>% clearGroup(.,
                                           c("straight_lines",
@@ -502,7 +515,7 @@ shinyServer(function(input, output, session) {
         session,
         inputId = "nos_lines",
         min = 10,
-        max = 50,
+        max = 90,
         step = 20,
         label = "Percent (%) of Network"
       )
