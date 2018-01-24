@@ -9,13 +9,13 @@
     <div class="col-md-9">
       <div class="col-md-12 text-left" style="padding-top:10px;">
         <h3>National Data - commuting layer</h3>
-        <p>This page contains data downloads for the commuting layer for the whole of England. These are available as CSV files containing baseline and scenario attribute data for zones and lines, and as geographic files that can be read by R (.Rds) or GIS programs such as QGIS (.geojson).  Very large geographic files are available in R format only.</p>
+        <p>This page contains data downloads for the commuting layer for the whole of England and Wales. These are available as CSV files containing baseline and scenario attribute data for zones and lines, and as geographic files that can be read by R (.Rds) or GIS programs such as QGIS (.geojson).  Very large geographic files are available in R format only.</p>
         <p>Please be aware that equivalent files for different purposes and geographies have <b>the same file name</b> when downloaded (e.g. ‘z_all.geojson’ for both the MSOA and LSOA national zones files).  To avoid confusion you may want to rename those files or save them in labelled folders. Note also that when <b>downloading 'csv' files using a Firefox browser</b>, the file will open onscreen in a new webpage.  If you then type "Ctrl + S" the onscreen data will download as a csv file.</p>
       </div>
 
       <div class="col-md-12 text-left" style="padding-top:10px;">
         <h4><a name="natcommutezones"></a>Commuting data for zones</h4>
-        <p>Download the Census 2011 and scenario attribute data for all zones in England.</p>
+        <p>Download the Census 2011 and scenario attribute data for all zones in England and Wales.</p>
         <ul>
           <li>Zones (local authorities)*:
             <a href="https://github.com/npct/pct-outputs-national/raw/master/commute//lad_attributes.csv" target="_blank" download="lad_attributes.csv" onclick="ga('send', 'event', 'download', 'lad_attributes.csv');">
@@ -60,7 +60,7 @@
 
       <div class="col-md-12 text-left" style="padding-top:10px;">
         <h4>Commuting data for flows</h4>
-        <p>Download the Census 2011 and scenario data for all flows starting or ending in England.</p>
+        <p>Download the Census 2011 and scenario data for all flows starting or ending in England or Wales.</p>
         <p>In the ‘All flows’ files, destinations are grouped as ‘Other’ for origin-destination pairs with a fastest-route distance &gt;30km, or with a destination outside England or Wales. In addition, for the LSOA ‘All flows’ file, destinations are grouped as ‘Under 3’ for origin-destination pairs where the bidirectional number of commuters (by any mode) would be 1 or 2. This is done for data protection reasons.</p>
         <p>The ‘Straight lines’, ‘Fast route’ and ‘Quieter routes’ files only include between-zone flows with fast route distance under 20km. In addition, the minimum number of commuters (by any mode, in either direction) must be 10 (MSOA) or 5 (LSOA).</p>
         <p>The LSOA route network includes all between-zone LSOA flows with fast route distance under 20km (with no minimum number of commuters).</p>
