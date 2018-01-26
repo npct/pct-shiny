@@ -10,3 +10,5 @@
 README.html
 .RData
 repo_sha
+packrat/lib*/
+packrat/src*/
