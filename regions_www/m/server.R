@@ -763,7 +763,7 @@ shinyServer(function(input, output, session) {
     # region$repopulate_region
     shinyjs::showElement(id = "loading")
     if (input$line_type == "lsoa_base_map") {
-      urlTemplate <- paste0("https://npttile.vs.mythic-beasts.com/",input$scenario,"/{z}/{x}/{y}.png")
+      urlTemplate <- paste0("https://npttile.vs.mythic-beasts.com/en-cy/",input$scenario,"/{z}/{x}/{y}.png")
 
       leafletProxy("map") %>%
         addTiles(
