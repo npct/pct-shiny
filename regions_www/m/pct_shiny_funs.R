@@ -164,8 +164,8 @@ data_filter <- function(scenario, type){
   ifelse(scenario == "olc", "bicycle", paste(scenario, type, sep = "_"))
 }
 
-# Return red if the data is positive
-positive_red <- function(dataset, scenario, type, round_digits = 0){
+# Return red if the data is negative
+negative_red <- function(dataset, scenario, type, round_digits = 0){
   ifelse(round(dataset[[data_filter(scenario, type)]], round_digits) < 0, "red", "inherit")
 }
 
@@ -175,7 +175,7 @@ positive_red <- function(dataset, scenario, type, round_digits = 0){
 ############
 popup_straight_lines <- function(data, scenario, purpose){
 
-  font_colour <- positive_red(data, scenario, "sivalue_heat")
+  font_colour <- negative_red(data, scenario, "sivalue_heat")
 
   # BASELINE TABLE
   if(scenario == 'olc') {
@@ -261,7 +261,7 @@ popup_routes <- function(data, scenario, purpose){
 
   if (route_type == 'fast') {
 
-  font_colour <- positive_red(data, scenario, "sivalue_heat")
+  font_colour <- negative_red(data, scenario, "sivalue_heat")
     if(scenario == 'olc') {
       paste0("
 <table class = 'htab'>
@@ -431,7 +431,7 @@ popup_route_network <- function(data, scenario, purpose){
 popup_zones <- function(data, scenario, purpose){
 
   if (purpose %in% c("commute", "alltrips")) {
-  font_colour <- positive_red(data, scenario, "sivalue_heat")
+  font_colour <- negative_red(data, scenario, "sivalue_heat")
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -509,7 +509,7 @@ popup_zones <- function(data, scenario, purpose){
   }
 
   } else if (purpose == "school") {
-    font_colour <- positive_red(data, scenario, "simmet", 3)
+    font_colour <- negative_red(data, scenario, "simmet", 3)
 
     if(scenario == 'olc') {
       paste0("
@@ -589,7 +589,7 @@ popup_zones <- function(data, scenario, purpose){
 # CENTROID POPUP
 ############
 popup_centroids <- function(data, scenario, purpose){
-  font_colour <- positive_red(data, scenario, "sivalue_heat")
+  font_colour <- negative_red(data, scenario, "sivalue_heat")
  if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -672,7 +672,7 @@ popup_centroids <- function(data, scenario, purpose){
 ############
 popup_destinations <- function(data, scenario, purpose){
 
-  font_colour <- positive_red(data, scenario, "simmet", 3)
+  font_colour <- negative_red(data, scenario, "simmet", 3)
   if(scenario == 'olc') {
     paste0("
  <table class = 'htab'>
