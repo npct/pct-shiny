@@ -44,7 +44,7 @@ round_dp <- function(expression, small_threshold = 0.05, large_threshold = 0.5){
 }
 
 round_percent <- function(expression){
-  round_dp(expression * 100, small_threshold = 0.0, large_threshold = 0.005)
+  round_dp(expression * 100, small_threshold = 0.0, large_threshold = 0.5)
 }
 
 ## Define and apply the colours of lines
