@@ -30,23 +30,27 @@ normalise <- function(values, min = 0, max = 1){
 }
 
 
-## Create percentages such that rounded to 1DP if >0% and <0.5%.  [NB can be NaN if denominator zero]
-round_percent <- function(data, expression){
- value <- round(100 * expression)
-  for(i in 1:length(data)) {
-    if(!is.na(expression[i]) && !is.nan(expression[i]) && expression[i]>0 && expression[i]<0.005) {
-      value[i] <- round(100 * expression[i], 1)
-    }
-    if (is.nan(value[i]) || is.na(value[i])) { value[i] <- "-" }
-  }
- value
+## Create percentages such that rounded to XDP if >0% and <0.5%.  [NB can be NaN if denominator zero]
+round_dp <- function(expression, small_threshold = 0.05, large_threshold = 0.5){
+  small <- is.finite(expression) & expression > 0 & expression < small_threshold
+  medium <- is.finite(expression) & expression >= small_threshold & expression < large_threshold
+  large <- is.finite(expression) & expression >= large_threshold
+  other <- is.nan(expression) | is.na(expression)
+  expression[small] <- round(expression[small], 2)
+  expression[medium] <- round(expression[medium], 1)
+  expression[large] <- round(expression[large])
+  expression[other] <- "-"
+  expression
 }
 
+round_percent <- function(expression){
+  round_dp(expression * 100, small_threshold = 0.0, large_threshold = 0.5)
+}
 
 ## Define and apply the colours of lines
 line_and_colour_df <- data.frame(
-  line_type = c("centroids", "straight_lines", "routes_fast", "routes_quieter", "route_network"),
-  line_colour = c("maroon", "maroon", "purple", "darkgreen", "blue")
+  line_type = c("destinations", "centroids", "straight_lines", "routes_fast", "routes_quieter", "route_network"),
+  line_colour = c("darkblue", "maroon", "maroon", "purple", "darkgreen", "blue")
 )
 
 get_line_colour <- function(line_type){
@@ -105,6 +109,11 @@ text_zone_header <- function(purpose) {
          "alltrips" = "All trips starting in zone")
 }
 
+text_destination_header <- function(purpose) {
+  switch(purpose,
+         "school"   = "All children attending this school")
+}
+
 text_all <- function(purpose) {
   switch(purpose,
          "commute"  = "Total commuters: &nbsp;",
@@ -136,8 +145,10 @@ text_drive_change <- function(purpose){
 }
 
 text_cycle_interzone <- function(purpose){
-  if(purpose=="commute" | purpose=="school")
+  if(purpose=="commute")
     list("cycle" = "Between-zone cyclists*", "*" = "* selected cyclists: see Region Stats tab")
+  else if(purpose=="school")
+    list("cycle" = "Cyclists* ", "*" = "* selected cyclists: see Region Stats tab")
   else if(purpose=="alltrips")
     list("cycle" = "Between-zone cycle trips/wk* ", "*" = "* selected cycle trips")
 }
@@ -153,9 +164,9 @@ data_filter <- function(scenario, type){
   ifelse(scenario == "olc", "bicycle", paste(scenario, type, sep = "_"))
 }
 
-# Create a new variable called font_colour which changes into red colour when change in death/yr is negative
-positive_red <- function(dataset, scenario, type){
-  dataset@data$font_colour <- ifelse(round(dataset[[data_filter(scenario, type)]]) <0, "red", "black")
+# Return red if the data is negative
+negative_red <- function(dataset, scenario, type, round_digits = 0){
+  ifelse(round(dataset[[data_filter(scenario, type)]], round_digits) < 0, "red", "inherit")
 }
 
 
@@ -164,8 +175,7 @@ positive_red <- function(dataset, scenario, type){
 ############
 popup_straight_lines <- function(data, scenario, purpose){
 
-  # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
-  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
+  font_colour <- negative_red(data, scenario, "sivalue_heat")
 
   # BASELINE TABLE
   if(scenario == 'olc') {
@@ -182,11 +192,11 @@ popup_straight_lines <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>",  data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>",  data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_baseline(purpose), "</td>
-      <td>", data$car_driver, " (", round_percent(data, data$car_driver / data$all), "%) </td>
+      <td>", data$car_driver, " (", round_percent(data$car_driver / data$all), "%) </td>
     </tr>
     <tr>
       <td> Distance (km): &nbsp; </td>
@@ -211,19 +221,19 @@ popup_straight_lines <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round(data[[data_filter(scenario, "slc")]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, "slc")]]), " (", round_percent(data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
-      <td>", round(data[[data_filter(scenario, "sid")]]), "</td>
+      <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
              " (&pound;" , round(data[[data_filter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
@@ -251,9 +261,7 @@ popup_routes <- function(data, scenario, purpose){
 
   if (route_type == 'fast') {
 
-  # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
-  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
-
+  font_colour <- negative_red(data, scenario, "sivalue_heat")
     if(scenario == 'olc') {
       paste0("
 <table class = 'htab'>
@@ -268,11 +276,11 @@ popup_routes <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_baseline(purpose), "</td>
-      <td>", data$car_driver, " (", round_percent(data, data$car_driver / data$all), "%) </td>
+      <td>", data$car_driver, " (", round_percent(data$car_driver / data$all), "%) </td>
     </tr>
     <tr>
       <td> Fast route distance (km): &nbsp; </td>
@@ -301,19 +309,19 @@ popup_routes <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round(data[[data_filter(scenario, "slc")]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, "slc")]]), " (", round_percent(data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
-      <td>", round(data[[data_filter(scenario, "sid")]]), "</td>
+      <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
              " (&pound;" , round(data[[data_filter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
@@ -418,15 +426,12 @@ popup_route_network <- function(data, scenario, purpose){
 }
 
 ############
-# ZONE - COMMUTE
+# ZONE POPUP
 ############
 popup_zones <- function(data, scenario, purpose){
 
   if (purpose %in% c("commute", "alltrips")) {
-
-  # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
-  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) < 0, "red", "black")
-
+  font_colour <- negative_red(data, scenario, "sivalue_heat")
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -448,11 +453,11 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_baseline(purpose), "</td>
-      <td>", data$car_driver, " (", round_percent(data, data$car_driver/data$all), "%) </td>
+      <td>", data$car_driver, " (", round_percent(data$car_driver/data$all), "%) </td>
     </tr>
   </tbody>
 </table>")
@@ -479,19 +484,19 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
-      <td>", round(data[[data_filter(scenario, "sid")]]), "</td>
+      <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
              " (&pound;" , round(data[[data_filter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
@@ -504,6 +509,8 @@ popup_zones <- function(data, scenario, purpose){
   }
 
   } else if (purpose == "school") {
+    font_colour <- negative_red(data, scenario, "simmet", 3)
+
     if(scenario == 'olc') {
       paste0("
 <table class = 'htab'>
@@ -525,12 +532,12 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
-    </tr>
-      <tr>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
+     </tr>
+    <tr>
       <td>", text_drive_baseline(purpose), "</td>
-      <td>", data$car, " (", round_percent(data, data$car/data$all), "%) </td>
-    </tr>
+      <td>", data$car_driver, " (", round_percent(data$car/data$all), "%) </td>
+     </tr>
   </tbody>
 </table>")
     } else {
@@ -554,11 +561,23 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
      <td>", text_cycle_baseline(purpose), "</td>
-     <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+     <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
    </tr>
    <tr>
      <td>", text_cycle_scenario(purpose), "</td>
-     <td>", round(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+     <td>", round_dp(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+   </tr>
+   <tr>
+     <td>", text_drive_change(purpose), "</td>
+     <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
+   </tr>
+  <tr>
+    <td> Change in mean mMETs/child/week: &nbsp; </td>
+     <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "simmet")]], 3), "</td>
+   </tr>
+   <tr>
+     <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
+     <td>", round(data[[data_filter(scenario, "sico2")]] / 1000,1), "</td>
    </tr>
   </tbody>
 </table>")
@@ -567,13 +586,10 @@ popup_zones <- function(data, scenario, purpose){
 }
 
 ############
-# CENTROID
+# CENTROID POPUP
 ############
 popup_centroids <- function(data, scenario, purpose){
-
-  # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
-  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
-
+  font_colour <- negative_red(data, scenario, "sivalue_heat")
  if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -595,11 +611,11 @@ popup_centroids <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_baseline(purpose), "</td>
-      <td>", data$car_driver, " (", round_percent(data, data$car_driver / data$all), "%) </td>
+      <td>", data$car_driver, " (", round_percent(data$car_driver / data$all), "%) </td>
     </tr>
   </tbody>
 </table>
@@ -626,19 +642,19 @@ popup_centroids <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round(data[[data_filter(scenario, "slc")]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, "slc")]]), " (", round_percent(data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
-      <td>", round(data[[data_filter(scenario, "sid")]]), "</td>
+      <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
              " (&pound;" ,round(data[[data_filter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
@@ -650,3 +666,87 @@ popup_centroids <- function(data, scenario, purpose){
 </table>")
   }
 }
+
+############
+# DESTINATION POPUP
+############
+popup_destinations <- function(data, scenario, purpose){
+
+  font_colour <- negative_red(data, scenario, "simmet", 3)
+  if(scenario == 'olc') {
+    paste0("
+ <table class = 'htab'>
+   <thead>
+    <tr>
+      <th>", text_destination_header(purpose),"</th>
+    </tr>
+    <tr>
+      <th>", get_scenario_name(scenario, purpose), " (baseline) </th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+      <td>", data$schoolname, " (urn=",data$urn,")", "</td>
+    </tr>
+    <tr>
+      <td>", text_all(purpose), "</td>
+      <td>", data$all, "</td>
+    </tr>
+    <tr>
+      <td>", text_cycle_baseline(purpose), "</td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
+    </tr>
+    <tr>
+      <td>", text_drive_baseline(purpose), "</td>
+      <td>", data$car, " (", round_percent(data$car / data$all), "%) </td>
+    </tr>
+   </tbody>
+ </table>
+  ")
+
+  } else {
+
+    paste0("
+<table class = 'htab'>
+  <thead>
+    <tr>
+      <th>", text_destination_header(purpose),"</th>
+    </tr>
+    <tr>
+      <th>  Scenario: ", get_scenario_name(scenario, purpose), " </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>", data$schoolname, " (urn=",data$urn,")", "</td>
+    </tr>
+    <tr>
+      <td>", text_all(purpose), "</td>
+      <td>", data$all, "</td>
+    </tr>
+    <tr>
+      <td>", text_cycle_baseline(purpose), "</td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
+    </tr>
+    <tr>
+      <td>", text_cycle_scenario(purpose), "</td>
+      <td>", round_dp(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+    </tr>
+    <tr>
+      <td>", text_drive_change(purpose), "</td>
+      <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
+    </tr>
+    <tr>
+      <td> Change in mean mMETs/child/week: &nbsp; </td>
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "simmet")]], 3), "</td>
+    </tr>
+    <tr>
+      <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
+      <td>", round(data[[data_filter(scenario, "sico2")]] / 1000,1), "</td>
+    </tr>
+  </tbody>
+</table>")
+
+  }
+  }
+

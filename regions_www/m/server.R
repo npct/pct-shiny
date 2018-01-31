@@ -165,8 +165,8 @@ shinyServer(function(input, output, session) {
         "Government Target"       = "govtarget",
         "Go Dutch"                = "dutch"
       )
-      local_line_types <- c("None"                   = "none",
-                            "Route Network (LSOA)"   = "route_network"
+      local_line_types <- c("None"  = "none",
+                            "Route Network (LSOA, clickable)"   = "route_network"
       )
       local_line_order <- c(
         "Number of cycle trips" = "slc",
@@ -302,6 +302,7 @@ shinyServer(function(input, output, session) {
     # Load data to to_plot (if data exists - this varies by purpose/geography)
     to_plot$zones <<- load_data(file.path(region$data_dir, "z.Rds"))
     to_plot$centroids <<- load_data(file.path(region$data_dir, "c.Rds"))
+    to_plot$destinations <<- load_data(file.path(region$data_dir, "d.Rds"))
     to_plot$straight_lines <<- load_data(file.path(region$data_dir, "l.Rds"))
     to_plot$routes_fast <<- load_data(file.path(region$data_dir, "rf.Rds"))
     to_plot$route_network <<- load_data(file.path(region$data_dir, "rnet.Rds"))
@@ -478,6 +479,19 @@ shinyServer(function(input, output, session) {
     line_type <- ifelse(input$line_type == 'routes', "routes_quieter", input$line_type)
     local_lines <-  sort_lines(to_plot[[line_type]], input$line_type, input$nos_lines)
 
+    # Filter out zero lines for scenario in question from route network
+    if (input$line_type == "route_network") {
+      if (input$scenario == 'olc') {
+       local_lines <- local_lines[local_lines$bicycle>0,]
+      } else if (input$scenario == 'govtarget') {
+        local_lines <- local_lines[local_lines$govtarget_slc>0,]
+      } else if (input$scenario == 'gendereq') {
+        local_lines <- local_lines[local_lines$gendereq_slc>0,]
+      } else {
+        local_lines <- local_lines[local_lines$dutch_slc>0,] # always >0 for both
+      }
+    }
+
     if (is.null(to_plot$ldata) || (!is.null(to_plot$ldata) && (!identical(to_plot$ldata, local_lines) || !identical(to_plot$scenario, input$scenario)))) {
       leafletProxy("map")  %>% clearGroup(.,
                                           c("straight_lines",
@@ -501,7 +515,7 @@ shinyServer(function(input, output, session) {
         session,
         inputId = "nos_lines",
         min = 10,
-        max = 50,
+        max = 90,
         step = 20,
         label = "Percent (%) of Network"
       )
@@ -530,7 +544,7 @@ shinyServer(function(input, output, session) {
 
 
   ##############
-  # Plot zones and  centroids
+  # Plot zones and centroids
   ##############
 
   ## Set transparency of zones to 0.5 when displayed, otherwise 0
@@ -553,7 +567,7 @@ shinyServer(function(input, output, session) {
   })
 
 
-  ## Displays zones
+  ## Display zones
   observe({
     input$purpose
     region$geography
@@ -636,6 +650,32 @@ shinyServer(function(input, output, session) {
     }
   })
 
+  ## Define destinations
+  observe({
+    input$purpose
+    region$geography
+    input$scenario
+    input$line_type
+    region$data_dir
+    region$repopulate_region
+    input$map_zoom
+
+    clearGroup(leafletProxy("map"), c("destinations"))
+    # Define destinations (if exist) and display when zoom level is greater or equal to 11 and lines are selected
+    if (!is.null(to_plot$destinations)) {
+      addCircleMarkers(leafletProxy("map"), data = to_plot$destinations,
+                       radius = normalise(to_plot$destinations$all, min = 1, max = 8),
+                       color = get_line_colour("destinations"), group = "destinations", opacity = 0.5,
+                       popup = popup_destinations(to_plot$destinations, input$scenario, input_purpose()),
+                       layerId = paste0(to_plot$destinations[['urn']], '-', "destinations")
+      )
+      if (isTRUE((is.null(input$map_zoom)) || input$map_zoom < 11 )) {
+        hideGroup(leafletProxy("map"), "destinations")
+      } else {
+        showGroup(leafletProxy("map"), "destinations")
+      }
+    }
+  })
 
   ##############
   # Highlighting - both for regions and for lines
@@ -1004,13 +1044,17 @@ shinyServer(function(input, output, session) {
   ## Read regional data download files
   # This file updates whenever there is a change to input$region
   output$download_region_current <- renderUI({
-    html <- includeHTML(file.path("..", "..", "non_www", "tabs", "download_region.html"))
+    input_purpose()
+
+    html <- includeHTML(file.path("..", "..", "non_www", "tabs", input_purpose(), "download_region.html"))
     html <- gsub("<!--region_name-->", get_pretty_region_name(region$current), html)
     gsub("<!--region_url-->", region$current, html)
   })
 
   ## Create the national data download files
   output$download_national_current <- renderUI({
-    includeHTML(file.path("..", "..", "non_www", "tabs", "download_national.html"))
+    input_purpose()
+
+    includeHTML(file.path("..", "..", "non_www", "tabs", input_purpose(), "download_national.html"))
   })
 })
