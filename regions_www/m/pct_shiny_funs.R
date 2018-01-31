@@ -43,17 +43,9 @@ round_dp <- function(expression, small_threshold = 0.05, large_threshold = 0.5){
   expression
 }
 
-round_percent <- function(data, expression){
- value <- round(100 * expression)
-  for(i in 1:length(data)) {
-    if(!is.na(expression[i]) && !is.nan(expression[i]) && expression[i]>0 && expression[i]<0.005) {
-      value[i] <- round(100 * expression[i], 1)
-    }
-    if (is.nan(value[i]) || is.na(value[i])) { value[i] <- "-" }
-  }
- value
+round_percent <- function(expression){
+  round_dp(expression * 100, small_threshold = 0.0, large_threshold = 0.005)
 }
-
 
 ## Define and apply the colours of lines
 line_and_colour_df <- data.frame(
@@ -201,11 +193,11 @@ popup_straight_lines <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>",  data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>",  data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_baseline(purpose), "</td>
-      <td>", data$car_driver, " (", round_percent(data, data$car_driver / data$all), "%) </td>
+      <td>", data$car_driver, " (", round_percent(data$car_driver / data$all), "%) </td>
     </tr>
     <tr>
       <td> Distance (km): &nbsp; </td>
@@ -230,11 +222,11 @@ popup_straight_lines <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round_dp(data[[data_filter(scenario, "slc")]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, "slc")]]), " (", round_percent(data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
@@ -287,11 +279,11 @@ popup_routes <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_baseline(purpose), "</td>
-      <td>", data$car_driver, " (", round_percent(data, data$car_driver / data$all), "%) </td>
+      <td>", data$car_driver, " (", round_percent(data$car_driver / data$all), "%) </td>
     </tr>
     <tr>
       <td> Fast route distance (km): &nbsp; </td>
@@ -320,11 +312,11 @@ popup_routes <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round_dp(data[[data_filter(scenario, "slc")]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, "slc")]]), " (", round_percent(data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
@@ -467,11 +459,11 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_baseline(purpose), "</td>
-      <td>", data$car_driver, " (", round_percent(data, data$car_driver/data$all), "%) </td>
+      <td>", data$car_driver, " (", round_percent(data$car_driver/data$all), "%) </td>
     </tr>
   </tbody>
 </table>")
@@ -498,11 +490,11 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round_dp(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
@@ -548,11 +540,11 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
      </tr>
     <tr>
       <td>", text_drive_baseline(purpose), "</td>
-      <td>", data$car_driver, " (", round_percent(data, data$car/data$all), "%) </td>
+      <td>", data$car_driver, " (", round_percent(data$car/data$all), "%) </td>
      </tr>
   </tbody>
 </table>")
@@ -577,11 +569,11 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
      <td>", text_cycle_baseline(purpose), "</td>
-     <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+     <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
    </tr>
    <tr>
      <td>", text_cycle_scenario(purpose), "</td>
-     <td>", round_dp(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+     <td>", round_dp(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
    </tr>
    <tr>
      <td>", text_drive_change(purpose), "</td>
@@ -630,11 +622,11 @@ popup_centroids <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_baseline(purpose), "</td>
-      <td>", data$car_driver, " (", round_percent(data, data$car_driver / data$all), "%) </td>
+      <td>", data$car_driver, " (", round_percent(data$car_driver / data$all), "%) </td>
     </tr>
   </tbody>
 </table>
@@ -661,11 +653,11 @@ popup_centroids <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round_dp(data[[data_filter(scenario, "slc")]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, "slc")]]), " (", round_percent(data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
@@ -715,11 +707,11 @@ popup_destinations <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_baseline(purpose), "</td>
-      <td>", data$car, " (", round_percent(data, data$car / data$all), "%) </td>
+      <td>", data$car, " (", round_percent(data$car / data$all), "%) </td>
     </tr>
    </tbody>
  </table>
@@ -747,11 +739,11 @@ popup_destinations <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-      <td>", data$bicycle, " (", round_percent(data, data$bicycle / data$all) , "%) </td>
+      <td>", data$bicycle, " (", round_percent(data$bicycle / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round_dp(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
