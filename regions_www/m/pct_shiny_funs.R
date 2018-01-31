@@ -526,7 +526,7 @@ popup_zones <- function(data, scenario, purpose){
   } else if (purpose == "school") {
 
     # Create a new variable called font_colour which changes into red colour when change in mMET is negative
-    data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "simmet")]]) < 0, "red", "black")
+    data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "simmet")]], 3) < 0, "red", "black")
 
     if(scenario == 'olc') {
       paste0("
@@ -693,7 +693,7 @@ popup_centroids <- function(data, scenario, purpose){
 popup_destinations <- function(data, scenario, purpose){
 
   # Create a new variable called font_colour which changes into red colour when change in mmet/yr is negative
-  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "simmet")]]) <0, "red", "black")
+  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "simmet")]], 3) <0, "red", "black")
 
   if(scenario == 'olc') {
     paste0("
