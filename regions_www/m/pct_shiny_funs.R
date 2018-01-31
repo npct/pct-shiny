@@ -31,19 +31,18 @@ normalise <- function(values, min = 0, max = 1){
 
 
 ## Create percentages such that rounded to XDP if >0% and <0.5%.  [NB can be NaN if denominator zero]
-round_dp <- function(data, expression){
-  value <- round(expression)
-  for(i in 1:length(data)) {
-    if(!is.na(expression[i]) && !is.nan(expression[i]) && expression[i]>=0.05 && expression[i]<0.5) {
-      value[i] <- round(expression[i], 1)
-    }
-    if(!is.na(expression[i]) && !is.nan(expression[i]) && expression[i]>0 && expression[i]<0.05) {
-      value[i] <- round(expression[i], 2)
-    }
-    if (is.nan(value[i]) || is.na(value[i])) { value[i] <- "-" }
-  }
-  value
+round_dp <- function(expression, small_threshold = 0.05, large_threshold = 0.5){
+  small <- is.finite(expression) & expression > 0 & expression < small_threshold
+  medium <- is.finite(expression) & expression >= small_threshold & expression < large_threshold
+  large <- is.finite(expression) & expression >= large_threshold
+  other <- is.nan(expression) | is.na(expression)
+  expression[small] <- round(expression[small], 2)
+  expression[medium] <- round(expression[medium], 1)
+  expression[large] <- round(expression[large])
+  expression[other] <- "-"
+  expression
 }
+
 round_percent <- function(data, expression){
  value <- round(100 * expression)
   for(i in 1:length(data)) {
@@ -235,11 +234,11 @@ popup_straight_lines <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round_dp(data, data[[data_filter(scenario, "slc")]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, "slc")]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all), "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
-      <td>", round_dp(data, data[[data_filter(scenario, "sid")]]), "</td>
+      <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
@@ -325,11 +324,11 @@ popup_routes <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round_dp(data, data[[data_filter(scenario, "slc")]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, "slc")]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
-      <td>", round_dp(data, data[[data_filter(scenario, "sid")]]), "</td>
+      <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
@@ -503,11 +502,11 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round_dp(data, data[[data_filter(scenario, 'slc')]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
-      <td>", round_dp(data, data[[data_filter(scenario, "sid")]]), "</td>
+      <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
@@ -582,11 +581,11 @@ popup_zones <- function(data, scenario, purpose){
    </tr>
    <tr>
      <td>", text_cycle_scenario(purpose), "</td>
-     <td>", round_dp(data, data[[data_filter(scenario, 'slc')]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+     <td>", round_dp(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
    </tr>
    <tr>
      <td>", text_drive_change(purpose), "</td>
-     <td>", round_dp(data, data[[data_filter(scenario, "sid")]]), "</td>
+     <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
    </tr>
   <tr>
     <td> Change in mean mMETs/child/week: &nbsp; </td>
@@ -666,11 +665,11 @@ popup_centroids <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round_dp(data, data[[data_filter(scenario, "slc")]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, "slc")]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
-      <td>", round_dp(data, data[[data_filter(scenario, "sid")]]), "</td>
+      <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
@@ -752,11 +751,11 @@ popup_destinations <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_scenario(purpose), "</td>
-      <td>", round_dp(data, data[[data_filter(scenario, 'slc')]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
+      <td>", round_dp(data[[data_filter(scenario, 'slc')]]), " (", round_percent(data, data[[data_filter(scenario, "slc")]] / data$all) , "%) </td>
     </tr>
     <tr>
       <td>", text_drive_change(purpose), "</td>
-      <td>", round_dp(data, data[[data_filter(scenario, "sid")]]), "</td>
+      <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
       <td> Change in mean mMETs/child/week: &nbsp; </td>
