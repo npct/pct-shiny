@@ -20,10 +20,10 @@ dutch_slw,No. pedestrians in Go Dutch
 dutch_siw,Increase no. pedestrians in Go Dutch vs. School Census 2011
 dutch_sld,No. car drivers in Go Dutch
 dutch_sid,Increase no. car drivers in Go Dutch vs. School Census 2011
-govtarget_slmmet,Change in mean marginal METs per child in Government Target versus 'no cycling'
-govtarget_simmet,Change in mean marginal METs per child in Government Target versus School Census 2011
-dutch_slmmet,Change in mean marginal METs per child in Go Dutch versus 'no cycling'
-dutch_simmet,Change in mean marginal METs per child in Go Dutch versus School Census 2011
+govtarget_slmmet,Change in mean marginal METs per child per week in Government Target versus 'no cycling'
+govtarget_simmet,Change in mean marginal METs per child per week in Government Target versus School Census 2011
+dutch_slmmet,Change in mean marginal METs per child per week in Go Dutch versus 'no cycling'
+dutch_simmet,Change in mean marginal METs per child per week in Go Dutch versus School Census 2011
 govtarget_slco2,Change in CO2/year (kg) in Government Target versus 'no cycling'
 govtarget_sico2,Change in CO2/year (kg) in Government Target versus School Census 2011
 dutch_slco2,Change in CO2/year (kg) in Go Dutch versus 'no cycling'
