@@ -164,9 +164,9 @@ data_filter <- function(scenario, type){
   ifelse(scenario == "olc", "bicycle", paste(scenario, type, sep = "_"))
 }
 
-# Create a new variable called font_colour which changes into red colour when change in death/yr is negative
-positive_red <- function(dataset, scenario, type){
-  dataset@data$font_colour <- ifelse(round(dataset[[data_filter(scenario, type)]]) <0, "red", "black")
+# Return red if the data is positive
+positive_red <- function(dataset, scenario, type, round_digits = 0){
+  ifelse(round(dataset[[data_filter(scenario, type)]], round_digits) < 0, "red", "black")
 }
 
 
@@ -175,8 +175,7 @@ positive_red <- function(dataset, scenario, type){
 ############
 popup_straight_lines <- function(data, scenario, purpose){
 
-  # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
-  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
+  font_colour <- positive_red(data, scenario, "sivalue_heat")
 
   # BASELINE TABLE
   if(scenario == 'olc') {
@@ -234,7 +233,7 @@ popup_straight_lines <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
              " (&pound;" , round(data[[data_filter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
@@ -262,9 +261,7 @@ popup_routes <- function(data, scenario, purpose){
 
   if (route_type == 'fast') {
 
-  # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
-  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
-
+  font_colour <- positive_red(data, scenario, "sivalue_heat")
     if(scenario == 'olc') {
       paste0("
 <table class = 'htab'>
@@ -324,7 +321,7 @@ popup_routes <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
              " (&pound;" , round(data[[data_filter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
@@ -434,10 +431,7 @@ popup_route_network <- function(data, scenario, purpose){
 popup_zones <- function(data, scenario, purpose){
 
   if (purpose %in% c("commute", "alltrips")) {
-
-  # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
-  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) < 0, "red", "black")
-
+  font_colour <- positive_red(data, scenario, "sivalue_heat")
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -502,7 +496,7 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
              " (&pound;" , round(data[[data_filter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
@@ -515,9 +509,7 @@ popup_zones <- function(data, scenario, purpose){
   }
 
   } else if (purpose == "school") {
-
-    # Create a new variable called font_colour which changes into red colour when change in mMET is negative
-    data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "simmet")]], 3) < 0, "red", "black")
+    font_colour <- positive_red(data, scenario, "simmet", 3)
 
     if(scenario == 'olc') {
       paste0("
@@ -581,7 +573,7 @@ popup_zones <- function(data, scenario, purpose){
    </tr>
   <tr>
     <td> Change in mean mMETs/child/week: &nbsp; </td>
-     <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "simmet")]], 3), "</td>
+     <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "simmet")]], 3), "</td>
    </tr>
    <tr>
      <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
@@ -597,10 +589,7 @@ popup_zones <- function(data, scenario, purpose){
 # CENTROID POPUP
 ############
 popup_centroids <- function(data, scenario, purpose){
-
-  # Create a new variable called font_colour which changes into red colour when change in death/yr is negative
-  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "sivalue_heat")]]) <0, "red", "black")
-
+  font_colour <- positive_red(data, scenario, "sivalue_heat")
  if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -665,7 +654,7 @@ popup_centroids <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-      <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
              " (&pound;" ,round(data[[data_filter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
@@ -683,9 +672,7 @@ popup_centroids <- function(data, scenario, purpose){
 ############
 popup_destinations <- function(data, scenario, purpose){
 
-  # Create a new variable called font_colour which changes into red colour when change in mmet/yr is negative
-  data@data$font_colour <- ifelse(round(data[[data_filter(scenario, "simmet")]], 3) <0, "red", "black")
-
+  font_colour <- positive_red(data, scenario, "simmet", 3)
   if(scenario == 'olc') {
     paste0("
  <table class = 'htab'>
@@ -751,7 +738,7 @@ popup_destinations <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in mean mMETs/child/week: &nbsp; </td>
-      <td style= 'color:", data$font_colour , "' >", round(data[[data_filter(scenario, "simmet")]], 3), "</td>
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "simmet")]], 3), "</td>
     </tr>
     <tr>
       <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
