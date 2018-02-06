@@ -10,22 +10,23 @@
       <div class="col-md-12 text-left" style="padding-top:10px;">
         <h3>Data for <!--region_name-->  - school layer </h3>
         <p>This page contains data downloads for the schools layer for <!--region_name-->, the region currently displayed on the ‘Map’ tab. These are available as CSV files containing baseline and scenario attribute data for zones and schools, and as geographic files that can be read by R (.Rds) or GIS programs such as QGIS (.geojson).</p>
-        <p>Please be aware that equivalent files for different purposes, geographies or regions have <b>the same file name</b> when downloaded (e.g. ‘z.geojson’ for both the MSOA and LSOA regional zones files, for all regions).  To avoid confusion you may want to rename those files or save them in labelled folders. Note also that when <b>downloading 'csv' files using a Firefox browser</b>, the file will open onscreen in a new webpage.  If you then type "Ctrl + S" the onscreen data will download as a csv file.</p>
+        <p>Please be aware that equivalent files for different purposes, geographies or regions have <b>the same file name</b> when downloaded (e.g. 'z.geojson' for all regions).  To avoid confusion you may want to rename those files or save them in labelled folders. Note also that when <b>downloading 'csv' files using a Firefox browser</b>, the file will open onscreen in a new webpage.  If you then type "Ctrl + S" the onscreen data will download as a csv file.</p>
       </div>
 
       <div class="col-md-12 text-left" style="padding-top:10px;">
         <h4><a name="regschoolzones"></a>School travel data for zones</h4>
         <p>Download anonymised National School Census 2011 baseline data and scenario attribute data for all children who live in <!--region_name-->. These files present aggregate data for all children <b>living in a given zone</b>. </p>
+        <p>Baseline and scenario data are not presented for zones containing &gt;20 children in total, or for cells containing 1 or 2 children.  Instead these data are set as missing ('NA').</p>
         <ul>
           <li>
             Zones (LSOA):
-            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/school/lsoa/<!--region_url-->/z_attributes.csv" target="_blank" download="z_attributes.csv" onclick="ga('send', 'event', 'download', 'z_attributes.csv');">
+            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/school_public/lsoa/<!--region_url-->/z_attributes.csv" target="_blank" download="z_attributes.csv" onclick="ga('send', 'event', 'download', 'z_attributes.csv');">
               csv
             </a>
-            <a href="https://github.com/npct/pct-outputs-regional-R/raw/master/school/lsoa/<!--region_url-->/z.Rds" target="_blank" download="z.Rds" onclick="ga('send', 'event', 'download', 'z.Rds');">
+            <a href="https://github.com/npct/pct-outputs-regional-R/raw/master/school_public/lsoa/<!--region_url-->/z.Rds" target="_blank" download="z.Rds" onclick="ga('send', 'event', 'download', 'z.Rds');">
               Rds
             </a>
-            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/school/lsoa/<!--region_url-->/z.geojson" target="_blank" download="z.geojson" onclick="ga('send', 'event', 'download', 'z.geojson');">
+            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/school_public/lsoa/<!--region_url-->/z.geojson" target="_blank" download="z.geojson" onclick="ga('send', 'event', 'download', 'z.geojson');">
               geojson
             </a> -
             <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/z_codebook.csv" target="_blank" download="z_codebook.csv" onclick="ga('send', 'event', 'download', 'z_codebook.csv');">
@@ -38,16 +39,17 @@
       <div class="col-md-12 text-left" style="padding-top:10px;">
          <h4><a name="regschooldestinations"></a>School travel data for schools</h4>
         <p>Download anonymised National School Census 2011 baseline data and scenario data for schools in <!--region_name-->. These files present aggregate data for all children <b>attending a given school</b>.</p>
+        <p>Baseline and scenario data are not presented for schools containing &gt;20 children in total, or for cells containing between 1 and 5 children.  Instead these data are set as missing ('NA').</p>
         <ul>
           <li>
             Schools:
-            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/school/lsoa/<!--region_url-->/d_attributes.csv" target="_blank" download="d_attributes.csv" onclick="ga('send', 'event', 'download', 'd_attributes.csv');">
+            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/school_public/lsoa/<!--region_url-->/d_attributes.csv" target="_blank" download="d_attributes.csv" onclick="ga('send', 'event', 'download', 'd_attributes.csv');">
               csv
             </a>
-            <a href="https://github.com/npct/pct-outputs-regional-R/raw/master/school/lsoa/<!--region_url-->/d.Rds" target="_blank" download="d.Rds" onclick="ga('send', 'event', 'download', 'd.Rds');">
+            <a href="https://github.com/npct/pct-outputs-regional-R/raw/master/school_public/lsoa/<!--region_url-->/d.Rds" target="_blank" download="d.Rds" onclick="ga('send', 'event', 'download', 'd.Rds');">
               Rds
             </a>
-            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/school/lsoa/<!--region_url-->/d.geojson" target="_blank" download="d.geojson" onclick="ga('send', 'event', 'download', 'd.geojson');">
+            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/school_public/lsoa/<!--region_url-->/d.geojson" target="_blank" download="d.geojson" onclick="ga('send', 'event', 'download', 'd.geojson');">
               geojson
             </a> -
             <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/d_codebook.csv" target="_blank" download="d_codebook.csv" onclick="ga('send', 'event', 'download', 'd_codebook.csv');">
@@ -64,10 +66,10 @@
       </div>
         <ul>
           <li>Route network (LSOA, clickable):
-            <a href="https://github.com/npct/pct-outputs-regional-R/raw/master/school/msoa/<!--region_url-->/rnet.Rds" target="_blank" download="rnet.Rds" onclick="ga('send', 'event', 'download', 'rnet.Rds');">
+            <a href="https://github.com/npct/pct-outputs-regional-R/raw/master/school_public/lsoa/<!--region_url-->/rnet.Rds" target="_blank" download="rnet.Rds" onclick="ga('send', 'event', 'download', 'rnet.Rds');">
               Rds
             </a>
-            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/school/msoa/<!--region_url-->/rnet.geojson" target="_blank" download="rnet.geojson" onclick="ga('send', 'event', 'download', 'rnet.geojson');">
+            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/school_public/lsoa/<!--region_url-->/rnet.geojson" target="_blank" download="rnet.geojson" onclick="ga('send', 'event', 'download', 'rnet.geojson');">
               geojson
             </a> -
             <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/rnet_codebook.csv" target="_blank" download="rnet_codebook.csv" onclick="ga('send', 'event', 'download', 'rnet_codebook.csv');">
