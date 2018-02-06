@@ -536,7 +536,7 @@ popup_zones <- function(data, scenario, purpose){
      </tr>
     <tr>
       <td>", text_drive_baseline(purpose), "</td>
-      <td>", data$car_driver, " (", round_percent(data$car/data$all), "%) </td>
+      <td>", data$car, " (", round_percent(data$car/data$all), "%) </td>
      </tr>
   </tbody>
 </table>")
