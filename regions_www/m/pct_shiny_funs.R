@@ -165,8 +165,8 @@ data_filter <- function(scenario, type){
 }
 
 # Return red if the data is negative
-negative_red <- function(dataset, scenario, type, round_digits = 0){
-  ifelse(round(dataset[[data_filter(scenario, type)]], round_digits) < 0, "red", "inherit")
+negative_red <- function(data, scenario, type, round_digits = 0){
+  ifelse(round(data[[data_filter(scenario, type)]], round_digits) < 0, "red", "inherit")
 }
 
 
