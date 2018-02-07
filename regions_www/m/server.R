@@ -161,7 +161,7 @@ shinyServer(function(input, output, session) {
       )
     } else if (purpose == "school") {
       local_scenarios <- c(
-        "Current travel patterns" = "olc",
+        "School Census 2011"      = "olc",
         "Government Target"       = "govtarget",
         "Go Dutch"                = "dutch"
       )
