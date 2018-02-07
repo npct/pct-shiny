@@ -591,7 +591,7 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_all(purpose), "</td>
-      <td>", data$all, "</td>
+      <td>", school_smallcell(data$all), "</td>
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
@@ -620,7 +620,7 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
      <td>", text_all(purpose), "</td>
-     <td>", data$all, "</td>
+     <td>", school_smallcell(data$all), "</td>
     </tr>
     <tr>
      <td>", text_cycle_baseline(purpose), "</td>
@@ -756,7 +756,7 @@ popup_destinations <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_all(purpose), "</td>
-      <td>", data$all, "</td>
+      <td>", school_smallcell(data$all, d = T), "</td>
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
@@ -791,7 +791,7 @@ popup_destinations <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_all(purpose), "</td>
-      <td>", data$all, "</td>
+      <td>", school_smallcell(data$all, d = T), "</td>
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
