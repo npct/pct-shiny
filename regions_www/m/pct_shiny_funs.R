@@ -176,14 +176,18 @@ negative_red <- function(data, scenario, type, round_digits = 0){
 
 # Identify small cells in schools layer
 school_smallcell <- function(expression, return_tf = F, d = F){
-  if (!return_tf) {
-    if (d)
-      res = case_when(x %in% 1:5 ~ "1 to 5", TRUE ~ as.character(x)) else res = case_when(x %in% 1:2 ~ "1 or 2", TRUE ~ as.character(x))
+  if (d) {
+    smallcell <- (expression > 0 & expression <= 5)  # Upper bound to suppress cells if 5 in schools [d], otherwise 2 [z, rnet]
+    expression[smallcell] <- "1 to 5"
   } else {
-    if (d)
-      res = case_when(x %in% 1:5 ~ TRUE, TRUE ~ FALSE) else res = case_when(x %in% 1:2 ~ TRUE, TRUE ~ FALSE)
+    smallcell <- (expression > 0 & expression <= 2)
+    expression[smallcell] <- "1 or 2"
   }
-  res
+  if (return_tf) {
+    smallcell
+  } else {
+    expression
+  }
 }
 
 
