@@ -170,8 +170,8 @@ data_filter <- function(scenario, type){
 }
 
 # Return red if the data is negative
-negative_red <- function(data, scenario, type, round_digits = 0){
-  ifelse(round(data[[data_filter(scenario, type)]], round_digits) < 0, "red", "inherit")
+negative_red <- function(data, scenario, type){
+  ifelse(round_dp(data[[data_filter(scenario, type)]]) < 0, "red", "inherit")
 }
 
 # Identify small cells in schools layer
@@ -572,7 +572,7 @@ popup_zones <- function(data, scenario, purpose){
   }
 
   } else if (purpose == "school") {
-    font_colour <- negative_red(data, scenario, "simmet", 3)
+    font_colour <- negative_red(data, scenario, "simmet")
 
     if(scenario == 'olc') {
       paste0("
@@ -636,7 +636,7 @@ popup_zones <- function(data, scenario, purpose){
    </tr>
   <tr>
     <td> Change in mean mMETs/child/week: &nbsp; </td>
-     <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "simmet")]], 3), "</td>
+     <td style= 'color:", font_colour , "' >", round_dp(data[[data_filter(scenario, "simmet")]], 0.05, 100), "</td>
    </tr>
    <tr>
      <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
@@ -735,7 +735,7 @@ popup_centroids <- function(data, scenario, purpose){
 ############
 popup_destinations <- function(data, scenario, purpose){
 
-  font_colour <- negative_red(data, scenario, "simmet", 3)
+  font_colour <- negative_red(data, scenario, "simmet")
   if(scenario == 'olc') {
     paste0("
  <table class = 'htab'>
@@ -807,7 +807,7 @@ popup_destinations <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in mean mMETs/child/week: &nbsp; </td>
-      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "simmet")]], 3), "</td>
+      <td style= 'color:", font_colour , "' >", round_dp(data[[data_filter(scenario, "simmet")]], 0.05, 100), "</td>
     </tr>
     <tr>
       <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
