@@ -310,6 +310,14 @@ shinyServer(function(input, output, session) {
       to_plot$route_network$id <<- to_plot$route_network$local_id
     }
 
+    # For confidentiality we have replaced exact numbers with NAs but they cause havoc with the interface.
+    # This replaces the NAs with the mean values.
+    if (input$purpose == "school") {
+      to_plot$zones@data[is.na(to_plot$zones@data)] <<- 1.5
+      to_plot$route_network@data[is.na(to_plot$zones@data)] <<- 1.5
+      to_plot$destinations@data[is.na(to_plot$destinations@data)] <<- 3
+    }
+
     if (file.exists(file.path(region$data_dir, "rq.Rds"))) {
       to_plot$routes_quieter <<- readRDS(file.path(region$data_dir, "rq.Rds"))
       # Merge in scenario data for quiet routes - don't want this in download but need for line sorting
