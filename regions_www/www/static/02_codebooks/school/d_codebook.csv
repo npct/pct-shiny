@@ -23,6 +23,7 @@ dutch_slw,No. pedestrians in Go Dutch
 dutch_siw,Increase no. pedestrians in Go Dutch vs. School Census 2011
 dutch_sld,No. children driven by car in Go Dutch
 dutch_sid,Increase no. children driven by car in Go Dutch vs. School Census 2011
+baseline_at_mmet,Mean active travel marginal METs per child per week in School Census 2011
 govtarget_slmmet,Change in mean marginal METs per child per week in Government Target versus 'no cycling'
 govtarget_simmet,Change in mean marginal METs per child per week in Government Target versus School Census 2011
 dutch_slmmet,Change in mean marginal METs per child per week in Go Dutch versus 'no cycling'
