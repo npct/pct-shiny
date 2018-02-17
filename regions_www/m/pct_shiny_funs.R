@@ -629,16 +629,20 @@ popup_zones <- function(data, scenario, purpose){
    <tr>
      <td>", text_cycle_change(purpose), "</td>
      <td>", round_dp(data[[data_filter(scenario, "sic")]]), "</td>
-  </tr>
+   </tr>
    <tr>
      <td>", text_drive_change(purpose), "</td>
      <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
    </tr>
-  <tr>
-    <td> Change (% change) in active travel mMETs/child/week: &nbsp; </td>
+   <tr>
+    <td> Change (% change) in active  &nbsp; </td>
+    <td></td>
+   </tr>
+   <tr>
+    <td> &nbsp; &nbsp; &nbsp; travel mMETs/child/week: &nbsp; </td>
     <td style= 'color:", font_colour , "' >", round_dp(data[[data_filter(scenario, "simmet")]], 0.05, 100),
             " (", round_percent((data[[data_filter(scenario, "simmet")]]/(data$baseline_at_mmet))), "%)", "</td>
-  </tr>
+   </tr>
    <tr>
      <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
      <td>", round(data[[data_filter(scenario, "sico2")]] / 1000,1), "</td>
@@ -807,9 +811,13 @@ popup_destinations <- function(data, scenario, purpose){
       <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
-      <td> Change (% change) in active travel mMETs/child/week: &nbsp; </td>
-      <td style= 'color:", font_colour , "' >", round_dp(data[[data_filter(scenario, "simmet")]], 0.05, 100),
-           " (", round_percent((data[[data_filter(scenario, "simmet")]]/(data$baseline_at_mmet))), "%)", "</td>
+      <td> Change (% change) in active  &nbsp; </td>
+      <td></td>
+    </tr>
+    <tr>
+     <td> &nbsp; &nbsp; &nbsp; travel mMETs/child/week: &nbsp; </td>
+     <td style= 'color:", font_colour , "' >", round_dp(data[[data_filter(scenario, "simmet")]], 0.05, 100),
+         " (", round_percent((data[[data_filter(scenario, "simmet")]]/(data$baseline_at_mmet))), "%)", "</td>
     </tr>
     <tr>
       <td> Change in CO<sub>2</sub>e (t/yr): &nbsp;</td>
