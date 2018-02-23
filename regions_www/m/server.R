@@ -314,7 +314,7 @@ shinyServer(function(input, output, session) {
     # This replaces the NAs with the mean values.
     if (input$purpose == "school") {
       to_plot$zones@data[is.na(to_plot$zones@data)] <<- 1.5
-      to_plot$route_network@data[is.na(to_plot$zones@data)] <<- 1.5
+      to_plot$route_network@data[is.na(to_plot$route_network@data)] <<- 1.5
       to_plot$destinations@data[is.na(to_plot$destinations@data)] <<- 3
     }
 
