@@ -313,9 +313,37 @@ shinyServer(function(input, output, session) {
     # For confidentiality we have replaced exact numbers with NAs but they cause havoc with the interface.
     # This replaces the NAs with the mean values.
     if (input$purpose == "school") {
-      to_plot$zones@data[is.na(to_plot$zones@data)] <<- 1.5
-      to_plot$route_network@data[is.na(to_plot$route_network@data)] <<- 1.5
-      to_plot$destinations@data[is.na(to_plot$destinations@data)] <<- 3
+      columns_na <- c("all", "bicycle", "foot", "car")
+
+      z_na_const <- 1.5
+      d_na_const <- 3
+      rnet_na_const <- 1.5
+
+      to_plot$zones@data[,columns_na][
+        is.na(to_plot$zones@data[,columns_na])
+      ] <<- z_na_const
+
+      to_plot$zones@data[,school_na("govtarget")$na][
+        is.na(to_plot$zones@data[,school_na("govtarget")$na])
+      ] <<- z_na_const + to_plot$zones@data[,school_na("govtarget")$base]
+
+      to_plot$zones@data[,school_na("dutch")$na][
+        is.na(to_plot$zones@data[,school_na("dutch")$na])
+      ] <<- z_na_const + to_plot$zones@data[,school_na("dutch")$base]
+
+      to_plot$destinations@data[,columns_na][
+        is.na(to_plot$destinations@data[,columns_na])
+      ] <<- d_na_const
+
+      to_plot$destinations@data[,school_na("govtarget")$na][
+        is.na(to_plot$destinations@data[,school_na("govtarget")$na])
+      ] <<- d_na_const + to_plot$destinations@data[,school_na("govtarget")$base]
+
+      to_plot$destinations@data[,school_na("dutch")$na][
+        is.na(to_plot$destinations@data[,school_na("dutch")$na])
+      ] <<- d_na_const + to_plot$destinations@data[,school_na("dutch")$base]
+
+      to_plot$route_network@data[is.na(to_plot$route_network@data)] <<- rnet_na_const
     }
 
     if (file.exists(file.path(region$data_dir, "rq.Rds"))) {
