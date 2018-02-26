@@ -319,29 +319,27 @@ shinyServer(function(input, output, session) {
       d_na_const <- 3
       rnet_na_const <- 1.5
 
-      to_plot$zones@data[,columns_na][
-        is.na(to_plot$zones@data[,columns_na])
-      ] <<- z_na_const
+      idx <- is.na(to_plot$zones@data[,columns_na])
+      to_plot$zones@data[,columns_na][idx] <<- z_na_const
 
-      to_plot$zones@data[,school_na("govtarget")$na][
-        is.na(to_plot$zones@data[,school_na("govtarget")$na])
-      ] <<- z_na_const + to_plot$zones@data[,school_na("govtarget")$base]
+      idx <- is.na(to_plot$zones@data[,school_na("govtarget")$na])
+      to_plot$zones@data[,school_na("govtarget")$na][idx] <<- z_na_const +
+        to_plot$zones@data[,school_na("govtarget")$base][idx]
 
-      to_plot$zones@data[,school_na("dutch")$na][
-        is.na(to_plot$zones@data[,school_na("dutch")$na])
-      ] <<- z_na_const + to_plot$zones@data[,school_na("dutch")$base]
+      idx <- is.na(to_plot$zones@data[,school_na("dutch")$na])
+      to_plot$zones@data[,school_na("dutch")$na][idx] <<- z_na_const +
+        to_plot$zones@data[,school_na("dutch")$base][idx]
 
-      to_plot$destinations@data[,columns_na][
-        is.na(to_plot$destinations@data[,columns_na])
-      ] <<- d_na_const
+      idx <- is.na(to_plot$destinations@data[,columns_na])
+      to_plot$destinations@data[,columns_na][idx] <<- d_na_const
 
-      to_plot$destinations@data[,school_na("govtarget")$na][
-        is.na(to_plot$destinations@data[,school_na("govtarget")$na])
-      ] <<- d_na_const + to_plot$destinations@data[,school_na("govtarget")$base]
+      idx <- is.na(to_plot$destinations@data[,school_na("govtarget")$na])
+      to_plot$destinations@data[,school_na("govtarget")$na][idx] <<- d_na_const +
+        to_plot$destinations@data[,school_na("govtarget")$base][idx]
 
-      to_plot$destinations@data[,school_na("dutch")$na][
-        is.na(to_plot$destinations@data[,school_na("dutch")$na])
-      ] <<- d_na_const + to_plot$destinations@data[,school_na("dutch")$base]
+      idx <- is.na(to_plot$destinations@data[,school_na("dutch")$na])
+      to_plot$destinations@data[,school_na("dutch")$na][idx] <<- d_na_const +
+        to_plot$destinations@data[,school_na("dutch")$base][idx]
 
       to_plot$route_network@data[is.na(to_plot$route_network@data)] <<- rnet_na_const
     }
