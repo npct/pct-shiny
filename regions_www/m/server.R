@@ -310,6 +310,40 @@ shinyServer(function(input, output, session) {
       to_plot$route_network$id <<- to_plot$route_network$local_id
     }
 
+    # For confidentiality we have replaced exact numbers with NAs but they cause havoc with the interface.
+    # This replaces the NAs with the mean values.
+    if (input$purpose == "school") {
+      columns_na <- c("all", "bicycle", "foot", "car")
+
+      z_na_const <- 1.5
+      d_na_const <- 3
+      rnet_na_const <- 1.5
+
+      idx <- is.na(to_plot$zones@data[,columns_na])
+      to_plot$zones@data[,columns_na][idx] <<- z_na_const
+
+      idx <- is.na(to_plot$zones@data[,school_na("govtarget")$na])
+      to_plot$zones@data[,school_na("govtarget")$na][idx] <<- z_na_const +
+        to_plot$zones@data[,school_na("govtarget")$base][idx]
+
+      idx <- is.na(to_plot$zones@data[,school_na("dutch")$na])
+      to_plot$zones@data[,school_na("dutch")$na][idx] <<- z_na_const +
+        to_plot$zones@data[,school_na("dutch")$base][idx]
+
+      idx <- is.na(to_plot$destinations@data[,columns_na])
+      to_plot$destinations@data[,columns_na][idx] <<- d_na_const
+
+      idx <- is.na(to_plot$destinations@data[,school_na("govtarget")$na])
+      to_plot$destinations@data[,school_na("govtarget")$na][idx] <<- d_na_const +
+        to_plot$destinations@data[,school_na("govtarget")$base][idx]
+
+      idx <- is.na(to_plot$destinations@data[,school_na("dutch")$na])
+      to_plot$destinations@data[,school_na("dutch")$na][idx] <<- d_na_const +
+        to_plot$destinations@data[,school_na("dutch")$base][idx]
+
+      to_plot$route_network@data[is.na(to_plot$route_network@data)] <<- rnet_na_const
+    }
+
     if (file.exists(file.path(region$data_dir, "rq.Rds"))) {
       to_plot$routes_quieter <<- readRDS(file.path(region$data_dir, "rq.Rds"))
       # Merge in scenario data for quiet routes - don't want this in download but need for line sorting
