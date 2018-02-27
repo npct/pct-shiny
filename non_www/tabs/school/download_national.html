@@ -9,36 +9,37 @@
       <div class="col-md-12 text-left" style="padding-top:10px;">
         <h3>National Data  - school layer</h3>
         <p>This page contains data downloads for the schools layer for the whole of England. These are available as CSV files containing baseline and scenario attribute data for zones and schools, and as geographic files that can be read by R (.Rds) or GIS programs such as QGIS (.geojson).</p>
-        <p>Please be aware that equivalent files for different purposes and geographies have <b>the same file name</b> when downloaded (e.g. ‘z_all.geojson’ for national zones files for both commuting and school travel).  To avoid confusion you may want to rename those files or save them in labelled folders. Note also that when <b>downloading 'csv' files using a Firefox browser</b>, the file will open onscreen in a new webpage.  If you then type "Ctrl + S" the onscreen data will download as a csv file.</p>
+        <p>Please be aware that equivalent files for different purposes and geographies have <b>the same file name</b> when downloaded (e.g. 'z_all.geojson' for national zones files for both commuting and school travel).  To avoid confusion you may want to rename those files or save them in labelled folders. Note also that when <b>downloading 'csv' files using a Firefox browser</b>, the file will open onscreen in a new webpage.  If you then type "Ctrl + S" the onscreen data will download as a csv file.</p>
       </div>
 
       <div class="col-md-12 text-left" style="padding-top:10px;">
         <h4><a name="natschoolzones"></a>School travel data for zones</h4>
-        <p>Download anonymised National School Census 2011 baseline data and scenario attribute data for all zones in England. These files present aggregate data for all children <b>living in a given zone</b>. </p>
+        <p>Download anonymised National School Census 2011 baseline data and scenario attribute data for all zones in England. These files present aggregate data for all children <b>living in a given zone</b></p>
+        <p>In the LSOA downloads, baseline and scenario data are not presented for cells containing 1 or 2 children.  Instead these data are set as missing ('NA').  These data are, however, included in the local authority downloads.</p>
         <ul>
           <li>Zones (local authorities)*:
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school//lad_attributes.csv" target="_blank" download="lad_attributes.csv" onclick="ga('send', 'event', 'download', 'lad_attributes.csv');">
+            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lad_attributes.csv" target="_blank" download="lad_attributes.csv" onclick="ga('send', 'event', 'download', 'school/lad_attributes.csv');">
               csv
             </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school//lad.Rds" target="_blank" download="lad.Rds" onclick="ga('send', 'event', 'download', 'lad.Rds');">
+            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lad.Rds" target="_blank" download="lad.Rds" onclick="ga('send', 'event', 'download', 'school/lad.Rds');">
               Rds
             </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school//lad.geojson" target="_blank" download="lad.geojson" onclick="ga('send', 'event', 'download', 'lad.geojson');">
+            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lad.geojson" target="_blank" download="lad.geojson" onclick="ga('send', 'event', 'download', 'school/lad.geojson');">
               geojson</a> -
-            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/lad_codebook.csv" target="_blank" download="lad_codebook.csv" onclick="ga('send', 'event', 'download', 'lad_codebook.csv');">
+            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/lad_codebook.csv" target="_blank" download="lad_codebook.csv" onclick="ga('send', 'event', 'download', 'school/lad_codebook.csv');">
               Codebook
             </a>
           </li>
           <li>Zones (LSOA):
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/z_all_attributes.csv" target="_blank" download="z_all_attributes.csv" onclick="ga('send', 'event', 'download', 'z_all_attributes.csv');">
+            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/z_all_attributes.csv" target="_blank" download="z_all_attributes.csv" onclick="ga('send', 'event', 'download', 'school/z_all_attributes.csv');">
               csv</a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/z_all.Rds" target="_blank" download="z_all.Rds" onclick="ga('send', 'event', 'download', 'z_all.Rds');">
+            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/z_all.Rds" target="_blank" download="z_all.Rds" onclick="ga('send', 'event', 'download', 'school/z_all.Rds');">
               Rds
             </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/z_all.geojson" target="_blank" download="z_all.geojson" onclick="ga('send', 'event', 'download', 'z_all.geojson');">
+            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/z_all.geojson" target="_blank" download="z_all.geojson" onclick="ga('send', 'event', 'download', 'school/z_all.geojson');">
               geojson
             </a> -
-            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/z_codebook.csv" target="_blank" download="z_codebook.csv" onclick="ga('send', 'event', 'download', 'z_codebook.csv');">
+            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/z_codebook.csv" target="_blank" download="z_codebook.csv" onclick="ga('send', 'event', 'download', 'school/z_codebook.csv');">
               Codebook
             </a>
           </li>
@@ -49,18 +50,20 @@
       <div class="col-md-12 text-left" style="padding-top:10px;">
         <h4><a name="natschooldestinations"></a>School travel data for schools</h4>
         <p>Download anonymised National School Census 2011 baseline data and scenario data for schools in England. These files present aggregate data for all children <b>attending a given school</b>.</p>
+        <p>Baseline and scenario data are not presented for cells containing between 1 and 5 children.  Instead these data are set as missing ('NA').</p>
+
          <ul>
           <li>Schools:
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/d_all_attributes.csv" target="_blank" download="d_all_attributes.csv" onclick="ga('send', 'event', 'download', 'd_all_attributes.csv');">
+            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/d_all_attributes.csv" target="_blank" download="d_all_attributes.csv" onclick="ga('send', 'event', 'download', 'school/d_all_attributes.csv');">
               csv
             </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/d_all.Rds" target="_blank" download="d_all.Rds" onclick="ga('send', 'event', 'download', 'd_all.Rds');">
+            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/d_all.Rds" target="_blank" download="d_all.Rds" onclick="ga('send', 'event', 'download', 'school/d_all.Rds');">
               Rds
             </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/d_all.geojson" target="_blank" download="d_all.geojson" onclick="ga('send', 'event', 'download', 'd_all.geojson');">
+            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/d_all.geojson" target="_blank" download="d_all.geojson" onclick="ga('send', 'event', 'download', 'school/d_all.geojson');">
               geojson
             </a> -
-            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/d_codebook.csv" target="_blank" download="d_codebook.csv" onclick="ga('send', 'event', 'download', 'd_codebook.csv');">
+            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/d_codebook.csv" target="_blank" download="d_codebook.csv" onclick="ga('send', 'event', 'download', 'school/d_codebook.csv');">
             Codebook
             </a>
           </li>
