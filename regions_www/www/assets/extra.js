@@ -41,7 +41,7 @@ $(document).ready(function() {
   };
 
   Shiny.addCustomMessageHandler("regionchange", function(newRegion) {
-    var newUrl = window.location.origin + window.location.pathname + "?r=" + newRegion;
+    var newUrl = window.location.href.split("?")[0] + "?r=" + newRegion;
     history.pushState(newRegion, newRegion, newUrl);
     document.title = "Propensity to Cycle Tool - " + capitalize(newRegion);
     testBannerDisplay();
