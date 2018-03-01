@@ -44,6 +44,11 @@ select {
   padding: 8px;
 }
 
+/* https://github.com/rstudio/leaflet/commit/49e6fe56762ce998ee57dd9e6179260c325f11b0 */
+.legend br {
+  clear: both;
+}
+
 /* only apply this to firefox: */
 @-moz-document url-prefix() {
   /* Normally you can just apply this to all 'select's not just a classs selector */
