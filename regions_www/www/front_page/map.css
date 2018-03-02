@@ -36,7 +36,9 @@
   margin-right: 8px;
   opacity: 0.7;
 }
-
+br.clear {
+  clear: both;
+}
 .leaflet-control-layers label {
   margin-bottom: initial;
 }

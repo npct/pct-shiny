@@ -217,7 +217,7 @@ $(document).ready(function(){
           '<i style="background:' + getColor(from + 1) + '"></i> ' +
         bin_labels[i]);
     }
-    div.innerHTML = labels.join("<br clear='both'>");
+    div.innerHTML = labels.join("<br class=\"clear\">");
     return div;
   };
 
