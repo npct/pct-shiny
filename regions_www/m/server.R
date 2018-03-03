@@ -140,7 +140,7 @@ shinyServer(function(input, output, session) {
         local_line_types <- c("None"             = "none",
                               "Straight Lines"         = "straight_lines",
                               "Fast Routes"            = "routes_fast",
-                              "Fast & Quieter Routes"  = "routes",
+                              "Fast & quieter Routes"  = "routes",
                               "Route Network (MSOA)"   = "route_network",
                               "Route Network (LSOA)"   = "lsoa_base_map"
         )
@@ -148,7 +148,7 @@ shinyServer(function(input, output, session) {
         local_line_types <- c("None"             = "none",
                               "Straight Lines"         = "straight_lines",
                               "Fast Routes"            = "routes_fast",
-                              "Fast & Quieter Routes"  = "routes",
+                              "Fast & quieter Routes"  = "routes",
                               "Route Network (LSOA)"   = "lsoa_base_map"
         )
       }
@@ -184,7 +184,7 @@ shinyServer(function(input, output, session) {
       local_line_types <- c("None"                   = "none",
                             "Straight Lines"         = "straight_lines",
                             "Fast Routes"            = "routes_fast",
-                            "Fast & Quieter Routes"  = "routes",
+                            "Fast & quieter Routes"  = "routes",
                             "Route Network (MSOA)"   = "route_network"
       )
       local_line_order <- c(
