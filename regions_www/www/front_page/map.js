@@ -2,8 +2,11 @@
 //
 // http://leafletjs.com/examples/choropleth-example.html
 
+    // Currently pointing always to 'commute' map, ? in future introduce ability to switch to school map.
+    // NB that will require also restricting the scenarios only to those available...
+
 $(document).ready(function(){
-  $.getJSON("/pct_regions_lowres_scenario.geojson").done(function(statesData) {
+  $.getJSON("/www/front_page/commute/pct_regions_lowres_scenario.geojson").done(function(statesData) {
     var map = L.map('map').setView([ 53, -0.4], 6);
 
     L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
@@ -214,7 +217,7 @@ $(document).ready(function(){
           '<i style="background:' + getColor(from + 1) + '"></i> ' +
         bin_labels[i]);
     }
-    div.innerHTML = labels.join('<br>');
+    div.innerHTML = labels.join("<br class=\"clear\">");
     return div;
   };
 

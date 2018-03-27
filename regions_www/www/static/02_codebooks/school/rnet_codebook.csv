@@ -3,4 +3,3 @@ local_id,Local id for each segment of the network (NB IDs duplicated across diff
 bicycle,No. between-zone cyclists using this segment in Census 2011 (see region statistics tab for details of selected between-zone flows)
 govtarget_slc,No. between-zone cyclists using this segment in Government Target scenario (see region statistics tab for details of selected between-zone flows)
 dutch_slc,No. between-zone cyclists using this segment in Go Dutch scenario (see region statistics tab for details of selected between-zone flows)
-singlezone,Flag identifying whether the segment is fully contained in a single zone (1=yes): if so then there may also be considerable numbers of within-zone cyclists on the segment
