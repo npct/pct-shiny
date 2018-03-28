@@ -157,6 +157,11 @@ ui <- function(request){
               tags$div(
                 title = "Change base of the map",
                 selectInput("map_base", "Map Base:", map_base_attrs, selectize = F)
+              ),
+              tags$div(
+                bookmarkButton(label = "", icon = shiny::icon("link", lib ="glyphicon"),
+                               title = "Bookmark this application's state and get a URL for sharing.",
+                               id = "._bookmark_")
               )
             )
           ),
