@@ -22,6 +22,9 @@
 ## Functions
 source("pct_shiny_funs.R", local = T)
 
+## Enable bookmarking at the server side
+enableBookmarking(store = "server")
+
 ## Packages (Only regularly used packages are loaded into the global space, the others must be installed but are used with the package prefix, e.g. DT::)
 available_locally_pkgs <- c("shiny", "leaflet", "sp")
 must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs")
