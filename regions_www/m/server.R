@@ -93,6 +93,12 @@ shinyServer(function(input, output, session) {
   # Restore state's region into a region variable
   onRestore(function(state) {
     region$state_region <<- state$values$current_region
+
+    region$state_lng <<- state$input$map_center$lng
+    region$state_lat <<-  state$input$map_center$lat
+    region$state_mzoom <<- state$input$map_zoom
+
+
   })
 
 
@@ -236,7 +242,8 @@ shinyServer(function(input, output, session) {
   ##############
 
   ## Create region, to_plot and (for persistent geographical values) helper
-  region <- reactiveValues(current = NA, data_dir = NA, geography = NA, repopulate_region = F, purposes_present = NA, state_region = NA)
+  region <- reactiveValues(current = NA, data_dir = NA, geography = NA, repopulate_region = F, purposes_present = NA,
+                           state_region = NA, state_lat = NA, state_lng = NA, state_mzoom = NA)
   to_plot <- NULL
   helper <- NULL
   helper$e_lat_lng <- ""
@@ -378,6 +385,19 @@ shinyServer(function(input, output, session) {
     }
     shinyjs::hideElement(id = "loading")
   }, priority = 3)
+
+  observe({
+
+    if(!is.null(region$state_region) && !is.na(region$state_region)){
+
+      leafletProxy("map") %>% setView(.,
+                                      lng = region$state_lng,
+                                      lat = region$state_lat,
+                                      zoom = region$state_mzoom
+      )
+    }
+
+  })
 
 
   # Only requred to run if the region changes (as that affects purpose) or the purpose changes (as that affects geographies)
