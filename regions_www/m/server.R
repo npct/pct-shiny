@@ -85,6 +85,17 @@ lsoa_legend_df <- data.frame(
 # # # # # # # #
 shinyServer(function(input, output, session) {
 
+  # Save current region in a state variable
+  onBookmark(function(state) {
+    state$values$current_region <- region$current
+  })
+
+  # Restore state's region into a region variable
+  onRestore(function(state) {
+    region$state_region <<- state$values$current_region
+  })
+
+
   input_purpose <- reactive({
     if(is.null(input$purpose)) {
       "commute"
@@ -225,7 +236,7 @@ shinyServer(function(input, output, session) {
   ##############
 
   ## Create region, to_plot and (for persistent geographical values) helper
-  region <- reactiveValues(current = NA, data_dir = NA, geography = NA, repopulate_region = F, purposes_present = NA)
+  region <- reactiveValues(current = NA, data_dir = NA, geography = NA, repopulate_region = F, purposes_present = NA, state_region = NA)
   to_plot <- NULL
   helper <- NULL
   helper$e_lat_lng <- ""
@@ -255,11 +266,18 @@ shinyServer(function(input, output, session) {
 
     # Identify region from URL or use a default
     if (is.na(region$current)) {
-      query <- parseQueryString(session$clientData$url_search)
-      region$current <- if (isTRUE(query[['r']] %in% regions$region_name)) {
-        query[['r']]
-      } else {
-        "isle-of-wight"
+
+      if(!is.null(region$state_region) && !is.na(region$state_region)){
+        # Restor's state_region to region's current var
+        region$current <- region$state_region
+      }
+      else{
+        query <- parseQueryString(session$clientData$url_search)
+        region$current <- if (isTRUE(query[['r']] %in% regions$region_name)) {
+          query[['r']]
+        } else {
+          "isle-of-wight"
+        }
       }
     }
 
@@ -1094,4 +1112,5 @@ shinyServer(function(input, output, session) {
 
     includeHTML(file.path("..", "..", "non_www", "tabs", input_purpose(), "download_national.html"))
   })
+
 })
