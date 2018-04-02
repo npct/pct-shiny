@@ -312,7 +312,7 @@ shinyServer(function(input, output, session) {
 
     # For confidentiality we have replaced exact numbers with NAs but they cause havoc with the interface.
     # This replaces the NAs with the mean values.
-    if (input$purpose == "school") {
+    if (input_purpose() == "school") {
       columns_na <- c("all", "bicycle", "foot", "car")
 
       z_na_const <- 1.5
@@ -363,7 +363,7 @@ shinyServer(function(input, output, session) {
   observe({
     shinyjs::showElement(id = "loading")
     region$current
-    input$purpose
+    input_purpose()
     isolate({
       update_purposegeog(region$purposes_present, region$geographies_present)
     })
@@ -501,7 +501,7 @@ shinyServer(function(input, output, session) {
   observe({
     shinyjs::showElement(id = "loading")
     # Needed to force lines to be redrawn when purpose, geography, scenario, zone or base map changes
-    input$purpose
+    input_purpose()
     region$geography
     input$scenario
     input$show_zones
@@ -603,7 +603,7 @@ shinyServer(function(input, output, session) {
 
   ## Display zones
   observe({
-    input$purpose
+    input_purpose()
     region$geography
     input$scenario
     line_type <<- isolate(input$line_type)
@@ -659,7 +659,7 @@ shinyServer(function(input, output, session) {
 
   ## Define centroids
   observe({
-    input$purpose
+    input_purpose()
     region$geography
     input$scenario
     input$line_type
@@ -686,7 +686,7 @@ shinyServer(function(input, output, session) {
 
   ## Define destinations
   observe({
-    input$purpose
+    input_purpose()
     region$geography
     input$scenario
     input$line_type
@@ -959,7 +959,7 @@ shinyServer(function(input, output, session) {
 
   ## Adds map legend for zones
   observe({
-    input$purpose
+    input_purpose()
 
     # Define the legend title
     switch(input_purpose(),
@@ -1062,7 +1062,7 @@ shinyServer(function(input, output, session) {
 
   ## Read region_stats.html, if it exists, for the loaded region
   output$region_stats <- renderUI({
-    input$purpose
+    input_purpose()
     input$geography
     region$current
 
