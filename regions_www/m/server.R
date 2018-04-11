@@ -90,13 +90,14 @@ shinyServer(function(input, output, session) {
     state$values$current_region <- region$current
   })
 
-  # Restore state's region into a region variable
-  onRestore(function(state) {
-    region$state_region <<- state$values$current_region
 
-    region$state_lng <<- state$input$map_center$lng
-    region$state_lat <<-  state$input$map_center$lat
-    region$state_mzoom <<- state$input$map_zoom
+  onRestore(function(state) {
+    # Restore state's region into a region variable
+    region$state_region <- state$values$current_region
+    # Restore map's location and zoom
+    region$state_lng <- state$input$map_center$lng
+    region$state_lat <-  state$input$map_center$lat
+    region$state_mzoom <- state$input$map_zoom
 
 
   })
