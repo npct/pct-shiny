@@ -386,7 +386,10 @@ shinyServer(function(input, output, session) {
     shinyjs::hideElement(id = "loading")
   }, priority = 3)
 
-  observe({
+
+  # Once all the variables have been initialized - all observe blocks have run, reset the map view
+  # (including zoom from the saved state of the app)
+  onRestored(function(state) {
 
     if(!is.null(region$state_region) && !is.na(region$state_region)){
 
