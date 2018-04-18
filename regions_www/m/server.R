@@ -392,15 +392,11 @@ shinyServer(function(input, output, session) {
   # (including zoom from the saved state of the app)
   onRestored(function(state) {
 
-    if(!is.null(region$state_region) && !is.na(region$state_region)){
-
       leafletProxy("map") %>% setView(.,
                                       lng = region$state_lng,
                                       lat = region$state_lat,
                                       zoom = region$state_mzoom
       )
-    }
-
   })
 
 
