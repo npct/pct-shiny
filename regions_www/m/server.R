@@ -22,12 +22,11 @@
 ## Functions
 source("pct_shiny_funs.R", local = T)
 
-## Enable bookmarking at the server side
-enableBookmarking(store = "server")
+enableBookmarking(store = "url")
 
 ## Packages (Only regularly used packages are loaded into the global space, the others must be installed but are used with the package prefix, e.g. DT::)
 available_locally_pkgs <- c("shiny", "leaflet", "sp")
-must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs")
+must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs", "httr")
 
 ## Path directories to load data (expect regional data as a sibling of interface_root)
 interface_root <- file.path("..", "..")
@@ -79,6 +78,17 @@ lsoa_legend_df <- data.frame(
   labels = c("1-9", "10-49", "50-99", "100-249",
              "250-499", "500-999", "1000-1999", "2000+")
 )
+oldEncodeShinySaveState <- getFromNamespace("encodeShinySaveState", "shiny")
+
+shortEncodeShinySaveState <- function(state){
+  res <- oldEncodeShinySaveState(state)
+  r <- httr::POST(
+    "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyBLGLnQojQm2WQu9Urri2mmVTQolrLuJBc",
+    body = list(longUrl = paste0("http://www.pct.bike/?", res)), encode = "json"
+  )
+  return(httr::content(r)$id)
+}
+assignInNamespace("encodeShinySaveState", shortEncodeShinySaveState, ns="shiny")
 
 # # # # # # # #
 # shinyServer #
