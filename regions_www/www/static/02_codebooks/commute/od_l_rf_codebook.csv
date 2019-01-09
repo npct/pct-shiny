@@ -13,12 +13,10 @@ bicycle,No. cyclists in Census 2011
 foot,No. pedestrians in Census 2011
 car_driver,No. car drivers in Census 2011
 car_passenger,No. car passengers in Census 2011
-train,No. train users in Census 2011
-light_rail,No. light rail users in Census 2011
-bus,No. bus users in Census 2011
-taxi,No. taxi users in Census 2011
 motorbike,No. motorbikers in Census 2011
-other,No. other transport users in Census 2011
+train_tube,"No. train, underground and light rail users in Census 2011"
+bus,No. bus users in Census 2011
+taxi_other,No. taxi and other transport users in Census 2011
 govtarget_slc,No. cyclists in Government Target (equity)
 govtarget_sic,Increase no. cyclists in Government Target (equity) vs. Census 2011
 govtarget_slw,No. pedestrians in Government Target (equity)
