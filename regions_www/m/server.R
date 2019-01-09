@@ -335,10 +335,6 @@ shinyServer(function(input, output, session) {
       to_plot$zones@data[,school_na("govtarget")$na][idx] <<- z_na_const +
         to_plot$zones@data[,school_na("govtarget")$base][idx]
 
-      idx <- is.na(to_plot$zones@data[,school_na("govnearmkt")$na])
-      to_plot$zones@data[,school_na("govnearmkt")$na][idx] <<- z_na_const +
-        to_plot$zones@data[,school_na("govnearmkt")$base][idx]
-
       idx <- is.na(to_plot$zones@data[,school_na("dutch")$na])
       to_plot$zones@data[,school_na("dutch")$na][idx] <<- z_na_const +
         to_plot$zones@data[,school_na("dutch")$base][idx]
@@ -349,10 +345,6 @@ shinyServer(function(input, output, session) {
       idx <- is.na(to_plot$destinations@data[,school_na("govtarget")$na])
       to_plot$destinations@data[,school_na("govtarget")$na][idx] <<- d_na_const +
         to_plot$destinations@data[,school_na("govtarget")$base][idx]
-
-      idx <- is.na(to_plot$destinations@data[,school_na("govnearmkt")$na])
-      to_plot$destinations@data[,school_na("govnearmkt")$na][idx] <<- d_na_const +
-        to_plot$destinations@data[,school_na("govnearmkt")$base][idx]
 
       idx <- is.na(to_plot$destinations@data[,school_na("dutch")$na])
       to_plot$destinations@data[,school_na("dutch")$na][idx] <<- d_na_const +
