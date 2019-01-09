@@ -163,8 +163,10 @@ br.clear {
 
       if (e.name == "Census 2011")
         selectedLayer = "olc"
-      else if(e.name == "Government Target")
+      else if(e.name == "Government Target (equity)")
         selectedLayer = "govtarget"
+      else if(e.name == "Government Target (near market)")
+        selectedLayer = "govnearmkt"
       else if(e.name == "Gender Equality")
         selectedLayer = "gendereq"
       else if(e.name == "Go Dutch")
@@ -405,7 +407,8 @@ br.clear {
 
     info.scenarioMap = {
       bicycle: "2011 Census",
-      govtarget_slc: "Government Target",
+      govtarget_slc: "Government Target (equity)",
+      govnearmkt_slc: "Government Target (near market)",
       gendereq_slc: "Gender Equality",
       dutch_slc: "Go Dutch",
       ebike_slc: "Ebike"
@@ -417,7 +420,9 @@ br.clear {
       if(scenario !== undefined && all_var !== undefined && props) {
         var scenario_name = "2011 Census";
         if (scenario.indexOf('govtarget') !== -1)
-          scenario_name = "Government Target";
+          scenario_name = "Government Target (equity)";
+        else if (scenario.indexOf('govnearmkt') !== -1)
+          scenario_name = "Government Target (near market)";
         else if (scenario.indexOf('dutch') !== -1)
           scenario_name = "Go Dutch";
         else if (scenario.indexOf('ebike') !== -1)
@@ -581,7 +586,8 @@ br.clear {
 
     var map_layers = {
       "Census 2011": default_scenario,
-      "Government Target": L.tileLayer(''),
+      "Government Target (equity)": L.tileLayer(''),
+      "Government Target (near market)": L.tileLayer(''),
       "Gender Equality": L.tileLayer(''),
       "Go Dutch": L.tileLayer(''),
       "Ebikes": L.tileLayer('')
@@ -609,7 +615,7 @@ br.clear {
 
     // contents
     var right = '<h1>Information</h1>';
-    var contents = '<hr><h2>The four scenarios</h2> Four scenarios of change were developed to help planners understand which areas and routes have the highest potential for cycling under different sets of assumptions: <br><strong>Government Target</strong>, which assumes that cycling levels double nationally, and uses trip distance and hilliness to predict which trips would switch. <br><strong>Gender Equality</strong>, in which women have the same propensity to cycle a given trip as men.<br> <strong>Go Dutch</strong> draws on Dutch Travel Survey data to estimate what cycling levels one would observe if England acquired Dutch cycling infrastructure and Dutch cycling culture, but kept its current trip distances and hilliness.<br> <strong>Ebikes</strong> takes Go Dutch even further, and uses additional data on how ebike ownership encourages longer trips and overcomes hilliness.';
+    var contents = '<hr><h2>The four scenarios</h2> Five scenarios of change were developed to help planners understand which areas and routes have the highest potential for cycling under different sets of assumptions: <br><strong>Government Target</strong>, which assumes that cycling levels double nationally.  Government Target (equity) uses only trip distance and hilliness to predict which trips would switch, while Government Target (near market) also considers characteristics like age and sex. <br><strong>Gender Equality</strong>, in which women have the same propensity to cycle a given trip as men.<br> <strong>Go Dutch</strong> draws on Dutch Travel Survey data to estimate what cycling levels one would observe if England acquired Dutch cycling infrastructure and Dutch cycling culture, but kept its current trip distances and hilliness.<br> <strong>Ebikes</strong> takes Go Dutch even further, and uses additional data on how ebike ownership encourages longer trips and overcomes hilliness.';
     var slideMenu = L.control.slideMenu('', {position: 'topright', menuposition: 'topright', width: '30%', delay: '10'}).addTo(map);
     slideMenu.setContents(right + contents);
 

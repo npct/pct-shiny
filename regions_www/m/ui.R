@@ -28,7 +28,8 @@ geographies <- c("Middle Super Output Area"  = "msoa" ,
 
 scenarios <- c(
   "Census 2011 Cycling" = "olc",
-  "Government Target"   = "govtarget",
+  "Government Target (equity)"   = "govtarget",
+  "Government Target (near market)"   = "govnearmkt",
   "Gender Equality"     = "gendereq",
   "Go Dutch"            = "dutch",
   "Ebikes"              = "ebike"
