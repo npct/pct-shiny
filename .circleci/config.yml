@@ -11,7 +11,8 @@ jobs:
     - image: circleci/ruby:2.6
     steps:
     - checkout
-    - run: 'yes | git push git@npt1.vs.mythic-beasts.com:pct-shiny ${CIRCLE_SHA1}:${CIRCLE_BRANCH} -f'
+    - run: 'ssh-keyscan -H npt1.vs.mythic-beasts.com >> ~/.ssh/known_hosts'
+    - run: 'git push git@npt1.vs.mythic-beasts.com:pct-shiny ${CIRCLE_SHA1}:${CIRCLE_BRANCH} -f'
   build:
     branches:
       only:
@@ -24,4 +25,5 @@ jobs:
     - image: circleci/ruby:2.6
     steps:
     - checkout
-    - run: 'yes | git push git@npct0.vs.mythic-beasts.com:pct-shiny ${CIRCLE_SHA1}:${CIRCLE_BRANCH} -f'
+    - run: 'ssh-keyscan -H npct0.vs.mythic-beasts.com >> ~/.ssh/known_hosts'
+    - run: 'git push git@npct0.vs.mythic-beasts.com:pct-shiny ${CIRCLE_SHA1}:${CIRCLE_BRANCH} -f'
