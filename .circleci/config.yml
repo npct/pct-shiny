@@ -10,7 +10,7 @@ jobs:
     docker:
     - image: ubuntu:18.04
     steps:
-    - run: 'sudo apt install git'
+    - run: 'apt install git'
     - run: 'git push git@npt1.vs.mythic-beasts.com:pct-shiny ${CIRCLE_SHA1}:${CIRCLE_BRANCH} -f'
   build:
     branches:
@@ -23,5 +23,5 @@ jobs:
     docker:
     - image: ubuntu:18.04
     steps:
-    - run: 'sudo apt install git'
+    - run: 'apt install git'
     - run: 'git push git@npct0.vs.mythic-beasts.com:pct-shiny ${CIRCLE_SHA1}:${CIRCLE_BRANCH} -f'
