@@ -11,7 +11,7 @@ jobs:
     - image: debian:9
     steps:
     - run: 'apt update'
-    - run: 'apt install git'
+    - run: 'apt install -y git'
     - run: 'git push git@npt1.vs.mythic-beasts.com:pct-shiny ${CIRCLE_SHA1}:${CIRCLE_BRANCH} -f'
   build:
     branches:
@@ -25,5 +25,5 @@ jobs:
     - image: debian:9
     steps:
     - run: 'apt update'
-    - run: 'apt install git'
+    - run: 'apt install -y git'
     - run: 'git push git@npct0.vs.mythic-beasts.com:pct-shiny ${CIRCLE_SHA1}:${CIRCLE_BRANCH} -f'
