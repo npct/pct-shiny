@@ -11,11 +11,12 @@ jobs:
     - image: circleci/ruby:2.6
     steps:
     - checkout
-    - run: 'git push git@npt1.vs.mythic-beasts.com:pct-shiny ${CIRCLE_SHA1}:${CIRCLE_BRANCH} -f'
+    - run: 'yes | git push git@npt1.vs.mythic-beasts.com:pct-shiny ${CIRCLE_SHA1}:${CIRCLE_BRANCH} -f'
   build:
     branches:
       only:
         - master
+        - microsim
     working_directory: ~/npct/pct-shiny
     parallelism: 1
     shell: /bin/bash --login
@@ -23,7 +24,7 @@ jobs:
     - image: circleci/ruby:2.6
     steps:
     - checkout
-    - run: 'git push git@npct0.vs.mythic-beasts.com:pct-shiny ${CIRCLE_SHA1}:${CIRCLE_BRANCH} -f'
+    - run: 'yes | git push git@npct0.vs.mythic-beasts.com:pct-shiny ${CIRCLE_SHA1}:${CIRCLE_BRANCH} -f'
   build:
     working_directory: ~/npct/pct-shiny
     parallelism: 1
