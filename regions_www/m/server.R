@@ -166,7 +166,8 @@ shinyServer(function(input, output, session) {
         "Go Dutch"                = "dutch"
       )
       local_line_types <- c("None"  = "none",
-                            "Route Network (LSOA, clickable)"   = "route_network"
+                            "Route Network (LSOA, clickable)"   = "route_network",
+                            "Route Network (Tiles)" = "route_network_tile"
       )
       local_line_order <- c(
         "Number of cycle trips" = "slc",
@@ -836,9 +837,9 @@ shinyServer(function(input, output, session) {
   observe({
     # region$repopulate_region
     shinyjs::showElement(id = "loading")
-    if (input$line_type == "lsoa_base_map") {
-      urlTemplate <- paste0("https://npttile.vs.mythic-beasts.com/en-cy/",input$scenario,"/{z}/{x}/{y}.png")
-
+    if (input$line_type %in% c("lsoa_base_map", "route_network_tile")) {
+      maxNativeZoom <- ifelse(input$line_type == "route_network_tile", 14, 15) # Added until we get zoom 15 for the school tiles
+      urlTemplate <- paste("https://npttile.vs.mythic-beasts.com", input_purpose(), input$scenario,"{z}/{x}/{y}.png", sep= "/")
       leafletProxy("map") %>%
         addTiles(
           .,
@@ -846,7 +847,7 @@ shinyServer(function(input, output, session) {
           layerId = "lsoa_base_map",
           group = "lsoa_base_map",
           options = tileOptions(
-            maxNativeZoom = 13,
+            maxNativeZoom = maxNativeZoom,
             reuseTiles = T,
             tms = T
           )
