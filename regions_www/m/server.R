@@ -430,7 +430,7 @@ shinyServer(function(input, output, session) {
   })
 
   ## Define when not to give option to sort by lines [NB also hard-written into ui ]
-  show_no_lines <- c("none", "lsoa_base_map")
+  show_no_lines <- c("none", "lsoa_base_map", "route_network_tile")
 
   ## Select and sort lines within flows_bb bounding box
   sort_lines <- function(lines, line_type, nos) {

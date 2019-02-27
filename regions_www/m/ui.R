@@ -122,12 +122,12 @@ shinyUI(
                      checkboxInput("show_zones", "Show Zones", value = T)),
 
             conditionalPanel(
-              condition = "input.line_type != 'none' && input.line_type != 'lsoa_base_map' && input.line_type != 'route_network'",
+              condition = "['none', 'lsoa_base_map', 'route_network', 'route_network_tile'].indexOf(input.line_type) === -1",
               tags$div(title = "Untick to update lines when you move the map",
                        checkboxInput("freeze", "Freeze Lines", value = F))
             ),
             conditionalPanel(
-              condition = "input.line_type != 'none' && input.line_type != 'lsoa_base_map'",
+              condition = "['none', 'lsoa_base_map', 'route_network_tile'].indexOf(input.line_type) === -1",
               tags$div(
                 title = "Number of lines to show",
                 sliderInput(
@@ -140,7 +140,7 @@ shinyUI(
                 )
               ),
               conditionalPanel(
-                condition = "input.line_type != 'route_network' && input.scenario != 'olc'",
+                condition = "['route_network', 'olc'].indexOf(input.line_type) === -1",
                 tags$div(
                   title = "Order the top flows by",
                   selectInput(
