@@ -113,7 +113,7 @@ get_scenario_name <- function(scenario_name, purpose){
 text_zone_header <- function(purpose) {
   switch(purpose,
          "commute"  = "All residents living in zone",
-         "school"   = "All children living in zone",
+         "school"   = "All school children living in zone",
          "alltrips" = "All trips starting in zone")
 }
 
@@ -125,7 +125,7 @@ text_destination_header <- function(purpose) {
 text_all <- function(purpose) {
   switch(purpose,
          "commute"  = "Total commuters: &nbsp;",
-         "school"   = "Total children: &nbsp;",
+         "school"   = "Total school children: &nbsp;",
          "alltrips" = "Total weekly no. trips: &nbsp;")
 }
 
