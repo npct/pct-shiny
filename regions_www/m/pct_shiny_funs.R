@@ -773,11 +773,11 @@ popup_destinations <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-     <td>", school_smallcell(data$bicycle), ifelse(school_smallcell(data$bicycle, return_tf = T), "" , paste0(" (", round_percent(data$bicycle / data$all) , "%)")), "</td>
+     <td>", school_smallcell(data$bicycle, d = T), ifelse(school_smallcell(data$bicycle, return_tf = T, d = T), "" , paste0(" (", round_percent(data$bicycle / data$all) , "%)")), "</td>
     </tr>
     <tr>
       <td>", text_drive_baseline(purpose), "</td>
-     <td>", school_smallcell(data$car), ifelse(school_smallcell(data$car, return_tf = T), "" , paste0(" (", round_percent(data$car / data$all) , "%)")), "</td>
+     <td>", school_smallcell(data$car, d = T), ifelse(school_smallcell(data$car, return_tf = T, d = T), "" , paste0(" (", round_percent(data$car / data$all) , "%)")), "</td>
     </tr>
    </tbody>
  </table>
@@ -808,7 +808,7 @@ popup_destinations <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-     <td>", school_smallcell(data$bicycle), ifelse(school_smallcell(data$bicycle, return_tf = T), "" , paste0(" (", round_percent(data$bicycle / data$all) , "%)")), "</td>
+     <td>", school_smallcell(data$bicycle, d = T), ifelse(school_smallcell(data$bicycle, return_tf = T, d = T), "" , paste0(" (", round_percent(data$bicycle / data$all) , "%)")), "</td>
     </tr>
     <tr>
       <td>", text_cycle_change(purpose), "</td>
