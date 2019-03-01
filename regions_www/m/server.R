@@ -167,7 +167,7 @@ shinyServer(function(input, output, session) {
       )
       local_line_types <- c("None"  = "none",
                             "Route Network (LSOA, clickable)"   = "route_network",
-                            "Route Network (Tiles)" = "route_network_tile"
+                            "Route Network (LSOA, image)" = "route_network_tile"
       )
       local_line_order <- c(
         "Number of cycle trips" = "slc",
