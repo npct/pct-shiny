@@ -904,6 +904,14 @@ shinyServer(function(input, output, session) {
   observe({
     input$map_base
     region$current
+    tileOpts <- tileOptions(
+      opacity = 1,
+      minZoom = 7,
+      reuseTiles = T,
+      maxZoom = 18,
+      maxNativeZoom = map_tile()$zoom
+    )
+
     leafletProxy("map") %>% addTiles(
       .,
       urlTemplate = map_tile()$url,
@@ -911,36 +919,23 @@ shinyServer(function(input, output, session) {
       attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
       Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
       Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      options = tileOptions(
-        opacity = 1,
-        minZoom = 7,
-        reuseTiles = T,
-        maxZoom = 18,
-        maxNativeZoom = map_tile()$zoom
-      )
+      options = tileOpts
     ) %>%
       clearGroup(., "imd_extras")
     if (input$map_base == 'IMD') {
-      imdTileOptions <-
-        tileOptions(
-          opacity = 1,
-          minZoom = 7,
-          reuseTiles = T,
-          maxNativeZoom = 14
-        )
       leafletProxy("map") %>%
         addTiles(.,
                  urlTemplate = "https://cdrc-maps.liv.ac.uk/tiles/imd2014_wal/{z}/{x}/{y}.png",
                  group = "imd_extras",
-                 options = imdTileOptions) %>%
+                 options = tileOpts) %>%
         addTiles(.,
                 urlTemplate = "https://cdrc-maps.liv.ac.uk/tiles/shine_urbanmask_dark/{z}/{x}/{y}.png",
                  group = "imd_extras",
-                 options = imdTileOptions) %>%
+                 options = tileOpts) %>%
         addTiles(.,
                  urlTemplate = "https://cdrc-maps.liv.ac.uk/tiles/shine_labels_cdrc/{z}/{x}/{y}.png",
                  group = "imd_extras",
-                 options = imdTileOptions)
+                 options = tileOpts)
 
     }
     leafletProxy("map") %>% hideGroup(., "lsoa_base_map") %>% showGroup(., "lsoa_base_map")
