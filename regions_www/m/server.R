@@ -838,7 +838,6 @@ shinyServer(function(input, output, session) {
     # region$repopulate_region
     shinyjs::showElement(id = "loading")
     if (input$line_type %in% c("lsoa_base_map", "route_network_tile")) {
-      maxNativeZoom <- ifelse(input$line_type == "route_network_tile", 12, 15) # Added until we get zoom 15 for the school tiles
       urlTemplate <- paste("https://npttile.vs.mythic-beasts.com", input_purpose(), input$scenario,"{z}/{x}/{y}.png", sep= "/")
       leafletProxy("map") %>%
         addTiles(
@@ -847,7 +846,7 @@ shinyServer(function(input, output, session) {
           layerId = "lsoa_base_map",
           group = "lsoa_base_map",
           options = tileOptions(
-            maxNativeZoom = maxNativeZoom,
+            maxNativeZoom = 15,
             reuseTiles = T,
             tms = T
           )
