@@ -1,17 +1,27 @@
+html, body, .container-fluid, .tab-content, .tab-pane {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.navbar {
+  margin-bottom: 0;
+}
 .help-block  {
   font-size: 10px;
+}
+
+.leaflet-top {
+  position: relative;
 }
 
 .navbar-nav>li {
     float: left;
 }
 
-div.outer {
-  position: fixed;
+.outer {
   top: 41px;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  height: 100%;
+  width: 100%;
   overflow-x: hidden;
   overflow-y: scroll;
   padding: 0;
@@ -32,6 +42,10 @@ select::-ms-expand {
   width:12px;
   border:none;
   background:#fff;
+}
+
+#map {
+  position: inherit !important;
 }
 
 select.form-control {
@@ -73,16 +87,12 @@ label {
 }
 
 #cite {
-  position: relative;
-  bottom: 25px;
+  position: absolute;
+  bottom: 0;
   left: 120px;
   font-size: 12px;
   float: left;
   background: rgba(255, 255, 255, 0.7);
-}
-
-body {
-  max-width: unset !important;
 }
 
 #dft {
@@ -203,16 +213,6 @@ body {
     transform: rotate(360deg);
   }
 }
-
-
-
-/*
-Temporarily disabling center alignment of tables for model-output tab
-table {
-  margin: 0 auto;
-}
-*/
-
 
 /*
 Add CSS for tables. Taken from:
