@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Local Authority - Propensity of Cycle</title>
+
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="shortcut icon" href="www/icons/favicon.ico">
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.css">
+<script src="https://unpkg.com/leaflet-easybutton@2.0.0/src/easy-button.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+
+<link rel="stylesheet" href="www/la-map-resources/leaflet-search.css" />
+
+<script type="text/javascript" src="www/la-map-resources/leaflet-control-credits.js"></script>
+<link rel="stylesheet" href="www/la-map-resources/leaflet-control-credits.css" />
+
+<script type="text/javascript" src="www/la-map-resources/L.Control.SlideMenu.js"></script>
+<link rel="stylesheet" href="www/la-map-resources/L.Control.SlideMenu.css" />
+
+
+<style>
+ body {
+  padding: 0;
+  margin: 0;
+  }
+  html, body, #map {
+    height: 100%;
+    width: 100%;
+}
+.info-box {
+  padding: 6px 8px;
+  font: 14px/16px Arial, Helvetica, sans-serif;
+  background: white;
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 0 15px rgba(0,0,0,0.2);
+  border-radius: 5px;
+}
+
+.leaflet-control.cycle-to-work {
+  width: 300px;
+  height: 85px;
+}
+
+.info b {
+  margin: 0 0 5px;
+  color: #777;
+}
+
+.legend {
+  text-align: left;
+  line-height: 18px;
+  color: #555;
+}
+
+.legend i {
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+br.clear {
+  clear: both;
+}
+
+.leaflet-control-layers label {
+  margin-bottom: initial;
+}
+</style>
+
+<script type="text/javascript">
+</script>
+
+</head>
+<body>
+
+<div id='map'></div>
+<script type="text/javascript" src="www/front_page/school/pct_regions_lowres_scenario_school.js"></script>
+<script type="text/javascript" src="www/front_page/commute/pct_regions_lowres_scenario_commute.js"></script>
+
+<script src="www/la-map-resources/leaflet-search.js"></script>
+<script src="www/assets/google-analytics.js"></script>
+<link rel="stylesheet" href = "www/la-map-resources/leaflet-search.src.css">
+
+<script type="text/javascript">
+
+// from there, similar to the example:
+    var usmap = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          attribution: '<a href="//leafletjs.com" target = "_blank">Leaflet</a> | ' +
+          'Map data &copy; <a href="//openstreetmap.org" target = "_blank">OpenStreetMap</a> contributors | ' +
+          '<a href="//creativecommons.org/licenses/by-sa/2.0/" target = "_blank">CC-BY-SA</a>'
+        });
+
+    // initialize the map
+    var map = L.map('map', {
+        center: [53, -0.4],
+        zoom: 6,
+        layers: [usmap]
+    });
+
+    //var map = L.map('map').setView([ 53, -0.4], 6);
+
+    var legend = L.control({position: 'topleft'});
+
+    function getColor(d) {
+      return d >= 40  ? '#4575B4' :
+        d >= 30  ? '#74ADD1' :
+        d >= 25  ? '#ABD9E9' :
+        d >= 20  ? '#C6DBEF' :
+        d >= 15  ? '#ffffbf' :
+        d >= 10  ? '#FEE090' :
+        d >= 7   ? '#FDAE61' :
+        d >= 4   ? '#F46D43' :
+        d >= 2   ? '#D73027' :
+        d >= 0   ? '#A50026' :
+        '#313695';
+
+    }
+
+    legend.onAdd = function (map) {
+
+      var div = L.DomUtil.create('div', 'info-box legend'),
+        grades = [0, 2, 4, 7, 10, 15, 20, 25, 30, 40],
+        bin_labels = ["0-1%",
+          "2-3%",
+          "4-6%",
+          "7-9%",
+          "10-14%",
+          "15-19%",
+          "20-24%",
+          "25-29%",
+          "30-39%",
+          "40%+"],
+
+      labels = [],
+      from;
+    for (var i = 0; i < grades.length; i++) {
+      from = grades[i];
+      labels.push(
+          '<i style="background:' + getColor(from + 1) + '"></i> ' +
+        bin_labels[i]);
+    }
+    div.innerHTML = labels.join("<br class=\"clear\">");
+    return div;
+  };
+
+  legend.addTo(map);
+
+  // control that shows region info on hover
+    var info = L.control();
+
+    info.onAdd = function (map) {
+      this._div = L.DomUtil.create('div', 'info-box cycle-to-work');
+      this.update();
+      return this._div;
+    };
+
+    // Armin's solution to a fixed decimal places
+    // taken from a stackoverflow thread:
+    // http://stackoverflow.com/questions/1726630/formatting-a-number-with-exactly-two-decimals-in-javascript
+    // source: https://gist.github.com/ArminVieweg/28647e735aa6efaba401
+    function sign(num) {
+      // IE does not support method sign here
+      if (typeof Math.sign === 'undefined') {
+        if (num > 0) {
+          return 1;
+        }
+        if (num < 0) {
+          return -1;
+        }
+        return 0;
+      }
+      return Math.sign(num);
+    }
+
+    function precise_round(num, decimals) {
+      var t=Math.pow(10, decimals);
+      return (Math.round((num * t) + (decimals>0?1:0)*(sign(num) * (10 / Math.pow(100, decimals)))) / t).toFixed(decimals);
+    }
+
+    info.scenarioMap = {
+      bicycle_perc: "2011 Census",
+      govtarget_slc_perc: "Government Target",
+      gendereq_slc_perc: "Gender Equality",
+      dutch_slc_perc: "Go Dutch",
+      ebike_slc_perc: "Ebike"
+    };
+
+    info.update = function (props, scenario) {
+
+      if (typeof props !== 'undefined') {
+        console.log("props " +  props);
+      }else{
+        console.log("props is undefined");
+
+      }
+
+      if (typeof scenario !== 'undefined') {
+        console.log("scenario " +  scenario);
+      }else{
+        console.log("scenario is undefined");
+
+      }
+      var regionText;
+      if(scenario !== undefined && props) {
+        regionText = '<b>' + capitalize(props.region_name) + '</b><br />' + precise_round(props[scenario], 1) + '  % in ' + info.scenarioMap[scenario];
+      } else {
+        regionText = 'Hover over a region';
+      }
+      this._div.innerHTML = '<h4>Cycling to work</h4>' + regionText;
+    };
+
+    // Capitalize all words in a region except 'and' and 'of'
+    function capitalize(s){
+      s = s.replace(/-/g, ' ');
+      s = s.toLowerCase().replace( /\b./g, function(a){ return a.toUpperCase(); } );
+      s = s.replace('And', 'and');
+      s = s.replace('Of', 'of');
+      return s;
+    }
+
+    info.addTo(map);
+
+    var polyColor = 'black';
+    var polyWeight = 0.5;
+    var polyFillOpacity = polyOpacity = 0.8;
+    var polyDashArry = '';
+
+    function highlightFeature(property) {
+      return function(e) {
+        var layer = e.target;
+
+        layer.setStyle({
+          weight: 5,
+          color: '#666',
+          dashArray: '',
+          fillOpacity: polyFillOpacity
+        });
+
+        if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+          layer.bringToFront();
+        }
+
+        info.update(layer.feature.properties, property);
+      };
+    }
+
+    function resetHighlight(property, feature) {
+      return function(e) {
+        e.target.setStyle(mapStyle(property)(feature));
+        info.update();
+      };
+    }
+
+    function openRegion(e) {
+      window.open(".\/m/?r=" + e.target.feature.properties.region_name, '_top');
+    }
+
+    function eachFeature(property) {
+      //console.log("onEachFeature " + property)
+
+      return function(feature, layer) {
+        layer.on({
+          mouseover: highlightFeature(property),
+          mouseout: resetHighlight(property, feature),
+          click: openRegion
+        });
+      };
+    }
+
+    function mapStyle(property) {
+      return function (feature) {
+        //console.log("mapStyle " + feature.properties[property])
+
+        return {
+          weight: polyWeight,
+          //opacity: poly_opacity,
+          color: polyColor,
+          dashArray: polyDashArry,
+          fillOpacity: polyFillOpacity,
+          fillColor: getColor(feature.properties[property])
+        };
+      };
+    }
+
+
+// parse the geojson (very simplified example here)
+    var commute = L.geoJson(commute, {
+
+      function(feature) {
+                switch (feature.properties.name) {
+                  case 'bicycle_perc'{
+                    style: mapStyle("bicycle_perc"),
+                    onEachFeature: eachFeature("bicycle_perc")
+
+                  }
+
+                  }
+
+      }
+/*
+      style: (function(feature) {
+                switch (feature.properties.name) {
+                    case 'bicycle_perc': mapStyle("bicycle_perc");
+                    case 'govtarget_slc_perc': mapStyle("govtarget_slc_perc");
+                    case 'gendereq_slc_perc': mapStyle("gendereq_slc_perc");
+                    case 'dutch_slc_perc': mapStyle("dutch_slc_perc");
+                    case 'ebike_slc_perc': mapStyle("ebike_slc_perc");
+                }
+      }),
+      onEachFeature: (function(feature) {
+        console.log("feature is " + feature.properties)
+                switch (feature.properties) {
+                    case 'bicycle_perc': eachFeature("bicycle_perc");
+                    case 'govtarget_slc_perc': eachFeature("govtarget_slc_perc");
+                    case 'gendereq_slc_perc': eachFeature("gendereq_slc_perc");
+                    case 'dutch_slc_perc': eachFeature("dutch_slc_perc");
+                    case 'ebike_slc_perc': eachFeature("ebike_slc_perc");
+                    default: eachFeature("bicycle_perc");
+                }
+      })*/
+    });
+
+
+    var school = L.geoJson(school, {
+      //style:mapStyle,
+      //onEachFeature: onEachFeature
+    });
+
+
+
+    var map_layers = {
+      "Commute": commute,
+      "School": school
+
+    };
+
+    L.control.layers(map_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+
+    // Add commute as the default layer
+    commute.addTo(map);
+
+</script>
+
+</body>
+</html>
