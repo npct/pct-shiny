@@ -296,61 +296,99 @@ br.clear {
     }
 
 
-// parse the geojson (very simplified example here)
-    var commute = L.geoJson(commute, {
 
-      function(feature) {
-                switch (feature.properties.name) {
-                  case 'bicycle_perc'{
-                    style: mapStyle("bicycle_perc"),
-                    onEachFeature: eachFeature("bicycle_perc")
-
-                  }
-
-                  }
-
-      }
-/*
-      style: (function(feature) {
-                switch (feature.properties.name) {
-                    case 'bicycle_perc': mapStyle("bicycle_perc");
-                    case 'govtarget_slc_perc': mapStyle("govtarget_slc_perc");
-                    case 'gendereq_slc_perc': mapStyle("gendereq_slc_perc");
-                    case 'dutch_slc_perc': mapStyle("dutch_slc_perc");
-                    case 'ebike_slc_perc': mapStyle("ebike_slc_perc");
-                }
-      }),
-      onEachFeature: (function(feature) {
-        console.log("feature is " + feature.properties)
-                switch (feature.properties) {
-                    case 'bicycle_perc': eachFeature("bicycle_perc");
-                    case 'govtarget_slc_perc': eachFeature("govtarget_slc_perc");
-                    case 'gendereq_slc_perc': eachFeature("gendereq_slc_perc");
-                    case 'dutch_slc_perc': eachFeature("dutch_slc_perc");
-                    case 'ebike_slc_perc': eachFeature("ebike_slc_perc");
-                    default: eachFeature("bicycle_perc");
-                }
-      })*/
+    var commute_olc = L.geoJson(commute, {
+      style: mapStyle("bicycle_perc"),
+      onEachFeature: eachFeature("bicycle_perc")
     });
 
-
-    var school = L.geoJson(school, {
-      //style:mapStyle,
-      //onEachFeature: onEachFeature
+    var commute_govtarget = L.geoJson(commute, {
+      style: mapStyle("govtarget_slc_perc"),
+      onEachFeature: eachFeature("govtarget_slc_perc")
     });
 
+    var commute_gendereq = L.geoJson(commute, {
+      style: mapStyle("gendereq_slc_perc"),
+      onEachFeature: eachFeature("gendereq_slc_perc")
+    });
+
+    var commute_dutch = L.geoJson(commute, {
+      style: mapStyle("dutch_slc_perc"),
+      onEachFeature: eachFeature("dutch_slc_perc")
+    });
+
+    var commute_ebike = L.geoJson(commute, {
+      style: mapStyle("ebike_slc_perc"),
+      onEachFeature: eachFeature("ebike_slc_perc")
+    });
+
+    var commute_map_layers = {
+      "Census 2011": commute_olc,
+      "Government Target": commute_govtarget,
+      "Gender equality": commute_gendereq,
+      "Go Dutch": commute_dutch,
+      "Ebikes": commute_ebike
+    };
 
 
-    var map_layers = {
-      "Commute": commute,
-      "School": school
+    var school_olc = L.geoJson(school, {
+      style: mapStyle("bicycle_perc"),
+      onEachFeature: eachFeature("bicycle_perc")
+    });
+
+    var school_govtarget = L.geoJson(school, {
+      style: mapStyle("govtarget_slc_perc"),
+      onEachFeature: eachFeature("govtarget_slc_perc")
+    });
+
+    var school_dutch = L.geoJson(school, {
+      style: mapStyle("dutch_slc_perc"),
+      onEachFeature: eachFeature("dutch_slc_perc")
+    });
+
+    var school_map_layers = {
+      "School Census 2011": school_olc,
+      "Gov Target": school_govtarget,
+      "Go Dutch": school_dutch
+    };
+
+
+    var upper_map_layers = {
+      "Commute": commute_map_layers,
+      "School": school_map_layers,
 
     };
 
-    L.control.layers(map_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+    //L.control.layers(commute_map_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+    //L.control.layers(school_map_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+
+    var default_commute_layer = L.tileLayer('');
+
+    var upper_layer = {
+      "Commute": default_commute_layer,
+      "School" : L.tileLayer('')
+    };
+
+    L.control.layers(upper_layer, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
     // Add commute as the default layer
-    commute.addTo(map);
+    default_commute_layer.addTo(map);
+
+
+    var default_scenario = L.tileLayer('');
+
+    var scenario_layers = {
+      "Census 2011": default_scenario,
+      "Government Target": L.tileLayer(''),
+      "Gender equality": L.tileLayer(''),
+      "Go Dutch": L.tileLayer(''),
+      "Ebikes": L.tileLayer('')
+    };
+
+    L.control.layers(scenario_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+
+    // Add census as the default scenario
+    default_scenario.addTo(map);
 
 </script>
 
