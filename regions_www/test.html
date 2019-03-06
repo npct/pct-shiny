@@ -281,20 +281,11 @@ br.clear {
     }
 
 
-
-
-    // Add census as the default scenario
-    //default_scenario.addTo(map);
-
-
     var selectedLayerName = "commute";
     var selectedVariable = "bicycle_perc";
     var featureGroup = null;
 
      map.on('baselayerchange', function (e) {
-
-//       if (featureGroup != null)
-//          map.removeLayer(featureGroup)
 
       if (e.name == "Census 2011")
         selectedVariable = "bicycle_perc"
@@ -339,7 +330,7 @@ br.clear {
 
 
     function setControls(){
-      // Disable CO2 and Health for Census 2011 scenario
+      // Disable Gender Equality and Ebikes for School Layer
       if (selectedLayerName == "School") {
          // Disable Health and CO2 radio buttons
          $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
@@ -354,8 +345,16 @@ br.clear {
           });
        }
 
-   }
+       // Disable school layer for Ebikes and Gender Equality scenarios
+      if (selectedLayerName == "Commute" && (selectedVariable == "ebike_slc_perc" || selectedVariable == "gendereq_slc_perc")) {
+         $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
+            if ($(this).parent().text().trim() == "School"){
+                $(this).attr('disabled', true);
+            }
+        });
+       }
 
+   }
 
 
    //var map = L.map('map').setView([ 53, -0.4], 6);
