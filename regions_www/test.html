@@ -95,68 +95,40 @@ br.clear {
 
 <script type="text/javascript">
 
-// from there, similar to the example:
-    var usmap = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+   var default_commute_layer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
           maxZoom: 18,
           attribution: '<a href="//leafletjs.com" target = "_blank">Leaflet</a> | ' +
           'Map data &copy; <a href="//openstreetmap.org" target = "_blank">OpenStreetMap</a> contributors | ' +
           '<a href="//creativecommons.org/licenses/by-sa/2.0/" target = "_blank">CC-BY-SA</a>'
-        });
-
-    // initialize the map
-    var map = L.map('map', {
-        center: [53, -0.4],
-        zoom: 6,
-        layers: [usmap]
+    });
+    var default_school_layer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+          maxZoom: 18,
+          attribution: '<a href="//leafletjs.com" target = "_blank">Leaflet</a> | ' +
+          'Map data &copy; <a href="//openstreetmap.org" target = "_blank">OpenStreetMap</a> contributors | ' +
+          '<a href="//creativecommons.org/licenses/by-sa/2.0/" target = "_blank">CC-BY-SA</a>'
     });
 
-    //var map = L.map('map').setView([ 53, -0.4], 6);
+    var baseLayers = {
+      "Commute": default_commute_layer,
+      "School" : default_school_layer
+    };
 
-    var legend = L.control({position: 'topleft'});
+        // initialize the map
+    var map = L.map('map', {
+        center: [53, -0.4],
+        zoom: 6
+    });
 
-    function getColor(d) {
-      return d >= 40  ? '#4575B4' :
-        d >= 30  ? '#74ADD1' :
-        d >= 25  ? '#ABD9E9' :
-        d >= 20  ? '#C6DBEF' :
-        d >= 15  ? '#ffffbf' :
-        d >= 10  ? '#FEE090' :
-        d >= 7   ? '#FDAE61' :
-        d >= 4   ? '#F46D43' :
-        d >= 2   ? '#D73027' :
-        d >= 0   ? '#A50026' :
-        '#313695';
 
-    }
+    var default_scenario = L.tileLayer('');
 
-    legend.onAdd = function (map) {
-
-      var div = L.DomUtil.create('div', 'info-box legend'),
-        grades = [0, 2, 4, 7, 10, 15, 20, 25, 30, 40],
-        bin_labels = ["0-1%",
-          "2-3%",
-          "4-6%",
-          "7-9%",
-          "10-14%",
-          "15-19%",
-          "20-24%",
-          "25-29%",
-          "30-39%",
-          "40%+"],
-
-      labels = [],
-      from;
-    for (var i = 0; i < grades.length; i++) {
-      from = grades[i];
-      labels.push(
-          '<i style="background:' + getColor(from + 1) + '"></i> ' +
-        bin_labels[i]);
-    }
-    div.innerHTML = labels.join("<br class=\"clear\">");
-    return div;
-  };
-
-  legend.addTo(map);
+    var scenario_layers = {
+      "Census 2011": default_scenario,
+      "Government Target": L.tileLayer(''),
+      "Gender Equality": L.tileLayer(''),
+      "Go Dutch": L.tileLayer(''),
+      "Ebikes": L.tileLayer('')
+    };
 
   // control that shows region info on hover
     var info = L.control();
@@ -201,18 +173,18 @@ br.clear {
     info.update = function (props, scenario) {
 
       if (typeof props !== 'undefined') {
-        console.log("props " +  props);
+        //console.log("props " +  props);
       }else{
-        console.log("props is undefined");
+        //console.log("props is undefined");
 
       }
 
-      if (typeof scenario !== 'undefined') {
+      /*if (typeof scenario !== 'undefined') {
         console.log("scenario " +  scenario);
       }else{
         console.log("scenario is undefined");
 
-      }
+      }*/
       var regionText;
       if(scenario !== undefined && props) {
         regionText = '<b>' + capitalize(props.region_name) + '</b><br />' + precise_round(props[scenario], 1) + '  % in ' + info.scenarioMap[scenario];
@@ -232,6 +204,19 @@ br.clear {
     }
 
     info.addTo(map);
+
+
+     L.control.layers(baseLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+
+    // Add commute as the default layer
+   default_commute_layer.addTo(map);
+
+       L.control.layers(scenario_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+
+   // Add commute as the default layer
+   default_scenario.addTo(map);
+
+
 
     var polyColor = 'black';
     var polyWeight = 0.5;
@@ -297,45 +282,24 @@ br.clear {
 
 
 
-    var default_commute_layer = L.tileLayer('');
-
-    var upper_layer = {
-      "Commute": default_commute_layer,
-      "School" : L.tileLayer('')
-    };
-
-    L.control.layers(upper_layer, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
-
-    // Add commute as the default layer
-    default_commute_layer.addTo(map);
-
-
-    var default_scenario = L.tileLayer('');
-
-    var scenario_layers = {
-      "Census 2011": default_scenario,
-      "Government Target": L.tileLayer(''),
-      "Gender equality": L.tileLayer(''),
-      "Go Dutch": L.tileLayer(''),
-      "Ebikes": L.tileLayer('')
-    };
-
-    L.control.layers(scenario_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
     // Add census as the default scenario
-    default_scenario.addTo(map);
+    //default_scenario.addTo(map);
 
 
-    var selectedLayer = commute;
-    var selectedVariable = "bicycle_perc"
+    var selectedLayerName = "commute";
+    var selectedVariable = "bicycle_perc";
     var featureGroup = null;
 
      map.on('baselayerchange', function (e) {
 
+//       if (featureGroup != null)
+//          map.removeLayer(featureGroup)
+
       if (e.name == "Census 2011")
         selectedVariable = "bicycle_perc"
       else if(e.name == "Government Target")
-        selectedVariable = "gendereq_slc_perc"
+        selectedVariable = "govtarget_slc_perc"
       else if(e.name == "Gender Equality")
         selectedVariable = "gendereq_slc_perc"
       else if(e.name == "Go Dutch")
@@ -343,22 +307,104 @@ br.clear {
       else if(e.name == "Ebikes")
         selectedVariable = "ebike_slc_perc"
 
-      if (e.name == "commute")
-        selectedLayer = commute
-      else if(e.name == "school")
-        selectedLayer = school
+      if (e.name == "Commute"){
+        selectedLayerName = "Commute"
+      }
+      else if(e.name == "School"){
+        selectedLayerName = "School"
+      }
 
-      //setControls();
+      setControls();
 
       featureGroup ? featureGroup.clearLayers() : "";
 
-      featureGroup = L.geoJson(selectedLayer, {
+      //console.log(" e name " + e.name)
+
+      //console.log(" in map " + selectedVariable + " " + selectedLayerName)
+
+      if (selectedLayerName == "School") {
+        featureGroup = L.geoJson(school, {
+          style: mapStyle(selectedVariable),
+          onEachFeature: eachFeature(selectedVariable)
+        }).addTo(map);
+      }else if (selectedLayerName == "Commute") {
+        featureGroup = L.geoJson(commute, {
           style: mapStyle(selectedVariable),
           onEachFeature: eachFeature(selectedVariable)
       }).addTo(map);
 
+      }
 
     });
+
+
+    function setControls(){
+      // Disable CO2 and Health for Census 2011 scenario
+      if (selectedLayerName == "School") {
+         // Disable Health and CO2 radio buttons
+         $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
+           console.log($(this).parent().text().trim())
+            if ($(this).parent().text().trim() == "Gender Equality" || $(this).parent().text().trim() == "Ebikes"){
+                $(this).attr('disabled', true);
+            }
+        });
+       }else{
+          $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
+              $(this).attr('disabled', false);
+          });
+       }
+
+   }
+
+
+
+   //var map = L.map('map').setView([ 53, -0.4], 6);
+
+    var legend = L.control({position: 'topleft'});
+
+    function getColor(d) {
+      return d >= 40  ? '#4575B4' :
+        d >= 30  ? '#74ADD1' :
+        d >= 25  ? '#ABD9E9' :
+        d >= 20  ? '#C6DBEF' :
+        d >= 15  ? '#ffffbf' :
+        d >= 10  ? '#FEE090' :
+        d >= 7   ? '#FDAE61' :
+        d >= 4   ? '#F46D43' :
+        d >= 2   ? '#D73027' :
+        d >= 0   ? '#A50026' :
+        '#313695';
+
+    }
+
+    legend.onAdd = function (map) {
+
+      var div = L.DomUtil.create('div', 'info-box legend'),
+        grades = [0, 2, 4, 7, 10, 15, 20, 25, 30, 40],
+        bin_labels = ["0-1%",
+          "2-3%",
+          "4-6%",
+          "7-9%",
+          "10-14%",
+          "15-19%",
+          "20-24%",
+          "25-29%",
+          "30-39%",
+          "40%+"],
+
+      labels = [],
+      from;
+    for (var i = 0; i < grades.length; i++) {
+      from = grades[i];
+      labels.push(
+          '<i style="background:' + getColor(from + 1) + '"></i> ' +
+        bin_labels[i]);
+    }
+    div.innerHTML = labels.join("<br class=\"clear\">");
+    return div;
+  };
+
+  legend.addTo(map);
 
 </script>
 
