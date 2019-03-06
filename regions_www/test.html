@@ -95,6 +95,11 @@ br.clear {
 
 <script type="text/javascript">
 
+
+    var selectedLayerName = "commute";
+    var selectedVariable = "bicycle_perc";
+    var featureGroup = null;
+
    var default_commute_layer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
           maxZoom: 18,
           attribution: '<a href="//leafletjs.com" target = "_blank">Leaflet</a> | ' +
@@ -172,26 +177,18 @@ br.clear {
 
     info.update = function (props, scenario) {
 
-      if (typeof props !== 'undefined') {
-        //console.log("props " +  props);
-      }else{
-        //console.log("props is undefined");
-
-      }
-
-      /*if (typeof scenario !== 'undefined') {
-        console.log("scenario " +  scenario);
-      }else{
-        console.log("scenario is undefined");
-
-      }*/
       var regionText;
       if(scenario !== undefined && props) {
         regionText = '<b>' + capitalize(props.region_name) + '</b><br />' + precise_round(props[scenario], 1) + '  % in ' + info.scenarioMap[scenario];
       } else {
         regionText = 'Hover over a region';
       }
-      this._div.innerHTML = '<h4>Cycling to work</h4>' + regionText;
+
+      if (selectedLayerName == "Commute") {
+          this._div.innerHTML = '<h4>Cycling to work</h4>' + regionText;
+      }else if (selectedLayerName == "School") {
+          this._div.innerHTML = '<h4>Cycling to school</h4>' + regionText;
+      }
     };
 
     // Capitalize all words in a region except 'and' and 'of'
@@ -211,7 +208,7 @@ br.clear {
     // Add commute as the default layer
    default_commute_layer.addTo(map);
 
-       L.control.layers(scenario_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+   L.control.layers(scenario_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
    // Add commute as the default layer
    default_scenario.addTo(map);
@@ -281,10 +278,6 @@ br.clear {
     }
 
 
-    var selectedLayerName = "commute";
-    var selectedVariable = "bicycle_perc";
-    var featureGroup = null;
-
      map.on('baselayerchange', function (e) {
 
       if (e.name == "Census 2011")
@@ -334,7 +327,6 @@ br.clear {
       if (selectedLayerName == "School") {
          // Disable Health and CO2 radio buttons
          $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
-           console.log($(this).parent().text().trim())
             if ($(this).parent().text().trim() == "Gender Equality" || $(this).parent().text().trim() == "Ebikes"){
                 $(this).attr('disabled', true);
             }
