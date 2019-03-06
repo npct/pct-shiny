@@ -203,7 +203,7 @@ br.clear {
     info.addTo(map);
 
 
-     L.control.layers(baseLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+    L.control.layers(baseLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
     // Add commute as the default layer
    default_commute_layer.addTo(map);
@@ -302,10 +302,6 @@ br.clear {
 
       featureGroup ? featureGroup.clearLayers() : "";
 
-      //console.log(" e name " + e.name)
-
-      //console.log(" in map " + selectedVariable + " " + selectedLayerName)
-
       if (selectedLayerName == "School") {
         featureGroup = L.geoJson(school, {
           style: mapStyle(selectedVariable),
@@ -347,9 +343,6 @@ br.clear {
        }
 
    }
-
-
-   //var map = L.map('map').setView([ 53, -0.4], 6);
 
     var legend = L.control({position: 'topleft'});
 
