@@ -126,7 +126,7 @@ br.clear {
 
     var map = L.map('map');
 
-    map.on('load', onMapLoad);
+    map.on('load', layerUpdate);
 
     map.on('baselayerchange', layerUpdate);
 
@@ -286,7 +286,7 @@ br.clear {
 
 
      function layerUpdate (e) {
-       console.log(e)
+       //console.log(e)
 
       if (e.name == "Census 2011")
         selectedVariable = "bicycle_perc"
