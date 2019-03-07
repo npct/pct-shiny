@@ -119,11 +119,18 @@ br.clear {
     };
 
         // initialize the map
-    var map = L.map('map', {
+    /*var map = L.map('map', {
         center: [53, -0.4],
         zoom: 6
-    });
+    });*/
 
+    var map = L.map('map');
+
+    map.on('load', onMapLoad);
+
+    map.on('baselayerchange', layerUpdate);
+
+    map.setView([53, -0.4], 6);
 
     var default_scenario = L.tileLayer('');
 
@@ -202,17 +209,17 @@ br.clear {
 
     info.addTo(map);
 
-
     L.control.layers(baseLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
-    // Add commute as the default layer
-   default_commute_layer.addTo(map);
+    baseLayers["Commute"].addTo(map);
 
-   L.control.layers(scenario_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+    L.control.layers(scenario_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
-   // Add commute as the default layer
-   default_scenario.addTo(map);
+    scenario_layers["Census 2011"].addTo(map);
 
+    function onMapLoad (e){
+      console.log("layer is added" + e.name)
+    };
 
 
     var polyColor = 'black';
@@ -278,7 +285,8 @@ br.clear {
     }
 
 
-     map.on('baselayerchange', function (e) {
+     function layerUpdate (e) {
+       console.log(e)
 
       if (e.name == "Census 2011")
         selectedVariable = "bicycle_perc"
@@ -315,7 +323,7 @@ br.clear {
 
       }
 
-    });
+    };
 
 
     function setControls(){
