@@ -79,9 +79,6 @@ br.clear {
 }
 </style>
 
-<script type="text/javascript">
-</script>
-
 </head>
 <body>
 
@@ -125,8 +122,6 @@ br.clear {
     });*/
 
     var map = L.map('map');
-
-    map.on('load', layerUpdate);
 
     map.on('baselayerchange', layerUpdate);
 
@@ -397,6 +392,7 @@ br.clear {
   };
 
   legend.addTo(map);
+  map.whenReady(layerUpdate);
 
 </script>
 
