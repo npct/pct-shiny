@@ -138,6 +138,16 @@ br.clear {
         zoom: 6
     });*/
 
+  var selectedVariableMap = {}
+  selectedVariableMap["Census 2011"] = "bicycle_perc"
+  selectedVariableMap["Government Target"] = "govtarget_slc_perc"
+  selectedVariableMap["Gender Equality"] = "gendereq_slc_perc"
+  selectedVariableMap["Go Dutch"] = "dutch_slc_perc"
+  selectedVariableMap["Ebikes"] = "ebike_slc_perc"
+
+  var selectedLayerMap = {}
+  selectedLayerMap["Commute"] = "Commute"
+  selectedLayerMap["School"] = "School"
 
     map.on('baselayerchange', layerUpdate);
 
@@ -275,25 +285,9 @@ br.clear {
 
      function layerUpdate (e) {
        //console.log(e)
+       selectedVariable = selectedVariableMap[e.name] || selectedVariable
 
-      if (e.name == "Census 2011")
-        selectedVariable = "bicycle_perc"
-      else if(e.name == "Government Target")
-        selectedVariable = "govtarget_slc_perc"
-      else if(e.name == "Gender Equality")
-        selectedVariable = "gendereq_slc_perc"
-      else if(e.name == "Go Dutch")
-        selectedVariable = "dutch_slc_perc"
-      else if(e.name == "Ebikes")
-        selectedVariable = "ebike_slc_perc"
-
-      if (e.name == "Commute"){
-        selectedLayerName = "Commute"
-      }
-      else if(e.name == "School"){
-        selectedLayerName = "School"
-      }
-
+       selectedLayerName = selectedLayerMap[e.name] || selectedLayerName
       setControls();
 
       featureGroup ? featureGroup.clearLayers() : "";
