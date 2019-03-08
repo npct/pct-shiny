@@ -93,29 +93,44 @@ br.clear {
 <link rel="stylesheet" href = "www/la-map-resources/leaflet-search.src.css">
 
 <script type="text/javascript">
+   var selectedLayerName = "commute";
+   var selectedVariable = "bicycle_perc";
+   var featureGroup = null;
 
-
-    var selectedLayerName = "commute";
-    var selectedVariable = "bicycle_perc";
-    var featureGroup = null;
-
-   var default_commute_layer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
-          maxZoom: 18,
-          attribution: '<a href="//leafletjs.com" target = "_blank">Leaflet</a> | ' +
-          'Map data &copy; <a href="//openstreetmap.org" target = "_blank">OpenStreetMap</a> contributors | ' +
-          '<a href="//creativecommons.org/licenses/by-sa/2.0/" target = "_blank">CC-BY-SA</a>'
-    });
-    var default_school_layer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+   var baseLayer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
           maxZoom: 18,
           attribution: '<a href="//leafletjs.com" target = "_blank">Leaflet</a> | ' +
           'Map data &copy; <a href="//openstreetmap.org" target = "_blank">OpenStreetMap</a> contributors | ' +
           '<a href="//creativecommons.org/licenses/by-sa/2.0/" target = "_blank">CC-BY-SA</a>'
     });
 
-    var baseLayers = {
-      "Commute": default_commute_layer,
-      "School" : default_school_layer
+   var defaultCommuteLayer = L.tileLayer('')
+
+    var commuteLayers = {
+      "Commute": defaultCommuteLayer,
+      "School" : L.tileLayer('')
     };
+
+    var defaultScenario = L.tileLayer('');
+
+    var scenarioLayers = {
+      "Census 2011": defaultScenario,
+      "Government Target": L.tileLayer(''),
+      "Gender Equality": L.tileLayer(''),
+      "Go Dutch": L.tileLayer(''),
+      "Ebikes": L.tileLayer('')
+    };
+
+    var map = L.map('map');
+
+    L.control.layers(commuteLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+
+    L.control.layers(scenarioLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
+
+    baseLayer.addTo(map);
+    defaultCommuteLayer.addTo(map);
+    defaultScenario.addTo(map);
+
 
         // initialize the map
     /*var map = L.map('map', {
@@ -123,21 +138,10 @@ br.clear {
         zoom: 6
     });*/
 
-    var map = L.map('map');
 
     map.on('baselayerchange', layerUpdate);
 
     map.setView([53, -0.4], 6);
-
-    var default_scenario = L.tileLayer('');
-
-    var scenario_layers = {
-      "Census 2011": default_scenario,
-      "Government Target": L.tileLayer(''),
-      "Gender Equality": L.tileLayer(''),
-      "Go Dutch": L.tileLayer(''),
-      "Ebikes": L.tileLayer('')
-    };
 
   // control that shows region info on hover
     var info = L.control();
@@ -205,19 +209,6 @@ br.clear {
     }
 
     info.addTo(map);
-
-    L.control.layers(baseLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
-
-    baseLayers["Commute"].addTo(map);
-
-    L.control.layers(scenario_layers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
-
-    scenario_layers["Census 2011"].addTo(map);
-
-    function onMapLoad (e){
-      console.log("layer is added" + e.name)
-    };
-
 
     var polyColor = 'black';
     var polyWeight = 0.5;
