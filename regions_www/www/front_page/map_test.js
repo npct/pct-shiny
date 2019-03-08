@@ -1,14 +1,16 @@
 $(document).ready(function(){
-  var selectedLayerName = "commute";
-  var selectedVariable = "bicycle_perc";
-  var featureGroup = null;
+  var map = L.map('map').setView([53, -0.4], 6);
 
-  var baseLayer = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
+  L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
     maxZoom: 18,
     attribution: '<a href="//leafletjs.com" target = "_blank">Leaflet</a> | ' +
     'Map data &copy; <a href="//openstreetmap.org" target = "_blank">OpenStreetMap</a> contributors | ' +
     '<a href="//creativecommons.org/licenses/by-sa/2.0/" target = "_blank">CC-BY-SA</a>'
-  });
+  }).addTo(map);
+
+  var selectedLayerName = "commute";
+  var selectedVariable = "bicycle_perc";
+  var featureGroup = null;
 
   var defaultCommuteLayer = L.tileLayer('')
 
@@ -27,16 +29,12 @@ $(document).ready(function(){
     "Ebikes": L.tileLayer('')
   };
 
-  var map = L.map('map');
-
   L.control.layers(commuteLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
   L.control.layers(scenarioLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
-  baseLayer.addTo(map);
   defaultCommuteLayer.addTo(map);
   defaultScenario.addTo(map);
-
 
   // initialize the map
   /*var map = L.map('map', {
@@ -56,8 +54,6 @@ $(document).ready(function(){
   selectedLayerMap["School"] = "School"
 
   map.on('baselayerchange', layerUpdate);
-
-  map.setView([53, -0.4], 6);
 
   // control that shows region info on hover
   var info = L.control();
@@ -100,7 +96,6 @@ $(document).ready(function(){
   };
 
   info.update = function (props, scenario) {
-
     var regionText;
     if(scenario !== undefined && props) {
       regionText = '<b>' + capitalize(props.region_name) + '</b><br />' + precise_round(props[scenario], 1) + '  % in ' + info.scenarioMap[scenario];
@@ -125,6 +120,21 @@ $(document).ready(function(){
   }
 
   info.addTo(map);
+
+  function getColor(d) {
+    return d >= 40  ? '#4575B4' :
+      d >= 30  ? '#74ADD1' :
+      d >= 25  ? '#ABD9E9' :
+      d >= 20  ? '#C6DBEF' :
+      d >= 15  ? '#ffffbf' :
+      d >= 10  ? '#FEE090' :
+      d >= 7   ? '#FDAE61' :
+      d >= 4   ? '#F46D43' :
+      d >= 2   ? '#D73027' :
+      d >= 0   ? '#A50026' :
+      '#313695';
+
+  }
 
   var polyColor = 'black';
   var polyWeight = 0.5;
@@ -161,8 +171,7 @@ $(document).ready(function(){
     window.open(".\/m/?r=" + e.target.feature.properties.region_name, '_top');
   }
 
-  function eachFeature(property) {
-    //console.log("onEachFeature " + property)
+  function onEachFeature(property) {
 
     return function(feature, layer) {
       layer.on({
@@ -201,12 +210,12 @@ $(document).ready(function(){
     if (selectedLayerName == "School") {
       featureGroup = L.geoJson(school, {
         style: mapStyle(selectedVariable),
-        onEachFeature: eachFeature(selectedVariable)
+        onEachFeature: onEachFeature(selectedVariable)
       }).addTo(map);
     }else if (selectedLayerName == "Commute") {
       featureGroup = L.geoJson(commute, {
         style: mapStyle(selectedVariable),
-        onEachFeature: eachFeature(selectedVariable)
+        onEachFeature: onEachFeature(selectedVariable)
       }).addTo(map);
 
     }
@@ -249,21 +258,6 @@ $(document).ready(function(){
   }
 
   var legend = L.control({position: 'topleft'});
-
-  function getColor(d) {
-    return d >= 40  ? '#4575B4' :
-      d >= 30  ? '#74ADD1' :
-      d >= 25  ? '#ABD9E9' :
-      d >= 20  ? '#C6DBEF' :
-      d >= 15  ? '#ffffbf' :
-      d >= 10  ? '#FEE090' :
-      d >= 7   ? '#FDAE61' :
-      d >= 4   ? '#F46D43' :
-      d >= 2   ? '#D73027' :
-      d >= 0   ? '#A50026' :
-      '#313695';
-
-  }
 
   legend.onAdd = function (map) {
 
