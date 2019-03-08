@@ -55,7 +55,9 @@
   margin: 0 0 5px;
   color: #777;
 }
-
+.text-muted {
+  color: #777;
+}
 .legend {
   text-align: left;
   line-height: 18px;
@@ -320,6 +322,14 @@ br.clear {
 
     };
 
+    function selectableControl(controlEl, disabled) {
+      $(controlEl).attr('disabled', disabled)
+      if(disabled) {
+        $(controlEl).parent().addClass("text-muted")
+      } else {
+        $(controlEl).parent().removeClass("text-muted")
+      }
+    }
 
     function setControls(){
       // Disable Gender Equality and Ebikes for School Layer
@@ -327,12 +337,12 @@ br.clear {
          // Disable Health and CO2 radio buttons
          $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
             if ($(this).parent().text().trim() == "Gender Equality" || $(this).parent().text().trim() == "Ebikes"){
-                $(this).attr('disabled', true);
+              selectableControl(this, true)
             }
         });
        }else{
           $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
-              $(this).attr('disabled', false);
+            selectableControl(this, false)
           });
        }
 
@@ -340,7 +350,7 @@ br.clear {
       if (selectedLayerName == "Commute" && (selectedVariable == "ebike_slc_perc" || selectedVariable == "gendereq_slc_perc")) {
          $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
             if ($(this).parent().text().trim() == "School"){
-                $(this).attr('disabled', true);
+              selectableControl(this, true)
             }
         });
        }
