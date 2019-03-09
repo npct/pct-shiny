@@ -220,7 +220,7 @@ $(document).ready(function(){
       }).addTo(map);
 
     }
-
+    info.update()
   };
 
   function selectableControl(controlEl, disabled) {
