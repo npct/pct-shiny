@@ -27,6 +27,40 @@ $(document).ready(function(){
     "Ebikes": L.tileLayer('')
   };
 
+  // control that shows region info on hover
+  var info = L.control();
+
+  info.scenarioMap = {
+    bicycle_perc: "2011 Census",
+    govtarget_slc_perc: "Government Target",
+    gendereq_slc_perc: "Gender Equality",
+    dutch_slc_perc: "Go Dutch",
+    ebike_slc_perc: "Ebike"
+  };
+
+  info.update = function (props, scenario) {
+    var regionText;
+    if(scenario !== undefined && props) {
+      regionText = '<b>' + capitalize(props.region_name) + '</b><br />' + precise_round(props[scenario], 1) + '  % in ' + info.scenarioMap[scenario];
+    } else {
+      regionText = 'Hover over a region';
+    }
+
+    if (selectedLayerName == "Commute") {
+      this._div.innerHTML = '<h4>Cycling to work</h4>' + regionText;
+    }else if (selectedLayerName == "School") {
+      this._div.innerHTML = '<h4>Cycling to school</h4>' + regionText;
+    }
+  };
+
+  info.onAdd = function (map) {
+    this._div = L.DomUtil.create('div', 'info-box cycle-to-work');
+    this.update();
+    return this._div;
+  };
+
+  info.addTo(map);
+
   L.control.layers(commuteLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
   L.control.layers(scenarioLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
@@ -56,15 +90,6 @@ $(document).ready(function(){
 
   map.on('baselayerchange', layerUpdate);
 
-  // control that shows region info on hover
-  var info = L.control();
-
-  info.onAdd = function (map) {
-    this._div = L.DomUtil.create('div', 'info-box cycle-to-work');
-    this.update();
-    return this._div;
-  };
-
   // Armin's solution to a fixed decimal places
   // taken from a stackoverflow thread:
   // http://stackoverflow.com/questions/1726630/formatting-a-number-with-exactly-two-decimals-in-javascript
@@ -88,29 +113,6 @@ $(document).ready(function(){
     return (Math.round((num * t) + (decimals>0?1:0)*(sign(num) * (10 / Math.pow(100, decimals)))) / t).toFixed(decimals);
   }
 
-  info.scenarioMap = {
-    bicycle_perc: "2011 Census",
-    govtarget_slc_perc: "Government Target",
-    gendereq_slc_perc: "Gender Equality",
-    dutch_slc_perc: "Go Dutch",
-    ebike_slc_perc: "Ebike"
-  };
-
-  info.update = function (props, scenario) {
-    var regionText;
-    if(scenario !== undefined && props) {
-      regionText = '<b>' + capitalize(props.region_name) + '</b><br />' + precise_round(props[scenario], 1) + '  % in ' + info.scenarioMap[scenario];
-    } else {
-      regionText = 'Hover over a region';
-    }
-
-    if (selectedLayerName == "Commute") {
-      this._div.innerHTML = '<h4>Cycling to work</h4>' + regionText;
-    }else if (selectedLayerName == "School") {
-      this._div.innerHTML = '<h4>Cycling to school</h4>' + regionText;
-    }
-  };
-
   // Capitalize all words in a region except 'and' and 'of'
   function capitalize(s){
     s = s.replace(/-/g, ' ');
@@ -119,8 +121,6 @@ $(document).ready(function(){
     s = s.replace('Of', 'of');
     return s;
   }
-
-  info.addTo(map);
 
   function getColor(d) {
     return d >= 40  ? '#4575B4' :
