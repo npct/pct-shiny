@@ -225,10 +225,13 @@ $(document).ready(function(){
 
   function selectableControl(controlEl, disabled) {
     $(controlEl).attr('disabled', disabled)
+    var parent = $(controlEl).parent()
     if(disabled) {
-      $(controlEl).parent().addClass("text-muted")
+      parent.addClass("text-muted")
+      parent.attr('title', "This scenario combination is not available")
     } else {
-      $(controlEl).parent().removeClass("text-muted")
+      parent.removeClass("text-muted")
+      parent.attr('title', null)
     }
   }
 
