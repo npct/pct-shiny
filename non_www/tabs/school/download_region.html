@@ -62,14 +62,14 @@
 
      <div class="col-md-12 text-left" style="padding-top:10px;">
         <h4><a name="regschoolroutenetSchool"></a>School travel data for the route network</h4>
-        <p>Download anonymised National School Census 2011 baseline and scenario cycling estimates for the route network in <!--region_name-->.  This was calculated using all fast routes, but only presents segments containing at least 10 cyclists in the Go Dutch scenario (in London, this threshold is set set to 50 for the web application due to performance considerations - see the 'Region stats' tab).</p>
+        <p>Download anonymised National School Census 2011 baseline and scenario cycling estimates for the route network in <!--region_name-->.  This was calculated using all fast routes. It is more complete than the version available via the web browser which excludes route segments with small numbers of cyclists (see the 'Region stats' tab).</p>
         <p>Baseline and scenario data are not presented for route segments containing 1 or 2 cyclists in the NSC 2011.  Instead these data are set as missing ('NA').</p>
         <ul>
           <li>Route network (LSOA, clickable):
-            <a href="https://github.com/npct/pct-outputs-regional-R/raw/master/school/lsoa/<!--region_url-->/rnet.Rds" target="_blank" download="rnet.Rds" onclick="ga('send', 'event', 'download', 'school/rnet.Rds');">
+            <a href="https://github.com/npct/pct-outputs-regional-R/raw/master/school/lsoa/<!--region_url-->/rnet_full.Rds" target="_blank" download="rnet_full.Rds" onclick="ga('send', 'event', 'download', 'school/rnet_full.Rds');">
               Rds
             </a>
-            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/school/lsoa/<!--region_url-->/rnet.geojson" target="_blank" download="rnet.geojson" onclick="ga('send', 'event', 'download', 'school/rnet.geojson');">
+            <a href="https://github.com/npct/pct-outputs-regional-notR/raw/master/school/lsoa/<!--region_url-->/rnet_full.geojson" target="_blank" download="rnet_full.geojson" onclick="ga('send', 'event', 'download', 'school/rnet_full.geojson');">
               geojson
             </a> -
             <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/rnet_codebook.csv" target="_blank" download="rnet_codebook.csv" onclick="ga('send', 'event', 'download', 'school/rnet_codebook.csv');">
