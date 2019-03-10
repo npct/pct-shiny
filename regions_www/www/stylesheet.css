@@ -3,13 +3,22 @@ html, body, .container-fluid, .tab-content, .tab-pane {
   overflow-x: hidden;
   overflow-y: hidden;
 }
+.tab-pane{
+  overflow-y: auto;
+}
+body > .container-fluid {
+  padding: 0;
+}
+.tab-pane:not([data-value="Map"]) {
+  padding-left: 15px;
+  padding-right: 15px;
+}
 .navbar {
   margin-bottom: 0;
 }
 .help-block  {
   font-size: 10px;
 }
-
 .leaflet-top {
   position: relative;
 }
