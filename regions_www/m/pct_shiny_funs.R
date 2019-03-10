@@ -603,13 +603,12 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td>", text_cycle_baseline(purpose), "</td>
-     <td>", school_smallcell(data$bicycle), ifelse(school_smallcell(data$bicycle, return_tf = T), "" , paste0(" (", round_percent(data$bicycle / data$all) , "%)" )), "</td>
-     </tr>
+      <td>", school_smallcell(data$bicycle), ifelse(school_smallcell(data$bicycle, return_tf = T), "" , paste0(" (", round_percent(data$bicycle / data$all) , "%)" )), "</td>
+    </tr>
     <tr>
       <td>", text_drive_baseline(purpose), "</td>
-     <td>", school_smallcell(data$car), ifelse(school_smallcell(data$car, return_tf = T), "" , paste0(" (", round_percent(data$car / data$all) , "%)" )), "</td>
-
-     </tr>
+      <td>", school_smallcell(data$car), ifelse(school_smallcell(data$car, return_tf = T), "" , paste0(" (", round_percent(data$car / data$all) , "%)" )), "</td>
+    </tr>
   </tbody>
 </table>")
     } else {
