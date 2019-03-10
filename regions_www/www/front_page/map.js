@@ -3,8 +3,7 @@ $(document).ready(function(){
 
   L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
     maxZoom: 18,
-    attribution: '<a href="//leafletjs.com" target = "_blank">Leaflet</a> | ' +
-    'Map data &copy; <a href="//openstreetmap.org" target = "_blank">OpenStreetMap</a> contributors | ' +
+    attribution: 'Map data &copy; <a href="//openstreetmap.org" target = "_blank">OpenStreetMap</a> contributors | ' +
     '<a href="//creativecommons.org/licenses/by-sa/2.0/" target = "_blank">CC-BY-SA</a>'
   }).addTo(map);
 
