@@ -3,6 +3,7 @@
     <div class="col-md-2 text-left" style="padding-top:10px;">
       <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natschoolzones">Zones data</a></div>
       <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natschooldestinations">Schools data</a></div>
+      <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natschoolroutenet">Route network data</a></div>
     </div>
 
     <div class="col-md-9">
@@ -71,16 +72,13 @@
       </div>
 
       <div class="col-md-12 text-left" style="padding-top:10px;">
-        <h4><a name="regschoolroutenetSchool"></a>School travel data for the route network</h4>
+        <h4><a name="natschoolroutenet"></a>School travel data for the route network</h4>
         <p>Download anonymised National School Census 2011 baseline and scenario cycling estimates for the route network.  This was calculated using all fast routes. It is more complete than the version available via the web browser which excludes route segments with small numbers of cyclists (see the 'Region stats' tab).</p>
         <p>Baseline and scenario data are not presented for route segments containing 1 or 2 cyclists in the NSC 2011.  Instead these data are set as missing ('NA').</p>
         <ul>
           <li>Route network (LSOA, clickable):
             <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/rnet_full.Rds" target="_blank" download="rnet_full.Rds" onclick="ga('send', 'event', 'download', 'school/rnet_full.Rds');">
               Rds
-            </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/rnet_full.geojson" target="_blank" download="rnet_full.geojson" onclick="ga('send', 'event', 'download', 'school/rnet_full.geojson');">
-              geojson
             </a> -
             <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/rnet_codebook.csv" target="_blank" download="rnet_codebook.csv" onclick="ga('send', 'event', 'download', 'school/rnet_codebook.csv');">
               Codebook
