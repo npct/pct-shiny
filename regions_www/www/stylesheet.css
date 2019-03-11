@@ -8,6 +8,7 @@ html, body, .container-fluid, .tab-content, .tab-pane {
 }
 body > .container-fluid {
   padding: 0;
+  padding-bottom: 50px;
 }
 .tab-pane:not([data-value="Map"]) {
   padding-left: 15px;
