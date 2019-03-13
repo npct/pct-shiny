@@ -1,4 +1,4 @@
-html, body, .container-fluid, .tab-content, .tab-pane {
+html, body, .container-fluid, .tab-content, .tab-pane, .outer {
   height: 100%;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -6,9 +6,22 @@ html, body, .container-fluid, .tab-content, .tab-pane {
 .tab-pane{
   overflow-y: auto;
 }
+body {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
 body > .container-fluid {
   padding: 0;
-  padding-bottom: 50px;
+  width: 100%;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
 }
 .tab-pane:not([data-value="Map"]) {
   padding-left: 15px;
@@ -28,15 +41,6 @@ body > .container-fluid {
     float: left;
 }
 
-.outer {
-  top: 41px;
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  padding: 0;
-}
-
 .rbox  {
   font-size: 10px;
 }
@@ -52,10 +56,6 @@ select::-ms-expand {
   width:12px;
   border:none;
   background:#fff;
-}
-
-#map {
-  position: inherit !important;
 }
 
 select.form-control {
