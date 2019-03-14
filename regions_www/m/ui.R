@@ -59,7 +59,6 @@ map_base_attrs <- c(
 )
 
 on_server <- grepl('^/var/shiny/pct-shiny', getwd())
-production_branch <- grepl("npt\\d*$", Sys.info()["nodename"])
 
 shinyUI(
   navbarPage(
@@ -94,10 +93,8 @@ shinyUI(
                    )),
           div(
             id = "input_panel",
-            if (!production_branch) {
-              tags$div(title = "Trip purpose:",
-                       selectInput("purpose", "Trip purpose:", purposes, selectize = F))
-            },
+            tags$div(title = "Trip purpose:",
+                     selectInput("purpose", "Trip purpose:", purposes, selectize = F))
             tags$div(title = "Geography:",
                        selectInput("geography", "Geography:", geographies, selectize = F)
             ),

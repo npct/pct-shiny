@@ -53,9 +53,6 @@ if (length(must_be_installed_pkgs[!installed]) > 0) {
 # Save current sha, required for files to be downloaded
 download_sha <- data.frame(repo_sha = repo_sha)
 
-## Check if we are on the production [live] server (npt followed by any number of digits (only) is a prod machine)
-production_branch <- grepl("npt\\d*$", Sys.info()["nodename"])
-
 ## Load region boundaries
 regions <- rgdal::readOGR(file.path(interface_root, "regions_www/pct_regions_highres.geojson"))
 regions$region_name <- as.character(regions$region_name)
