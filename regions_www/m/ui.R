@@ -94,7 +94,8 @@ shinyUI(
           div(
             id = "input_panel",
             tags$div(title = "Trip purpose:",
-                     selectInput("purpose", "Trip purpose:", purposes, selectize = F))
+                     selectInput("purpose", "Trip purpose:", purposes, selectize = F)
+            ),
             tags$div(title = "Geography:",
                        selectInput("geography", "Geography:", geographies, selectize = F)
             ),
