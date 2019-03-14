@@ -24,6 +24,7 @@ The data is entirely provided by shiny-server, a webserver and framework for the
 ## Configuration
 
 It's a Debian Jessie setup, haproxy at the front end with shiny-server at the back end. Systemd runs all the shiny-servers with their configuration in /etc/shiny-server and /etc/systemd/system. The shiny-server-N files are built by script
+
 ```
  /usr/local/sbin/deploy-shiny <no-of-shiny-servers>
 ```
@@ -48,12 +49,14 @@ Install R, use CRAN with the debian repository.
 ```
 
 Install base R
+
 ```
  apt-get update
  apt-get install r-recommended
 ```
 
 Pull the npt stuff from git
+
 ```
  apt-get install git
  su git
@@ -68,11 +71,13 @@ Pull the npt stuff from git
 ```
 
 Install shiny server
+
 ```
  R -e "install.packages('shiny', repos='https://cran.rstudio.com/')"
 ```
 
 Now shiny server, https://www.rstudio.com/products/shiny/download-server/
+
 ```
  apt-get install gdebi-core
  wget https://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.4.2.786-amd64.deb
@@ -80,6 +85,7 @@ Now shiny server, https://www.rstudio.com/products/shiny/download-server/
 
 Installing this fails because it depends on libssl0.9.8 (hopefully will be fixed in https://github.com/rstudio/shiny-server/issues/156), fortunately it actually doesn't
 and libssl1.0.0. will work instead. We hack the package to fix the dependency
+
 ```
  mkdir tmp
  dpkg-deb -R shiny-server-1.4.1.759-amd64.deb tmp
@@ -96,6 +102,7 @@ This gives you a working shiny server on port 3838
 We need more R packages, these can be installed directly from R with the install.packages command (similar to CPAN but without that much sensible)
 
 First the dependencies
+
 ```
  apt-get install libssl libgdal-dev gdal-bin libproj-dev
 ```
@@ -136,6 +143,7 @@ This is all automated by deploy-shiny-server <number-of-servers>
 
 This takes the base files below and munges them to fill in the per-server constants so we can
 run multiple servers in parallel. It then does a shutdown and restart of all the shiny servers.
+
 ```
 /etc/shiny-server/shiny-server.conf
 /etc/systemd/system/shiny-server.service
@@ -169,6 +177,16 @@ the core of the session config is,
 ```
 
 ... we've configured this for 32 processes on each host in production so you don't need to reconfigure haproxy unless you exceed 32 shiny servers per VM
+
+## Unused services
+
+As mail and NFS RPC services are not needed
+
+```
+apt remove nfs-kernel-server nfs-common rpcbind
+apt remove exim4
+/etc/init.d/exim4 stop
+```
 
 ## Deployment of Updates
 

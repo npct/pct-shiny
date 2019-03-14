@@ -1,20 +1,44 @@
+html, body, .container-fluid, .tab-content, .tab-pane, .outer {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.tab-pane{
+  overflow-y: auto;
+}
+body {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+body > .container-fluid {
+  padding: 0;
+  width: 100%;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+}
+.tab-pane:not([data-value="Map"]) {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.navbar {
+  margin-bottom: 0;
+}
 .help-block  {
   font-size: 10px;
+}
+.leaflet-top {
+  position: relative;
 }
 
 .navbar-nav>li {
     float: left;
-}
-
-div.outer {
-  position: fixed;
-  top: 41px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  padding: 0;
 }
 
 .rbox  {
@@ -73,16 +97,12 @@ label {
 }
 
 #cite {
-  position: relative;
-  bottom: 25px;
+  position: absolute;
+  bottom: 0;
   left: 120px;
   font-size: 12px;
   float: left;
   background: rgba(255, 255, 255, 0.7);
-}
-
-body {
-  max-width: unset !important;
 }
 
 #dft {
@@ -203,16 +223,6 @@ body {
     transform: rotate(360deg);
   }
 }
-
-
-
-/*
-Temporarily disabling center alignment of tables for model-output tab
-table {
-  margin: 0 auto;
-}
-*/
-
 
 /*
 Add CSS for tables. Taken from:

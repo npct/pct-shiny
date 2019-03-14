@@ -59,7 +59,6 @@ map_base_attrs <- c(
 )
 
 on_server <- grepl('^/var/shiny/pct-shiny', getwd())
-production_branch <- grepl("npt\\d*$", Sys.info()["nodename"])
 
 shinyUI(
   navbarPage(
@@ -77,18 +76,15 @@ shinyUI(
           includeHTML(file.path("..", "favicon.html"))
         ),
         includeHTML(file.path("..", "www", "test-banner.html")),
-        br(),
         div(id="loading", "Loading&#8230;"),
-        leafletOutput("map", width = "100%", height = "95%"),
         absolutePanel(
           id = "controls",
           class = "panel panel-default",
           fixed = TRUE,
-          top = 110,
           right = 20,
           width = 180,
           height = "auto",
-          style = "opacity: 0.9",
+          style = "opacity: 0.9; z-index: 1; position: absolute",
           tags$div(title = "Show/Hide Panel",
                    a(
                      id = "toggle_panel",
@@ -97,10 +93,8 @@ shinyUI(
                    )),
           div(
             id = "input_panel",
-            if (!production_branch) {
-              tags$div(title = "Trip purpose:",
-                       selectInput("purpose", "Trip purpose:", purposes, selectize = F))
-            },
+            tags$div(title = "Trip purpose:",
+                     selectInput("purpose", "Trip purpose:", purposes, selectize = F))
             tags$div(title = "Geography:",
                        selectInput("geography", "Geography:", geographies, selectize = F)
             ),
@@ -122,12 +116,12 @@ shinyUI(
                      checkboxInput("show_zones", "Show Zones", value = T)),
 
             conditionalPanel(
-              condition = "input.line_type != 'none' && input.line_type != 'lsoa_base_map' && input.line_type != 'route_network'",
+              condition = "['none', 'lsoa_base_map', 'route_network', 'route_network_tile'].indexOf(input.line_type) === -1",
               tags$div(title = "Untick to update lines when you move the map",
                        checkboxInput("freeze", "Freeze Lines", value = F))
             ),
             conditionalPanel(
-              condition = "input.line_type != 'none' && input.line_type != 'lsoa_base_map'",
+              condition = "['none', 'lsoa_base_map', 'route_network_tile'].indexOf(input.line_type) === -1",
               tags$div(
                 title = "Number of lines to show",
                 sliderInput(
@@ -140,7 +134,7 @@ shinyUI(
                 )
               ),
               conditionalPanel(
-                condition = "input.line_type != 'route_network' && input.scenario != 'olc'",
+                condition = "['route_network', 'olc'].indexOf(input.line_type) === -1",
                 tags$div(
                   title = "Order the top flows by",
                   selectInput(
@@ -159,6 +153,7 @@ shinyUI(
             )
           )
         ),
+        leafletOutput("map", width = "100%", height = "inherit"),
         conditionalPanel(
           condition = "input.map_base == 'IMD'",
           absolutePanel(

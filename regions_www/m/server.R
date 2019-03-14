@@ -53,9 +53,6 @@ if (length(must_be_installed_pkgs[!installed]) > 0) {
 # Save current sha, required for files to be downloaded
 download_sha <- data.frame(repo_sha = repo_sha)
 
-## Check if we are on the production [live] server (npt followed by any number of digits (only) is a prod machine)
-production_branch <- grepl("npt\\d*$", Sys.info()["nodename"])
-
 ## Load region boundaries
 regions <- rgdal::readOGR(file.path(interface_root, "regions_www/pct_regions_highres.geojson"))
 regions$region_name <- as.character(regions$region_name)
@@ -166,7 +163,8 @@ shinyServer(function(input, output, session) {
         "Go Dutch"                = "dutch"
       )
       local_line_types <- c("None"  = "none",
-                            "Route Network (LSOA, clickable)"   = "route_network"
+                            "Route Network (LSOA, clickable)"   = "route_network",
+                            "Route Network (LSOA, image)" = "route_network_tile"
       )
       local_line_order <- c(
         "Number of cycle trips" = "slc",
@@ -184,7 +182,7 @@ shinyServer(function(input, output, session) {
       local_line_types <- c("None"                   = "none",
                             "Straight Lines"         = "straight_lines",
                             "Fast Routes"            = "routes_fast",
-                            "Fast & quieter Routes"  = "routes",
+                            "Fast & Quieter Routes"  = "routes",
                             "Route Network (MSOA)"   = "route_network"
       )
       local_line_order <- c(
@@ -429,7 +427,7 @@ shinyServer(function(input, output, session) {
   })
 
   ## Define when not to give option to sort by lines [NB also hard-written into ui ]
-  show_no_lines <- c("none", "lsoa_base_map")
+  show_no_lines <- c("none", "lsoa_base_map", "route_network_tile")
 
   ## Select and sort lines within flows_bb bounding box
   sort_lines <- function(lines, line_type, nos) {
@@ -836,9 +834,8 @@ shinyServer(function(input, output, session) {
   observe({
     # region$repopulate_region
     shinyjs::showElement(id = "loading")
-    if (input$line_type == "lsoa_base_map") {
-      urlTemplate <- paste0("https://npttile.vs.mythic-beasts.com/en-cy/",input$scenario,"/{z}/{x}/{y}.png")
-
+    if (input$line_type %in% c("lsoa_base_map", "route_network_tile")) {
+      urlTemplate <- paste("https://npttile.vs.mythic-beasts.com", input_purpose(), input$scenario,"{z}/{x}/{y}.png", sep= "/")
       leafletProxy("map") %>%
         addTiles(
           .,
@@ -846,7 +843,7 @@ shinyServer(function(input, output, session) {
           layerId = "lsoa_base_map",
           group = "lsoa_base_map",
           options = tileOptions(
-            maxNativeZoom = 13,
+            maxNativeZoom = 15,
             reuseTiles = T,
             tms = T
           )
@@ -904,6 +901,14 @@ shinyServer(function(input, output, session) {
   observe({
     input$map_base
     region$current
+    tileOpts <- tileOptions(
+      opacity = 1,
+      minZoom = 7,
+      reuseTiles = T,
+      maxZoom = 18,
+      maxNativeZoom = map_tile()$zoom
+    )
+
     leafletProxy("map") %>% addTiles(
       .,
       urlTemplate = map_tile()$url,
@@ -911,36 +916,23 @@ shinyServer(function(input, output, session) {
       attribution = '<a target="_blank" href="http://shiny.rstudio.com/">Shiny</a> |
       Routing <a target="_blank" href ="https://www.cyclestreets.net">CycleStreets</a> |
       Map &copy <a target="_blank" href ="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      options = tileOptions(
-        opacity = 1,
-        minZoom = 7,
-        reuseTiles = T,
-        maxZoom = 18,
-        maxNativeZoom = map_tile()$zoom
-      )
+      options = tileOpts
     ) %>%
       clearGroup(., "imd_extras")
     if (input$map_base == 'IMD') {
-      imdTileOptions <-
-        tileOptions(
-          opacity = 1,
-          minZoom = 7,
-          reuseTiles = T,
-          maxNativeZoom = 14
-        )
       leafletProxy("map") %>%
         addTiles(.,
                  urlTemplate = "https://cdrc-maps.liv.ac.uk/tiles/imd2014_wal/{z}/{x}/{y}.png",
                  group = "imd_extras",
-                 options = imdTileOptions) %>%
+                 options = tileOpts) %>%
         addTiles(.,
                 urlTemplate = "https://cdrc-maps.liv.ac.uk/tiles/shine_urbanmask_dark/{z}/{x}/{y}.png",
                  group = "imd_extras",
-                 options = imdTileOptions) %>%
+                 options = tileOpts) %>%
         addTiles(.,
                  urlTemplate = "https://cdrc-maps.liv.ac.uk/tiles/shine_labels_cdrc/{z}/{x}/{y}.png",
                  group = "imd_extras",
-                 options = imdTileOptions)
+                 options = tileOpts)
 
     }
     leafletProxy("map") %>% hideGroup(., "lsoa_base_map") %>% showGroup(., "lsoa_base_map")
