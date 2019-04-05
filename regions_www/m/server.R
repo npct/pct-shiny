@@ -291,6 +291,8 @@ shinyServer(function(input, output, session) {
     # Identify purposes and geographies available in region
     purposes_list <- c("commute", "school", "alltrips")
     new_purpose <- (dir.exists(file.path(data_regional_root, purposes_list, "msoa", region$current)) | dir.exists(file.path(data_regional_root, purposes_list, "lsoa", region$current)))
+    # Remove alltrips from new_purpose for the production branch, even if the data directory exists
+    new_purpose <- ifelse(is_prod, new_purpose[new_purpose != "alltrips"], new_purpose)
     if(!identical(new_purpose,region$purposes_present)){
       region$purposes_present <- new_purpose
     }
