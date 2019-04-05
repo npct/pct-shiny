@@ -73,6 +73,8 @@ lsoa_legend_df <- data.frame(
   labels = c("1-9", "10-49", "50-99", "100-249",
              "250-499", "500-999", "1000-1999", "2000+")
 )
+loaded_data <- list()
+loaded_data_accessed <- list()
 
 # # # # # # # #
 # shinyServer #
@@ -228,8 +230,16 @@ shinyServer(function(input, output, session) {
   helper$old_purpose <- ""
 
   load_data <- function(filepath){
+    while (length(loaded_data) > 100) { # Rm objects from the list when too many (by time last accessed)
+      loaded_data[[names(loaded_data_accessed[loaded_data_accessed == min(unlist(loaded_data_accessed))])]] <<- NULL
+    }
     if (file.exists(filepath)) {
-      readRDS(filepath)
+      loaded_data_accessed[[filepath]] <<- Sys.time()
+      if (is.null(loaded_data[[filepath]])) {
+        loaded_data[[filepath]] <<- readRDS(filepath)
+      } else {
+        loaded_data[[filepath]]
+      }
     } else {
       NULL
     }
