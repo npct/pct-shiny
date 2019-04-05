@@ -103,6 +103,11 @@ shinyServer(function(input, output, session) {
         "All trips"  = "alltrips"
       )[purposes_present]
 
+      # Remove all trips for prod branch
+      if (is_prod)
+        local_purposes <- local_purposes[local_purposes != 'alltrips']
+
+
       if(input$purpose %in% local_purposes) {
         selected_purpose <- input$purpose
       } else {
