@@ -41,6 +41,9 @@ if (!on_server) {
 
 repo_sha <-  as.character(readLines(file.path(interface_root, "repo_sha")))
 
+# Check if the branch is production or not
+is_prod <- ifelse(system("git symbolic-ref -q --short HEAD", intern = T) == "production", TRUE, FALSE)
+
 # Apply local packages, and check correct packages installed
 lapply(available_locally_pkgs, library, character.only = T)
 installed <- must_be_installed_pkgs %in% installed.packages()
