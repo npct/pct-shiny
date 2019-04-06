@@ -510,15 +510,6 @@ shinyServer(function(input, output, session) {
   ## Plot if lines change
   observe({
     shinyjs::showElement(id = "loading")
-    # Needed to force lines to be redrawn when purpose, geography, scenario, zone or base map changes
-    input_purpose()
-    region$geography
-    input$scenario
-    input$show_zones
-    input$map_base
-    input$line_type
-    region$data_dir
-    region$repopulate_region
 
     line_type <- ifelse(input$line_type == 'routes', "routes_quieter", input$line_type)
     local_lines <-  sort_lines(region$plot[[line_type]], input$line_type, input$nos_lines)
@@ -615,11 +606,7 @@ shinyServer(function(input, output, session) {
 
   ## Display zones
   observe({
-    input_purpose()
-    region$geography
-    input$scenario
-    line_type <<- isolate(input$line_type)
-    region$data_dir
+    line_type <- isolate(input$line_type)
     region$repopulate_region
 
     clearGroup(leafletProxy("map"), c("zones"))
@@ -671,12 +658,7 @@ shinyServer(function(input, output, session) {
 
   ## Define centroids
   observe({
-    input_purpose()
-    region$geography
-    input$scenario
     input$line_type
-    region$data_dir
-    region$repopulate_region
     input$map_zoom
 
     clearGroup(leafletProxy("map"), c("centroids"))
@@ -698,12 +680,7 @@ shinyServer(function(input, output, session) {
 
   ## Define destinations
   observe({
-    input_purpose()
-    region$geography
-    input$scenario
     input$line_type
-    region$data_dir
-    region$repopulate_region
     input$map_zoom
 
     clearGroup(leafletProxy("map"), c("destinations"))
@@ -846,7 +823,6 @@ shinyServer(function(input, output, session) {
   ## LSOA layer + legend
   ## NB in future need to make this purpose + geography specific
   observe({
-    # region$repopulate_region
     shinyjs::showElement(id = "loading")
     if (input$line_type %in% c("lsoa_base_map", "route_network_tile")) {
       urlTemplate <- paste("https://npttile.vs.mythic-beasts.com", input_purpose(), input$scenario,"{z}/{x}/{y}.png", sep= "/")
@@ -908,7 +884,6 @@ shinyServer(function(input, output, session) {
 
   ## Attribution statement bottom right + define the map base
   observe({
-    input$map_base
     region$current
     tileOpts <- tileOptions(
       opacity = 1,
