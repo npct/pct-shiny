@@ -228,14 +228,31 @@ shinyServer(function(input, output, session) {
   helper$old_geog <- ""
   helper$old_purpose <- ""
 
-  load_data <- function(filepath){
+  load_data <- function(base_path, filename, purpose, str_lines = NULL){
+    filepath <- file.path(base_path, filename)
+
     while (length(loaded_data) > 100) { # Rm objects from the list when too many (by time last accessed)
       loaded_data[[names(loaded_data_accessed[loaded_data_accessed == min(unlist(loaded_data_accessed))])]] <<- NULL
     }
     if (file.exists(filepath)) {
       loaded_data_accessed[[filepath]] <<- Sys.time()
       if (is.null(loaded_data[[filepath]])) {
-        loaded_data[[filepath]] <<- readRDS(filepath)
+        rds <- readRDS(filepath)
+        if(filename == "rnet.Rds") {
+          if(!is.null(rds)){
+            rds$id <- rds$local_id
+          }
+        }
+        if(filename == "rq.Rds"){
+          # Merge in scenario data for quiet routes - don't want this in download but need for line sorting
+          rds@data <- cbind(
+            rds@data[!(names(rds) %in% names(str_lines))],
+            str_lines@data)
+          # Add is_quiet column to identify quieter, as opposed to faster, data - used in routes pop-up
+          rds@data$is_quiet <- T
+        }
+
+        loaded_data[[filepath]] <<- rds
       } else {
         loaded_data[[filepath]]
       }
@@ -309,15 +326,13 @@ shinyServer(function(input, output, session) {
       region$plot$center_dim <- rgeos::gCentroid(regions[regions$region_name == region$current, ], byid = TRUE)@coords
 
       # Load data to region$plot (if data exists - this varies by purpose/geography)
-      region$plot$zones <- load_data(file.path(region$data_dir, "z.Rds"))
-      region$plot$centroids <- load_data(file.path(region$data_dir, "c.Rds"))
-      region$plot$destinations <- load_data(file.path(region$data_dir, "d.Rds"))
-      region$plot$straight_lines <- load_data(file.path(region$data_dir, "l.Rds"))
-      region$plot$routes_fast <- load_data(file.path(region$data_dir, "rf.Rds"))
-      region$plot$route_network <- load_data(file.path(region$data_dir, "rnet.Rds"))
-      if(!is.null(region$plot$route_network)){
-        region$plot$route_network$id <- region$plot$route_network$local_id
-      }
+      region$plot$zones <- load_data(region$data_dir, "z.Rds", input_purpose())
+      region$plot$centroids <- load_data(region$data_dir, "c.Rds", input_purpose())
+      region$plot$destinations <- load_data(region$data_dir, "d.Rds", input_purpose())
+      region$plot$straight_lines <- load_data(region$data_dir, "l.Rds", input_purpose())
+      region$plot$routes_fast <- load_data(region$data_dir, "rf.Rds", input_purpose())
+      region$plot$route_network <- load_data(region$data_dir, "rnet.Rds", input_purpose())
+      region$plot$routes_quieter <- load_data(region$data_dir, "rq.Rds", input_purpose(), region$plot$straight_lines)
 
       # For confidentiality we have replaced exact numbers with NAs but they cause havoc with the interface.
       # This replaces the NAs with the mean values.
@@ -351,18 +366,6 @@ shinyServer(function(input, output, session) {
           region$plot$destinations@data[,school_na("dutch")$base][idx]
 
         region$plot$route_network@data[is.na(region$plot$route_network@data)] <- rnet_na_const
-      }
-
-      if (file.exists(file.path(region$data_dir, "rq.Rds"))) {
-        region$plot$routes_quieter <- readRDS(file.path(region$data_dir, "rq.Rds"))
-        # Merge in scenario data for quiet routes - don't want this in download but need for line sorting
-        region$plot$routes_quieter@data <- cbind(
-          region$plot$routes_quieter@data[!(names(region$plot$routes_quieter) %in% names(region$plot$straight_lines))],
-          region$plot$straight_lines@data)
-        # Add is_quiet column to identify quieter, as opposed to faster, data - used in routes pop-up
-        region$plot$routes_quieter@data$is_quiet <- T
-      } else {
-        region$plot$routes_quieter <- NULL
       }
     })
     shinyjs::hideElement(id = "loading")
