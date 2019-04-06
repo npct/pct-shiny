@@ -218,12 +218,11 @@ shinyServer(function(input, output, session) {
   }
 
   ##############
-  # Initialise region and to_plot, and update right hand menu by region/purpose
+  # Initialise region, and update right hand menu by region/purpose
   ##############
 
-  ## Create region, to_plot and (for persistent geographical values) helper
-  region <- reactiveValues(current = NA, data_dir = NA, geography = NA, repopulate_region = F, purposes_present = NA, to_plot = NULL)
-  to_plot <- NULL
+  ## Create region and (for persistent geographical values) helper
+  region <- reactiveValues(current = NA, data_dir = NA, geography = NA, repopulate_region = F, purposes_present = NA, plot = NULL)
   helper <- NULL
   helper$e_lat_lng <- ""
   helper$old_geog <- ""
@@ -304,20 +303,20 @@ shinyServer(function(input, output, session) {
     geographies_list <- c("msoa", "lsoa")
     region$geographies_present <- dir.exists(file.path(data_regional_root, input_purpose(), geographies_list, region$current))
 
-    # Identify the centre of the current region, save in to_plot
+    # Identify the centre of the current region, save in region$plot
 
     isolate({
-      region$to_plot$center_dim <- rgeos::gCentroid(regions[regions$region_name == region$current, ], byid = TRUE)@coords
+      region$plot$center_dim <- rgeos::gCentroid(regions[regions$region_name == region$current, ], byid = TRUE)@coords
 
-      # Load data to to_plot (if data exists - this varies by purpose/geography)
-      region$to_plot$zones <- load_data(file.path(region$data_dir, "z.Rds"))
-      region$to_plot$centroids <- load_data(file.path(region$data_dir, "c.Rds"))
-      region$to_plot$destinations <- load_data(file.path(region$data_dir, "d.Rds"))
-      region$to_plot$straight_lines <- load_data(file.path(region$data_dir, "l.Rds"))
-      region$to_plot$routes_fast <- load_data(file.path(region$data_dir, "rf.Rds"))
-      region$to_plot$route_network <- load_data(file.path(region$data_dir, "rnet.Rds"))
-      if(!is.null(to_plot$route_network)){
-        region$to_plot$route_network$id <- to_plot$route_network$local_id
+      # Load data to region$plot (if data exists - this varies by purpose/geography)
+      region$plot$zones <- load_data(file.path(region$data_dir, "z.Rds"))
+      region$plot$centroids <- load_data(file.path(region$data_dir, "c.Rds"))
+      region$plot$destinations <- load_data(file.path(region$data_dir, "d.Rds"))
+      region$plot$straight_lines <- load_data(file.path(region$data_dir, "l.Rds"))
+      region$plot$routes_fast <- load_data(file.path(region$data_dir, "rf.Rds"))
+      region$plot$route_network <- load_data(file.path(region$data_dir, "rnet.Rds"))
+      if(!is.null(region$plot$route_network)){
+        region$plot$route_network$id <- region$plot$route_network$local_id
       }
 
       # For confidentiality we have replaced exact numbers with NAs but they cause havoc with the interface.
@@ -329,41 +328,41 @@ shinyServer(function(input, output, session) {
         d_na_const <- 3
         rnet_na_const <- 1.5
 
-        idx <- is.na(region$to_plot$zones@data[,columns_na])
-        region$to_plot$zones@data[,columns_na][idx] <- z_na_const
+        idx <- is.na(region$plot$zones@data[,columns_na])
+        region$plot$zones@data[,columns_na][idx] <- z_na_const
 
-        idx <- is.na(to_plot$zones@data[,school_na("govtarget")$na])
-        region$to_plot$zones@data[,school_na("govtarget")$na][idx] <- z_na_const +
-          region$to_plot$zones@data[,school_na("govtarget")$base][idx]
+        idx <- is.na(region$plot$zones@data[,school_na("govtarget")$na])
+        region$plot$zones@data[,school_na("govtarget")$na][idx] <- z_na_const +
+          region$plot$zones@data[,school_na("govtarget")$base][idx]
 
-        idx <- is.na(region$to_plot$zones@data[,school_na("dutch")$na])
-        region$to_plot$zones@data[,school_na("dutch")$na][idx] <- z_na_const +
-          region$to_plot$zones@data[,school_na("dutch")$base][idx]
+        idx <- is.na(region$plot$zones@data[,school_na("dutch")$na])
+        region$plot$zones@data[,school_na("dutch")$na][idx] <- z_na_const +
+          region$plot$zones@data[,school_na("dutch")$base][idx]
 
-        idx <- is.na(region$to_plot$destinations@data[,columns_na])
-        region$to_plot$destinations@data[,columns_na][idx] <- d_na_const
+        idx <- is.na(region$plot$destinations@data[,columns_na])
+        region$plot$destinations@data[,columns_na][idx] <- d_na_const
 
-        idx <- is.na(region$to_plot$destinations@data[,school_na("govtarget")$na])
-        region$to_plot$destinations@data[,school_na("govtarget")$na][idx] <- d_na_const +
-          region$to_plot$destinations@data[,school_na("govtarget")$base][idx]
+        idx <- is.na(region$plot$destinations@data[,school_na("govtarget")$na])
+        region$plot$destinations@data[,school_na("govtarget")$na][idx] <- d_na_const +
+          region$plot$destinations@data[,school_na("govtarget")$base][idx]
 
-        idx <- is.na(region$to_plot$destinations@data[,school_na("dutch")$na])
-        region$to_plot$destinations@data[,school_na("dutch")$na][idx] <- d_na_const +
-          region$to_plot$destinations@data[,school_na("dutch")$base][idx]
+        idx <- is.na(region$plot$destinations@data[,school_na("dutch")$na])
+        region$plot$destinations@data[,school_na("dutch")$na][idx] <- d_na_const +
+          region$plot$destinations@data[,school_na("dutch")$base][idx]
 
-        region$to_plot$route_network@data[is.na(to_plot$route_network@data)] <- rnet_na_const
+        region$plot$route_network@data[is.na(region$plot$route_network@data)] <- rnet_na_const
       }
 
       if (file.exists(file.path(region$data_dir, "rq.Rds"))) {
-        region$to_plot$routes_quieter <- readRDS(file.path(region$data_dir, "rq.Rds"))
+        region$plot$routes_quieter <- readRDS(file.path(region$data_dir, "rq.Rds"))
         # Merge in scenario data for quiet routes - don't want this in download but need for line sorting
-        region$to_plot$routes_quieter@data <- cbind(
-          region$to_plot$routes_quieter@data[!(names(to_plot$routes_quieter) %in% names(to_plot$straight_lines))],
-          region$to_plot$straight_lines@data)
+        region$plot$routes_quieter@data <- cbind(
+          region$plot$routes_quieter@data[!(names(region$plot$routes_quieter) %in% names(region$plot$straight_lines))],
+          region$plot$straight_lines@data)
         # Add is_quiet column to identify quieter, as opposed to faster, data - used in routes pop-up
-        region$to_plot$routes_quieter@data$is_quiet <- T
+        region$plot$routes_quieter@data$is_quiet <- T
       } else {
-        region$to_plot$routes_quieter <- NULL
+        region$plot$routes_quieter <- NULL
       }
     })
     shinyjs::hideElement(id = "loading")
@@ -522,7 +521,7 @@ shinyServer(function(input, output, session) {
     region$repopulate_region
 
     line_type <- ifelse(input$line_type == 'routes', "routes_quieter", input$line_type)
-    local_lines <-  sort_lines(region$to_plot[[line_type]], input$line_type, input$nos_lines)
+    local_lines <-  sort_lines(region$plot[[line_type]], input$line_type, input$nos_lines)
 
     # Filter out zero lines for scenario in question from route network
     if (input$line_type == "route_network") {
@@ -537,7 +536,7 @@ shinyServer(function(input, output, session) {
       }
     }
 
-    if (is.null(region$to_plot$ldata) || (!is.null(region$to_plot$ldata) && (!identical(region$to_plot$ldata, local_lines) || !identical(region$to_plot$scenario, input$scenario)))) {
+    if (is.null(region$plot$ldata) || (!is.null(region$plot$ldata) && (!identical(region$plot$ldata, local_lines) || !identical(region$plot$scenario, input$scenario)))) {
       leafletProxy("map")  %>% clearGroup(.,
                                           c("straight_lines",
                                             "routes_quieter",
@@ -546,14 +545,14 @@ shinyServer(function(input, output, session) {
                                           )) %>%
         removeShape(., "highlighted")
       isolate({
-      region$to_plot$ldata <- local_lines
-      # Include current scenario in to_plot as the set of lines to plot may not change when the scenario alters, and so otherwise don't update
-      region$to_plot$scenario <- input$scenario
+      region$plot$ldata <- local_lines
+      # Include current scenario in region$plot as the set of lines to plot may not change when the scenario alters, and so otherwise don't update
+      region$plot$scenario <- input$scenario
       })
-      plot_lines(leafletProxy("map"), region$to_plot$ldata, line_type)
+      plot_lines(leafletProxy("map"), region$plot$ldata, line_type)
       # Additionally plot fast routes on top of quieter if selected 'fast & quieter'
       if (input$line_type == 'routes') {
-        plot_lines(leafletProxy("map"), sort_lines(region$to_plot$routes_fast, "routes_fast", input$nos_lines),"routes_fast")
+        plot_lines(leafletProxy("map"), sort_lines(region$plot$routes_fast, "routes_fast", input$nos_lines),"routes_fast")
       }
     }
 
@@ -625,7 +624,7 @@ shinyServer(function(input, output, session) {
 
     clearGroup(leafletProxy("map"), c("zones"))
     ## Display zones
-    if (input$show_zones && !is.null(region$to_plot$zones)) {
+    if (input$show_zones && !is.null(region$plot$zones)) {
       # Define bins and breaks (by purpose)
       if (input_purpose() == "school") {
         zbins <- zbins_school
@@ -638,19 +637,19 @@ shinyServer(function(input, output, session) {
       show_zone_popup <- (line_type %in% show_no_lines)
       popup <-
         if (show_zone_popup)
-          popup_zones(region$to_plot$zones, input$scenario, input_purpose())
+          popup_zones(region$plot$zones, input$scenario, input_purpose())
       addPolygons(
         leafletProxy("map"),
-        data = region$to_plot$zones,
+        data = region$plot$zones,
         weight = 2,
         fillOpacity = transp_rate(),
         opacity = 0.2,
-        fillColor = get_colour_ramp(zcolourscale, zbins, (region$to_plot$zones[[zone_data()]] /region$to_plot$zones$all), zbreaks),
+        fillColor = get_colour_ramp(zcolourscale, zbins, (region$plot$zones[[zone_data()]] /region$plot$zones$all), zbreaks),
         color = "black",
         group = "zones",
         popup = popup,
         options = pathOptions(clickable = show_zone_popup),
-        layerId = paste0(region$to_plot$zones[['geo_code']], '-', "zones")
+        layerId = paste0(region$plot$zones[['geo_code']], '-', "zones")
       )
     }
 
@@ -682,12 +681,12 @@ shinyServer(function(input, output, session) {
 
     clearGroup(leafletProxy("map"), c("centroids"))
     # Define centroids (if exist) and display when zoom level is greater or equal to 11 and lines are selected
-    if (!is.null(region$to_plot$centroids)) {
-      addCircleMarkers(leafletProxy("map"), data = region$to_plot$centroids,
-                       radius = normalise(region$to_plot$centroids$all, min = 1, max = 8),
+    if (!is.null(region$plot$centroids)) {
+      addCircleMarkers(leafletProxy("map"), data = region$plot$centroids,
+                       radius = normalise(region$plot$centroids$all, min = 1, max = 8),
                        color = get_line_colour("centroids"), group = "centroids", opacity = 0.5,
-                       popup = popup_centroids(region$to_plot$centroids, input$scenario, input_purpose()),
-                       layerId = paste0(region$to_plot$centroids[['geo_code']], '-', "centroids")
+                       popup = popup_centroids(region$plot$centroids, input$scenario, input_purpose()),
+                       layerId = paste0(region$plot$centroids[['geo_code']], '-', "centroids")
       )
       if (isTRUE((is.null(input$map_zoom)) || input$map_zoom < 11 || (input$line_type %in% show_no_lines) || (input$line_type=="route_network"))) {
         hideGroup(leafletProxy("map"), "centroids")
@@ -709,12 +708,12 @@ shinyServer(function(input, output, session) {
 
     clearGroup(leafletProxy("map"), c("destinations"))
     # Define destinations (if exist) and display when zoom level is greater or equal to 11 and lines are selected
-    if (!is.null(region$to_plot$destinations)) {
-      addCircleMarkers(leafletProxy("map"), data = region$to_plot$destinations,
-                       radius = normalise(region$to_plot$destinations$all, min = 1, max = 8),
+    if (!is.null(region$plot$destinations)) {
+      addCircleMarkers(leafletProxy("map"), data = region$plot$destinations,
+                       radius = normalise(region$plot$destinations$all, min = 1, max = 8),
                        color = get_line_colour("destinations"), group = "destinations", opacity = 0.5,
-                       popup = popup_destinations(region$to_plot$destinations, input$scenario, input_purpose()),
-                       layerId = paste0(region$to_plot$destinations[['urn']], '-', "destinations")
+                       popup = popup_destinations(region$plot$destinations, input$scenario, input_purpose()),
+                       layerId = paste0(region$plot$destinations[['urn']], '-', "destinations")
       )
       if (isTRUE((is.null(input$map_zoom)) || input$map_zoom < 11 )) {
         hideGroup(leafletProxy("map"), "destinations")
@@ -810,7 +809,7 @@ shinyServer(function(input, output, session) {
       if (event$group == "centroids") {
         addPolygons(
           leafletProxy("map"),
-          data = region$to_plot$centroids[region$to_plot$c$geo_code == id, ],
+          data = region$plot$centroids[region$plot$c$geo_code == id, ],
           fill = F,
           color = get_line_colour("centroids") ,
           opacity = 0.7,
@@ -819,14 +818,14 @@ shinyServer(function(input, output, session) {
       } else if (event$group == "zones") {
         addPolygons(
           leafletProxy("map"),
-          data = region$to_plot$zones[region$to_plot$z$geo_code == id, ],
+          data = region$plot$zones[region$plot$z$geo_code == id, ],
           fill = FALSE,
           color = "black",
           opacity = 0.7 ,
           layerId = "highlighted"
         )
       } else {
-        line <- region$to_plot[[line_type]][region$to_plot[[line_type]]$id == id, ]
+        line <- region$plot[[line_type]][region$plot[[line_type]]$id == id, ]
         if (!is.null(line))
           addPolylines(
             leafletProxy("map"),
@@ -896,20 +895,15 @@ shinyServer(function(input, output, session) {
 
   ## Initialize the leaflet map
   output$map <- renderLeaflet(
-    leaflet() %>%
-      # Centroids loaded invisibly to tell it the extent of the map - hashed out by Robin
-      # addCircleMarkers( .,
-      #   data = to_plot$centroids,
-      #   radius = 0,
-      #   group = "centroids",
-      #   opacity = 0.0
-      # ) %>%
-      setView(.,
-        lng = region$to_plot$center_dim[1, 1],
-        lat = region$to_plot$center_dim[1, 2],
-        zoom = 10
-      ) %>%
-      mapOptions(zoomToLimits = "never")
+    isolate(
+      leaflet() %>%
+        setView(.,
+                lng = region$plot$center_dim[1, 1],
+                lat = region$plot$center_dim[1, 2],
+                zoom = 10
+        ) %>%
+        mapOptions(zoomToLimits = "never")
+    )
   )
 
   ## Attribution statement bottom right + define the map base
