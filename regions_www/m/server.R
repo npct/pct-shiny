@@ -41,6 +41,9 @@ if (!on_server) {
 
 repo_sha <-  as.character(readLines(file.path(interface_root, "repo_sha")))
 
+# Check if we are on the production server (npt followed by any number of digits (only) is a prod machine)
+is_prod <- grepl("npt\\d*$", Sys.info()["nodename"])
+
 # Apply local packages, and check correct packages installed
 lapply(available_locally_pkgs, library, character.only = T)
 installed <- must_be_installed_pkgs %in% installed.packages()
@@ -99,6 +102,11 @@ shinyServer(function(input, output, session) {
         "School travel"  = "school" ,
         "All trips"  = "alltrips"
       )[purposes_present]
+
+      # Remove all trips for prod branch
+      if (is_prod)
+        local_purposes <- local_purposes[local_purposes != 'alltrips']
+
 
       if(input$purpose %in% local_purposes) {
         selected_purpose <- input$purpose
@@ -288,6 +296,8 @@ shinyServer(function(input, output, session) {
     # Identify purposes and geographies available in region
     purposes_list <- c("commute", "school", "alltrips")
     new_purpose <- (dir.exists(file.path(data_regional_root, purposes_list, "msoa", region$current)) | dir.exists(file.path(data_regional_root, purposes_list, "lsoa", region$current)))
+    # Remove alltrips from new_purpose for the production branch, even if the data directory exists
+    new_purpose <- ifelse(is_prod, new_purpose[new_purpose != "alltrips"], new_purpose)
     if(!identical(new_purpose,region$purposes_present)){
       region$purposes_present <- new_purpose
     }
