@@ -843,7 +843,7 @@ shinyServer(function(input, output, session) {
           layerId = "lsoa_base_map",
           group = "lsoa_base_map",
           options = tileOptions(
-            maxNativeZoom = 10,
+            maxNativeZoom = 15,
             reuseTiles = T,
             tms = T
           )
