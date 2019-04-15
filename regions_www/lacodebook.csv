@@ -4,12 +4,9 @@ all,Total no. commuters
 bicycle,No. cyclists in Census 2011
 foot,No. pedestrians in Census 2011
 car_driver,No. car drivers in Census 2011
-govtarget_slc,No. cyclists in Government Target (equity)
-govtarget_slw,No. pedestrians in Government Target (equity)
-govtarget_sld,No. car drivers in Government Target (equity)
-govnearmkt_slc,No. cyclists in Government Target (near market)
-govnearmkt_slw,No. pedestrians in Government Target (near market)
-govnearmkt_sld,No. car drivers in Government Target (near market)
+govtarget_slc,No. cyclists in Government Target
+govtarget_slw,No. pedestrians in Government Target
+govtarget_sld,No. car drivers in Government Target
 gendereq_slc,No. cyclists in Gender Equality
 gendereq_slw,No. pedestrians in Gender Equality
 gendereq_sld,No. car drivers in Gender Equality
@@ -19,30 +16,24 @@ dutch_sld,No. car drivers in Go Dutch
 ebike_slc,No. cyclists in Ebikes
 ebike_slw,No. pedestrians in Ebikes
 ebike_sld,No. car drivers in Ebikes
-govtarget_sldeath_heat,Change in deaths/year in Government Target (equity) versus 'no cycling'
-govtarget_slvalue_heat,Value (millions of pounds) of change in deaths in Government Target (equity) versus 'no cycling' 
-govtarget_sideath_heat,Change in deaths/year in Government Target (equity) versus Census 2011
-govtarget_sivalue_heat,Value (millions of pounds) of change in deaths in Government Target (equity) versus Census 2011
-govnearmkt_sldeath_heat,Change in deaths/year in Government Target (near market) versus 'no cycling'
-govnearmkt_slvalue_heat,Value (millions of pounds) of change in deaths in Government Target (near market) versus 'no cycling' 
-govnearmkt_sideath_heat,Change in deaths/year in Government Target (near market) versus Census 2011
-govnearmkt_sivalue_heat,Value (millions of pounds) of change in deaths in Government Target (near market) versus Census 2011
+govtarget_sldeath_heat,Change in deaths/year in Government Target versus 'no cycling'
+govtarget_slvalue_heat,Value (millions of £) of change in deaths in Government Target versus 'no cycling' 
+govtarget_sideath_heat,Change in deaths/year in Government Target versus Census 2011
+govtarget_sivalue_heat,Value (millions of £) of change in deaths in Government Target versus Census 2011
 gendereq_sldeath_heat,Change in deaths/year in Gender Equality versus 'no cycling'
-gendereq_slvalue_heat,Value (millions of pounds) of change in deaths in Gender Equality versus 'no cycling' 
+gendereq_slvalue_heat,Value (millions of £) of change in deaths in Gender Equality versus 'no cycling' 
 gendereq_sideath_heat,Change in deaths/year in Gender Equality versus Census 2011
-gendereq_sivalue_heat,Value (millions of pounds) of change in deaths in Gender Equality versus Census 2011
+gendereq_sivalue_heat,Value (millions of £) of change in deaths in Gender Equality versus Census 2011
 dutch_sldeath_heat,Change in deaths/year in Go Dutch versus 'no cycling'
-dutch_slvalue_heat,Value (millions of pounds) of change in deaths in Go Dutch versus 'no cycling' 
+dutch_slvalue_heat,Value (millions of £) of change in deaths in Go Dutch versus 'no cycling' 
 dutch_sideath_heat,Change in deaths/year in Go Dutch versus Census 2011
-dutch_sivalue_heat,Value (millions of pounds) of change in deaths in Go Dutch versus Census 2011
+dutch_sivalue_heat,Value (millions of £) of change in deaths in Go Dutch versus Census 2011
 ebike_sldeath_heat,Change in deaths/year in Ebikes versus 'no cycling'
-ebike_slvalue_heat,Value (millions of pounds) of change in deaths in Ebikes versus 'no cycling' 
+ebike_slvalue_heat,Value (millions of £) of change in deaths in Ebikes versus 'no cycling' 
 ebike_sideath_heat,Change in deaths/year in Ebikes versus Census 2011
-ebike_sivalue_heat,Value (millions of pounds) of change in deaths in Ebikes versus Census 2011
-govtarget_slco2,Change in CO2/year (tonnes) in Government Target (equity) versus 'no cycling'
-govtarget_sico2,Change in CO2/year (tonnes) in Government Target (equity) versus Census 2011
-govnearmkt_slco2,Change in CO2/year (tonnes) in Government Target (near market) versus 'no cycling'
-govnearmkt_sico2,Change in CO2/year (tonnes) in Government Target (near market) versus Census 2011
+ebike_sivalue_heat,Value (millions of £) of change in deaths in Ebikes versus Census 2011
+govtarget_slco2,Change in CO2/year (tonnes) in Government Target versus 'no cycling'
+govtarget_sico2,Change in CO2/year (tonnes) in Government Target versus Census 2011
 gendereq_slco2,Change in CO2/year (tonnes) in Gender Equality versus 'no cycling'
 gendereq_sico2,Change in CO2/year (tonnes) in Gender Equality versus Census 2011
 dutch_slco2,Change in CO2/year (tonnes) in Go Dutch versus 'no cycling'
@@ -52,12 +43,9 @@ ebike_sico2,Change in CO2/year (tonnes) in Ebikes versus Census 2011
 bicycle_percent,Perentage cyclists in Census 2011
 foot_percent,Perentage pedestrians in Census 2011
 car_driver_percent,Perentage car drivers in Census 2011
-govtarget_slc_percent,Perentage cyclists in Government Target (equity)
-govtarget_slw_percent,Perentage pedestrians in Government Target (equity)
-govtarget_sld_percent,Perentage car drivers in Government Target (equity)
-govnearmkt_slc_percent,Perentage cyclists in Government Target (near market)
-govnearmkt_slw_percent,Perentage pedestrians in Government Target (near market)
-govnearmkt_sld_percent,Perentage car drivers in Government Target (near market)
+govtarget_slc_percent,Perentage cyclists in Government Target
+govtarget_slw_percent,Perentage pedestrians in Government Target
+govtarget_sld_percent,Perentage car drivers in Government Target
 gendereq_slc_percent,Perentage cyclists in Gender Equality
 gendereq_slw_percent,Perentage pedestrians in Gender Equality
 gendereq_sld_percent,Perentage car drivers in Gender Equality
@@ -67,30 +55,24 @@ dutch_sld_percent,Perentage car drivers in Go Dutch
 ebike_slc_percent,Perentage cyclists in Ebikes
 ebike_slw_percent,Perentage pedestrians in Ebikes
 ebike_sld_percent,Perentage car drivers in Ebikes
-govtarget_sldeath_heat_deaths_per_10k,"Change in deaths/year in Government Target (equity) versus 'no cycling' per 10,000 commuters"
-govtarget_slvalue_heat_deaths_per_10k,"Value (millions of pounds) of change in deaths in Government Target (equity) versus 'no cycling'  per 10,000 commuters"
-govtarget_sideath_heat_deaths_per_10k,"Change in deaths/year in Government Target (equity) versus Census 2011  per 10,000 commuters"
-govtarget_sivalue_heat_deaths_per_10k,"Value (millions of pounds) of change in deaths in Government Target (equity) versus Census 2011  per 10,000 commuters"
-govnearmkt_sldeath_heat_deaths_per_10k,"Change in deaths/year in Government Target (near market) versus 'no cycling' per 10,000 commuters"
-govnearmkt_slvalue_heat_deaths_per_10k,"Value (millions of pounds) of change in deaths in Government Target (near market) versus 'no cycling'  per 10,000 commuters"
-govnearmkt_sideath_heat_deaths_per_10k,"Change in deaths/year in Government Target (near market) versus Census 2011  per 10,000 commuters"
-govnearmkt_sivalue_heat_deaths_per_10k,"Value (millions of pounds) of change in deaths in Government Target (near market) versus Census 2011  per 10,000 commuters"
+govtarget_sldeath_heat_deaths_per_10k,"Change in deaths/year in Government Target versus 'no cycling' per 10,000 commuters"
+govtarget_slvalue_heat_deaths_per_10k,"Value (millions of £) of change in deaths in Government Target versus 'no cycling'  per 10,000 commuters"
+govtarget_sideath_heat_deaths_per_10k,"Change in deaths/year in Government Target versus Census 2011  per 10,000 commuters"
+govtarget_sivalue_heat_deaths_per_10k,"Value (millions of £) of change in deaths in Government Target versus Census 2011  per 10,000 commuters"
 gendereq_sldeath_heat_deaths_per_10k,"Change in deaths/year in Gender Equality versus 'no cycling'  per 10,000 commuters"
-gendereq_slvalue_heat_deaths_per_10k,"Value (millions of pounds) of change in deaths in Gender Equality versus 'no cycling'  per 10,000 commuters"
+gendereq_slvalue_heat_deaths_per_10k,"Value (millions of £) of change in deaths in Gender Equality versus 'no cycling'  per 10,000 commuters"
 gendereq_sideath_heat_deaths_per_10k,"Change in deaths/year in Gender Equality versus Census 2011  per 10,000 commuters"
-gendereq_sivalue_heat_deaths_per_10k,"Value (millions of pounds) of change in deaths in Gender Equality versus Census 2011  per 10,000 commuters"
+gendereq_sivalue_heat_deaths_per_10k,"Value (millions of £) of change in deaths in Gender Equality versus Census 2011  per 10,000 commuters"
 dutch_sldeath_heat_deaths_per_10k,"Change in deaths/year in Go Dutch versus 'no cycling'  per 10,000 commuters"
-dutch_slvalue_heat_deaths_per_10k,"Value (millions of pounds) of change in deaths in Go Dutch versus 'no cycling'  per 10,000 commuters"
+dutch_slvalue_heat_deaths_per_10k,"Value (millions of £) of change in deaths in Go Dutch versus 'no cycling'  per 10,000 commuters"
 dutch_sideath_heat_deaths_per_10k,"Change in deaths/year in Go Dutch versus Census 2011  per 10,000 commuters"
-dutch_sivalue_heat_deaths_per_10k,"Value (millions of pounds) of change in deaths in Go Dutch versus Census 2011  per 10,000 commuters"
+dutch_sivalue_heat_deaths_per_10k,"Value (millions of £) of change in deaths in Go Dutch versus Census 2011  per 10,000 commuters"
 ebike_sldeath_heat_deaths_per_10k,"Change in deaths/year in Ebikes versus 'no cycling'  per 10,000 commuters"
-ebike_slvalue_heat_deaths_per_10k,"Value (millions of pounds) of change in deaths in Ebikes versus 'no cycling'  per 10,000 commuters"
+ebike_slvalue_heat_deaths_per_10k,"Value (millions of £) of change in deaths in Ebikes versus 'no cycling'  per 10,000 commuters"
 ebike_sideath_heat_deaths_per_10k,"Change in deaths/year in Ebikes versus Census 2011  per 10,000 commuters"
-ebike_sivalue_heat_deaths_per_10k,"Value (millions of pounds) of change in deaths in Ebikes versus Census 2011  per 10,000 commuters"
-govtarget_slco2_co2_savings_per_10k,"Change in CO2/year (tonnes) in Government Target (equity) versus 'no cycling'  per 10,000 commuters"
-govtarget_sico2_co2_savings_per_10k,"Change in CO2/year (tonnes) in Government Target (equity) versus Census 2011  per 10,000 commuters"
-govnearmkt_slco2_co2_savings_per_10k,"Change in CO2/year (tonnes) in Government Target (near market) versus 'no cycling'  per 10,000 commuters"
-govnearmkt_sico2_co2_savings_per_10k,"Change in CO2/year (tonnes) in Government Target (near market) versus Census 2011  per 10,000 commuters"
+ebike_sivalue_heat_deaths_per_10k,"Value (millions of £) of change in deaths in Ebikes versus Census 2011  per 10,000 commuters"
+govtarget_slco2_co2_savings_per_10k,"Change in CO2/year (tonnes) in Government Target versus 'no cycling'  per 10,000 commuters"
+govtarget_sico2_co2_savings_per_10k,"Change in CO2/year (tonnes) in Government Target versus Census 2011  per 10,000 commuters"
 gendereq_slco2_co2_savings_per_10k,"Change in CO2/year (tonnes) in Gender Equality versus 'no cycling'  per 10,000 commuters"
 gendereq_sico2_co2_savings_per_10k,"Change in CO2/year (tonnes) in Gender Equality versus Census 2011  per 10,000 commuters"
 dutch_slco2_co2_savings_per_10k,"Change in CO2/year (tonnes) in Go Dutch versus 'no cycling'  per 10,000 commuters"
