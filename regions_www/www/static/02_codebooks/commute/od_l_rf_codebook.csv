@@ -13,18 +13,22 @@ bicycle,No. cyclists in Census 2011
 foot,No. pedestrians in Census 2011
 car_driver,No. car drivers in Census 2011
 car_passenger,No. car passengers in Census 2011
-train,No. train users in Census 2011
-light_rail,No. light rail users in Census 2011
-bus,No. bus users in Census 2011
-taxi,No. taxi users in Census 2011
 motorbike,No. motorbikers in Census 2011
-other,No. other transport users in Census 2011
-govtarget_slc,No. cyclists in Government Target
-govtarget_sic,Increase no. cyclists in Government Target vs. Census 2011
-govtarget_slw,No. pedestrians in Government Target
-govtarget_siw,Increase no. pedestrians in Government Target vs. Census 2011
-govtarget_sld,No. car drivers in Government Target
-govtarget_sid,Increase no. car drivers in Government Target vs. Census 2011
+train_tube,"No. train, underground and light rail users in Census 2011"
+bus,No. bus users in Census 2011
+taxi_other,No. taxi and other transport users in Census 2011
+govtarget_slc,No. cyclists in Government Target (equity)
+govtarget_sic,Increase no. cyclists in Government Target (equity) vs. Census 2011
+govtarget_slw,No. pedestrians in Government Target (equity)
+govtarget_siw,Increase no. pedestrians in Government Target (equity) vs. Census 2011
+govtarget_sld,No. car drivers in Government Target (equity)
+govtarget_sid,Increase no. car drivers in Government Target (equity) vs. Census 2011
+govnearmkt_slc,No. cyclists in Government Target (near market)
+govnearmkt_sic,Increase no. cyclists in Government Target (near market) vs. Census 2011
+govnearmkt_slw,No. pedestrians in Government Target (near market)
+govnearmkt_siw,Increase no. pedestrians in Government Target (near market) vs. Census 2011
+govnearmkt_sld,No. car drivers in Government Target (near market)
+govnearmkt_sid,Increase no. car drivers in Government Target (near market) vs. Census 2011
 gendereq_slc,No. cyclists in Gender Equality
 gendereq_sic,Increase no. cyclists in Gender Equality vs. Census 2011
 gendereq_slw,No. pedestrians in Gender Equality
@@ -43,10 +47,14 @@ ebike_slw,No. pedestrians in Ebikes
 ebike_siw,Increase no. pedestrians in Go Dutch vs. Census 2011
 ebike_sld,No. car drivers in Ebikes
 ebike_sid,Increase no. car drivers in Ebikes vs. Census 2011
-govtarget_sldeath_heat,Change in deaths/year in Government Target versus 'no cycling'
-govtarget_slvalue_heat,Value (pounds) of change in deaths in Government Target versus 'no cycling' 
-govtarget_sideath_heat,Change in deaths/year in Government Target versus Census 2011
-govtarget_sivalue_heat,Value (pounds) of change in deaths in Government Target versus Census 2011
+govtarget_sldeath_heat,Change in deaths/year in Government Target (equity) versus 'no cycling'
+govtarget_slvalue_heat,Value (pounds) of change in deaths in Government Target (equity) versus 'no cycling' 
+govtarget_sideath_heat,Change in deaths/year in Government Target (equity) versus Census 2011
+govtarget_sivalue_heat,Value (pounds) of change in deaths in Government Target (equity) versus Census 2011
+govnearmkt_sldeath_heat,Change in deaths/year in Government Target (near market) versus 'no cycling'
+govnearmkt_slvalue_heat,Value (pounds) of change in deaths in Government Target (near market) versus 'no cycling' 
+govnearmkt_sideath_heat,Change in deaths/year in Government Target (near market) versus Census 2011
+govnearmkt_sivalue_heat,Value (pounds) of change in deaths in Government Target (near market) versus Census 2011
 gendereq_sldeath_heat,Change in deaths/year in Gender Equality versus 'no cycling'
 gendereq_slvalue_heat,Value (pounds) of change in deaths in Gender Equality versus 'no cycling' 
 gendereq_sideath_heat,Change in deaths/year in Gender Equality versus Census 2011
@@ -59,8 +67,10 @@ ebike_sldeath_heat,Change in deaths/year in Ebikes versus 'no cycling'
 ebike_slvalue_heat,Value (pounds) of change in deaths in Ebikes versus 'no cycling' 
 ebike_sideath_heat,Change in deaths/year in Ebikes versus Census 2011
 ebike_sivalue_heat,Value (pounds) of change in deaths in Ebikes versus Census 2011
-govtarget_slco2,Change in CO2/year (kg) in Government Target versus 'no cycling'
-govtarget_sico2,Change in CO2/year (kg) in Government Target versus Census 2011
+govtarget_slco2,Change in CO2/year (kg) in Government Target (equity) versus 'no cycling'
+govtarget_sico2,Change in CO2/year (kg) in Government Target (equity) versus Census 2011
+govnearmkt_slco2,Change in CO2/year (kg) in Government Target (near market) versus 'no cycling'
+govnearmkt_sico2,Change in CO2/year (kg) in Government Target (near market) versus Census 2011
 gendereq_slco2,Change in CO2/year (kg) in Gender Equality versus 'no cycling'
 gendereq_sico2,Change in CO2/year (kg) in Gender Equality versus Census 2011
 dutch_slco2,Change in CO2/year (kg) in Go Dutch versus 'no cycling'

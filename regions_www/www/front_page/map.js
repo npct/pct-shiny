@@ -20,7 +20,8 @@ $(document).ready(function(){
 
   var scenarioLayers = {
     "Census 2011": defaultScenario,
-    "Government Target": L.tileLayer(''),
+    "Government Target (equity)": L.tileLayer(''),
+    "Government Target (near market)": L.tileLayer(''),
     "Gender Equality": L.tileLayer(''),
     "Go Dutch": L.tileLayer(''),
     "Ebikes": L.tileLayer('')
@@ -31,7 +32,8 @@ $(document).ready(function(){
 
   info.scenarioMap = {
     bicycle_perc: "2011 Census",
-    govtarget_slc_perc: "Government Target",
+    govtarget_slc_perc: "Government Target (equity)",
+    govnearmkt_slc_perc: "Government Target (near market)",
     gendereq_slc_perc: "Gender Equality",
     dutch_slc_perc: "Go Dutch",
     ebike_slc_perc: "Ebike"
@@ -75,7 +77,8 @@ $(document).ready(function(){
 
   var selectedVariableMap = {}
   selectedVariableMap["Census 2011"] = "bicycle_perc"
-  selectedVariableMap["Government Target"] = "govtarget_slc_perc"
+  selectedVariableMap["Government Target (equity)"] = "govtarget_slc_perc"
+  selectedVariableMap["Government Target (near market)"] = "govnearmkt_slc_perc"
   selectedVariableMap["Gender Equality"] = "gendereq_slc_perc"
   selectedVariableMap["Go Dutch"] = "dutch_slc_perc"
   selectedVariableMap["Ebikes"] = "ebike_slc_perc"

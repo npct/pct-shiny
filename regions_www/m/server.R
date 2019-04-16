@@ -138,7 +138,8 @@ shinyServer(function(input, output, session) {
     if (purpose == "commute") {
       local_scenarios <- c(
         "Census 2011 Cycling" = "olc",
-        "Government Target"   = "govtarget",
+        "Government Target (equity)"   = "govtarget",
+        "Government Target (near market)"   = "govnearmkt",
         "Gender equality"     = "gendereq",
         "Go Dutch"            = "dutch",
         "Ebikes"              = "ebike"
@@ -169,7 +170,7 @@ shinyServer(function(input, output, session) {
     } else if (purpose == "school") {
       local_scenarios <- c(
         "School Census 2011"      = "olc",
-        "Government Target"       = "govtarget",
+        "Government Target (equity)"       = "govtarget",
         "Go Dutch"                = "dutch"
       )
       local_line_types <- c("None"  = "none",
@@ -184,7 +185,7 @@ shinyServer(function(input, output, session) {
     } else if (purpose == "alltrips") {
       local_scenarios <- c(
         "Current travel patterns" = "olc",
-        "Government Target"       = "govtarget",
+        "Government Target (equity)"       = "govtarget",
         "Gender equality"         = "gendereq",
         "Go Dutch"                = "dutch",
         "Ebikes"                  = "ebike"
@@ -533,6 +534,8 @@ shinyServer(function(input, output, session) {
        local_lines <- local_lines[local_lines$bicycle>0,]
       } else if (input$scenario == 'govtarget') {
         local_lines <- local_lines[local_lines$govtarget_slc>0,]
+      } else if (input$scenario == 'govnearmkt') {
+        local_lines <- local_lines[local_lines$govnearmkt_slc>0,]
       } else if (input$scenario == 'gendereq') {
         local_lines <- local_lines[local_lines$gendereq_slc>0,]
       } else {
