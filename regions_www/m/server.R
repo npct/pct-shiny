@@ -149,15 +149,16 @@ shinyServer(function(input, output, session) {
                               "Straight Lines"         = "straight_lines",
                               "Fast Routes"            = "routes_fast",
                               "Fast & quieter Routes"  = "routes",
-                              "Route Network (MSOA)"   = "route_network",
-                              "Route Network (LSOA)"   = "lsoa_base_map"
+                              "Route Network (LSOA, clickable)"   = "route_network",
+                              "Route Network (LSOA, image)"   = "lsoa_base_map"
         )
       } else if (geography == "lsoa") {
         local_line_types <- c("None"             = "none",
                               "Straight Lines"         = "straight_lines",
                               "Fast Routes"            = "routes_fast",
                               "Fast & quieter Routes"  = "routes",
-                              "Route Network (LSOA)"   = "lsoa_base_map"
+                              "Route Network (LSOA, clickable)"   = "route_network",
+                              "Route Network (LSOA, image)"   = "lsoa_base_map"
         )
       }
 
