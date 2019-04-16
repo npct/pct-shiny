@@ -274,6 +274,7 @@ shinyServer(function(input, output, session) {
   observe({
     shinyjs::showElement(id = "loading")
     if(is.null(input$geography)){
+      shinyjs::hideElement(id = "loading")
       return()
     }
     region$current
@@ -402,6 +403,7 @@ shinyServer(function(input, output, session) {
     shinyjs::showElement(id = "loading")
     # massive hack to return early if the geography and purpose haven't actually changed
     if (helper$old_geog == region$geography && helper$old_purpose == input_purpose()) {
+      shinyjs::hideElement(id = "loading")
       return()
     }
     helper$old_purpose <<- input_purpose()
@@ -902,6 +904,7 @@ shinyServer(function(input, output, session) {
 
   ## Attribution statement bottom right + define the map base
   observe({
+    shinyjs::showElement(id = "loading")
     region$current
     tileOpts <- tileOptions(
       opacity = 1,
@@ -938,7 +941,7 @@ shinyServer(function(input, output, session) {
 
     }
     leafletProxy("map") %>% hideGroup(., "lsoa_base_map") %>% showGroup(., "lsoa_base_map")
-    shinyjs::hide(id = "loading")
+    shinyjs::hideElement(id = "loading")
   })
 
 
