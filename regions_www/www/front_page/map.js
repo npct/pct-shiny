@@ -238,7 +238,7 @@ $(document).ready(function(){
 
   var disabledOnSchools = ["gendereq_slc_perc", "ebike_slc_perc", "govnearmkt_slc_perc"]
   function setControls(){
-    // Disable Gender Equality and Ebikes for School Layer
+    // Disable some scenarios for school layer
     if (selectedLayerName == "School") {
       // Disable Health and CO2 radio buttons
       $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
@@ -253,7 +253,7 @@ $(document).ready(function(){
       });
     }
 
-    // Disable school layer for Ebikes and Gender Equality scenarios
+    // Disable school layer for some scenarios
     if (selectedLayerName == "Commute" && (disabledOnSchools.indexOf(selectedVariable) !== -1)) {
       $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
         if ($(this).parent().text().trim() == "School"){
