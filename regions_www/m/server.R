@@ -345,7 +345,17 @@ shinyServer(function(input, output, session) {
       region$plot$destinations <- load_data(region$data_dir, "d.Rds", input_purpose())
       region$plot$straight_lines <- load_data(region$data_dir, "l.Rds", input_purpose())
       region$plot$routes_fast <- load_data(region$data_dir, "rf.Rds", input_purpose())
-      region$plot$route_network <- load_data(region$data_dir, "rnet.Rds", input_purpose())
+
+      # Use LSOA's route network even when MSOA as geography is selected
+      if (region$geography == "msoa"){
+        # Create a local directory path, with fixed LSOA as geography
+        local_dir_path <- file.path(data_regional_root, input_purpose(), "lsoa", region$current)
+        # Read LSOA's route network
+        region$plot$route_network <- load_data(local_dir_path, "rnet.Rds", input_purpose())
+      }
+      else
+        region$plot$route_network <- load_data(region$data_dir, "rnet.Rds", input_purpose())
+
       region$plot$routes_quieter <- load_data(region$data_dir, "rq.Rds", input_purpose(), region$plot$straight_lines)
 
       # For confidentiality we have replaced exact numbers with NAs but they cause havoc with the interface.
