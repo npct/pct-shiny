@@ -535,7 +535,7 @@ shinyServer(function(input, output, session) {
     # Filter out zero lines for scenario in question from route network
     if (input$line_type == "route_network") {
       if (input$scenario == 'olc') {
-       local_lines <- local_lines[local_lines$bicycle>0,]
+        local_lines <- local_lines[local_lines$bicycle>0,]
       } else if (input$scenario == 'govtarget') {
         local_lines <- local_lines[local_lines$govtarget_slc>0,]
       } else if (input$scenario == 'govnearmkt') {
@@ -556,9 +556,9 @@ shinyServer(function(input, output, session) {
                                           )) %>%
         removeShape(., "highlighted")
       isolate({
-      region$plot$ldata <- local_lines
-      # Include current scenario in region$plot as the set of lines to plot may not change when the scenario alters, and so otherwise don't update
-      region$plot$scenario <- input$scenario
+        region$plot$ldata <- local_lines
+        # Include current scenario in region$plot as the set of lines to plot may not change when the scenario alters, and so otherwise don't update
+        region$plot$scenario <- input$scenario
       })
       plot_lines(leafletProxy("map"), region$plot$ldata, line_type)
       # Additionally plot fast routes on top of quieter if selected 'fast & quieter'
@@ -670,7 +670,7 @@ shinyServer(function(input, output, session) {
                  hideGroup(., c("routes_quieter", "routes_fast") ) %>% showGroup(., c("routes_quieter", "routes_fast"))
                },
                hideGroup(., line_type) %>% showGroup(., line_type)
-              )
+        )
       }
     }
 
@@ -931,7 +931,7 @@ shinyServer(function(input, output, session) {
                  group = "imd_extras",
                  options = tileOpts) %>%
         addTiles(.,
-                urlTemplate = "https://cdrc-maps.liv.ac.uk/tiles/shine_urbanmask_dark/{z}/{x}/{y}.png",
+                 urlTemplate = "https://cdrc-maps.liv.ac.uk/tiles/shine_urbanmask_dark/{z}/{x}/{y}.png",
                  group = "imd_extras",
                  options = tileOpts) %>%
         addTiles(.,
@@ -948,8 +948,8 @@ shinyServer(function(input, output, session) {
   ## Map version info - text in bottom left
   output$cite_html <- renderUI({
     HTML(paste('Version', a(repo_sha, href = paste0("https://github.com/npct/pct-shiny/tree/", repo_sha), target = '_blank'),
-      'released under a', a('GNU Affero GPL', href = "../www/licence.html", target = '_blank'), 'and funded by the',
-      a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport", target = "_blank")
+               'released under a', a('GNU Affero GPL', href = "../www/licence.html", target = '_blank'), 'and funded by the',
+               a('DfT', href = "https://www.gov.uk/government/organisations/department-for-transport", target = "_blank")
     ))
   })
 
@@ -1002,7 +1002,7 @@ shinyServer(function(input, output, session) {
     my_lab <- c(
       "Most deprived tenth", "2nd", "3rd", "4th", "5th",
       "6th", "7th", "8th", "9th", "Least deprived tenth"
-      )
+    )
 
     my_lab <- rev(my_lab)
 
