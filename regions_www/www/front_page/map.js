@@ -252,8 +252,8 @@ $(document).ready(function(){
       });
     }
 
-    // Disable school layer for Ebikes, Govt. target (near market) and Gender Equality scenarios
-    if (selectedLayerName == "Commute" && (selectedVariable == "ebike_slc_perc" || selectedVariable == "gendereq_slc_perc" || selectedVariable == "govnearmkt_slc_perc")) {
+    // Disable school layer for Ebikes and Gender Equality scenarios
+    if (selectedLayerName == "Commute" && (selectedVariable == "ebike_slc_perc" || selectedVariable == "gendereq_slc_perc")) {
       $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
         if ($(this).parent().text().trim() == "School"){
           selectableControl(this, true)
