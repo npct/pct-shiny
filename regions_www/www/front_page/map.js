@@ -24,7 +24,7 @@ $(document).ready(function(){
     "Government Target (near market)": L.tileLayer(''),
     "Gender Equality": L.tileLayer(''),
     "Go Dutch": L.tileLayer(''),
-    "Ebikes": L.tileLayer('')
+    "Ebike": L.tileLayer('')
   };
 
   // control that shows region info on hover
@@ -74,14 +74,13 @@ $(document).ready(function(){
         center: [53, -0.4],
         zoom: 6
     });*/
-
   var selectedVariableMap = {}
-  selectedVariableMap["Census 2011"] = "bicycle_perc"
-  selectedVariableMap["Government Target (equity)"] = "govtarget_slc_perc"
-  selectedVariableMap["Government Target (near market)"] = "govnearmkt_slc_perc"
-  selectedVariableMap["Gender Equality"] = "gendereq_slc_perc"
-  selectedVariableMap["Go Dutch"] = "dutch_slc_perc"
-  selectedVariableMap["Ebikes"] = "ebike_slc_perc"
+  for (var prop in info.scenarioMap) {
+    if(info.scenarioMap.hasOwnProperty(prop)) {
+      selectedVariableMap[info.scenarioMap[prop]] = prop;
+    }
+  }
+
 
   var selectedLayerMap = {}
   selectedLayerMap["Commute"] = "Commute"
@@ -237,12 +236,14 @@ $(document).ready(function(){
     }
   }
 
+  var disabledOnSchools = ["gendereq_slc_perc", "ebike_slc_perc", "govnearmkt_slc_perc"]
   function setControls(){
-    // Disable Gender Equality and Ebikes for School Layer
+    // Disable some scenarios for school layer
     if (selectedLayerName == "School") {
       // Disable Health and CO2 radio buttons
       $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
-        if ($(this).parent().text().trim() == "Gender Equality" || $(this).parent().text().trim() == "Ebikes"){
+        var scenarioName = selectedVariableMap[$(this).parent().text().trim()]
+        if (disabledOnSchools.indexOf(scenarioName) !== -1){
           selectableControl(this, true)
         }
       });
@@ -252,8 +253,8 @@ $(document).ready(function(){
       });
     }
 
-    // Disable school layer for Ebikes, Govt. target (near market) and Gender Equality scenarios
-    if (selectedLayerName == "Commute" && (selectedVariable == "ebike_slc_perc" || selectedVariable == "gendereq_slc_perc" || selectedVariable == "govnearmkt_slc_perc")) {
+    // Disable school layer for some scenarios
+    if (selectedLayerName == "Commute" && (disabledOnSchools.indexOf(selectedVariable) !== -1)) {
       $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
         if ($(this).parent().text().trim() == "School"){
           selectableControl(this, true)
