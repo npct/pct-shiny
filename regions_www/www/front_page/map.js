@@ -18,15 +18,6 @@ $(document).ready(function(){
 
   var defaultScenario = L.tileLayer('');
 
-  var scenarioLayers = {
-    "Census 2011": defaultScenario,
-    "Government Target (equity)": L.tileLayer(''),
-    "Government Target (near market)": L.tileLayer(''),
-    "Gender Equality": L.tileLayer(''),
-    "Go Dutch": L.tileLayer(''),
-    "Ebike": L.tileLayer('')
-  };
-
   // control that shows region info on hover
   var info = L.control();
 
@@ -38,6 +29,14 @@ $(document).ready(function(){
     dutch_slc_perc: "Go Dutch",
     ebike_slc_perc: "Ebike"
   };
+
+  var scenarioLayers = {}
+  scenarioLayers[info.scenarioMap["bicycle_perc"]] = defaultScenario
+  scenarioLayers[info.scenarioMap["govtarget_slc_perc"]] = L.tileLayer('')
+  scenarioLayers[info.scenarioMap["govnearmkt_slc_perc"]] = L.tileLayer('')
+  scenarioLayers[info.scenarioMap["gendereq_slc_perc"]] = L.tileLayer('')
+  scenarioLayers[info.scenarioMap["dutch_slc_perc"]] = L.tileLayer('')
+  scenarioLayers[info.scenarioMap["ebike_slc_perc"]] = L.tileLayer('')
 
   info.update = function (props, scenario) {
     var regionText;
