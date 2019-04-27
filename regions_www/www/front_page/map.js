@@ -18,24 +18,25 @@ $(document).ready(function(){
 
   var defaultScenario = L.tileLayer('');
 
-  var scenarioLayers = {
-    "Census 2011": defaultScenario,
-    "Government Target": L.tileLayer(''),
-    "Gender Equality": L.tileLayer(''),
-    "Go Dutch": L.tileLayer(''),
-    "Ebikes": L.tileLayer('')
-  };
-
   // control that shows region info on hover
   var info = L.control();
 
   info.scenarioMap = {
     bicycle_perc: "2011 Census",
-    govtarget_slc_perc: "Government Target",
+    govtarget_slc_perc: "Government Target (equity)",
+    govnearmkt_slc_perc: "Government Target (near market)",
     gendereq_slc_perc: "Gender Equality",
     dutch_slc_perc: "Go Dutch",
     ebike_slc_perc: "Ebike"
   };
+
+  var scenarioLayers = {}
+  scenarioLayers[info.scenarioMap["bicycle_perc"]] = defaultScenario
+  scenarioLayers[info.scenarioMap["govtarget_slc_perc"]] = L.tileLayer('')
+  scenarioLayers[info.scenarioMap["govnearmkt_slc_perc"]] = L.tileLayer('')
+  scenarioLayers[info.scenarioMap["gendereq_slc_perc"]] = L.tileLayer('')
+  scenarioLayers[info.scenarioMap["dutch_slc_perc"]] = L.tileLayer('')
+  scenarioLayers[info.scenarioMap["ebike_slc_perc"]] = L.tileLayer('')
 
   info.update = function (props, scenario) {
     var regionText;
@@ -72,13 +73,13 @@ $(document).ready(function(){
         center: [53, -0.4],
         zoom: 6
     });*/
-
   var selectedVariableMap = {}
-  selectedVariableMap["Census 2011"] = "bicycle_perc"
-  selectedVariableMap["Government Target"] = "govtarget_slc_perc"
-  selectedVariableMap["Gender Equality"] = "gendereq_slc_perc"
-  selectedVariableMap["Go Dutch"] = "dutch_slc_perc"
-  selectedVariableMap["Ebikes"] = "ebike_slc_perc"
+  for (var prop in info.scenarioMap) {
+    if(info.scenarioMap.hasOwnProperty(prop)) {
+      selectedVariableMap[info.scenarioMap[prop]] = prop;
+    }
+  }
+
 
   var selectedLayerMap = {}
   selectedLayerMap["Commute"] = "Commute"
@@ -234,12 +235,14 @@ $(document).ready(function(){
     }
   }
 
+  var disabledOnSchools = ["gendereq_slc_perc", "ebike_slc_perc", "govnearmkt_slc_perc"]
   function setControls(){
-    // Disable Gender Equality and Ebikes for School Layer
+    // Disable some scenarios for school layer
     if (selectedLayerName == "School") {
       // Disable Health and CO2 radio buttons
       $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
-        if ($(this).parent().text().trim() == "Gender Equality" || $(this).parent().text().trim() == "Ebikes"){
+        var scenarioName = selectedVariableMap[$(this).parent().text().trim()]
+        if (disabledOnSchools.indexOf(scenarioName) !== -1){
           selectableControl(this, true)
         }
       });
@@ -249,8 +252,8 @@ $(document).ready(function(){
       });
     }
 
-    // Disable school layer for Ebikes and Gender Equality scenarios
-    if (selectedLayerName == "Commute" && (selectedVariable == "ebike_slc_perc" || selectedVariable == "gendereq_slc_perc")) {
+    // Disable school layer for some scenarios
+    if (selectedLayerName == "Commute" && (disabledOnSchools.indexOf(selectedVariable) !== -1)) {
       $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
         if ($(this).parent().text().trim() == "School"){
           selectableControl(this, true)

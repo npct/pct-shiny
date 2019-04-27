@@ -12,23 +12,20 @@
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="//unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+    <script src="//unpkg.com/leaflet@1.4.0/dist/leaflet.js"></script>
     <script type="text/javascript" src="www/front_page/school/pct_regions_lowres_scenario_school.js"></script>
     <script type="text/javascript" src="www/front_page/commute/pct_regions_lowres_scenario_commute.js"></script>
     <script src="/www/front_page/map.js"></script>
 
     <link rel="stylesheet" href="/www/front_page/style.css" type="text/css" />
     <link rel="stylesheet" href="/www/front_page/map.css" type="text/css" />
-    <link rel="stylesheet" href="//unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+    <link rel="stylesheet" href="//unpkg.com/leaflet@1.4.0/dist/leaflet.css" />
     <style type="text/css">
       pre:not([class]) {
         background-color: white;
       }
     </style>
     <script>
-      if (window.hljs && document.readyState && document.readyState === "complete") {
-        hljs.initHighlighting();
-      };
       $(document).ready(function(){
         $("#includedNav").load("nav.html");
         if (!window.location.href.match(/pct.bike/)) {
@@ -50,65 +47,64 @@
   </head>
   <body>
     <div id="includedNav"></div>
-    <div class="container">
-      <div class="row-fluid">
-        <div class="pull-left plain-margin">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
           <div id="map"></div>
         </div>
-        <div style="margin-bottom:19px; padding-top:7px;">
-          <iframe style="margin-top:19px;" width="425" height="250" src="https://www.youtube.com/embed/58UaVb8ZCrc" frameborder="0" allowfullscreen></iframe>
-        </div>
-
-        <div class="container-fluid main-container">
-          <p> Welcome to the Propensity to Cycle Tool (PCT) for England, which provides an evidence base to inform cycling investment.</p>
-          <p>To run the PCT, first hover over a region on the map on the left to see the regional potential, then click on the region.</p>
-          <p>For an introduction to the tool, its use, and the scenarios, please watch the video above.</p>
-          <p><strong>What's new :</strong> <a href="https://blog.pct.bike/2018/12/04/new-features-new-year/" target = "_blank">New Features coming in the New Year</a>
-          </p>
-        </div>
-        <div class="row">
-          <hr>
-          <div class="col-md-2 col-sm-4 col-xs-6 logo">
-            <a target="_blank" href="http://www.cam.ac.uk/">
-              <img src="/www/static/01_logos/camuni-logo.png" class="img-responsive center-block" alt="Cambridge University Logo">
-            </a>
+        <div class="col-md-5">
+          <div class="video-container">
+            <iframe style="margin-top:19px;" src="https://www.youtube.com/embed/58UaVb8ZCrc" frameborder="0" allowfullscreen></iframe>
           </div>
-          <div class="col-md-2 col-sm-4 col-xs-6 logo">
-            <a target="_blank" href="http://www.cedar.iph.cam.ac.uk/">
-              <img src="/www/static/01_logos/cedar-logo.png" class="img-responsive center-block" alt="Cedar Logo">
-            </a>
-          </div>
-          <div class="col-md-2 col-sm-4 col-xs-6 logo">
-            <a target="_blank" href="http://www.westminster.ac.uk/">
-              <img src="/www/static/01_logos/westminster-logo.jpg" class="img-responsive center-block" alt="Westminster University Logo">
-            </a>
-          </div>
-          <div class="col-md-2 col-sm-5 col-xs-6 logo">
-            <a target="_blank" href="http://www.leeds.ac.uk/">
-              <img src="/www/static/01_logos/leeds-logo.png" class="img-responsive center-block" alt="Leeds University Logo">
-            </a>
-          </div>
-          <div class="col-md-2 col-sm-4 col-xs-6 logo">
-            <a target="_blank" href="http://www.gov.uk/government/organisations/department-for-transport/">
-              <img src="/www/static/01_logos/Department_for_Transport.png" class="img-responsive center-block" alt="DfT Logo">
-            </a>
-          </div>
-          <div class="col-md-2 col-sm-3 col-xs-6 logo">
-            <a target="_blank" href="http://gov.wales/topics/transport/?lang=en">
-              <img src="/www/static/01_logos/wales-logo-online-use-only.jpg" class="img-responsive center-block" alt="Welsh Government Logo">
-            </a>
+          <div class="clearfix"></div>
+          <div class="main-container">
+            <p> Welcome to the Propensity to Cycle Tool (PCT) for England, which provides an evidence base to inform cycling investment.</p>
+            <p>To run the PCT, first hover over a region on the map on the left to see the regional potential, then click on the region.</p>
+            <p>For an introduction to the tool, its use, and the scenarios, please watch the video above.</p>
+            <p><strong>What's new :</strong> <a href="https://blog.pct.bike/2019/03/18/propensity-to-cycle-to-school-layer-deployed/" target = "_blank">Schools layer</a>; New 'near market' scenario; Data update
+            </p>
           </div>
         </div>
+        <div class="col-md-1"></div>
       </div>
+      <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+          <div class="row">
+            <hr>
+            <div class="col-md-2 col-sm-4 col-xs-6 logo">
+              <a target="_blank" href="http://www.cam.ac.uk/">
+                <img src="www/static/01_logos/camuni-logo.png" class="img-responsive center-block" alt="Cambridge University Logo">
+              </a>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 logo">
+              <a target="_blank" href="http://www.cedar.iph.cam.ac.uk/">
+                <img src="www/static/01_logos/cedar-logo.png" class="img-responsive center-block" alt="Cedar Logo">
+              </a>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 logo">
+              <a target="_blank" href="http://www.westminster.ac.uk/">
+                <img src="www/static/01_logos/westminster-logo.jpg" class="img-responsive center-block" alt="Westminster University Logo">
+              </a>
+            </div>
+            <div class="col-md-2 col-sm-5 col-xs-6 logo">
+              <a target="_blank" href="http://www.leeds.ac.uk/">
+                <img src="www/static/01_logos/leeds-logo.png" class="img-responsive center-block" alt="Leeds University Logo">
+              </a>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 logo">
+              <a target="_blank" href="http://www.gov.uk/government/organisations/department-for-transport/">
+                <img src="www/static/01_logos/Department_for_Transport.png" class="img-responsive center-block" alt="DfT Logo">
+              </a>
+            </div>
+            <div class="col-md-2 col-sm-3 col-xs-6 logo">
+              <a target="_blank" href="http://gov.wales/topics/transport/?lang=en">
+                <img src="www/static/01_logos/wales-logo-online-use-only.jpg" class="img-responsive center-block" alt="Welsh Government Logo">
+              </a>
+            </div>
+          </div>
+        </div>
     </div>
-    <!-- dynamically load mathjax for compatibility with self-contained -->
-    <script>
-      (function () {
-        var script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src  = "//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-        document.getElementsByTagName("head")[0].appendChild(script);
-      })();
-    </script>
   </body>
 </html>

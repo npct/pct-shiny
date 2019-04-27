@@ -63,7 +63,7 @@
         <p>Download the Census 2011 and scenario data for all flows starting or ending in England or Wales.</p>
         <p>In the ‘All flows’ files, destinations are grouped as ‘Other’ for origin-destination pairs with a fastest-route distance &gt;30km, or with a destination outside England or Wales. In addition, for the LSOA ‘All flows’ file, destinations are grouped as ‘Under 3’ for origin-destination pairs where the bidirectional number of commuters (by any mode) would be 1 or 2. This is done for data protection reasons.</p>
         <p>The ‘Straight lines’, ‘Fast route’ and ‘Quieter routes’ files only include between-zone flows with fast route distance under 20km. In addition, the minimum number of commuters (by any mode, in either direction) must be 10 (MSOA) or 5 (LSOA).</p>
-        <p>The LSOA route network includes all between-zone LSOA flows with fast route distance under 20km (with no minimum number of commuters).</p>
+        <p>The LSOA route network includes all between-zone LSOA flows, with no minimum number of commuters.</p>
       </div>
 
       <div class="col-md-12 text-left" style="padding-top:10px;">
@@ -96,13 +96,7 @@
           <li>Straight lines: <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/l_all.Rds" target="_blank" download="l_all.Rds" onclick="ga('send', 'event', 'download', 'commute/l_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv');">Codebook</a></li>
           <li>Fast routes: <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/rf_all.Rds" target="_blank" download="rf_all.Rds" onclick="ga('send', 'event', 'download', 'commute/rf_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv');">Codebook</a></li>
           <li>Quieter routes: <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/rq_all.Rds" target="_blank" download="rq_all.Rds" onclick="ga('send', 'event', 'download', 'commute/rq_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/rq_codebook.csv" target="_blank" download="rq_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/rq_codebook.csv');">Codebook</a></li>
-          <li>
-            Route network (LSOA): Census 2011  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/ras_bicycle_all.tif" target="_blank" download="ras_bicycle_all.tif" onclick="ga('send', 'event', 'download', 'commute/ras_bicycle_all.tif');">tif</a> ;
-            Government Target  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/ras_govtarget_all.tif" target="_blank" download="ras_govtarget_all.tif" onclick="ga('send', 'event', 'download', 'commute/ras_govtarget_all.tif');">tif</a> ;
-            Gender Equality  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/ras_gendereq_all.tif" target="_blank" download="ras_gendereq_all.tif" onclick="ga('send', 'event', 'download', 'commute/ras_gendereq_all.tif');">tif</a> ;
-            Go Dutch  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/ras_dutch_all.tif" target="_blank" download="ras_dutch_all.tif" onclick="ga('send', 'event', 'download', 'commute/ras_dutch_all.tif');">tif</a> ;
-            Ebikes  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/ras_ebike_all.tif" target="_blank" download="ras_ebike_all.tif" onclick="ga('send', 'event', 'download', 'commute/ras_ebike_all.tif');">tif</a>
-          </li>
+          <li> Route network (LSOA): <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/rnet_all.Rds" target="_blank" download="rnet_all.Rds" onclick="ga('send', 'event', 'download', 'commute/rnet_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/rnet_codebook.csv" target="_blank" download="rnet_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/rnet_codebook.csv');">Codebook</a></li>
         </ul>
       </div>
 
