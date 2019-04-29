@@ -23,7 +23,7 @@ $(document).ready(function(){
 
   info.scenarioMap = {
     bicycle_perc: "2011 Census",
-    govtarget_slc_perc: "Government Target (equity)",
+    govtarget_slc_perc: "Government Target (equality)",
     govnearmkt_slc_perc: "Government Target (near market)",
     gendereq_slc_perc: "Gender Equality",
     dutch_slc_perc: "Go Dutch",

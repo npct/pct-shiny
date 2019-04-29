@@ -1,9 +1,9 @@
 Variable name,Variable Description
 local_id,Local id for each segment of the network (NB IDs duplicated across different route network files)
 bicycle,No. between-zone cyclists using this segment in Census 2011 (see region statistics tab for details of selected between-zone flows)
-govtarget_slc,No. between-zone cyclists using this segment in Government Target (equity) scenario (see region statistics tab for details of selected between-zone flows)
+govtarget_slc,No. between-zone cyclists using this segment in Government Target (equality) scenario (see region statistics tab for details of selected between-zone flows)
 govnearmkt_slc,No. between-zone cyclists using this segment in Government Target (near market) scenario (see region statistics tab for details of selected between-zone flows)
-gendereq_slc,No. between-zone cyclists using this segment in Gender Equity scenario (see region statistics tab for details of selected between-zone flows)
+gendereq_slc,No. between-zone cyclists using this segment in Gender equality scenario (see region statistics tab for details of selected between-zone flows)
 dutch_slc,No. between-zone cyclists using this segment in Go Dutch scenario (see region statistics tab for details of selected between-zone flows)
 ebike_slc,No. between-zone cyclists using this segment in Ebikes scenario (see region statistics tab for details of selected between-zone flows)
 singlezone,Flag identifying whether the segment is fully contained in a single zone (1=yes): if so then there may also be considerable numbers of within-zone cyclists on the segment
