@@ -62,10 +62,10 @@ $(document).ready(function(){
   info.addTo(map);
 
   L.control.layers(commuteLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
-
+  defaultCommuteLayer.addTo(map);
+  $("input.leaflet-control-layers-selector").attr("name", "base-scenario");
   L.control.layers(scenarioLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
-  defaultCommuteLayer.addTo(map);
   defaultScenario.addTo(map);
 
   // initialize the map
@@ -198,9 +198,7 @@ $(document).ready(function(){
     };
   }
 
-
   function layerUpdate (e) {
-    console.log(e)
     selectedVariable = selectedVariableMap[e.name] || selectedVariable
 
     selectedLayerName = selectedLayerMap[e.name] || selectedLayerName
