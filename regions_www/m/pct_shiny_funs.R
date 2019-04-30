@@ -97,9 +97,9 @@ get_colour_ramp <- function(colourscale, bins = 10, values, breaks) {
 # Get scenario name
 scenario_name_df <- data.frame(
   sc_s_name = c("olc", "govtarget","govnearmkt","gendereq","dutch", "ebike"),
-  sc_f_name_commute  = c("Census 2011 Cycling", "Government Target (equity)", "Government Target (near market)","Gender equality", "Go Dutch", "Ebikes"),
-  sc_f_name_school   = c("School Census 2011", "Government Target (equity)", "Government Target (near market)","Gender equality", "Go Dutch", "Ebikes"),
-  sc_f_name_alltrips = c("Current travel patterns", "Government Target (equity)", "Government Target (near market)", "Gender equality", "Go Dutch", "Ebikes")
+  sc_f_name_commute  = c("Census 2011 Cycling", "Government Target (equality)", "Government Target (near market)","Gender equality", "Go Dutch", "Ebikes"),
+  sc_f_name_school   = c("School Census 2011", "Government Target (equality)", "Government Target (near market)","Gender equality", "Go Dutch", "Ebikes"),
+  sc_f_name_alltrips = c("Current travel patterns", "Government Target (equality)", "Government Target (near market)", "Gender equality", "Go Dutch", "Ebikes")
 )
 
 get_scenario_name <- function(scenario_name, purpose){
