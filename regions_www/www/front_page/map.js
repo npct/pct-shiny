@@ -62,10 +62,10 @@ $(document).ready(function(){
   info.addTo(map);
 
   L.control.layers(commuteLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
-
+  defaultCommuteLayer.addTo(map);
+  $("input.leaflet-control-layers-selector").attr("name", "leaflet-base-layers-commute");
   L.control.layers(scenarioLayers, null, {collapsed: false}, {position: 'topleft'}).addTo(map);
 
-  defaultCommuteLayer.addTo(map);
   defaultScenario.addTo(map);
 
   // initialize the map
@@ -198,9 +198,7 @@ $(document).ready(function(){
     };
   }
 
-
   function layerUpdate (e) {
-    console.log(e)
     selectedVariable = selectedVariableMap[e.name] || selectedVariable
 
     selectedLayerName = selectedLayerMap[e.name] || selectedLayerName
@@ -237,24 +235,25 @@ $(document).ready(function(){
 
   var disabledOnSchools = ["gendereq_slc_perc", "ebike_slc_perc", "govnearmkt_slc_perc"]
   function setControls(){
+    var $radio =  $('input:radio[name^="leaflet-base-layers"]:not(:checked)');
     // Disable some scenarios for school layer
     if (selectedLayerName == "School") {
       // Disable Health and CO2 radio buttons
-      $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
+      $radio.each(function () {
         var scenarioName = selectedVariableMap[$(this).parent().text().trim()]
         if (disabledOnSchools.indexOf(scenarioName) !== -1){
           selectableControl(this, true)
         }
       });
-    }else{
-      $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
+    } else {
+      $radio.each(function () {
         selectableControl(this, false)
       });
     }
 
     // Disable school layer for some scenarios
     if (selectedLayerName == "Commute" && (disabledOnSchools.indexOf(selectedVariable) !== -1)) {
-      $('input:radio[name="leaflet-base-layers"]:not(:checked)').each(function () {
+      $radio.each(function () {
         if ($(this).parent().text().trim() == "School"){
           selectableControl(this, true)
         }
