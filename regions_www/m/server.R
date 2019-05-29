@@ -27,8 +27,10 @@ source("pct_shiny_funs.R", local = T)
 ## Get minimum input dataset
 dir.create("commute/msoa/isle-of-wight/", recursive = TRUE)
 z = pct:::get_pct_zones("isle-of-wight")
-download.file("https://github.com/npct/pct-outputs-regional-R/raw/master/commute/msoa/isle-of-wight/z.Rds", "commute/msoa/isle-of-wight/z.Rds")
-
+base_data_url = "https://github.com/npct/pct-outputs-regional-R/raw/master/commute/msoa/isle-of-wight/"
+for(i in c("c", "z", "l", "rf", "rq", "rnet")) {
+  download.file(paste0(base_data_url, i, ".Rds"), paste0("commute/msoa/isle-of-wight/", i, ".Rds"))
+}
 
 ## Packages (Only regularly used packages are loaded into the global space, the others must be installed but are used with the package prefix, e.g. DT::)
 available_locally_pkgs <- c("shiny", "leaflet", "sp")
