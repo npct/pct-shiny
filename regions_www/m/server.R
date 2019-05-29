@@ -24,11 +24,11 @@ if(!file.exists("server.R")) {
   setwd("regions_www/m")
 }
 source("pct_shiny_funs.R", local = T)
-
 ## Get minimum input dataset
 dir.create("commute/msoa/isle-of-wight/", recursive = TRUE)
 z = pct:::get_pct_zones("isle-of-wight")
-saveRDS(as(z, "Spatial"), "commute/msoa/isle-of-wight/z.Rds")
+download.file("https://github.com/npct/pct-outputs-regional-R/raw/master/commute/msoa/isle-of-wight/z.Rds", "commute/msoa/isle-of-wight/z.Rds")
+
 
 ## Packages (Only regularly used packages are loaded into the global space, the others must be installed but are used with the package prefix, e.g. DT::)
 available_locally_pkgs <- c("shiny", "leaflet", "sp")
@@ -36,7 +36,16 @@ must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs")
 
 ## Path directories to load data (expect regional data as a sibling of interface_root)
 interface_root <- file.path("..", "..")
-data_regional_root <-  file.path(".")
+data_regional_root <-  file.path('.')
+repo_sha <-  as.character(readLines(file.path(interface_root, "repo_sha")))
+
+## Check if working on server and if not initiate environment (including packages)
+on_server <- grepl("shiny", Sys.info()["user"])
+
+repo_sha <-  as.character(readLines(file.path(interface_root, "repo_sha")))
+
+# Check if we are on the production server (npt followed by any number of digits (only) is a prod machine)
+is_prod <- grepl("npt\\d*$", Sys.info()["nodename"])
 
 # Apply local packages, and check correct packages installed
 lapply(available_locally_pkgs, library, character.only = T)
@@ -46,6 +55,9 @@ if (length(must_be_installed_pkgs[!installed]) > 0) {
     "Missing packages:", must_be_installed_pkgs[!installed]
   ), collapse = " "))
 }
+
+# Save current sha, required for files to be downloaded
+download_sha <- data.frame(repo_sha = repo_sha)
 
 ## Load region boundaries
 regions <- rgdal::readOGR(file.path(interface_root, "regions_www/pct_regions_highres.geojson"))
