@@ -26,6 +26,7 @@ $(document).ready(function(){
     govtarget_slc_perc: "Government Target (equality)",
     govnearmkt_slc_perc: "Government Target (near market)",
     gendereq_slc_perc: "Gender Equality",
+    cambridge_slc_perc: "Go Cambridge",
     dutch_slc_perc: "Go Dutch",
     ebike_slc_perc: "Ebike"
   };

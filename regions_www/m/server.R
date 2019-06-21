@@ -171,6 +171,7 @@ shinyServer(function(input, output, session) {
       local_scenarios <- c(
         "School Census 2011"      = "olc",
         "Government Target (equality)"       = "govtarget",
+        "Go Cambridge"            = "cambridge",
         "Go Dutch"                = "dutch"
       )
       local_line_types <- c("None"  = "none",
@@ -374,6 +375,10 @@ shinyServer(function(input, output, session) {
         region$plot$zones@data[,school_na("govtarget")$na][idx] <- z_na_const +
           region$plot$zones@data[,school_na("govtarget")$base][idx]
 
+        idx <- is.na(region$plot$zones@data[,school_na("cambridge")$na])
+        region$plot$zones@data[,school_na("cambridge")$na][idx] <- z_na_const +
+          region$plot$zones@data[,school_na("cambridge")$base][idx]
+
         idx <- is.na(region$plot$zones@data[,school_na("dutch")$na])
         region$plot$zones@data[,school_na("dutch")$na][idx] <- z_na_const +
           region$plot$zones@data[,school_na("dutch")$base][idx]
@@ -384,6 +389,10 @@ shinyServer(function(input, output, session) {
         idx <- is.na(region$plot$destinations@data[,school_na("govtarget")$na])
         region$plot$destinations@data[,school_na("govtarget")$na][idx] <- d_na_const +
           region$plot$destinations@data[,school_na("govtarget")$base][idx]
+
+        idx <- is.na(region$plot$destinations@data[,school_na("cambridge")$na])
+        region$plot$destinations@data[,school_na("cambridge")$na][idx] <- d_na_const +
+          region$plot$destinations@data[,school_na("cambridge")$base][idx]
 
         idx <- is.na(region$plot$destinations@data[,school_na("dutch")$na])
         region$plot$destinations@data[,school_na("dutch")$na][idx] <- d_na_const +
@@ -552,6 +561,8 @@ shinyServer(function(input, output, session) {
         local_lines <- local_lines[local_lines$govnearmkt_slc>0,]
       } else if (input$scenario == 'gendereq') {
         local_lines <- local_lines[local_lines$gendereq_slc>0,]
+      } else if (input$scenario == 'cambridge') {
+        local_lines <- local_lines[local_lines$cambridge_slc>0,]
       } else {
         local_lines <- local_lines[local_lines$dutch_slc>0,] # always >0 for both
       }
