@@ -136,7 +136,7 @@ shinyUI(
                 )
               ),
               conditionalPanel(
-                condition = "['route_network'].indexOf(input.line_type) === -1 & ['olc'].indexOf(input.scenario) === -1 ",
+                condition = "input.line_type !== 'route_network' && input.scenario !== 'olc'",
                 tags$div(
                   title = "Order the top flows by",
                   selectInput(
