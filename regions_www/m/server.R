@@ -240,7 +240,7 @@ shinyServer(function(input, output, session) {
   load_data <- function(base_path, filename, purpose, str_lines = NULL){
     filepath <- file.path(base_path, filename)
     while (format(object.size(loaded_data), units = "Gb") > 3 ) { # Rm objects (by time last accessed) if the list size is more than 3 Gb
-      loaded_data[[names(loaded_data_accessed[loaded_data_accessed == min(unlist(loaded_data_accessed))])]] <<- NULL
+      loaded_data[[loaded_data_accessed == min(unlist(loaded_data_accessed))]] <<- NULL
     }
     if (file.exists(filepath)) {
       loaded_data_accessed[[filepath]] <<- Sys.time()
