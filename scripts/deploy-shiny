@@ -1,0 +1,104 @@
+#!/usr/bin/perl
+
+# (C) 2016 NPTC
+# Written by Pete Stevens of Mythic Beasts Ltd
+# to support NPTC production deployment
+
+our $STARTPORT = 3838;
+
+#Script to deploy multiple shiny servers
+
+if (scalar(@ARGV) != 1) {
+ print "Usage deploy-shiny [number-of-servers]\n";
+ exit;
+}
+
+my $n = $ARGV[0];
+
+if ($n > 32) {
+ print <<EOF;
+Warning: The default haproxy config supports only 32 R processes,
+you will need to reconfigure haproxy if you want more than 32
+shiny servers.
+
+Type 'I know this and slartibartfast does too' to continue
+EOF
+;
+<STDIN>;
+
+}
+
+
+print "Stopping existing shiny servers\n";
+
+my @shinys = `systemctl | grep shiny-server | awk '{print $1}'`;
+
+foreach $s (@shinys) {
+ chomp $s;
+ $s =~ s/\.service.*//;
+ print "Stopping $s\n";
+ #This is horrid and may explode and forkbomb your system. You have been warned
+ if (fork() == 0) {
+  `systemctl stop $s`;
+  `systemctl disable $s`;
+   exit;
+ }
+}
+
+print "Waiting for shiny-servers to die\n";
+sleep(10);
+
+print "Deleting the systemd units for the old shiny servers\n";
+
+`rm /etc/systemd/system/shiny-server*.service`;
+
+print "Deleting excess shiny configuraion\n";
+`rm /etc/shiny-server/shiny-server-*.conf`;
+
+print "Creating $n shiny servers starting from port $STARTPORT and based config file /etc/shiny-server/shiny-server.conf\n";
+for (my $i = 0; $i < $n; $i++) {
+ my $shinyport = $STARTPORT + $i;
+ #read the shiny config, munge for $n, write out
+ open (SOURCE, "</etc/shiny-server/shiny-server.conf") || die "Can't read source config file $i\n";
+ open (TARGET, ">/etc/shiny-server/shiny-server-$i.conf") || die "Can't write target config file $i\n";
+ while (my $l = <SOURCE>) {
+  $l =~ s/SHINYPORT/$shinyport/;
+  $l =~ s/SHINYN/$i/;
+ print TARGET $l;
+ }
+ close TARGET;
+ close SOURCE;
+ `mkdir -p /var/log/shiny-server-$i`;
+ `chown shiny:shiny /var/log/shiny-server-$i`;
+}
+
+
+print "Writing the systemd units for $n shiny servers based on config file /etc/shiny-server/shiny-server.service\n";
+for (my $i = 0; $i < $n; $i++) {
+ #read the shiny config, munge for $n, write out
+ open (SOURCE, "</etc/shiny-server/shiny-server.service") || die "Can't read source config file";
+ open (TARGET, ">/etc/systemd/system/shiny-server$i.service") || die "Can't write target config file";
+ while (my $l = <SOURCE>) {
+  $l =~ s/SHINYN/$i/g;
+ print TARGET $l;
+ }
+ close TARGET;
+ close SOURCE;
+}
+
+print "Starting all the shiny servers\n";
+`systemctl reset-failed`;
+`systemctl daemon-reload`;
+for (my $i = 0; $i < $n; $i++) {
+ print "Starting shiny-server$i\n";
+ #This may be a stupid idea
+ if (fork() == 0) {
+ `systemctl enable shiny-server$i`;
+ `systemctl start shiny-server$i`;
+  exit;
+ }
+# sleep(1);
+}
+
+
+print "haproxy will now find the newly started instances\n";

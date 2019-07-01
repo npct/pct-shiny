@@ -1,0 +1,22 @@
+#!/usr/bin/perl
+
+
+if ((scalar(@ARGV) != 1) || !(($ARGV[0] eq 'start') || ($ARGV[0] eq 'stop'))) {
+ print "Usage shiny-control [start|stop]\n";
+ exit;
+}
+
+
+
+my @shinys = `ls /etc/systemd/system/ | grep shiny-server`;
+foreach my $s (@shinys) {
+ chomp $s;
+ $s =~ s/\.service.*//;
+ #This is horrid but fast
+ if (fork() == 0) {
+  `systemctl $ARGV[0] $s`;
+  exit;
+ }
+}
+
+sleep(1);
