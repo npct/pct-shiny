@@ -1,14 +1,42 @@
 #!/usr/bin/perl
 
+# (C) 2016 NPTC
+# Written by Pete Stevens of Mythic Beasts Ltd and Nikolai Berkoff
+# to support NPTC production deployment
+
+use strict;
+use File::Compare;
+use File::Copy;
 
 if ((scalar(@ARGV) != 1) || !(($ARGV[0] eq 'start') || ($ARGV[0] eq 'stop'))) {
  print "Usage shiny-control [start|stop]\n";
  exit;
 }
 
+my @shinyControl = ("/var/shiny/pct-shiny/non_www/shiny-control", "/usr/local/sbin/shiny-control");
 
+if(compare(@shinyControl) != 0) {
+  print "shiny-control has changed, re-deploying\n\n"
+  copy(@shinyControl);
+  print `/usr/local/sbin/shiny-control @ARGV`;
+  exit;
+}
 
 my @shinys = `ls /etc/systemd/system/ | grep shiny-server`;
+
+my @shinyConf = ("/var/shiny/pct-shiny/non_www/shiny-server.conf", "/etc/shiny-server/shiny-server.conf");
+my @shinyService = ("/var/shiny/pct-shiny/non_www/shiny-server.service", "/etc/shiny-server/shiny-server.service");
+my @shinyDeploy = ("/var/shiny/pct-shiny/non_www/deploy-shiny", "/usr/local/sbin/deploy-shiny");
+
+if( (compare(@shinyConf) != 0) || (compare(@shinyService) != 0) || (compare(@shinyDeploy) != 0) ) {
+  print "Shiny server deployment, config or service has changed, regenerating shiny services\n\n"
+  my $nShinys = scalar @shinys;
+  copy(@shinyConf);
+  copy(@shinyService);
+  copy(@shinyDeploy);
+  `/usr/local/sbin/deploy-shiny $nShinys`;
+}
+
 foreach my $s (@shinys) {
  chomp $s;
  $s =~ s/\.service.*//;
