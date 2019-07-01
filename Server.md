@@ -127,6 +127,8 @@ Now configure it to serve npt
 Running multiple copies
 
 
+R is single threaded so to improve speed we run two shiny instances per server.
+
 You need to pull the configuration files from an existing server
 ```
  customer-ssh -A 7592 npt2.vs.mythic-beasts.com # For a Mythic Beast
@@ -146,7 +148,7 @@ run multiple servers in parallel. It then does a shutdown and restart of all the
 
 ```
 /etc/shiny-server/shiny-server.conf
-/etc/systemd/system/shiny-server.service
+/etc/shiny-server/shiny-server.service
 ```
 
 
