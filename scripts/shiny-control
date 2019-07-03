@@ -5,6 +5,8 @@
 # to support NPTC production deployment
 
 use strict;
+use warnings;
+
 use File::Compare;
 use File::Copy;
 
@@ -13,10 +15,11 @@ if ((scalar(@ARGV) != 1) || !(($ARGV[0] eq 'start') || ($ARGV[0] eq 'stop'))) {
  exit;
 }
 
-my @shinyControl = ("/var/shiny/pct-shiny/non_www/shiny-control", "/usr/local/sbin/shiny-control");
+my $scriptsFolder = "/var/shiny/pct-shiny/scripts/";
+my @shinyControl = ("${scriptsFolder}shiny-control", "/usr/local/sbin/shiny-control");
 
 if(compare(@shinyControl) != 0) {
-  print "shiny-control has changed, re-deploying\n\n"
+  print "shiny-control has changed, re-deploying\n\n";
   copy(@shinyControl);
   print `/usr/local/sbin/shiny-control @ARGV`;
   exit;
@@ -24,9 +27,9 @@ if(compare(@shinyControl) != 0) {
 
 my @shinys = `ls /etc/systemd/system/ | grep shiny-server`;
 
-my @shinyConf = ("/var/shiny/pct-shiny/non_www/shiny-server.conf", "/etc/shiny-server/shiny-server.conf");
-my @shinyService = ("/var/shiny/pct-shiny/non_www/shiny-server.service", "/etc/shiny-server/shiny-server.service");
-my @shinyDeploy = ("/var/shiny/pct-shiny/non_www/deploy-shiny", "/usr/local/sbin/deploy-shiny");
+my @shinyConf =    ("${scriptsFolder}shiny-server.conf", "/etc/shiny-server/shiny-server.conf");
+my @shinyService = ("${scriptsFolder}shiny-server.service", "/etc/shiny-server/shiny-server.service");
+my @shinyDeploy =  ("${scriptsFolder}deploy-shiny", "/usr/local/sbin/deploy-shiny");
 
 if( (compare(@shinyConf) != 0) || (compare(@shinyService) != 0) || (compare(@shinyDeploy) != 0) ) {
   my $nShinys = scalar @shinys || 2;
