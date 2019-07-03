@@ -7,7 +7,7 @@ to draw pretty pictures of how often people cycle.
 
 You can see the data for Cambridge here,
 
-http://pct.bike/cambridgeshire/
+http://www.pct.bike/cambridgeshire/
 
 ## Servers
 
@@ -80,20 +80,8 @@ Now shiny server, https://www.rstudio.com/products/shiny/download-server/
 
 ```
  apt-get install gdebi-core
- wget https://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.4.2.786-amd64.deb
-```
-
-Installing this fails because it depends on libssl0.9.8 (hopefully will be fixed in https://github.com/rstudio/shiny-server/issues/156), fortunately it actually doesn't
-and libssl1.0.0. will work instead. We hack the package to fix the dependency
-
-```
- mkdir tmp
- dpkg-deb -R shiny-server-1.4.1.759-amd64.deb tmp
- vim tmp/DEBIAN/control and change 0.9.8 into 1.0.0.
- #this isn't quick
- dpkg-deb -b tmp shiny-server-1.4.1.759.1-amd64.deb
- #install the package
- dpkg -i shiny-server-1.4.1.759.1-amd64.deb
+ wget https://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.5.9.923-amd64.deb
+ dpkg -i shiny-server-1.5.9.923-amd64.deb
 ```
 
 This gives you a working shiny server on port 3838
@@ -127,30 +115,20 @@ Now configure it to serve npt
 Running multiple copies
 
 
-R is single threaded so to improve speed we run two shiny instances per server.
+R is single threaded so to improve speed we run <number-of-servers> instances per server
+(default is 2 as we are more memory constrained than CPU constrained).
 
-You need to pull the configuration files from an existing server
-```
- customer-ssh -A 7592 npt2.vs.mythic-beasts.com # For a Mythic Beast
- ssh -A npt2.vs.mythic-beasts.com # For a non Mythic Beast
- scp root@npt1.vs.mythic-beasts.com:/etc/shiny-server/shiny-server.conf /etc/shiny-server/
- scp root@npt1.vs.mythic-beasts.com:/etc/shiny-server/shiny-server.service /etc/shiny-server/
- scp root@npt1.vs.mythic-beasts.com:/usr/local/sbin/deploy-shiny /usr/local/sbin/
-```
-
-You need multiple configuration files in /etc/shiny-server/shiny-serverN.conf
-You need a systemd file for each in /etc/systemd/system/shiny-serverN.service
-
-This is all automated by deploy-shiny-server <number-of-servers>
-
-This takes the base files below and munges them to fill in the per-server constants so we can
-run multiple servers in parallel. It then does a shutdown and restart of all the shiny servers.
+The configuration files are inside the git repo and should be copied by
+`shiny-control` on deployment and are inside the `pct-shiny/scripts/` folder. `shiny-control` copies them:
 
 ```
 /etc/shiny-server/shiny-server.conf
 /etc/shiny-server/shiny-server.service
 ```
 
+`deploy-shiny-server` <number-of-servers> takes the base files below and munges them to fill
+in the per-server constants so we can run multiple servers in parallel.
+It then does a shutdown and restart of all the shiny servers.
 
 We now need to load balance across them with haproxy. We need sticky sessions as shiny-server stores per client state.
 
