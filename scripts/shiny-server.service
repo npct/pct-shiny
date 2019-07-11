@@ -1,0 +1,20 @@
+[Unit]
+Description=ShinyServerSHINYN
+
+[Service]
+Type=simple
+ExecStart=/bin/bash -c '/opt/shiny-server/bin/shiny-server --pidfile=/var/run/shiny-server-SHINYN.pid /etc/shiny-server/shiny-server-SHINYN.conf >> /var/log/shiny-server-SHINYN.log 2>&1'
+# Needed to give SS a chance to write out to the PID file.
+ExecStartPost=/bin/sleep 3
+PIDFile=/var/run/shiny-server-SHINYN.pid
+KillMode=process
+Environment="LANG=en_GB.UTF-8"
+ExecReload=/usr/bin/env kill -HUP $MAINPID
+ExecStopPost=/usr/bin/env sleep 5
+Restart=on-failure
+RestartSec=1
+StartLimitInterval=45
+StartLimitBurst=3
+
+[Install]
+WantedBy=multi-user.target
