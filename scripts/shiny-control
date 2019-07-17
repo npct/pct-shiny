@@ -33,7 +33,7 @@ my @shinyDeploy =  ("${scriptsFolder}deploy-shiny", "/usr/local/sbin/deploy-shin
 
 if( (compare(@shinyConf) != 0) || (compare(@shinyService) != 0) || (compare(@shinyDeploy) != 0) ) {
   my $nShinys = scalar @shinys || 2;
-  print "Shiny server deployment, config or service has changed, regenerating shiny services with $nShinys shiny server instances\n\n"
+  print "Shiny server deployment, config or service has changed, regenerating shiny services with $nShinys shiny server instances\n\n";
   copy(@shinyConf);
   copy(@shinyService);
   copy(@shinyDeploy);
