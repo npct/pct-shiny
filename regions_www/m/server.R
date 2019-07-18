@@ -30,7 +30,7 @@ must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs")
 interface_root <- file.path("..", "..")
 data_regional_root <-  file.path(interface_root, '..', 'pct-outputs-regional-R')
 
-outputs_regional_sha <- as.character(readLines(file.path(interface_root, "outputs_regional_sha")))
+outputs_regional_sha <- as.character(readLines(file.path(interface_root, "outputs_regional_sha"), warn = F))
 
 ## Check if working on server and if not initiate environment (including packages)
 on_server <- grepl("shiny", Sys.info()["user"])
