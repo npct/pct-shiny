@@ -40,6 +40,9 @@ normalise <- function(values, min = 0, max = 1){
 
 ## Create Values such that rounded to XDP if >0 and <0.5.  [NB can be NaN if denominator zero]
 round_dp <- function(expression, small_threshold = 0.05, large_threshold = 0.5){
+  if(is.null(expression)){
+    expression <- NaN
+  }
   small <- is.finite(expression) & expression > -small_threshold & expression < small_threshold
   medium <- is.finite(expression) & ((expression <= -small_threshold & expression > -large_threshold) | (expression >= small_threshold & expression < large_threshold))
   large <- is.finite(expression) & (expression <= -large_threshold | expression >= large_threshold)
