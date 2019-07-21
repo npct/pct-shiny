@@ -244,13 +244,12 @@ $(document).ready(function(){
       // Disable Health and CO2 radio buttons
       $radio.each(function () {
         var scenarioName = selectedVariableMap[$(this).parent().text().trim()]
-        if (disabledOnSchools.indexOf(scenarioName) !== -1){
-          selectableControl(this, true)
-        }
+        selectableControl(this, disabledOnSchools.indexOf(scenarioName) !== -1)
       });
     } else {
       $radio.each(function () {
-        selectableControl(this, false)
+        var scenarioName = selectedVariableMap[$(this).parent().text().trim()]
+        selectableControl(this, disabledOnCommute.indexOf(scenarioName) !== -1)
       });
     }
 
@@ -258,6 +257,14 @@ $(document).ready(function(){
     if (selectedLayerName == "Commute" && (disabledOnSchools.indexOf(selectedVariable) !== -1)) {
       $radio.each(function () {
         if ($(this).parent().text().trim() == "School"){
+          selectableControl(this, true)
+        }
+      });
+    }
+
+    if (selectedLayerName == "School" && (disabledOnCommute.indexOf(selectedVariable) !== -1)) {
+      $radio.each(function () {
+        if ($(this).parent().text().trim() === "Commute"){
           selectableControl(this, true)
         }
       });
