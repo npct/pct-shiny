@@ -240,7 +240,7 @@ $(document).ready(function(){
   function setControls(){
     var $radio =  $('input:radio[name^="leaflet-base-layers"]:not(:checked)');
     // Disable some scenarios for school layer
-    if (selectedLayerName == "School") {
+    if (selectedLayerName === "School") {
       // Disable Health and CO2 radio buttons
       $radio.each(function () {
         var scenarioName = selectedVariableMap[$(this).parent().text().trim()]
@@ -256,7 +256,7 @@ $(document).ready(function(){
     // Disable school layer for some scenarios
     if (selectedLayerName == "Commute" && (disabledOnSchools.indexOf(selectedVariable) !== -1)) {
       $radio.each(function () {
-        if ($(this).parent().text().trim() == "School"){
+        if ($(this).parent().text().trim() === "School"){
           selectableControl(this, true)
         }
       });
