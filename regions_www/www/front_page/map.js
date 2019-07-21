@@ -36,6 +36,7 @@ $(document).ready(function(){
   scenarioLayers[info.scenarioMap["govtarget_slc_perc"]] = L.tileLayer('')
   scenarioLayers[info.scenarioMap["govnearmkt_slc_perc"]] = L.tileLayer('')
   scenarioLayers[info.scenarioMap["gendereq_slc_perc"]] = L.tileLayer('')
+  scenarioLayers[info.scenarioMap["cambridge_slc_perc"]] = L.tileLayer('')
   scenarioLayers[info.scenarioMap["dutch_slc_perc"]] = L.tileLayer('')
   scenarioLayers[info.scenarioMap["ebike_slc_perc"]] = L.tileLayer('')
 
@@ -235,6 +236,7 @@ $(document).ready(function(){
   }
 
   var disabledOnSchools = ["gendereq_slc_perc", "ebike_slc_perc", "govnearmkt_slc_perc"]
+  var disabledOnCommute = ["cambridge_slc_perc"]
   function setControls(){
     var $radio =  $('input:radio[name^="leaflet-base-layers"]:not(:checked)');
     // Disable some scenarios for school layer
