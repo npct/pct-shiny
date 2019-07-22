@@ -239,11 +239,14 @@ shinyServer(function(input, output, session) {
 
   load_data <- function(base_path, filename, purpose, str_lines = NULL){
     filepath <- file.path(base_path, filename)
-    while (format(object.size(loaded_data), units = "Gb") > 2) { # Rm objects (by time last accessed) if the list size is more than 2 Gb
-      idx_to_remove <- loaded_data_accessed == min(unlist(loaded_data_accessed))
-      loaded_data[idx_to_remove] <<- NULL
-      loaded_data_accessed[idx_to_remove] <<- NULL
+
+    # Rm objects (by time last accessed) if the list size is more than 2 Gb
+    while (format(object.size(loaded_data), units = "Gb") > 2) {
+      idx_to_remove <- which(loaded_data_accessed == min(unlist(loaded_data_accessed)))
+      loaded_data[[idx_to_remove]] <<- NULL
+      loaded_data_accessed[[idx_to_remove]] <<- NULL
     }
+
     if (file.exists(filepath)) {
       loaded_data_accessed[[filepath]] <<- Sys.time()
       if (is.null(loaded_data[[filepath]])) {
