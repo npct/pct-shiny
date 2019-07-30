@@ -207,6 +207,12 @@ school_smallcell <- function(expression, return_tf = F, d = F){
 # POP UP FOR STRAIGHT LINES IN HTML TABLE
 ############
 popup_straight_lines <- function(data, scenario, purpose){
+  # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
+  # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
+  # sivalue_heat could be any value...
+  if(is.null(data[[data_filter(scenario, "sivalue_heat")]])){
+    return()
+  }
 
   font_colour <- negative_red(data, scenario, "sivalue_heat")
 
@@ -288,6 +294,12 @@ popup_straight_lines <- function(data, scenario, purpose){
 # ROUTE POPUP FUNCTION
 ############
 popup_routes <- function(data, scenario, purpose){
+  # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
+  # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
+  # sivalue_heat could be any value...
+  if(is.null(data[[data_filter(scenario, "sivalue_heat")]])){
+    return()
+  }
 
   # Identify which of the fast/quiet routes are the quiet routes
   ifelse(("is_quiet" %in% colnames(data@data)), route_type <-'quieter', route_type <-'fast')
@@ -414,6 +426,12 @@ popup_routes <- function(data, scenario, purpose){
 # ROUTE NETWORK POPUP FUNCTION
 ############
 popup_route_network <- function(data, scenario, purpose){
+  # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
+  # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
+  # sivalue_heat could be any value...
+  if(is.null(data[[data_filter(scenario, "sivalue_heat")]])){
+    return()
+  }
 
   if (purpose %in% c("commute")) {
     if(scenario == 'olc') {
@@ -503,6 +521,12 @@ paste0("
 # ZONE POPUP
 ############
 popup_zones <- function(data, scenario, purpose){
+  # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
+  # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
+  # sivalue_heat could be any value...
+  if(is.null(data[[data_filter(scenario, "sivalue_heat")]])){
+    return()
+  }
 
   if (purpose %in% c("commute", "alltrips")) {
   font_colour <- negative_red(data, scenario, "sivalue_heat")
@@ -668,6 +692,13 @@ popup_zones <- function(data, scenario, purpose){
 # CENTROID POPUP
 ############
 popup_centroids <- function(data, scenario, purpose){
+  # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
+  # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
+  # sivalue_heat could be any value...
+  if(is.null(data[[data_filter(scenario, "sivalue_heat")]])){
+    return()
+  }
+
   font_colour <- negative_red(data, scenario, "sivalue_heat")
  if(scenario == 'olc') {
     paste0("
@@ -750,6 +781,12 @@ popup_centroids <- function(data, scenario, purpose){
 # DESTINATION POPUP
 ############
 popup_destinations <- function(data, scenario, purpose){
+  # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
+  # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
+  # sivalue_heat could be any value...
+  if(is.null(data[[data_filter(scenario, "sivalue_heat")]])){
+    return()
+  }
 
   font_colour <- negative_red(data, scenario, "simmet")
   if(scenario == 'olc') {
