@@ -143,23 +143,13 @@ shinyServer(function(input, output, session) {
         "Go Dutch"            = "dutch",
         "Ebikes"              = "ebike"
       )
-      if (geography == "msoa") {
-        local_line_types <- c("None"             = "none",
-                              "Straight Lines"         = "straight_lines",
-                              "Fast Routes"            = "routes_fast",
-                              "Fast & Quieter Routes"  = "routes",
-                              "Route Network (LSOA, clickable)"   = "route_network",
-                              "Route Network (LSOA, image)"   = "lsoa_base_map"
-        )
-      } else if (geography == "lsoa") {
-        local_line_types <- c("None"             = "none",
-                              "Straight Lines"         = "straight_lines",
-                              "Fast Routes"            = "routes_fast",
-                              "Fast & Quieter Routes"  = "routes",
-                              "Route Network (LSOA, clickable)"   = "route_network",
-                              "Route Network (LSOA, image)"   = "lsoa_base_map"
-        )
-      }
+      local_line_types <- c("None"                   = "none",
+                            "Straight Lines"         = "straight_lines",
+                            "Fast Routes"            = "routes_fast",
+                            "Fast & Quieter Routes"  = "routes",
+                            "Route Network (LSOA, clickable)"   = "route_network",
+                            "Route Network (LSOA, image)"   = "lsoa_base_map"
+      )
 
       local_line_order <- c(
         "Number of cyclists"   = "slc",
@@ -668,8 +658,9 @@ shinyServer(function(input, output, session) {
       # Show zones when no lines are selected
       show_zone_popup <- (line_type %in% show_no_lines)
       popup <-
-        if (show_zone_popup)
+        if (show_zone_popup){
           popup_zones(region$plot$zones, input$scenario, input_purpose())
+        }
       addPolygons(
         leafletProxy("map"),
         data = region$plot$zones,
