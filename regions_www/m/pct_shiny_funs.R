@@ -67,6 +67,12 @@ line_and_colour_df <- data.frame(
 get_line_colour <- function(line_type){
   line_and_colour_df$line_colour[line_and_colour_df$line_type == line_type]
 }
+# updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
+# This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
+# sivalue_heat could be any value...
+scenario_data_missing <- function(data, scenario){
+  is.null(data[[data_filter(scenario, "sivalue_heat")]])
+}
 
 
 ## Create customised colour scales
@@ -207,10 +213,7 @@ school_smallcell <- function(expression, return_tf = F, d = F){
 # POP UP FOR STRAIGHT LINES IN HTML TABLE
 ############
 popup_straight_lines <- function(data, scenario, purpose){
-  # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
-  # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
-  # sivalue_heat could be any value...
-  if(is.null(data[[data_filter(scenario, "sivalue_heat")]])){
+  if(scenario_data_missing(data, scenario)){
     return()
   }
 
@@ -294,10 +297,7 @@ popup_straight_lines <- function(data, scenario, purpose){
 # ROUTE POPUP FUNCTION
 ############
 popup_routes <- function(data, scenario, purpose){
-  # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
-  # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
-  # sivalue_heat could be any value...
-  if(is.null(data[[data_filter(scenario, "sivalue_heat")]])){
+  if(scenario_data_missing(data, scenario)){
     return()
   }
 
@@ -426,10 +426,7 @@ popup_routes <- function(data, scenario, purpose){
 # ROUTE NETWORK POPUP FUNCTION
 ############
 popup_route_network <- function(data, scenario, purpose){
-  # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
-  # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
-  # sivalue_heat could be any value...
-  if(is.null(data[[data_filter(scenario, "sivalue_heat")]])){
+  if(scenario_data_missing(data, scenario)){
     return()
   }
 
@@ -521,10 +518,7 @@ paste0("
 # ZONE POPUP
 ############
 popup_zones <- function(data, scenario, purpose){
-  # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
-  # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
-  # sivalue_heat could be any value...
-  if(is.null(data[[data_filter(scenario, "sivalue_heat")]])){
+  if(scenario_data_missing(data, scenario)){
     return()
   }
 
@@ -692,10 +686,7 @@ popup_zones <- function(data, scenario, purpose){
 # CENTROID POPUP
 ############
 popup_centroids <- function(data, scenario, purpose){
-  # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
-  # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
-  # sivalue_heat could be any value...
-  if(is.null(data[[data_filter(scenario, "sivalue_heat")]])){
+  if(scenario_data_missing(data, scenario)){
     return()
   }
 
@@ -781,10 +772,7 @@ popup_centroids <- function(data, scenario, purpose){
 # DESTINATION POPUP
 ############
 popup_destinations <- function(data, scenario, purpose){
-  # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
-  # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
-  # sivalue_heat could be any value...
-  if(is.null(data[[data_filter(scenario, "sivalue_heat")]])){
+  if(scenario_data_missing(data, scenario)){
     return()
   }
 
