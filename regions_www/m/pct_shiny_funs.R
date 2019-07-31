@@ -426,9 +426,12 @@ popup_routes <- function(data, scenario, purpose){
 # ROUTE NETWORK POPUP FUNCTION
 ############
 popup_route_network <- function(data, scenario, purpose){
-  if(scenario_data_missing(data, scenario)){
+
+  # Check whether slc var exists (bicyle for census and scenario_slc for other scenarios)
+  if(is.null(data[[data_filter(scenario, "slc")]])){
     return()
   }
+
 
   if (purpose %in% c("commute")) {
     if(scenario == 'olc') {
