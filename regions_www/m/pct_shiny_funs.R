@@ -71,7 +71,7 @@ get_line_colour <- function(line_type){
 # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
 # sivalue_heat could be any value...
 scenario_data_missing <- function(data, scenario){
-  is.null(data[[data_filter(scenario, "sivalue_heat")]])
+  is.null(data[[data_filter(scenario, "slc")]])
 }
 
 
@@ -426,9 +426,7 @@ popup_routes <- function(data, scenario, purpose){
 # ROUTE NETWORK POPUP FUNCTION
 ############
 popup_route_network <- function(data, scenario, purpose){
-
-  # Check whether slc var exists (bicyle for census and scenario_slc for other scenarios)
-  if(is.null(data[[data_filter(scenario, "slc")]])){
+  if(scenario_data_missing(data, scenario)){
     return()
   }
 
