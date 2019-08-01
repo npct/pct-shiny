@@ -143,23 +143,13 @@ shinyServer(function(input, output, session) {
         "Go Dutch"            = "dutch",
         "Ebikes"              = "ebike"
       )
-      if (geography == "msoa") {
-        local_line_types <- c("None"             = "none",
-                              "Straight Lines"         = "straight_lines",
-                              "Fast Routes"            = "routes_fast",
-                              "Fast & Quieter Routes"  = "routes",
-                              "Route Network (LSOA, clickable)"   = "route_network",
-                              "Route Network (LSOA, image)"   = "lsoa_base_map"
-        )
-      } else if (geography == "lsoa") {
-        local_line_types <- c("None"             = "none",
-                              "Straight Lines"         = "straight_lines",
-                              "Fast Routes"            = "routes_fast",
-                              "Fast & Quieter Routes"  = "routes",
-                              "Route Network (LSOA, clickable)"   = "route_network",
-                              "Route Network (LSOA, image)"   = "lsoa_base_map"
-        )
-      }
+      local_line_types <- c("None"                   = "none",
+                            "Straight Lines"         = "straight_lines",
+                            "Fast Routes"            = "routes_fast",
+                            "Fast & Quieter Routes"  = "routes",
+                            "Route Network (LSOA, clickable)"   = "route_network",
+                            "Route Network (LSOA, image)"   = "lsoa_base_map"
+      )
 
       local_line_order <- c(
         "Number of cyclists"   = "slc",
@@ -171,6 +161,7 @@ shinyServer(function(input, output, session) {
       local_scenarios <- c(
         "School Census 2011"      = "olc",
         "Government Target (equality)"       = "govtarget",
+        "Go Cambridge"            = "cambridge",
         "Go Dutch"                = "dutch"
       )
       local_line_types <- c("None"  = "none",
@@ -239,11 +230,14 @@ shinyServer(function(input, output, session) {
 
   load_data <- function(base_path, filename, purpose, str_lines = NULL){
     filepath <- file.path(base_path, filename)
-    while (format(object.size(loaded_data), units = "Gb") > 2) { # Rm objects (by time last accessed) if the list size is more than 2 Gb
-      idx_to_remove <- loaded_data_accessed == min(unlist(loaded_data_accessed))
-      loaded_data[idx_to_remove] <<- NULL
-      loaded_data_accessed[idx_to_remove] <<- NULL
+
+    # Rm objects (by time last accessed) if the list size is more than 2 Gb
+    while (format(object.size(loaded_data), units = "Gb") > 2) {
+      idx_to_remove <- which(loaded_data_accessed == min(unlist(loaded_data_accessed)))
+      loaded_data[[idx_to_remove]] <<- NULL
+      loaded_data_accessed[[idx_to_remove]] <<- NULL
     }
+
     if (file.exists(filepath)) {
       loaded_data_accessed[[filepath]] <<- Sys.time()
       if (is.null(loaded_data[[filepath]])) {
@@ -375,6 +369,10 @@ shinyServer(function(input, output, session) {
         region$plot$zones@data[,school_na("govtarget")$na][idx] <- z_na_const +
           region$plot$zones@data[,school_na("govtarget")$base][idx]
 
+        idx <- is.na(region$plot$zones@data[,school_na("cambridge")$na])
+        region$plot$zones@data[,school_na("cambridge")$na][idx] <- z_na_const +
+          region$plot$zones@data[,school_na("cambridge")$base][idx]
+
         idx <- is.na(region$plot$zones@data[,school_na("dutch")$na])
         region$plot$zones@data[,school_na("dutch")$na][idx] <- z_na_const +
           region$plot$zones@data[,school_na("dutch")$base][idx]
@@ -385,6 +383,10 @@ shinyServer(function(input, output, session) {
         idx <- is.na(region$plot$destinations@data[,school_na("govtarget")$na])
         region$plot$destinations@data[,school_na("govtarget")$na][idx] <- d_na_const +
           region$plot$destinations@data[,school_na("govtarget")$base][idx]
+
+        idx <- is.na(region$plot$destinations@data[,school_na("cambridge")$na])
+        region$plot$destinations@data[,school_na("cambridge")$na][idx] <- d_na_const +
+          region$plot$destinations@data[,school_na("cambridge")$base][idx]
 
         idx <- is.na(region$plot$destinations@data[,school_na("dutch")$na])
         region$plot$destinations@data[,school_na("dutch")$na][idx] <- d_na_const +
@@ -553,6 +555,8 @@ shinyServer(function(input, output, session) {
         local_lines <- local_lines[local_lines$govnearmkt_slc>0,]
       } else if (input$scenario == 'gendereq') {
         local_lines <- local_lines[local_lines$gendereq_slc>0,]
+      } else if (input$scenario == 'cambridge') {
+        local_lines <- local_lines[local_lines$cambridge_slc>0,]
       } else {
         local_lines <- local_lines[local_lines$dutch_slc>0,] # always >0 for both
       }
@@ -654,8 +658,9 @@ shinyServer(function(input, output, session) {
       # Show zones when no lines are selected
       show_zone_popup <- (line_type %in% show_no_lines)
       popup <-
-        if (show_zone_popup)
+        if (show_zone_popup){
           popup_zones(region$plot$zones, input$scenario, input_purpose())
+        }
       addPolygons(
         leafletProxy("map"),
         data = region$plot$zones,

@@ -67,6 +67,12 @@ line_and_colour_df <- data.frame(
 get_line_colour <- function(line_type){
   line_and_colour_df$line_colour[line_and_colour_df$line_type == line_type]
 }
+# updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
+# This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
+# sivalue_heat could be any value...
+scenario_data_missing <- function(data, scenario){
+  is.null(data[[data_filter(scenario, "slc")]])
+}
 
 
 ## Create customised colour scales
@@ -99,10 +105,10 @@ get_colour_ramp <- function(colourscale, bins = 10, values, breaks) {
 
 # Get scenario name
 scenario_name_df <- data.frame(
-  sc_s_name = c("olc", "govtarget","govnearmkt","gendereq","dutch", "ebike"),
-  sc_f_name_commute  = c("Census 2011 Cycling", "Government Target (equality)", "Government Target (near market)","Gender equality", "Go Dutch", "Ebikes"),
-  sc_f_name_school   = c("School Census 2011", "Government Target (equality)", "Government Target (near market)","Gender equality", "Go Dutch", "Ebikes"),
-  sc_f_name_alltrips = c("Current travel patterns", "Government Target (equality)", "Government Target (near market)", "Gender equality", "Go Dutch", "Ebikes")
+  sc_s_name = c("olc", "govtarget","govnearmkt","gendereq", "cambridge", "dutch", "ebike"),
+  sc_f_name_commute  = c("Census 2011 Cycling", "Government Target (equality)", "Government Target (near market)","Gender equality", "Go Cambridge", "Go Dutch", "Ebikes"),
+  sc_f_name_school   = c("School Census 2011", "Government Target (equality)", "Government Target (near market)","Gender equality", "Go Cambridge", "Go Dutch", "Ebikes"),
+  sc_f_name_alltrips = c("Current travel patterns", "Government Target (equality)", "Government Target (near market)", "Gender equality", "Go Cambridge", "Go Dutch", "Ebikes")
 )
 
 get_scenario_name <- function(scenario_name, purpose){
@@ -207,6 +213,9 @@ school_smallcell <- function(expression, return_tf = F, d = F){
 # POP UP FOR STRAIGHT LINES IN HTML TABLE
 ############
 popup_straight_lines <- function(data, scenario, purpose){
+  if(scenario_data_missing(data, scenario)){
+    return()
+  }
 
   font_colour <- negative_red(data, scenario, "sivalue_heat")
 
@@ -288,6 +297,9 @@ popup_straight_lines <- function(data, scenario, purpose){
 # ROUTE POPUP FUNCTION
 ############
 popup_routes <- function(data, scenario, purpose){
+  if(scenario_data_missing(data, scenario)){
+    return()
+  }
 
   # Identify which of the fast/quiet routes are the quiet routes
   ifelse(("is_quiet" %in% colnames(data@data)), route_type <-'quieter', route_type <-'fast')
@@ -414,6 +426,10 @@ popup_routes <- function(data, scenario, purpose){
 # ROUTE NETWORK POPUP FUNCTION
 ############
 popup_route_network <- function(data, scenario, purpose){
+  if(scenario_data_missing(data, scenario)){
+    return()
+  }
+
 
   if (purpose %in% c("commute")) {
     if(scenario == 'olc') {
@@ -503,6 +519,9 @@ paste0("
 # ZONE POPUP
 ############
 popup_zones <- function(data, scenario, purpose){
+  if(scenario_data_missing(data, scenario)){
+    return()
+  }
 
   if (purpose %in% c("commute", "alltrips")) {
   font_colour <- negative_red(data, scenario, "sivalue_heat")
@@ -668,6 +687,10 @@ popup_zones <- function(data, scenario, purpose){
 # CENTROID POPUP
 ############
 popup_centroids <- function(data, scenario, purpose){
+  if(scenario_data_missing(data, scenario)){
+    return()
+  }
+
   font_colour <- negative_red(data, scenario, "sivalue_heat")
  if(scenario == 'olc') {
     paste0("
@@ -750,6 +773,9 @@ popup_centroids <- function(data, scenario, purpose){
 # DESTINATION POPUP
 ############
 popup_destinations <- function(data, scenario, purpose){
+  if(scenario_data_missing(data, scenario)){
+    return()
+  }
 
   font_colour <- negative_red(data, scenario, "simmet")
   if(scenario == 'olc') {

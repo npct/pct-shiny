@@ -31,6 +31,7 @@ scenarios <- c(
   "Government Target (equality)"   = "govtarget",
   "Government Target (near market)"   = "govnearmkt",
   "Gender Equality"     = "gendereq",
+  "Go Cambridge"        = "cambridge",
   "Go Dutch"            = "dutch",
   "Ebikes"              = "ebike"
 )
