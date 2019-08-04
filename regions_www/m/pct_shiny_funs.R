@@ -414,7 +414,7 @@ popup_routes <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Hilliness (av. gradient, %): &nbsp; </td>
-      <td>", round(data$rf_avslope_perc, 1), "</td>
+      <td>", round(data$rq_avslope_perc, 1), "</td>
     </tr>
   </tbody>
 </table>
