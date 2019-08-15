@@ -356,7 +356,7 @@ shinyServer(function(input, output, session) {
       # For confidentiality we have replaced exact numbers with NAs but they cause havoc with the interface.
       # This replaces the NAs with the mean values.
       if (input_purpose() == "school") {
-        columns_na <- c("all", "bicycle", "foot", "car")
+        columns_na <- c("all", "bicycle", "car")
 
         z_na_const <- 1.5
         d_na_const <- 3
@@ -369,28 +369,28 @@ shinyServer(function(input, output, session) {
         region$plot$zones@data[,school_na("govtarget")$na][idx] <- z_na_const +
           region$plot$zones@data[,school_na("govtarget")$base][idx]
 
-        idx <- is.na(region$plot$zones@data[,school_na("cambridge")$na])
-        region$plot$zones@data[,school_na("cambridge")$na][idx] <- z_na_const +
-          region$plot$zones@data[,school_na("cambridge")$base][idx]
-
-        idx <- is.na(region$plot$zones@data[,school_na("dutch")$na])
-        region$plot$zones@data[,school_na("dutch")$na][idx] <- z_na_const +
-          region$plot$zones@data[,school_na("dutch")$base][idx]
-
-        idx <- is.na(region$plot$destinations@data[,columns_na])
-        region$plot$destinations@data[,columns_na][idx] <- d_na_const
-
-        idx <- is.na(region$plot$destinations@data[,school_na("govtarget")$na])
-        region$plot$destinations@data[,school_na("govtarget")$na][idx] <- d_na_const +
-          region$plot$destinations@data[,school_na("govtarget")$base][idx]
-
-        idx <- is.na(region$plot$destinations@data[,school_na("cambridge")$na])
-        region$plot$destinations@data[,school_na("cambridge")$na][idx] <- d_na_const +
-          region$plot$destinations@data[,school_na("cambridge")$base][idx]
-
-        idx <- is.na(region$plot$destinations@data[,school_na("dutch")$na])
-        region$plot$destinations@data[,school_na("dutch")$na][idx] <- d_na_const +
-          region$plot$destinations@data[,school_na("dutch")$base][idx]
+        # idx <- is.na(region$plot$zones@data[,school_na("cambridge")$na])
+        # region$plot$zones@data[,school_na("cambridge")$na][idx] <- z_na_const +
+        #   region$plot$zones@data[,school_na("cambridge")$base][idx]
+        #
+        # idx <- is.na(region$plot$zones@data[,school_na("dutch")$na])
+        # region$plot$zones@data[,school_na("dutch")$na][idx] <- z_na_const +
+        #   region$plot$zones@data[,school_na("dutch")$base][idx]
+        #
+        # idx <- is.na(region$plot$destinations@data[,columns_na])
+        # region$plot$destinations@data[,columns_na][idx] <- d_na_const
+        #
+        # idx <- is.na(region$plot$destinations@data[,school_na("govtarget")$na])
+        # region$plot$destinations@data[,school_na("govtarget")$na][idx] <- d_na_const +
+        #   region$plot$destinations@data[,school_na("govtarget")$base][idx]
+        #
+        # idx <- is.na(region$plot$destinations@data[,school_na("cambridge")$na])
+        # region$plot$destinations@data[,school_na("cambridge")$na][idx] <- d_na_const +
+        #   region$plot$destinations@data[,school_na("cambridge")$base][idx]
+        #
+        # idx <- is.na(region$plot$destinations@data[,school_na("dutch")$na])
+        # region$plot$destinations@data[,school_na("dutch")$na][idx] <- d_na_const +
+        #   region$plot$destinations@data[,school_na("dutch")$base][idx]
 
         region$plot$route_network@data[is.na(region$plot$route_network@data)] <- rnet_na_const
       }
