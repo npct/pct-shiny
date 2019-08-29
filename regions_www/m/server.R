@@ -222,7 +222,7 @@ shinyServer(function(input, output, session) {
   ##############
 
   ## Create region and (for persistent geographical values) helper
-  region <- reactiveValues(current = NA, data_dir = NA, geography = NA, repopulate_region = F, purposes_present = NA, plot = NULL)
+  region <- reactiveValues(current = NA, data_dir = NA, geography = NA, repopulate_region = F, purposes_present = NA, plot = NULL, line_data_dir = "")
   helper <- NULL
   helper$e_lat_lng <- ""
   helper$old_geog <- ""
@@ -339,8 +339,6 @@ shinyServer(function(input, output, session) {
       region$plot$zones <- load_data(region$data_dir, "z.Rds", input_purpose())
       region$plot$centroids <- load_data(region$data_dir, "c.Rds", input_purpose())
       region$plot$destinations <- load_data(region$data_dir, "d.Rds", input_purpose())
-      region$plot$straight_lines <- load_data(region$data_dir, "l.Rds", input_purpose())
-      region$plot$routes_fast <- load_data(region$data_dir, "rf.Rds", input_purpose())
 
       # Use LSOA's route network even when MSOA as geography is selected
       if (region$geography == "msoa"){
@@ -352,7 +350,6 @@ shinyServer(function(input, output, session) {
       else
         region$plot$route_network <- load_data(region$data_dir, "rnet.Rds", input_purpose())
 
-      region$plot$routes_quieter <- load_data(region$data_dir, "rq.Rds", input_purpose(), region$plot$straight_lines)
 
       # For confidentiality we have replaced exact numbers with NAs but they cause havoc with the interface.
       # This replaces the NAs with the mean values.
@@ -544,7 +541,15 @@ shinyServer(function(input, output, session) {
     shinyjs::showElement(id = "loading")
 
     line_type <- ifelse(input$line_type == 'routes', "routes_quieter", input$line_type)
-    local_lines <-  sort_lines(region$plot[[line_type]], input$line_type, input$nos_lines)
+
+    if (region$line_data_dir != region$data_dir && (input$line_type %in% c("straight_lines", "routes_fast", "routes")) ){
+      region$line_data_dir <- region$data_dir
+      region$plot$straight_lines <- load_data(region$data_dir, "l.Rds", input_purpose())
+      region$plot$routes_fast <- load_data(region$data_dir, "rf.Rds", input_purpose())
+      region$plot$routes_quieter <- load_data(region$data_dir, "rq.Rds", input_purpose(), region$plot$straight_lines)
+    }
+
+    local_lines <- sort_lines(region$plot[[line_type]], input$line_type, input$nos_lines)
 
     # Filter out zero lines for scenario in question from route network
     if (input$line_type == "route_network") {
