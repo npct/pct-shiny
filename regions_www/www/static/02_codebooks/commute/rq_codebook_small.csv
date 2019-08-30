@@ -1,0 +1,7 @@
+Variable name,Variable Description
+id,Start and end zones
+geo_name1,"Start or end zone 1, zone name"
+geo_name2,"Start or end zone 2, zone name"
+rq_dist_km,Quiet route distance (km)
+dist_rq_rf,Ratio of quiet distance / fast distance
+rq_avslope_perc,Average quiet route gradient (%)

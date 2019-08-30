@@ -47,26 +47,36 @@ ebike_slw,No. pedestrians in Ebikes
 ebike_siw,Increase no. pedestrians in Go Dutch vs. Census 2011
 ebike_sld,No. car drivers in Ebikes
 ebike_sid,Increase no. car drivers in Ebikes vs. Census 2011
-govtarget_sldeath_heat,Change in deaths/year in Government Target (equality) versus 'no cycling'
-govtarget_slvalue_heat,Value (pounds) of change in deaths in Government Target (equality) versus 'no cycling' 
-govtarget_sideath_heat,Change in deaths/year in Government Target (equality) versus Census 2011
-govtarget_sivalue_heat,Value (pounds) of change in deaths in Government Target (equality) versus Census 2011
-govnearmkt_sldeath_heat,Change in deaths/year in Government Target (near market) versus 'no cycling'
-govnearmkt_slvalue_heat,Value (pounds) of change in deaths in Government Target (near market) versus 'no cycling' 
-govnearmkt_sideath_heat,Change in deaths/year in Government Target (near market) versus Census 2011
-govnearmkt_sivalue_heat,Value (pounds) of change in deaths in Government Target (near market) versus Census 2011
-gendereq_sldeath_heat,Change in deaths/year in Gender Equality versus 'no cycling'
-gendereq_slvalue_heat,Value (pounds) of change in deaths in Gender Equality versus 'no cycling' 
-gendereq_sideath_heat,Change in deaths/year in Gender Equality versus Census 2011
-gendereq_sivalue_heat,Value (pounds) of change in deaths in Gender Equality versus Census 2011
-dutch_sldeath_heat,Change in deaths/year in Go Dutch versus 'no cycling'
-dutch_slvalue_heat,Value (pounds) of change in deaths in Go Dutch versus 'no cycling' 
-dutch_sideath_heat,Change in deaths/year in Go Dutch versus Census 2011
-dutch_sivalue_heat,Value (pounds) of change in deaths in Go Dutch versus Census 2011
-ebike_sldeath_heat,Change in deaths/year in Ebikes versus 'no cycling'
-ebike_slvalue_heat,Value (pounds) of change in deaths in Ebikes versus 'no cycling' 
-ebike_sideath_heat,Change in deaths/year in Ebikes versus Census 2011
-ebike_sivalue_heat,Value (pounds) of change in deaths in Ebikes versus Census 2011
+govtarget_sldeath_tag,Change in deaths/year in Government Target (equality) versus 'no cycling'
+govtarget_slyll_tag,Change in Years of Life Lost (YLLs)/year in Government Target (equality) versus 'no cycling'
+govtarget_slvalue_tag,Value (pounds) of change in Years of Life Lost in Government Target (equality) versus 'no cycling' 
+govtarget_sideath_tag,Change in deaths/year in Government Target (equality) versus Census 2011
+govtarget_siyll_tag,Change in Years of Life Lost (YLLs)/year in Government Target (equality) versus Census 2011
+govtarget_sivalue_tag,Value (pounds) of change in Years of Life Lost in Government Target (equality) versus Census 2011
+govnearmkt_sldeath_tag,Change in deaths/year in Government Target (near market) versus 'no cycling'
+govnearmkt_slyll_tag,Change in Years of Life Lost (YLLs)/year in Government Target (near market) versus 'no cycling'
+govnearmkt_slvalue_tag,Value (pounds) of change in Years of Life Lost in Government Target (near market) versus 'no cycling' 
+govnearmkt_sideath_tag,Change in deaths/year in Government Target (near market) versus Census 2011
+govnearmkt_siyll_tag,Change in Years of Life Lost (YLLs)/year in Government Target (near market) versus Census 2011
+govnearmkt_sivalue_tag,Value (pounds) of change in Years of Life Lost in Government Target (near market) versus Census 2011
+gendereq_sldeath_tag,Change in deaths/year in Gender Equality versus 'no cycling'
+gendereq_slyll_tag,Change in Years of Life Lost (YLLs)/year in Gender Equality versus 'no cycling'
+gendereq_slvalue_tag,Value (pounds) of change in Years of Life Lost in Gender Equality versus 'no cycling' 
+gendereq_sideath_tag,Change in deaths/year in Gender Equality versus Census 2011
+gendereq_siyll_tag,Change in Years of Life Lost (YLLs)/year in Gender Equality versus Census 2011
+gendereq_sivalue_tag,Value (pounds) of change in Years of Life Lost in Gender Equality versus Census 2011
+dutch_sldeath_tag,Change in deaths/year in Go Dutch versus 'no cycling'
+dutch_slyll_tag,Change in Years of Life Lost (YLLs)/year in Go Dutch versus 'no cycling'
+dutch_slvalue_tag,Value (pounds) of change in Years of Life Lost in Go Dutch versus 'no cycling' 
+dutch_sideath_tag,Change in deaths/year in Go Dutch versus Census 2011
+dutch_siyll_tag,Change in Years of Life Lost (YLLs)/year in Go Dutch versus Census 2011
+dutch_sivalue_tag,Value (pounds) of change in Years of Life Lost in Go Dutch versus Census 2011
+ebike_sldeath_tag,Change in deaths/year in Ebikes versus 'no cycling'
+ebike_slyll_tag,Change in Years of Life Lost (YLLs)/year in Ebikes versus 'no cycling'
+ebike_slvalue_tag,Value (pounds) of change in Years of Life Lost in Ebikes versus 'no cycling' 
+ebike_sideath_tag,Change in deaths/year in Ebikes versus Census 2011
+ebike_siyll_tag,Change in Years of Life Lost (YLLs)/year in Ebikes versus Census 2011
+ebike_sivalue_tag,Value (pounds) of change in Years of Life Lost in Ebikes versus Census 2011
 govtarget_slco2,Change in CO2/year (kg) in Government Target (equality) versus 'no cycling'
 govtarget_sico2,Change in CO2/year (kg) in Government Target (equality) versus Census 2011
 govnearmkt_slco2,Change in CO2/year (kg) in Government Target (near market) versus 'no cycling'
