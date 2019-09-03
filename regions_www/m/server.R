@@ -269,6 +269,9 @@ shinyServer(function(input, output, session) {
   ## Set  values of region
   observe({
     shinyjs::showElement(id = "loading")
+    if (interactive()){
+      start_time <- Sys.time()
+    }
     if(is.null(input$geography)){
       shinyjs::hideElement(id = "loading")
       return()
@@ -394,6 +397,20 @@ shinyServer(function(input, output, session) {
       }
     })
     shinyjs::hideElement(id = "loading")
+    if (interactive()){
+      print(
+        paste(
+          "Loading region",
+          region$current,
+          "for",
+          input$geography,
+          input_purpose(),
+          "took",
+          round(difftime(Sys.time(), start_time, "s"), 3),
+          "s"
+        )
+      )
+    }
   }, priority = 3)
 
 
@@ -538,6 +555,9 @@ shinyServer(function(input, output, session) {
 
   ## Plot if lines change
   observe({
+    if (interactive()){
+      start_time <- Sys.time()
+    }
     shinyjs::showElement(id = "loading")
 
     line_type <- ifelse(input$line_type == 'routes', "routes_quieter", input$line_type)
@@ -618,6 +638,18 @@ shinyServer(function(input, output, session) {
         )
     }
     shinyjs::hideElement(id = "loading")
+    if (interactive()){
+      print(
+        paste(
+          "Plotting top",
+          input$nos_lines,
+          input$line_type,
+          "took",
+          round(difftime(Sys.time(), start_time, "s"), 3),
+          "s"
+        )
+      )
+    }
   }, priority = - 10)
 
 
