@@ -550,94 +550,100 @@ shinyServer(function(input, output, session) {
 
   }
 
-  ## Plot if lines change
   observe({
-    if (interactive()){
-      start_time <- Sys.time()
-      loading_finish_time <- start_time
-    }
-    shinyjs::showElement(id = "loading")
-
-    line_type <- ifelse(input$line_type == 'routes', "routes_quieter", input$line_type)
-
     if (region$line_data_dir != region$data_dir && (input$line_type %in% c("straight_lines", "routes_fast", "routes")) ){
       region$line_data_dir <- region$data_dir
       region$plot$straight_lines <- load_data(region$data_dir, "l.Rds", input_purpose())
       region$plot$routes_fast <- load_data(region$data_dir, "rf.Rds", input_purpose())
       region$plot$routes_quieter <- load_data(region$data_dir, "rq.Rds", input_purpose(), region$plot$straight_lines)
+      return()
       if (interactive()){
         loading_finish_time <- Sys.time()
       }
     }
+  }, priority = 10)
 
-    local_lines <- sort_lines(region$plot[[line_type]], input$line_type, input$nos_lines)
-
-    # Filter out zero lines for scenario in question from route network
-    if (input$line_type == "route_network") {
-      if (input$scenario == 'olc') {
-        local_lines <- local_lines[local_lines$bicycle>0,]
-      } else if (input$scenario == 'govtarget') {
-        local_lines <- local_lines[local_lines$govtarget_slc>0,]
-      } else if (input$scenario == 'govnearmkt') {
-        local_lines <- local_lines[local_lines$govnearmkt_slc>0,]
-      } else if (input$scenario == 'gendereq') {
-        local_lines <- local_lines[local_lines$gendereq_slc>0,]
-      } else if (input$scenario == 'cambridge') {
-        local_lines <- local_lines[local_lines$cambridge_slc>0,]
-      } else {
-        local_lines <- local_lines[local_lines$dutch_slc>0,] # always >0 for both
-      }
+  ## Plot if lines change
+  observe({
+    if (interactive()){
+      start_time <- Sys.time()
     }
+    region$data_dir
+    input$nos_lines
+    input$line_type
+    input$scenario
+    input$line_order
 
-    if (is.null(region$plot$ldata) || (!is.null(region$plot$ldata) && (!identical(region$plot$ldata, local_lines) || !identical(region$plot$scenario, input$scenario)))) {
-      leafletProxy("map")  %>% clearGroup(.,
-                                          c("straight_lines",
-                                            "routes_quieter",
-                                            "routes_fast",
-                                            "route_network"
-                                          )) %>%
-        removeShape(., "highlighted")
-      isolate({
+    isolate({
+      shinyjs::showElement(id = "loading")
+
+      line_type <- ifelse(input$line_type == 'routes', "routes_quieter", input$line_type)
+
+      local_lines <- sort_lines(region$plot[[line_type]], input$line_type, input$nos_lines)
+      # Filter out zero lines for scenario in question from route network
+      if (input$line_type == "route_network") {
+        if (input$scenario == 'olc') {
+          local_lines <- local_lines[local_lines$bicycle>0,]
+        } else if (input$scenario == 'govtarget') {
+          local_lines <- local_lines[local_lines$govtarget_slc>0,]
+        } else if (input$scenario == 'govnearmkt') {
+          local_lines <- local_lines[local_lines$govnearmkt_slc>0,]
+        } else if (input$scenario == 'gendereq') {
+          local_lines <- local_lines[local_lines$gendereq_slc>0,]
+        } else if (input$scenario == 'cambridge') {
+          local_lines <- local_lines[local_lines$cambridge_slc>0,]
+        } else {
+          local_lines <- local_lines[local_lines$dutch_slc>0,] # always >0 for both
+        }
+      }
+      if (is.null(region$plot$ldata) || (!is.null(region$plot$ldata) && (!identical(region$plot$ldata, local_lines) || !identical(region$plot$scenario, input$scenario)))) {
+        leafletProxy("map")  %>% clearGroup(.,
+                                            c("straight_lines",
+                                              "routes_quieter",
+                                              "routes_fast",
+                                              "route_network"
+                                            )) %>%
+          removeShape(., "highlighted")
         region$plot$ldata <- local_lines
         # Include current scenario in region$plot as the set of lines to plot may not change when the scenario alters, and so otherwise don't update
         region$plot$scenario <- input$scenario
-      })
-      plot_lines(leafletProxy("map"), region$plot$ldata, line_type)
-      # Additionally plot fast routes on top of quieter if selected 'fast & quieter'
-      if (input$line_type == 'routes') {
-        plot_lines(leafletProxy("map"), sort_lines(region$plot$routes_fast, "routes_fast", input$nos_lines),"routes_fast")
+        plot_lines(leafletProxy("map"), region$plot$ldata, line_type)
+        # Additionally plot fast routes on top of quieter if selected 'fast & quieter'
+        if (input$line_type == 'routes') {
+          plot_lines(leafletProxy("map"), sort_lines(region$plot$routes_fast, "routes_fast", input$nos_lines),"routes_fast")
+        }
       }
-    }
 
-    if (input$line_type == 'route_network') {
-      updateSliderInput(
-        session,
-        inputId = "nos_lines",
-        min = 10,
-        max = 90,
-        step = 20,
-        label = "Percent (%) of Network"
-      )
-    } else {
-      if (input$line_order == "slc")
+      if (input$line_type == 'route_network') {
         updateSliderInput(
           session,
           inputId = "nos_lines",
-          min = 1,
-          max = 200,
-          step = 1,
-          label = "Top N Lines (most cycled)"
+          min = 10,
+          max = 90,
+          step = 20,
+          label = "Percent (%) of Network"
         )
-      else
-        updateSliderInput(
-          session,
-          inputId = "nos_lines",
-          min = 1,
-          max = 200,
-          step = 1,
-          label = "Top N Lines"
-        )
-    }
+      } else {
+        if (input$line_order == "slc")
+          updateSliderInput(
+            session,
+            inputId = "nos_lines",
+            min = 1,
+            max = 200,
+            step = 1,
+            label = "Top N Lines (most cycled)"
+          )
+        else
+          updateSliderInput(
+            session,
+            inputId = "nos_lines",
+            min = 1,
+            max = 200,
+            step = 1,
+            label = "Top N Lines"
+          )
+      }
+    })
     shinyjs::hideElement(id = "loading")
     if (interactive()){
       print(
@@ -646,10 +652,7 @@ shinyServer(function(input, output, session) {
           input$nos_lines,
           input$line_type,
           "took",
-          round(difftime(Sys.time(), loading_finish_time, "s"), 3),
-          "s",
-          "loading lines took",
-          round(difftime(loading_finish_time, start_time, "s"), 3),
+          round(difftime(Sys.time(), start_time, "s"), 3),
           "s"
         )
       )
@@ -731,7 +734,6 @@ shinyServer(function(input, output, session) {
         )
       }
     }
-
   })
 
   ## Define centroids
