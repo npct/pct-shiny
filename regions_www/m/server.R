@@ -276,12 +276,6 @@ shinyServer(function(input, output, session) {
       shinyjs::hideElement(id = "loading")
       return()
     }
-    region$current
-    region$data_dir
-    region$geography
-    region$repopulate_region
-    region$purposes_present
-    input$purpose
 
     # Identify region from URL or use a default
     if (is.na(region$current)) {
@@ -315,7 +309,10 @@ shinyServer(function(input, output, session) {
     }
 
     # Set data_dir
-    region$data_dir <- file.path(data_regional_root, input_purpose(), region$geography, region$current)
+    new_data_dir <- file.path(data_regional_root, input_purpose(), region$geography, region$current)
+    if(!identical(region$data_dir, new_data_dir)) {
+      region$data_dir <- file.path(data_regional_root, input_purpose(), region$geography, region$current)
+    }
 
     # Identify that region repopulation has happened
     region$repopulate_region <- T
