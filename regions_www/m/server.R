@@ -554,6 +554,7 @@ shinyServer(function(input, output, session) {
   observe({
     if (interactive()){
       start_time <- Sys.time()
+      loading_finish_time <- start_time
     }
     shinyjs::showElement(id = "loading")
 
@@ -564,6 +565,9 @@ shinyServer(function(input, output, session) {
       region$plot$straight_lines <- load_data(region$data_dir, "l.Rds", input_purpose())
       region$plot$routes_fast <- load_data(region$data_dir, "rf.Rds", input_purpose())
       region$plot$routes_quieter <- load_data(region$data_dir, "rq.Rds", input_purpose(), region$plot$straight_lines)
+      if (interactive()){
+        loading_finish_time <- Sys.time()
+      }
     }
 
     local_lines <- sort_lines(region$plot[[line_type]], input$line_type, input$nos_lines)
@@ -642,7 +646,10 @@ shinyServer(function(input, output, session) {
           input$nos_lines,
           input$line_type,
           "took",
-          round(difftime(Sys.time(), start_time, "s"), 3),
+          round(difftime(Sys.time(), loading_finish_time, "s"), 3),
+          "s",
+          "loading lines took",
+          round(difftime(loading_finish_time, start_time, "s"), 3),
           "s"
         )
       )
