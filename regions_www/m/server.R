@@ -222,7 +222,7 @@ shinyServer(function(input, output, session) {
   ##############
 
   ## Create region and (for persistent geographical values) helper
-  region <- reactiveValues(current = NA, data_dir = NA, geography = NA, repopulate_region = F, purposes_present = NA, plot = NULL)
+  region <- reactiveValues(current = NA, data_dir = NA, geography = NA, repopulate_region = F, purposes_present = NA, plot = NULL, line_data_dir = "")
   helper <- NULL
   helper$e_lat_lng <- ""
   helper$old_geog <- ""
@@ -232,10 +232,11 @@ shinyServer(function(input, output, session) {
     filepath <- file.path(base_path, filename)
 
     # Rm objects (by time last accessed) if the list size is more than 2 Gb
-    while (format(object.size(loaded_data), units = "Gb") > 2) {
-      idx_to_remove <- which(loaded_data_accessed == min(unlist(loaded_data_accessed)))
-      loaded_data[[idx_to_remove]] <<- NULL
-      loaded_data_accessed[[idx_to_remove]] <<- NULL
+    if (format(object.size(loaded_data), units = "Gb") > 2) {
+      idx_to_rm <- which(loaded_data_accessed == min(unlist(loaded_data_accessed)))
+      print(c("removing", dir_to_rm, format(object.size(loaded_data), units = "Gb")))
+      loaded_data[[idxes_to_rm]] <<- NULL
+      loaded_data_accessed[[idxes_to_rm]] <<- NULL
     }
 
     if (file.exists(filepath)) {
@@ -268,16 +269,13 @@ shinyServer(function(input, output, session) {
   ## Set  values of region
   observe({
     shinyjs::showElement(id = "loading")
+    if (interactive()){
+      start_time <- Sys.time()
+    }
     if(is.null(input$geography)){
       shinyjs::hideElement(id = "loading")
       return()
     }
-    region$current
-    region$data_dir
-    region$geography
-    region$repopulate_region
-    region$purposes_present
-    input$purpose
 
     # Identify region from URL or use a default
     if (is.na(region$current)) {
@@ -311,7 +309,10 @@ shinyServer(function(input, output, session) {
     }
 
     # Set data_dir
-    region$data_dir <- file.path(data_regional_root, input_purpose(), region$geography, region$current)
+    new_data_dir <- file.path(data_regional_root, input_purpose(), region$geography, region$current)
+    if(!identical(region$data_dir, new_data_dir)) {
+      region$data_dir <- file.path(data_regional_root, input_purpose(), region$geography, region$current)
+    }
 
     # Identify that region repopulation has happened
     region$repopulate_region <- T
@@ -338,8 +339,6 @@ shinyServer(function(input, output, session) {
       region$plot$zones <- load_data(region$data_dir, "z.Rds", input_purpose())
       region$plot$centroids <- load_data(region$data_dir, "c.Rds", input_purpose())
       region$plot$destinations <- load_data(region$data_dir, "d.Rds", input_purpose())
-      region$plot$straight_lines <- load_data(region$data_dir, "l.Rds", input_purpose())
-      region$plot$routes_fast <- load_data(region$data_dir, "rf.Rds", input_purpose())
 
       # Use LSOA's route network even when MSOA as geography is selected
       if (region$geography == "msoa"){
@@ -351,7 +350,6 @@ shinyServer(function(input, output, session) {
       else
         region$plot$route_network <- load_data(region$data_dir, "rnet.Rds", input_purpose())
 
-      region$plot$routes_quieter <- load_data(region$data_dir, "rq.Rds", input_purpose(), region$plot$straight_lines)
 
       # For confidentiality we have replaced exact numbers with NAs but they cause havoc with the interface.
       # This replaces the NAs with the mean values.
@@ -396,6 +394,20 @@ shinyServer(function(input, output, session) {
       }
     })
     shinyjs::hideElement(id = "loading")
+    if (interactive()){
+      print(
+        paste(
+          "Loading region",
+          region$current,
+          "for",
+          input$geography,
+          input_purpose(),
+          "took",
+          round(difftime(Sys.time(), start_time, "s"), 3),
+          "s"
+        )
+      )
+    }
   }, priority = 3)
 
 
@@ -538,80 +550,113 @@ shinyServer(function(input, output, session) {
 
   }
 
-  ## Plot if lines change
   observe({
-    shinyjs::showElement(id = "loading")
-
-    line_type <- ifelse(input$line_type == 'routes', "routes_quieter", input$line_type)
-    local_lines <-  sort_lines(region$plot[[line_type]], input$line_type, input$nos_lines)
-
-    # Filter out zero lines for scenario in question from route network
-    if (input$line_type == "route_network") {
-      if (input$scenario == 'olc') {
-        local_lines <- local_lines[local_lines$bicycle>0,]
-      } else if (input$scenario == 'govtarget') {
-        local_lines <- local_lines[local_lines$govtarget_slc>0,]
-      } else if (input$scenario == 'govnearmkt') {
-        local_lines <- local_lines[local_lines$govnearmkt_slc>0,]
-      } else if (input$scenario == 'gendereq') {
-        local_lines <- local_lines[local_lines$gendereq_slc>0,]
-      } else if (input$scenario == 'cambridge') {
-        local_lines <- local_lines[local_lines$cambridge_slc>0,]
-      } else {
-        local_lines <- local_lines[local_lines$dutch_slc>0,] # always >0 for both
+    if (region$line_data_dir != region$data_dir && (input$line_type %in% c("straight_lines", "routes_fast", "routes")) ){
+      region$line_data_dir <- region$data_dir
+      region$plot$straight_lines <- load_data(region$data_dir, "l.Rds", input_purpose())
+      region$plot$routes_fast <- load_data(region$data_dir, "rf.Rds", input_purpose())
+      region$plot$routes_quieter <- load_data(region$data_dir, "rq.Rds", input_purpose(), region$plot$straight_lines)
+      return()
+      if (interactive()){
+        loading_finish_time <- Sys.time()
       }
     }
+  }, priority = 10)
 
-    if (is.null(region$plot$ldata) || (!is.null(region$plot$ldata) && (!identical(region$plot$ldata, local_lines) || !identical(region$plot$scenario, input$scenario)))) {
-      leafletProxy("map")  %>% clearGroup(.,
-                                          c("straight_lines",
-                                            "routes_quieter",
-                                            "routes_fast",
-                                            "route_network"
-                                          )) %>%
-        removeShape(., "highlighted")
-      isolate({
+  ## Plot if lines change
+  observe({
+    if (interactive()){
+      start_time <- Sys.time()
+    }
+    region$data_dir
+    input$nos_lines
+    input$line_type
+    input$scenario
+    input$line_order
+
+    isolate({
+      shinyjs::showElement(id = "loading")
+
+      line_type <- ifelse(input$line_type == 'routes', "routes_quieter", input$line_type)
+
+      local_lines <- sort_lines(region$plot[[line_type]], input$line_type, input$nos_lines)
+      # Filter out zero lines for scenario in question from route network
+      if (input$line_type == "route_network") {
+        if (input$scenario == 'olc') {
+          local_lines <- local_lines[local_lines$bicycle>0,]
+        } else if (input$scenario == 'govtarget') {
+          local_lines <- local_lines[local_lines$govtarget_slc>0,]
+        } else if (input$scenario == 'govnearmkt') {
+          local_lines <- local_lines[local_lines$govnearmkt_slc>0,]
+        } else if (input$scenario == 'gendereq') {
+          local_lines <- local_lines[local_lines$gendereq_slc>0,]
+        } else if (input$scenario == 'cambridge') {
+          local_lines <- local_lines[local_lines$cambridge_slc>0,]
+        } else {
+          local_lines <- local_lines[local_lines$dutch_slc>0,] # always >0 for both
+        }
+      }
+      if (is.null(region$plot$ldata) || (!is.null(region$plot$ldata) && (!identical(region$plot$ldata, local_lines) || !identical(region$plot$scenario, input$scenario)))) {
+        leafletProxy("map")  %>% clearGroup(.,
+                                            c("straight_lines",
+                                              "routes_quieter",
+                                              "routes_fast",
+                                              "route_network"
+                                            )) %>%
+          removeShape(., "highlighted")
         region$plot$ldata <- local_lines
         # Include current scenario in region$plot as the set of lines to plot may not change when the scenario alters, and so otherwise don't update
         region$plot$scenario <- input$scenario
-      })
-      plot_lines(leafletProxy("map"), region$plot$ldata, line_type)
-      # Additionally plot fast routes on top of quieter if selected 'fast & quieter'
-      if (input$line_type == 'routes') {
-        plot_lines(leafletProxy("map"), sort_lines(region$plot$routes_fast, "routes_fast", input$nos_lines),"routes_fast")
+        plot_lines(leafletProxy("map"), region$plot$ldata, line_type)
+        # Additionally plot fast routes on top of quieter if selected 'fast & quieter'
+        if (input$line_type == 'routes') {
+          plot_lines(leafletProxy("map"), sort_lines(region$plot$routes_fast, "routes_fast", input$nos_lines),"routes_fast")
+        }
       }
-    }
 
-    if (input$line_type == 'route_network') {
-      updateSliderInput(
-        session,
-        inputId = "nos_lines",
-        min = 10,
-        max = 90,
-        step = 20,
-        label = "Percent (%) of Network"
-      )
-    } else {
-      if (input$line_order == "slc")
+      if (input$line_type == 'route_network') {
         updateSliderInput(
           session,
           inputId = "nos_lines",
-          min = 1,
-          max = 200,
-          step = 1,
-          label = "Top N Lines (most cycled)"
+          min = 10,
+          max = 90,
+          step = 20,
+          label = "Percent (%) of Network"
         )
-      else
-        updateSliderInput(
-          session,
-          inputId = "nos_lines",
-          min = 1,
-          max = 200,
-          step = 1,
-          label = "Top N Lines"
-        )
-    }
+      } else {
+        if (input$line_order == "slc")
+          updateSliderInput(
+            session,
+            inputId = "nos_lines",
+            min = 1,
+            max = 200,
+            step = 1,
+            label = "Top N Lines (most cycled)"
+          )
+        else
+          updateSliderInput(
+            session,
+            inputId = "nos_lines",
+            min = 1,
+            max = 200,
+            step = 1,
+            label = "Top N Lines"
+          )
+      }
+    })
     shinyjs::hideElement(id = "loading")
+    if (interactive()){
+      print(
+        paste(
+          "Plotting top",
+          input$nos_lines,
+          input$line_type,
+          "took",
+          round(difftime(Sys.time(), start_time, "s"), 3),
+          "s"
+        )
+      )
+    }
   }, priority = - 10)
 
 
@@ -689,7 +734,6 @@ shinyServer(function(input, output, session) {
         )
       }
     }
-
   })
 
   ## Define centroids
