@@ -1,0 +1,30 @@
+Variable name,Variable Description
+geo_code,Zone code
+geo_name,Zone name
+all,Total no. children in School Census 2011
+bicycle,No. cyclists in School Census 2011
+car,No. children driven by car in School Census 2011
+govtarget_sic,Increase no. cyclists in Government Target (equality) vs. School Census 2011
+govtarget_sid,Increase no. children driven by car in Government Target (equality) vs. School Census 2011
+cambridge_sic,Increase no. cyclists in Go Cambridge vs. School Census 2011
+cambridge_sid,Increase no. children driven by car in Go Cambridge vs. School Census 2011
+dutch_sic,Increase no. cyclists in Go Dutch vs. School Census 2011
+dutch_sid,Increase no. children driven by car in Go Dutch vs. School Census 2011
+govtarget_slc,No. cyclists in Government Target (equality)
+govtarget_sic,Increase no. cyclists in Government Target (equality) vs. School Census 2011
+govtarget_sld,No. children driven by car in Government Target (equality)
+govtarget_sid,Increase no. children driven by car in Government Target (equality) vs. School Census 2011
+cambridge_slc,No. cyclists in Go Cambridge
+cambridge_sic,Increase no. cyclists in Go Cambridge vs. School Census 2011
+cambridge_sld,No. children driven by car in Go Cambridge
+cambridge_sid,Increase no. children driven by car in Go Cambridge vs. School Census 2011
+dutch_slc,No. cyclists in Go Dutch
+dutch_sic,Increase no. cyclists in Go Dutch vs. School Census 2011
+dutch_sld,No. children driven by car in Go Dutch
+dutch_sid,Increase no. children driven by car in Go Dutch vs. School Census 2011
+govtarget_simmet,Change in mean marginal METs per child per week in Government Target (equality) versus School Census 2011
+cambridge_simmet,Change in mean marginal METs per child per week in Go Cambridge versus School Census 2011
+dutch_simmet,Change in mean marginal METs per child per week in Go Dutch versus School Census 2011
+govtarget_sico2,Change in CO2/year (kg) in Government Target (equality) versus School Census 2011
+cambridge_sico2,Change in CO2/year (kg) in Go Cambridge versus School Census 2011
+dutch_sico2,Change in CO2/year (kg) in Go Dutch versus School Census 2011

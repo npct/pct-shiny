@@ -28,7 +28,7 @@ must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs")
 
 ## Path directories to load data (expect regional data as a sibling of interface_root)
 interface_root <- file.path("..", "..")
-data_regional_root <-  file.path(interface_root, '..', 'pct-outputs-regional-R')
+data_regional_root <-  file.path(interface_root, '..', 'pct-outputs-regional-Rsmall')
 
 outputs_regional_sha <- as.character(readLines(file.path(interface_root, "outputs_regional_sha"), warn = F))
 
@@ -354,7 +354,7 @@ shinyServer(function(input, output, session) {
       # For confidentiality we have replaced exact numbers with NAs but they cause havoc with the interface.
       # This replaces the NAs with the mean values.
       if (input_purpose() == "school") {
-        columns_na <- c("all", "bicycle", "foot", "car")
+        columns_na <- c("all", "bicycle", "car")
 
         z_na_const <- 1.5
         d_na_const <- 3

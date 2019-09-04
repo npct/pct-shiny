@@ -61,12 +61,12 @@ Pull the npt stuff from git
  apt-get install git
  su git
  git clone --bare https://github.com/npct/pct-shiny.git pct-shiny
- git clone --bare https://github.com/npct/pct-outputs-regional-R.git pct-outputs-regional-R
- cd pct-outputs-regional-R
+ git clone --bare https://github.com/npct/pct-outputs-regional-Rsmall.git pct-outputs-regional-Rsmall
+ cd pct-outputs-regional-Rsmall
  # Set up so checking out the data git dir uses a different work tree location
  # This stops us copying a .git directory around on the server
  git config --bool core.bare false
- git config core.worktree /home/git/var-shiny/pct-outputs-regional-R/
+ git config core.worktree /home/git/var-shiny/pct-outputs-regional-Rsmall/
  exit
 ```
 

@@ -1,0 +1,35 @@
+Variable name,Variable Description
+id,Start and end zones
+geo_name1,"Start or end zone 1, zone name"
+geo_name2,"Start or end zone 2, zone name"
+all,Total no. commuters
+bicycle,No. cyclists in Census 2011
+car_driver,No. car drivers in Census 2011
+govtarget_slc,No. cyclists in Government Target (equality)
+govtarget_sid,Increase no. car drivers in Government Target (equality) vs. Census 2011
+govnearmkt_slc,No. cyclists in Government Target (near market)
+govnearmkt_sid,Increase no. car drivers in Government Target (near market) vs. Census 2011
+gendereq_slc,No. cyclists in Gender Equality
+gendereq_sid,Increase no. car drivers in Gender Equality vs. Census 2011
+dutch_slc,No. cyclists in Go Dutch
+dutch_sid,Increase no. car drivers in Go Dutch vs. Census 2011
+ebike_slc,No. cyclists in Ebikes
+ebike_sid,Increase no. car drivers in Ebikes vs. Census 2011
+govtarget_sideath_heat,Change in deaths/year in Government Target (equality) versus Census 2011
+govtarget_sivalue_heat,Value (pounds) of change in deaths in Government Target (equality) versus Census 2011
+govnearmkt_sideath_heat,Change in deaths/year in Government Target (near market) versus Census 2011
+govnearmkt_sivalue_heat,Value (pounds) of change in deaths in Government Target (near market) versus Census 2011
+gendereq_sideath_heat,Change in deaths/year in Gender Equality versus Census 2011
+gendereq_sivalue_heat,Value (pounds) of change in deaths in Gender Equality versus Census 2011
+dutch_sideath_heat,Change in deaths/year in Go Dutch versus Census 2011
+dutch_sivalue_heat,Value (pounds) of change in deaths in Go Dutch versus Census 2011
+ebike_sideath_heat,Change in deaths/year in Ebikes versus Census 2011
+ebike_sivalue_heat,Value (pounds) of change in deaths in Ebikes versus Census 2011
+govtarget_sico2,Change in CO2/year (kg) in Government Target (equality) versus Census 2011
+govnearmkt_sico2,Change in CO2/year (kg) in Government Target (near market) versus Census 2011
+gendereq_sico2,Change in CO2/year (kg) in Gender Equality versus Census 2011
+dutch_sico2,Change in CO2/year (kg) in Go Dutch versus Census 2011
+ebike_sico2,Change in CO2/year (kg) in Ebikes versus Census 2011
+e_dist_km,Straight line distance (km)
+rf_dist_km,Fast route distance (km)
+rf_avslope_perc,Average fast route gradient (%)
