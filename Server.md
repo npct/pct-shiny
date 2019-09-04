@@ -67,6 +67,7 @@ Pull the npt stuff from git
  # This stops us copying a .git directory around on the server
  git config --bool core.bare false
  git config core.worktree /home/git/var-shiny/pct-outputs-regional-Rsmall/
+ mkdir -p /home/git/var-shiny/pct-outputs-regional-Rsmall/
  exit
 ```
 
