@@ -11,12 +11,12 @@ To start:
 
 ```sh
 git clone git@github.com:npct/pct-shiny.git
-git clone git@github.com:npct/pct-outputs-regional-R.git 
+git clone git@github.com:npct/pct-outputs-regional-Rsmall.git 
 ```
 
-so that pct-outputs-regional-R is in a sibling folder.
+so that pct-outputs-regional-Rsmall is in a sibling folder.
 
-To create and modify pct-outputs-regional-R refer to pct-scripts, cloned with::
+To create and modify pct-outputs-regional-Rsmall refer to pct-scripts, cloned with::
 
 ```sh
 git clone git@github.com:npct/pct-scripts.git

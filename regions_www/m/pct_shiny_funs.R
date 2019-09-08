@@ -24,8 +24,8 @@ get_pretty_region_name <- function(region_name_in, the = T){
 ## i.e. govtarget_slc NAs should be replaced with 3 + govtarget_sic
 school_na <- function(scenario){
   list(
-    na   = c(paste0(scenario, "_slc"), paste0(scenario, "_slw"), paste0(scenario, "_sld")),
-    base = c(paste0(scenario, "_sic"), paste0(scenario, "_siw"), paste0(scenario, "_sid"))
+    na   = c(paste0(scenario, "_slc"), paste0(scenario, "_sld")),
+    base = c(paste0(scenario, "_sic"), paste0(scenario, "_sid"))
   )
 }
 
