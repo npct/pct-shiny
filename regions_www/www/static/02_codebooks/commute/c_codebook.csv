@@ -72,42 +72,42 @@ ebike_slm,No. motorcyclists in Ebikes
 ebike_sim,Increase in no. motorcyclists in Ebikes vs. Census 2011
 ebike_slpt,No. public transport users in Ebikes
 ebike_sipt,Increase in no. public transport users in Ebikes vs. Census 2011
-base_sldeath_tag,Change in deaths/year in Census 2011 versus 'no cycling'
-base_slyll_tag,Change in Years of Life Lost (YLLs)/year in Census 2011 versus 'no cycling'
-base_slvalueyll_tag,Value (pounds) of change in Years of Life Lost in Census 2011 versus 'no cycling' 
-base_slsickday_tag,Change in annual sick days in Census 2011 versus 'no cycling' 
-base_slvaluesick_tag,Value (pounds) of change in sickness absence in Census 2011 versus 'no cycling' 
-base_slvaluecomb_tag,Combined value (pounds) of change in YLLs plus change in sickness absence in Census 2011 versus 'no cycling' 
-govtarget_sideath_tag,Change in deaths/year in Government Target (equality) versus Census 2011
-govtarget_siyll_tag,Change in Years of Life Lost (YLLs)/year in Government Target (equality) versus Census 2011
-govtarget_sivalueyll_tag,Value (pounds) of change in Years of Life Lost in Government Target (equality) versus Census 2011
-govtarget_sisickday_tag,Change in annual sick days in Government Target (equality) versus Census 2011
-govtarget_sivaluesick_tag,Value (pounds) of change in sickness absence in Government Target (equality) versus Census 2011
-govtarget_sivaluecomb_tag,Combined value (pounds) of change in YLLs plus change in sickness absence in Government Target (equality) versus Census 2011
-govnearmkt_sideath_tag,Change in deaths/year in Government Target (near market) versus Census 2011
-govnearmkt_siyll_tag,Change in Years of Life Lost (YLLs)/year in Government Target (near market) versus Census 2011
-govnearmkt_sivalueyll_tag,Value (pounds) of change in Years of Life Lost in Government Target (near market) versus Census 2011
-govnearmkt_sisickday_tag,Change in annual sick days in Government Target (near market) versus Census 2011
-govnearmkt_sivaluesick_tag,Value (pounds) of change in sickness absence in Government Target (near market) versus Census 2011
-govnearmkt_sivaluecomb_tag,Combined value (pounds) of change in YLLs plus change in sickness absence in Government Target (near market) versus Census 2011
-gendereq_sideath_tag,Change in deaths/year in Gender Equality versus Census 2011
-gendereq_siyll_tag,Change in Years of Life Lost (YLLs)/year in Gender Equality versus Census 2011
-gendereq_sivalueyll_tag,Value (pounds) of change in Years of Life Lost in Gender Equality versus Census 2011
-gendereq_sisickday_tag,Change in annual sick days in Gender Equality versus Census 2011
-gendereq_sivaluesick_tag,Value (pounds) of change in sickness absence in Gender Equality versus Census 2011
-gendereq_sivaluecomb_tag,Combined value (pounds) of change in YLLs plus change in sickness absence in Gender Equality versus Census 2011
-dutch_sideath_tag,Change in deaths/year in Go Dutch versus Census 2011
-dutch_siyll_tag,Change in Years of Life Lost (YLLs)/year in Go Dutch versus Census 2011
-dutch_sivalueyll_tag,Value (pounds) of change in Years of Life Lost in Go Dutch versus Census 2011
-dutch_sisickday_tag,Change in annual sick days in Go Dutch versus Census 2011
-dutch_sivaluesick_tag,Value (pounds) of change in sickness absence in Go Dutch versus Census 2011
-dutch_sivaluecomb_tag,Combined value (pounds) of change in YLLs plus change in sickness absence in Go Dutch versus Census 2011
-ebike_sideath_tag,Change in deaths/year in Ebikes versus Census 2011
-ebike_siyll_tag,Change in Years of Life Lost (YLLs)/year in Ebikes versus Census 2011
-ebike_sivalueyll_tag,Value (pounds) of change in Years of Life Lost in Ebikes versus Census 2011
-ebike_sisickday_tag,Change in annual sick days in Ebikes versus Census 2011
-ebike_sivaluesick_tag,Value (pounds) of change in sickness absence in Ebikes versus Census 2011
-ebike_sivaluecomb_tag,Combined value (pounds) of change in YLLs plus change in sickness absence in Ebikes versus Census 2011
+base_sldeath,Change in deaths/year in Census 2011 versus 'no cycling'
+base_slyll,Change in Years of Life Lost (YLLs)/year in Census 2011 versus 'no cycling'
+base_slvalueyll,Value (pounds) of change in Years of Life Lost in Census 2011 versus 'no cycling' 
+base_slsickday,Change in annual sick days in Census 2011 versus 'no cycling' 
+base_slvaluesick,Value (pounds) of change in sickness absence in Census 2011 versus 'no cycling' 
+base_slvaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Census 2011 versus 'no cycling' 
+govtarget_sideath,Change in deaths/year in Government Target (equality) versus Census 2011
+govtarget_siyll,Change in Years of Life Lost (YLLs)/year in Government Target (equality) versus Census 2011
+govtarget_sivalueyll,Value (pounds) of change in Years of Life Lost in Government Target (equality) versus Census 2011
+govtarget_sisickday,Change in annual sick days in Government Target (equality) versus Census 2011
+govtarget_sivaluesick,Value (pounds) of change in sickness absence in Government Target (equality) versus Census 2011
+govtarget_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Government Target (equality) versus Census 2011
+govnearmkt_sideath,Change in deaths/year in Government Target (near market) versus Census 2011
+govnearmkt_siyll,Change in Years of Life Lost (YLLs)/year in Government Target (near market) versus Census 2011
+govnearmkt_sivalueyll,Value (pounds) of change in Years of Life Lost in Government Target (near market) versus Census 2011
+govnearmkt_sisickday,Change in annual sick days in Government Target (near market) versus Census 2011
+govnearmkt_sivaluesick,Value (pounds) of change in sickness absence in Government Target (near market) versus Census 2011
+govnearmkt_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Government Target (near market) versus Census 2011
+gendereq_sideath,Change in deaths/year in Gender Equality versus Census 2011
+gendereq_siyll,Change in Years of Life Lost (YLLs)/year in Gender Equality versus Census 2011
+gendereq_sivalueyll,Value (pounds) of change in Years of Life Lost in Gender Equality versus Census 2011
+gendereq_sisickday,Change in annual sick days in Gender Equality versus Census 2011
+gendereq_sivaluesick,Value (pounds) of change in sickness absence in Gender Equality versus Census 2011
+gendereq_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Gender Equality versus Census 2011
+dutch_sideath,Change in deaths/year in Go Dutch versus Census 2011
+dutch_siyll,Change in Years of Life Lost (YLLs)/year in Go Dutch versus Census 2011
+dutch_sivalueyll,Value (pounds) of change in Years of Life Lost in Go Dutch versus Census 2011
+dutch_sisickday,Change in annual sick days in Go Dutch versus Census 2011
+dutch_sivaluesick,Value (pounds) of change in sickness absence in Go Dutch versus Census 2011
+dutch_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Go Dutch versus Census 2011
+ebike_sideath,Change in deaths/year in Ebikes versus Census 2011
+ebike_siyll,Change in Years of Life Lost (YLLs)/year in Ebikes versus Census 2011
+ebike_sivalueyll,Value (pounds) of change in Years of Life Lost in Ebikes versus Census 2011
+ebike_sisickday,Change in annual sick days in Ebikes versus Census 2011
+ebike_sivaluesick,Value (pounds) of change in sickness absence in Ebikes versus Census 2011
+ebike_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Ebikes versus Census 2011
 base_slco2,Change in CO2/year (kg) in Census 2011 versus 'no cycling'
 govtarget_sico2,Change in CO2/year (kg) in Government Target (equality) versus Census 2011
 govnearmkt_sico2,Change in CO2/year (kg) in Government Target (near market) versus Census 2011

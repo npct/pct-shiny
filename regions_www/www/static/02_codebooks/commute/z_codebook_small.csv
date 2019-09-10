@@ -1,31 +1,31 @@
-Variable name,Variable Description,,,
-geo_code,Zone code,,,
-geo_name,Zone name,,,
-all,Total no. commuters,,,
-bicycle,No. cyclists in Census 2011,,,
-car_driver,No. car drivers in Census 2011,,,
-govtarget_slc,No. cyclists in Government Target (equality),,,
-govtarget_sid,Increase in no. car drivers in Government Target (equality) vs. Census 2011,,,
-govnearmkt_slc,No. cyclists in Government Target (near market),,,
-govnearmkt_sid,Increase in no. car drivers in Government Target (near market) vs. Census 2011,,,
-gendereq_slc,No. cyclists in Gender Equality,,,
-gendereq_sid,Increase in no. car drivers in Gender Equality vs. Census 2011,,,
-dutch_slc,No. cyclists in Go Dutch,,,
-dutch_sid,Increase in no. car drivers in Go Dutch vs. Census 2011,,,
-ebike_slc,No. cyclists in Ebikes,,,
-ebike_sid,Increase in no. car drivers in Ebikes vs. Census 2011,,,
-govtarget_sideath_tag,Change in deaths/year in Government Target (equality) versus Census 2011,,,
-govtarget_sivaluecomb_tag,Combined value (pounds) of change in YLLs plus change in sickness absence in Government Target (equality) versus Census 2011,,,
-govnearmkt_sideath_tag,Change in deaths/year in Government Target (near market) versus Census 2011,,,
-govnearmkt_sivaluecomb_tag,Combined value (pounds) of change in YLLs plus change in sickness absence in Government Target (near market) versus Census 2011,,,
-gendereq_sideath_tag,Change in deaths/year in Gender Equality versus Census 2011,,,
-gendereq_sivaluecomb_tag,Combined value (pounds) of change in YLLs plus change in sickness absence in Gender Equality versus Census 2011,,,
-dutch_sideath_tag,Change in deaths/year in Go Dutch versus Census 2011,,,
-dutch_sivaluecomb_tag,Combined value (pounds) of change in YLLs plus change in sickness absence in Go Dutch versus Census 2011,,,
-ebike_sideath_tag,Change in deaths/year in Ebikes versus Census 2011,,,
-ebike_sivaluecomb_tag,Combined value (pounds) of change in YLLs plus change in sickness absence in Ebikes versus Census 2011,,,
-govtarget_sico2,Change in CO2/year (kg) in Government Target (equality) versus Census 2011,,,
-govnearmkt_sico2,Change in CO2/year (kg) in Government Target (near market) versus Census 2011,,,
-gendereq_sico2,Change in CO2/year (kg) in Gender Equality versus Census 2011,,,
-dutch_sico2,Change in CO2/year (kg) in Go Dutch versus Census 2011,,,
-ebike_sico2,Change in CO2/year (kg) in Ebikes versus Census 2011,,,
+Variable name,Variable Description
+geo_code,Zone code
+geo_name,Zone name
+all,Total no. commuters
+bicycle,No. cyclists in Census 2011
+car_driver,No. car drivers in Census 2011
+govtarget_slc,No. cyclists in Government Target (equality)
+govtarget_sid,Increase in no. car drivers in Government Target (equality) vs. Census 2011
+govnearmkt_slc,No. cyclists in Government Target (near market)
+govnearmkt_sid,Increase in no. car drivers in Government Target (near market) vs. Census 2011
+gendereq_slc,No. cyclists in Gender Equality
+gendereq_sid,Increase in no. car drivers in Gender Equality vs. Census 2011
+dutch_slc,No. cyclists in Go Dutch
+dutch_sid,Increase in no. car drivers in Go Dutch vs. Census 2011
+ebike_slc,No. cyclists in Ebikes
+ebike_sid,Increase in no. car drivers in Ebikes vs. Census 2011
+govtarget_sideath,Change in deaths/year in Government Target (equality) versus Census 2011
+govtarget_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Government Target (equality) versus Census 2011
+govnearmkt_sideath,Change in deaths/year in Government Target (near market) versus Census 2011
+govnearmkt_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Government Target (near market) versus Census 2011
+gendereq_sideath,Change in deaths/year in Gender Equality versus Census 2011
+gendereq_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Gender Equality versus Census 2011
+dutch_sideath,Change in deaths/year in Go Dutch versus Census 2011
+dutch_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Go Dutch versus Census 2011
+ebike_sideath,Change in deaths/year in Ebikes versus Census 2011
+ebike_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Ebikes versus Census 2011
+govtarget_sico2,Change in CO2/year (kg) in Government Target (equality) versus Census 2011
+govnearmkt_sico2,Change in CO2/year (kg) in Government Target (near market) versus Census 2011
+gendereq_sico2,Change in CO2/year (kg) in Gender Equality versus Census 2011
+dutch_sico2,Change in CO2/year (kg) in Go Dutch versus Census 2011
+ebike_sico2,Change in CO2/year (kg) in Ebikes versus Census 2011
