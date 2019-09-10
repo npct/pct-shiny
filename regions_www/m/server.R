@@ -154,7 +154,7 @@ shinyServer(function(input, output, session) {
       local_line_order <- c(
         "Number of cyclists"   = "slc",
         "Increase in cyclists" = "sic",
-        "Reduction in deaths"  = "sideath_heat",
+        "Reduction in deaths"  = "sideath",
         "Reduction in CO2"     = "sico2"
       )
     } else if (purpose == "school") {
@@ -190,7 +190,7 @@ shinyServer(function(input, output, session) {
       local_line_order <- c(
         "Number of cycle trips" = "slc",
         "Increase in cycling"   = "sic",
-        "Reduction in deaths"   = "sideath_heat",
+        "Reduction in deaths"   = "sideath",
         "Reduction in CO2"      = "sico2"
       )
 
@@ -501,7 +501,7 @@ shinyServer(function(input, output, session) {
         return(NULL)
       lines_in_bb <- lines[drop(keep),]
       # Sort low-to-high for reduction in deaths (can't use absolute values as no. deaths can be a positive number, i.e. health disbenefit)
-      if (grepl(c("sideath_heat"), line_data())) {
+      if (grepl(c("sideath"), line_data())) {
         lines_in_bb[tail(order(lines_in_bb[[line_data()]], decreasing = T), nos),]
       } else {
         # sort by absolute values for remainder of things, which all have zero as higher or lower limit
