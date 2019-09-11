@@ -70,6 +70,12 @@ ebike_slm,No. motorcyclists in Ebikes
 ebike_sim,Increase in no. motorcyclists in Ebikes vs. Census 2011
 ebike_slpt,No. public transport users in Ebikes
 ebike_sipt,Increase in no. public transport users in Ebikes vs. Census 2011
+base_slcyclehours,Change in cycling duration/year (thousands of hours) in Census 2011 versus 'no cycling'
+govtarget_sicyclehours,Change in cycling duration/year (thousands of hours) in Government Target (equality) versus Census 2011
+govnearmkt_sicyclehours,Change in cycling duration/year (thousands of hours) in Government Target (near market) versus Census 2011
+gendereq_sicyclehours,Change in cycling duration/year (thousands of hours) in Gender Equality versus Census 2011
+dutch_sicyclehours,Change in cycling duration/year (thousands of hours) in Go Dutch versus Census 2011
+ebike_sicyclehours,Change in cycling duration/year (thousands of hours) in Ebikes versus Census 2011
 base_sldeath,Change in deaths/year in Census 2011 versus 'no cycling'
 base_slyll,Change in Years of Life Lost (YLLs)/year in Census 2011 versus 'no cycling'
 base_slvalueyll,Value (millions of pounds) of change in Years of Life Lost in Census 2011 versus 'no cycling' 
@@ -106,11 +112,17 @@ ebike_sivalueyll,Value (millions of pounds) of change in Years of Life Lost in E
 ebike_sisickday,Change in annual sick days in Ebikes versus Census 2011
 ebike_sivaluesick,Value (millions of pounds) of change in sickness absence in Ebikes versus Census 2011
 ebike_sivaluecomb,Combined value (millions of pounds) of change in YLLs plus change in sickness absence in Ebikes versus Census 2011
+base_slcarkm,Change in car driver distance/year (thousands of km) in Census 2011 versus 'no cycling'
 base_slco2,Change in CO2/year (tonnes) in Census 2011 versus 'no cycling'
+govtarget_sicarkm,Change in car driver distance/year (thousands of km) in Government Target (equality) versus Census 2011
 govtarget_sico2,Change in CO2/year (tonnes) in Government Target (equality) versus Census 2011
+govnearmkt_sicarkm,Change in car driver distance/year (thousands of km) in Government Target (near market) versus Census 2011
 govnearmkt_sico2,Change in CO2/year (tonnes) in Government Target (near market) versus Census 2011
+gendereq_sicarkm,Change in car driver distance/year (thousands of km) in Gender Equality versus Census 2011
 gendereq_sico2,Change in CO2/year (tonnes) in Gender Equality versus Census 2011
+dutch_sicarkm,Change in car driver distance/year (thousands of km) in Go Dutch versus Census 2011
 dutch_sico2,Change in CO2/year (tonnes) in Go Dutch versus Census 2011
+ebike_sicarkm,Change in car driver distance/year (thousands of km) in Ebikes versus Census 2011
 ebike_sico2,Change in CO2/year (tonnes) in Ebikes versus Census 2011
 perc_rf_dist_u10km,Percent of commuters in zone with fast route commute distance <10km [calculated excluding trips with no fixed work place]
 avslope_perc_u10km,Average fast route gradient (%) of commute trips in zone with fast route distance <10km
