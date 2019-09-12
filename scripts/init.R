@@ -3,7 +3,7 @@ init_dev_env <- function(interface_root, data_regional_root, outputs_regional_sh
   ## Clone the regional data repo if it does not exist
   if(!dir.exists(data_regional_root)) {
     system2('git', args=c('clone', '--depth=3',
-                          'https://github.com/npct/pct-outputs-regional-R.git', data_regional_root))
+                          'https://github.com/npct/pct-outputs-regional-Rsmall.git', data_regional_root))
   } else { # Update the data repo
     print("Fetching regional data")
     system2('git', c("--git-dir", file.path(data_regional_root, ".git"), "--work-tree",
