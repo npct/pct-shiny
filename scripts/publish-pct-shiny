@@ -10,7 +10,7 @@ VAR_DIR="/home/git/var-shiny/"
 WAIT_SECONDS=0
 BRANCH=$1
 SHINY_APP_DIR="pct-shiny"
-DATA_GIT="pct-outputs-regional-R"
+DATA_GIT="pct-outputs-regional-Rsmall"
 
 while [ "$WAIT_SECONDS" -lt 120 -a -e ${VAR_DIR}.deploy-shiny-lock ]; do
   echo "Currently deploying. Waiting for ${VAR_DIR}.deploy-shiny-lock for another $((120-WAIT_SECONDS)) seconds"
