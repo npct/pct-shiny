@@ -222,7 +222,7 @@ shinyServer(function(input, output, session) {
   ##############
 
   ## Create region and (for persistent geographical values) helper
-  region <- reactiveValues(current = NA, data_dir = NA, geography = NA, repopulate_region = F, purposes_present = NA, plot = NULL, line_data_dir = "")
+  region <- reactiveValues(current = NA, data_dir = NA, geography = NA, repopulate_region = F, purposes_present = NA, plot = NULL, line_data_dir = "", ldata = NULL)
   helper <- NULL
   helper$e_lat_lng <- ""
   helper$old_geog <- ""
@@ -602,7 +602,7 @@ shinyServer(function(input, output, session) {
           local_lines <- local_lines[local_lines$dutch_slc>0,] # always >0 for both
         }
       }
-      if (is.null(region$plot$ldata) || (!is.null(region$plot$ldata) && (!identical(region$plot$ldata, local_lines) || !identical(region$plot$scenario, input$scenario)))) {
+      if (is.null(region$ldata) || (!is.null(region$ldata) && (!identical(region$ldata, local_lines) || !identical(region$plot$scenario, input$scenario)))) {
         leafletProxy("map")  %>% clearGroup(.,
                                             c("straight_lines",
                                               "routes_quieter",
@@ -610,10 +610,10 @@ shinyServer(function(input, output, session) {
                                               "route_network"
                                             )) %>%
           removeShape(., "highlighted")
-        region$plot$ldata <- local_lines
+        region$ldata <- local_lines
         # Include current scenario in region$plot as the set of lines to plot may not change when the scenario alters, and so otherwise don't update
         region$plot$scenario <- input$scenario
-        plot_lines(leafletProxy("map"), region$plot$ldata, line_type)
+        plot_lines(leafletProxy("map"), region$ldata, line_type)
         # Additionally plot fast routes on top of quieter if selected 'fast & quieter'
         if (input$line_type == 'routes') {
           plot_lines(leafletProxy("map"), sort_lines(region$plot$routes_fast, "routes_fast", input$nos_lines),"routes_fast")
