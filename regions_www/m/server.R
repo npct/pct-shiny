@@ -574,29 +574,34 @@ shinyServer(function(input, output, session) {
     input$scenario
     input$line_order
 
-
-    shinyjs::showElement(id = "loading")
-
-    line_type <- ifelse(input$line_type == 'routes', "routes_quieter", input$line_type)
-
-    local_lines <- sort_lines(region$plot[[line_type]], input$line_type, input$nos_lines)
-    # Filter out zero lines for scenario in question from route network
-    if (input$line_type == "route_network") {
-      if (input$scenario == 'olc') {
-        local_lines <- local_lines[local_lines$bicycle>0,]
-      } else if (input$scenario == 'govtarget') {
-        local_lines <- local_lines[local_lines$govtarget_slc>0,]
-      } else if (input$scenario == 'govnearmkt') {
-        local_lines <- local_lines[local_lines$govnearmkt_slc>0,]
-      } else if (input$scenario == 'gendereq') {
-        local_lines <- local_lines[local_lines$gendereq_slc>0,]
-      } else if (input$scenario == 'cambridge') {
-        local_lines <- local_lines[local_lines$cambridge_slc>0,]
-      } else {
-        local_lines <- local_lines[local_lines$dutch_slc>0,] # always >0 for both
-      }
+    # If we are showing lines and the input is not frozen then we want to trigger this observe
+    # when the map bounds change
+    if (!isTruthy(input$line_type %in% show_no_lines) && !isTRUE(input$freeze)){
+      input$map_bounds
     }
+
     isolate({
+      shinyjs::showElement(id = "loading")
+
+      line_type <- ifelse(input$line_type == 'routes', "routes_quieter", input$line_type)
+
+      local_lines <- sort_lines(region$plot[[line_type]], input$line_type, input$nos_lines)
+      # Filter out zero lines for scenario in question from route network
+      if (input$line_type == "route_network") {
+        if (input$scenario == 'olc') {
+          local_lines <- local_lines[local_lines$bicycle>0,]
+        } else if (input$scenario == 'govtarget') {
+          local_lines <- local_lines[local_lines$govtarget_slc>0,]
+        } else if (input$scenario == 'govnearmkt') {
+          local_lines <- local_lines[local_lines$govnearmkt_slc>0,]
+        } else if (input$scenario == 'gendereq') {
+          local_lines <- local_lines[local_lines$gendereq_slc>0,]
+        } else if (input$scenario == 'cambridge') {
+          local_lines <- local_lines[local_lines$cambridge_slc>0,]
+        } else {
+          local_lines <- local_lines[local_lines$dutch_slc>0,] # always >0 for both
+        }
+      }
       if (is.null(region$plot$ldata) || (!is.null(region$plot$ldata) && (!identical(region$plot$ldata, local_lines) || !identical(region$plot$scenario, input$scenario)))) {
         leafletProxy("map")  %>% clearGroup(.,
                                             c("straight_lines",
