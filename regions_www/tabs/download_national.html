@@ -1,205 +1,208 @@
-<div class="container">
-  <div class="row maintext" id="maintext">
-    <div class="col-md-2 text-left" style="padding-top:10px;">
-      <h2>National Data - commute layer</h2>
+<!DOCTYPE html>
+<html xmlns="https://www.w3.org/1999/xhtml">
+  <div class="container">
+    <div class="row maintext" id="maintext">
+      <div class="col-md-2 text-left" style="padding-top:10px;">
+        <h2>National Data - commute layer</h2>
 
-      <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natcommutezones">Zones data</a></div>
-      <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natcommutemsoaflows">MSOA flows data</a></div>
-      <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natcommutelsoaflows">LSOA flows data</a></div>
-    </div>
-
-    <div class="col-md-2 text-left" style="padding-top:10px;">
-      <h2>National Data - school layer</h2>
-
-      <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natschoolzones">Zones data</a></div>
-      <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natschooldestinations">Schools data</a></div>
-      <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natschoolroutenet">Route network data</a></div>
-    </div>
-
-    <div class="col-md-9">
-      <div class="col-md-12 text-left" style="padding-top:10px;">
-        <h3>National Data - commuting layer</h3>
-        <p>This sections contains data downloads for the commuting layer for the whole of England and Wales. These are available as CSV files containing baseline and scenario attribute data for zones and lines, and as geographic files that can be read by R (.Rds) or GIS programs such as QGIS (.geojson).  Very large geographic files are available in R format only.</p>
-        <p>Please be aware that equivalent files for different purposes and geographies have <b>the same file name</b> when downloaded (e.g. ‘z_all.geojson’ for both the MSOA and LSOA national zones files).  To avoid confusion you may want to rename those files or save them in labelled folders. Note also that when <b>downloading 'csv' files using a Firefox browser</b>, the file will open onscreen in a new webpage.  If you then type "Ctrl + S" the onscreen data will download as a csv file.</p>
+        <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natcommutezones">Zones data</a></div>
+        <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natcommutemsoaflows">MSOA flows data</a></div>
+        <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natcommutelsoaflows">LSOA flows data</a></div>
       </div>
 
-      <div class="col-md-12 text-left" style="padding-top:10px;">
-        <h4><a name="natcommutezones"></a>Commuting data for zones</h4>
-        <p>Download the Census 2011 and scenario attribute data for all zones in England and Wales.</p>
-        <ul>
-          <li>Zones (local authorities)*:
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lad_attributes.csv" target="_blank" download="lad_attributes.csv" onclick="ga('send', 'event', 'download', 'commute/lad_attributes.csv');">
-              csv
-            </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lad.Rds" target="_blank" download="lad.Rds" onclick="ga('send', 'event', 'download', 'commute/lad.Rds');">
-              Rds
-            </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lad.geojson" target="_blank" download="lad.geojson" onclick="ga('send', 'event', 'download', 'commute/lad.geojson');">
-              geojson</a> -
-            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/lad_codebook.csv" target="_blank" download="lad_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/lad_codebook.csv');">
-              Codebook
-            </a>
-          </li>
-          <li>Zones (MSOA):
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/z_all_attributes.csv" target="_blank" download="z_all_attributes.csv" onclick="ga('send', 'event', 'download', 'commute/z_all_attributes.csv');">
-              csv
-            </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/z_all.Rds" target="_blank" download="z_all.Rds" onclick="ga('send', 'event', 'download', 'commute/z_all.Rds');">
-              Rds
-            </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/z_all.geojson" target="_blank" download="z_all.geojson" onclick="ga('send', 'event', 'download', 'commute/z_all.geojson');">
-              geojson
-            </a> -
-            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/z_codebook.csv" target="_blank" download="z_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/z_codebook.csv');">Codebook
-            </a>
-          </li>
-          <li>Zones (LSOA):
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/z_all_attributes.csv" target="_blank" download="z_all_attributes.csv" onclick="ga('send', 'event', 'download', 'commute/z_all_attributes.csv');">csv</a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/z_all.Rds" target="_blank" download="z_all.Rds" onclick="ga('send', 'event', 'download', 'commute/z_all.Rds');">
-              Rds
+      <div class="col-md-2 text-left" style="padding-top:10px;">
+        <h2>National Data - school layer</h2>
+
+        <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natschoolzones">Zones data</a></div>
+        <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natschooldestinations">Schools data</a></div>
+        <div style="padding-bottom:10px;"><a class="natdownloadlinks" href="#natschoolroutenet">Route network data</a></div>
+      </div>
+
+      <div class="col-md-9">
+        <div class="col-md-12 text-left" style="padding-top:10px;">
+          <h3>National Data - commuting layer</h3>
+          <p>This sections contains data downloads for the commuting layer for the whole of England and Wales. These are available as CSV files containing baseline and scenario attribute data for zones and lines, and as geographic files that can be read by R (.Rds) or GIS programs such as QGIS (.geojson).  Very large geographic files are available in R format only.</p>
+          <p>Please be aware that equivalent files for different purposes and geographies have <b>the same file name</b> when downloaded (e.g. ‘z_all.geojson’ for both the MSOA and LSOA national zones files).  To avoid confusion you may want to rename those files or save them in labelled folders. Note also that when <b>downloading 'csv' files using a Firefox browser</b>, the file will open onscreen in a new webpage.  If you then type "Ctrl + S" the onscreen data will download as a csv file.</p>
+        </div>
+
+        <div class="col-md-12 text-left" style="padding-top:10px;">
+          <h4><a name="natcommutezones"></a>Commuting data for zones</h4>
+          <p>Download the Census 2011 and scenario attribute data for all zones in England and Wales.</p>
+          <ul>
+            <li>Zones (local authorities)*:
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lad_attributes.csv" target="_blank" download="lad_attributes.csv" onclick="ga('send', 'event', 'download', 'commute/lad_attributes.csv');">
+                csv
               </a>
-              <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/z_all.geojson" target="_blank" download="z_all.geojson" onclick="ga('send', 'event', 'download', 'commute/z_all.geojson');">
-              geojson
-            </a> -
-            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/z_codebook.csv" target="_blank" download="z_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/z_codebook.csv');">Codebook
-            </a>
-          </li>
-        </ul>
-        <p>* Data aggregated from the LSOA zones file. Note that different units are used for the health economic savings (million pounds not pounds) and carbon savings (tonnes not kilograms of CO2e).</p>
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lad.Rds" target="_blank" download="lad.Rds" onclick="ga('send', 'event', 'download', 'commute/lad.Rds');">
+                Rds
+              </a>
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lad.geojson" target="_blank" download="lad.geojson" onclick="ga('send', 'event', 'download', 'commute/lad.geojson');">
+                geojson</a> -
+              <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/lad_codebook.csv" target="_blank" download="lad_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/lad_codebook.csv');">
+                Codebook
+              </a>
+            </li>
+            <li>Zones (MSOA):
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/z_all_attributes.csv" target="_blank" download="z_all_attributes.csv" onclick="ga('send', 'event', 'download', 'commute/z_all_attributes.csv');">
+                csv
+              </a>
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/z_all.Rds" target="_blank" download="z_all.Rds" onclick="ga('send', 'event', 'download', 'commute/z_all.Rds');">
+                Rds
+              </a>
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/z_all.geojson" target="_blank" download="z_all.geojson" onclick="ga('send', 'event', 'download', 'commute/z_all.geojson');">
+                geojson
+              </a> -
+              <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/z_codebook.csv" target="_blank" download="z_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/z_codebook.csv');">Codebook
+              </a>
+            </li>
+            <li>Zones (LSOA):
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/z_all_attributes.csv" target="_blank" download="z_all_attributes.csv" onclick="ga('send', 'event', 'download', 'commute/z_all_attributes.csv');">csv</a>
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/z_all.Rds" target="_blank" download="z_all.Rds" onclick="ga('send', 'event', 'download', 'commute/z_all.Rds');">
+                Rds
+                </a>
+                <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/z_all.geojson" target="_blank" download="z_all.geojson" onclick="ga('send', 'event', 'download', 'commute/z_all.geojson');">
+                geojson
+              </a> -
+              <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/z_codebook.csv" target="_blank" download="z_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/z_codebook.csv');">Codebook
+              </a>
+            </li>
+          </ul>
+          <p>* Data aggregated from the LSOA zones file. Note that different units are used for the health economic savings (million pounds not pounds) and carbon savings (tonnes not kilograms of CO2e).</p>
+        </div>
+
+        <div class="col-md-12 text-left" style="padding-top:10px;">
+          <h4>Commuting data for flows</h4>
+          <p>Download the Census 2011 and scenario data for all flows starting or ending in England or Wales.</p>
+          <p>In the ‘All flows’ files, destinations are grouped as ‘Other’ for origin-destination pairs with a fastest-route distance &gt;30km, or with a destination outside England or Wales. In addition, for the LSOA ‘All flows’ file, destinations are grouped as ‘Under 3’ for origin-destination pairs where the bidirectional number of commuters (by any mode) would be 1 or 2. This is done for data protection reasons.</p>
+          <p>The ‘Straight lines’, ‘Fast route’ and ‘Quieter routes’ files only include between-zone flows with fast route distance under 20km. In addition, the minimum number of commuters (by any mode, in either direction) must be 10 (MSOA) or 5 (LSOA).</p>
+          <p>The LSOA route network includes all between-zone LSOA flows, with no minimum number of commuters.</p>
+        </div>
+
+        <div class="col-md-12 text-left" style="padding-top:10px;">
+          <h4><a name="natcommutemsoaflows"></a>MSOA-level flows data</h4>
+          <ul>
+            <li>All flows (attribute data only):  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/od_all_attributes.csv" target="_blank" download="od_all_attributes.csv" onclick="ga('send', 'event', 'download', 'commute/od_all_attributes.csv');">csv</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv' );">Codebook</a></li>
+            <li>Centroids &amp; within-zone travel:  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/c_all.Rds" target="_blank" download="c_all.Rds" onclick="ga('send', 'event', 'download', 'commute/c_all.Rds');">Rds</a> <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/c_all.geojson" target="_blank" download="c_all.geojson" onclick="ga('send', 'event', 'download', 'commute/c_all.geojson');">geojson</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/c_codebook.csv" target="_blank" download="c_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/c_codebook.csv' );">Codebook</a></li>
+            <li>Straight lines:  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/l_all.Rds" target="_blank" download="l_all.Rds" onclick="ga('send', 'event', 'download', 'commute/l_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv');">Codebook</a></li>
+            <li>Fast routes:  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/rf_all.Rds" target="_blank" download="rf_all.Rds" onclick="ga('send', 'event', 'download', 'commute/rf_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv');">Codebook</a></li>
+            <li>Quieter routes:  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/rq_all.Rds" target="_blank" download="rq_all.Rds" onclick="ga('send', 'event', 'download', 'commute/rq_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/rq_codebook.csv" target="_blank" download="rq_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/rq_codebook.csv' );">Codebook</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-12 text-left" style="padding-top:10px;">
+          <h4><a name="natcommutelsoaflows"></a>LSOA-level flows data</h4>
+          <ul>
+            <li>All flows (attribute data only): <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/od_all_attributes.csv" target="_blank" download="od_all_attributes.csv" onclick="ga('send', 'event', 'download', 'commute/od_all_attributes.csv');">csv</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv');">Codebook</a></li>
+            <li>
+              Centroids &amp; within-zone travel:
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/c_all.Rds" target="_blank" download="c_all.Rds" onclick="ga('send', 'event', 'download', 'commute/c_all.Rds');">
+                Rds
+              </a>
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/c_all.geojson" target="_blank" download="c_all.geojson" onclick="ga('send', 'event', 'download', 'commute/c_all.geojson');">
+                geojson
+              </a> -
+              <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/c_codebook.csv" target="_blank" download="c_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/c_codebook.csv');">
+                Codebook
+              </a>
+            </li>
+            <li>Straight lines: <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/l_all.Rds" target="_blank" download="l_all.Rds" onclick="ga('send', 'event', 'download', 'commute/l_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv');">Codebook</a></li>
+            <li>Fast routes: <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/rf_all.Rds" target="_blank" download="rf_all.Rds" onclick="ga('send', 'event', 'download', 'commute/rf_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv');">Codebook</a></li>
+            <li>Quieter routes: <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/rq_all.Rds" target="_blank" download="rq_all.Rds" onclick="ga('send', 'event', 'download', 'commute/rq_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/rq_codebook.csv" target="_blank" download="rq_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/rq_codebook.csv');">Codebook</a></li>
+            <li> Route network (LSOA): <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/rnet_all.Rds" target="_blank" download="rnet_all.Rds" onclick="ga('send', 'event', 'download', 'commute/rnet_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/rnet_codebook.csv" target="_blank" download="rnet_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/rnet_codebook.csv');">Codebook</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-12 text-left" style="padding-top:10px;">
+          <p>Please see the codebooks for a description of the variables included in these download files, and the User Manual for further details of how these variable were calculated.  You can also contact us at <a href="mailto:pct@pct.bike">pct@pct.bike</a>.</p>
+        </div>
       </div>
 
-      <div class="col-md-12 text-left" style="padding-top:10px;">
-        <h4>Commuting data for flows</h4>
-        <p>Download the Census 2011 and scenario data for all flows starting or ending in England or Wales.</p>
-        <p>In the ‘All flows’ files, destinations are grouped as ‘Other’ for origin-destination pairs with a fastest-route distance &gt;30km, or with a destination outside England or Wales. In addition, for the LSOA ‘All flows’ file, destinations are grouped as ‘Under 3’ for origin-destination pairs where the bidirectional number of commuters (by any mode) would be 1 or 2. This is done for data protection reasons.</p>
-        <p>The ‘Straight lines’, ‘Fast route’ and ‘Quieter routes’ files only include between-zone flows with fast route distance under 20km. In addition, the minimum number of commuters (by any mode, in either direction) must be 10 (MSOA) or 5 (LSOA).</p>
-        <p>The LSOA route network includes all between-zone LSOA flows, with no minimum number of commuters.</p>
-      </div>
+      <div class="col-md-9">
+        <div class="col-md-12 text-left" style="padding-top:10px;">
+          <h3>National Data  - school layer</h3>
+          <p>This section contains data downloads for the schools layer for the whole of England. These are available as CSV files containing baseline and scenario attribute data for zones and schools, and as geographic files that can be read by R (.Rds) or GIS programs such as QGIS (.geojson).</p>
+          <p>Please be aware that equivalent files for different purposes and geographies have <b>the same file name</b> when downloaded (e.g. 'z_all.geojson' for national zones files for both commuting and school travel).  To avoid confusion you may want to rename those files or save them in labelled folders. Note also that when <b>downloading 'csv' files using a Firefox browser</b>, the file will open onscreen in a new webpage.  If you then type "Ctrl + S" the onscreen data will download as a csv file.</p>
+        </div>
 
-      <div class="col-md-12 text-left" style="padding-top:10px;">
-        <h4><a name="natcommutemsoaflows"></a>MSOA-level flows data</h4>
-        <ul>
-          <li>All flows (attribute data only):  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/od_all_attributes.csv" target="_blank" download="od_all_attributes.csv" onclick="ga('send', 'event', 'download', 'commute/od_all_attributes.csv');">csv</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv' );">Codebook</a></li>
-          <li>Centroids &amp; within-zone travel:  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/c_all.Rds" target="_blank" download="c_all.Rds" onclick="ga('send', 'event', 'download', 'commute/c_all.Rds');">Rds</a> <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/c_all.geojson" target="_blank" download="c_all.geojson" onclick="ga('send', 'event', 'download', 'commute/c_all.geojson');">geojson</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/c_codebook.csv" target="_blank" download="c_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/c_codebook.csv' );">Codebook</a></li>
-          <li>Straight lines:  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/l_all.Rds" target="_blank" download="l_all.Rds" onclick="ga('send', 'event', 'download', 'commute/l_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv');">Codebook</a></li>
-          <li>Fast routes:  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/rf_all.Rds" target="_blank" download="rf_all.Rds" onclick="ga('send', 'event', 'download', 'commute/rf_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv');">Codebook</a></li>
-          <li>Quieter routes:  <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/msoa/rq_all.Rds" target="_blank" download="rq_all.Rds" onclick="ga('send', 'event', 'download', 'commute/rq_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/rq_codebook.csv" target="_blank" download="rq_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/rq_codebook.csv' );">Codebook</a></li>
-        </ul>
-      </div>
+        <div class="col-md-12 text-left" style="padding-top:10px;">
+          <h4><a name="natschoolzones"></a>School travel data for zones</h4>
+          <p>Download anonymised National School Census 2011 baseline data and scenario attribute data for all zones in England. These files present aggregate data for all children <b>living in a given zone</b></p>
+          <p>In the LSOA downloads, baseline and scenario data are not presented for cells containing 1 or 2 children.  Instead these data are set as missing ('NA').  These data are, however, included in the local authority downloads.</p>
+          <ul>
+            <li>Zones (local authorities)*:
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lad_attributes.csv" target="_blank" download="lad_attributes.csv" onclick="ga('send', 'event', 'download', 'school/lad_attributes.csv');">
+                csv
+              </a>
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lad.Rds" target="_blank" download="lad.Rds" onclick="ga('send', 'event', 'download', 'school/lad.Rds');">
+                Rds
+              </a>
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lad.geojson" target="_blank" download="lad.geojson" onclick="ga('send', 'event', 'download', 'school/lad.geojson');">
+                geojson</a> -
+              <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/lad_codebook.csv" target="_blank" download="lad_codebook.csv" onclick="ga('send', 'event', 'download', 'school/lad_codebook.csv');">
+                Codebook
+              </a>
+            </li>
+            <li>Zones (LSOA):
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/z_all_attributes.csv" target="_blank" download="z_all_attributes.csv" onclick="ga('send', 'event', 'download', 'school/z_all_attributes.csv');">
+                csv</a>
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/z_all.Rds" target="_blank" download="z_all.Rds" onclick="ga('send', 'event', 'download', 'school/z_all.Rds');">
+                Rds
+              </a>
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/z_all.geojson" target="_blank" download="z_all.geojson" onclick="ga('send', 'event', 'download', 'school/z_all.geojson');">
+                geojson
+              </a> -
+              <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/z_codebook.csv" target="_blank" download="z_codebook.csv" onclick="ga('send', 'event', 'download', 'school/z_codebook.csv');">
+                Codebook
+              </a>
+            </li>
+          </ul>
+          <p>*Note that different units are used for the carbon savings (tonnes not kilograms of CO2e).</p>
+        </div>
 
-      <div class="col-md-12 text-left" style="padding-top:10px;">
-        <h4><a name="natcommutelsoaflows"></a>LSOA-level flows data</h4>
-        <ul>
-          <li>All flows (attribute data only): <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/od_all_attributes.csv" target="_blank" download="od_all_attributes.csv" onclick="ga('send', 'event', 'download', 'commute/od_all_attributes.csv');">csv</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv');">Codebook</a></li>
-          <li>
-            Centroids &amp; within-zone travel:
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/c_all.Rds" target="_blank" download="c_all.Rds" onclick="ga('send', 'event', 'download', 'commute/c_all.Rds');">
-              Rds
-            </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/c_all.geojson" target="_blank" download="c_all.geojson" onclick="ga('send', 'event', 'download', 'commute/c_all.geojson');">
-              geojson
-            </a> -
-            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/c_codebook.csv" target="_blank" download="c_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/c_codebook.csv');">
+        <div class="col-md-12 text-left" style="padding-top:10px;">
+          <h4><a name="natschooldestinations"></a>School travel data for schools</h4>
+          <p>Download anonymised National School Census 2011 baseline data and scenario data for schools in England. These files present aggregate data for all children <b>attending a given school</b>.</p>
+          <p>Baseline and scenario data are not presented for cells containing between 1 and 5 children.  Instead these data are set as missing ('NA').</p>
+
+           <ul>
+            <li>Schools:
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/d_all_attributes.csv" target="_blank" download="d_all_attributes.csv" onclick="ga('send', 'event', 'download', 'school/d_all_attributes.csv');">
+                csv
+              </a>
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/d_all.Rds" target="_blank" download="d_all.Rds" onclick="ga('send', 'event', 'download', 'school/d_all.Rds');">
+                Rds
+              </a>
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/d_all.geojson" target="_blank" download="d_all.geojson" onclick="ga('send', 'event', 'download', 'school/d_all.geojson');">
+                geojson
+              </a> -
+              <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/d_codebook.csv" target="_blank" download="d_codebook.csv" onclick="ga('send', 'event', 'download', 'school/d_codebook.csv');">
               Codebook
-            </a>
-          </li>
-          <li>Straight lines: <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/l_all.Rds" target="_blank" download="l_all.Rds" onclick="ga('send', 'event', 'download', 'commute/l_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv');">Codebook</a></li>
-          <li>Fast routes: <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/rf_all.Rds" target="_blank" download="rf_all.Rds" onclick="ga('send', 'event', 'download', 'commute/rf_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/od_l_rf_codebook.csv" target="_blank" download="od_l_rf_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/od_l_rf_codebook.csv');">Codebook</a></li>
-          <li>Quieter routes: <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/rq_all.Rds" target="_blank" download="rq_all.Rds" onclick="ga('send', 'event', 'download', 'commute/rq_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/rq_codebook.csv" target="_blank" download="rq_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/rq_codebook.csv');">Codebook</a></li>
-          <li> Route network (LSOA): <a href="https://github.com/npct/pct-outputs-national/raw/master/commute/lsoa/rnet_all.Rds" target="_blank" download="rnet_all.Rds" onclick="ga('send', 'event', 'download', 'commute/rnet_all.Rds');">Rds</a> -  <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/commute/rnet_codebook.csv" target="_blank" download="rnet_codebook.csv" onclick="ga('send', 'event', 'download', 'commute/rnet_codebook.csv');">Codebook</a></li>
-        </ul>
-      </div>
+              </a>
+            </li>
+           </ul>
+        </div>
 
-      <div class="col-md-12 text-left" style="padding-top:10px;">
-        <p>Please see the codebooks for a description of the variables included in these download files, and the User Manual for further details of how these variable were calculated.  You can also contact us at <a href="mailto:pct@pct.bike">pct@pct.bike</a>.</p>
-      </div>
-    </div>
-
-    <div class="col-md-9">
-      <div class="col-md-12 text-left" style="padding-top:10px;">
-        <h3>National Data  - school layer</h3>
-        <p>This section contains data downloads for the schools layer for the whole of England. These are available as CSV files containing baseline and scenario attribute data for zones and schools, and as geographic files that can be read by R (.Rds) or GIS programs such as QGIS (.geojson).</p>
-        <p>Please be aware that equivalent files for different purposes and geographies have <b>the same file name</b> when downloaded (e.g. 'z_all.geojson' for national zones files for both commuting and school travel).  To avoid confusion you may want to rename those files or save them in labelled folders. Note also that when <b>downloading 'csv' files using a Firefox browser</b>, the file will open onscreen in a new webpage.  If you then type "Ctrl + S" the onscreen data will download as a csv file.</p>
-      </div>
-
-      <div class="col-md-12 text-left" style="padding-top:10px;">
-        <h4><a name="natschoolzones"></a>School travel data for zones</h4>
-        <p>Download anonymised National School Census 2011 baseline data and scenario attribute data for all zones in England. These files present aggregate data for all children <b>living in a given zone</b></p>
-        <p>In the LSOA downloads, baseline and scenario data are not presented for cells containing 1 or 2 children.  Instead these data are set as missing ('NA').  These data are, however, included in the local authority downloads.</p>
-        <ul>
-          <li>Zones (local authorities)*:
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lad_attributes.csv" target="_blank" download="lad_attributes.csv" onclick="ga('send', 'event', 'download', 'school/lad_attributes.csv');">
-              csv
-            </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lad.Rds" target="_blank" download="lad.Rds" onclick="ga('send', 'event', 'download', 'school/lad.Rds');">
-              Rds
-            </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lad.geojson" target="_blank" download="lad.geojson" onclick="ga('send', 'event', 'download', 'school/lad.geojson');">
-              geojson</a> -
-            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/lad_codebook.csv" target="_blank" download="lad_codebook.csv" onclick="ga('send', 'event', 'download', 'school/lad_codebook.csv');">
-              Codebook
-            </a>
-          </li>
-          <li>Zones (LSOA):
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/z_all_attributes.csv" target="_blank" download="z_all_attributes.csv" onclick="ga('send', 'event', 'download', 'school/z_all_attributes.csv');">
-              csv</a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/z_all.Rds" target="_blank" download="z_all.Rds" onclick="ga('send', 'event', 'download', 'school/z_all.Rds');">
-              Rds
-            </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/z_all.geojson" target="_blank" download="z_all.geojson" onclick="ga('send', 'event', 'download', 'school/z_all.geojson');">
-              geojson
-            </a> -
-            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/z_codebook.csv" target="_blank" download="z_codebook.csv" onclick="ga('send', 'event', 'download', 'school/z_codebook.csv');">
-              Codebook
-            </a>
-          </li>
-        </ul>
-        <p>*Note that different units are used for the carbon savings (tonnes not kilograms of CO2e).</p>
-      </div>
-
-      <div class="col-md-12 text-left" style="padding-top:10px;">
-        <h4><a name="natschooldestinations"></a>School travel data for schools</h4>
-        <p>Download anonymised National School Census 2011 baseline data and scenario data for schools in England. These files present aggregate data for all children <b>attending a given school</b>.</p>
-        <p>Baseline and scenario data are not presented for cells containing between 1 and 5 children.  Instead these data are set as missing ('NA').</p>
-
-         <ul>
-          <li>Schools:
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/d_all_attributes.csv" target="_blank" download="d_all_attributes.csv" onclick="ga('send', 'event', 'download', 'school/d_all_attributes.csv');">
-              csv
-            </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/d_all.Rds" target="_blank" download="d_all.Rds" onclick="ga('send', 'event', 'download', 'school/d_all.Rds');">
-              Rds
-            </a>
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/d_all.geojson" target="_blank" download="d_all.geojson" onclick="ga('send', 'event', 'download', 'school/d_all.geojson');">
-              geojson
-            </a> -
-            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/d_codebook.csv" target="_blank" download="d_codebook.csv" onclick="ga('send', 'event', 'download', 'school/d_codebook.csv');">
-            Codebook
-            </a>
-          </li>
-         </ul>
-      </div>
-
-      <div class="col-md-12 text-left" style="padding-top:10px;">
-        <h4><a name="natschoolroutenet"></a>School travel data for the route network</h4>
-        <p>Download anonymised National School Census 2011 baseline and scenario cycling estimates for the route network.  This was calculated using all fast routes. It is more complete than the version available via the web browser which excludes route segments with small numbers of cyclists (see the 'Region stats' tab).</p>
-        <p>Baseline and scenario data are not presented for route segments containing 1 or 2 cyclists in the NSC 2011.  Instead these data are set as missing ('NA').</p>
-        <ul>
-          <li>Route network (LSOA, clickable):
-            <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/rnet_all.Rds" target="_blank" download="rnet_all.Rds" onclick="ga('send', 'event', 'download', 'school/rnet_all.Rds');">
-              Rds
-            </a> -
-            <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/rnet_codebook.csv" target="_blank" download="rnet_codebook.csv" onclick="ga('send', 'event', 'download', 'school/rnet_codebook.csv');">
-              Codebook
-            </a>
-          </li>
-        </ul>
-      </div>
+        <div class="col-md-12 text-left" style="padding-top:10px;">
+          <h4><a name="natschoolroutenet"></a>School travel data for the route network</h4>
+          <p>Download anonymised National School Census 2011 baseline and scenario cycling estimates for the route network.  This was calculated using all fast routes. It is more complete than the version available via the web browser which excludes route segments with small numbers of cyclists (see the 'Region stats' tab).</p>
+          <p>Baseline and scenario data are not presented for route segments containing 1 or 2 cyclists in the NSC 2011.  Instead these data are set as missing ('NA').</p>
+          <ul>
+            <li>Route network (LSOA, clickable):
+              <a href="https://github.com/npct/pct-outputs-national/raw/master/school/lsoa/rnet_all.Rds" target="_blank" download="rnet_all.Rds" onclick="ga('send', 'event', 'download', 'school/rnet_all.Rds');">
+                Rds
+              </a> -
+              <a href="https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/02_codebooks/school/rnet_codebook.csv" target="_blank" download="rnet_codebook.csv" onclick="ga('send', 'event', 'download', 'school/rnet_codebook.csv');">
+                Codebook
+              </a>
+            </li>
+          </ul>
+        </div>
 
 
-      <div class="col-md-12 text-left" style="padding-top:10px;">
-        <p>Please see the codebooks for a description of the variables included in these download files, and the User Manual for further details of how these variable were calculated.  You can also contact us at <a href="mailto:pct@pct.bike">pct@pct.bike</a>.</p>
+        <div class="col-md-12 text-left" style="padding-top:10px;">
+          <p>Please see the codebooks for a description of the variables included in these download files, and the User Manual for further details of how these variable were calculated.  You can also contact us at <a href="mailto:pct@pct.bike">pct@pct.bike</a>.</p>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</html>
