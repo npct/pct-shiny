@@ -75,7 +75,8 @@ shinyUI(
           if(on_server) includeScript("../www/assets/google-analytics.js"),
           includeScript("../www/assets/extra.js"),
           includeCSS("../www/stylesheet.css"),
-          includeHTML(file.path("..", "favicon.html"))
+          includeHTML(file.path("..", "favicon.html")),
+          tags$meta("http-equiv" = "X-UA-Compatible", content="IE=edge")
         ),
         includeHTML(file.path("..", "www", "test-banner.html")),
         div(id="loading", "Loading&#8230;"),
