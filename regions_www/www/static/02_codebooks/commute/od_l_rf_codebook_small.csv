@@ -6,14 +6,19 @@ all,Total no. commuters
 bicycle,No. cyclists in Census 2011
 car_driver,No. car drivers in Census 2011
 govtarget_slc,No. cyclists in Government Target (equality)
+govtarget_sic,Increase in no. cyclists in Government Target (equality) vs. Census 2011
 govtarget_sid,Increase in no. car drivers in Government Target (equality) vs. Census 2011
 govnearmkt_slc,No. cyclists in Government Target (near market)
+govnearmkt_sic,Increase in no. cyclists in Government Target (near market) vs. Census 2011
 govnearmkt_sid,Increase in no. car drivers in Government Target (near market) vs. Census 2011
 gendereq_slc,No. cyclists in Gender Equality
+gendereq_sic,Increase in no. cyclists in Gender Equality vs. Census 2011
 gendereq_sid,Increase in no. car drivers in Gender Equality vs. Census 2011
 dutch_slc,No. cyclists in Go Dutch
+dutch_sic,Increase in no. cyclists in Go Dutch vs. Census 2011
 dutch_sid,Increase in no. car drivers in Go Dutch vs. Census 2011
 ebike_slc,No. cyclists in Ebikes
+ebike_sic,Increase in no. cyclists in Ebikes vs. Census 2011
 ebike_sid,Increase in no. car drivers in Ebikes vs. Census 2011
 govtarget_sideath,Change in deaths/year in Government Target (equality) versus Census 2011
 govtarget_sivalueyll,Value (pounds) of change in Years of Life Lost in Government Target (equality) versus Census 2011
