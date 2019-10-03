@@ -154,7 +154,7 @@ shinyServer(function(input, output, session) {
       local_line_order <- c(
         "Number of cyclists"   = "slc",
         "Increase in cyclists" = "sic",
-        "Reduction in deaths"  = "sideath_heat",
+        "Reduction in deaths"  = "sideath",
         "Reduction in CO2"     = "sico2"
       )
     } else if (purpose == "school") {
@@ -190,7 +190,7 @@ shinyServer(function(input, output, session) {
       local_line_order <- c(
         "Number of cycle trips" = "slc",
         "Increase in cycling"   = "sic",
-        "Reduction in deaths"   = "sideath_heat",
+        "Reduction in deaths"   = "sideath",
         "Reduction in CO2"      = "sico2"
       )
 
@@ -501,7 +501,7 @@ shinyServer(function(input, output, session) {
         return(NULL)
       lines_in_bb <- lines[drop(keep),]
       # Sort low-to-high for reduction in deaths (can't use absolute values as no. deaths can be a positive number, i.e. health disbenefit)
-      if (grepl(c("sideath_heat"), line_data())) {
+      if (grepl(c("sideath"), line_data())) {
         lines_in_bb[tail(order(lines_in_bb[[line_data()]], decreasing = T), nos),]
       } else {
         # sort by absolute values for remainder of things, which all have zero as higher or lower limit
@@ -602,8 +602,8 @@ shinyServer(function(input, output, session) {
           local_lines <- local_lines[local_lines$dutch_slc>0,] # always >0 for both
         }
       }
-      if (is.null(region$ldata) || (!is.null(region$ldata) && (!identical(region$ldata, local_lines) || !identical(region$plot$scenario, input$scenario)))) {
 
+      if (is.null(region$ldata) || (!is.null(region$ldata) && (!identical(region$ldata, local_lines) || !identical(region$plot$scenario, input$scenario)))) {
         leafletProxy("map")  %>% clearGroup(.,
                                             c("straight_lines",
                                               "routes_quieter",
@@ -611,12 +611,10 @@ shinyServer(function(input, output, session) {
                                               "route_network"
                                             )) %>%
           removeShape(., "highlighted")
-        
         region$ldata <- local_lines
         # Include current scenario in region$plot as the set of lines to plot may not change when the scenario alters, and so otherwise don't update
         region$plot$scenario <- input$scenario
         plot_lines(leafletProxy("map"), region$ldata, line_type)
-
         # Additionally plot fast routes on top of quieter if selected 'fast & quieter'
         if (input$line_type == 'routes') {
           plot_lines(leafletProxy("map"), sort_lines(region$plot$routes_fast, "routes_fast", input$nos_lines),"routes_fast")
