@@ -234,9 +234,11 @@ shinyServer(function(input, output, session) {
     # Rm objects (by time last accessed) if the list size is more than 2 Gb
     if (format(object.size(loaded_data), units = "Gb") > 2) {
       idx_to_rm <- which(loaded_data_accessed == min(unlist(loaded_data_accessed)))
-      print(c("removing", dir_to_rm, format(object.size(loaded_data), units = "Gb")))
-      loaded_data[[idxes_to_rm]] <<- NULL
-      loaded_data_accessed[[idxes_to_rm]] <<- NULL
+      if (interactive()){
+        print(c("removing", names(loaded_data)[[idx_to_rm]], format(object.size(loaded_data), units = "Gb")))
+      }
+      loaded_data[[idx_to_rm]] <<- NULL
+      loaded_data_accessed[[idx_to_rm]] <<- NULL
     }
 
     if (file.exists(filepath)) {
