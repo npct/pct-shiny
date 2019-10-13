@@ -234,9 +234,7 @@ shinyServer(function(input, output, session) {
     # Rm objects (by time last accessed) if the list size is more than 2 Gb
     if (format(object.size(loaded_data), units = "Gb") > 2) {
       idx_to_rm <- which(loaded_data_accessed == min(unlist(loaded_data_accessed)))
-      if (interactive()){
-        print(c("removing", names(loaded_data)[[idx_to_rm]], format(object.size(loaded_data), units = "Gb")))
-      }
+      print(c("removing", names(loaded_data)[[idx_to_rm]], format(object.size(loaded_data), units = "Gb")))
       loaded_data[[idx_to_rm]] <<- NULL
       loaded_data_accessed[[idx_to_rm]] <<- NULL
     }
@@ -271,9 +269,7 @@ shinyServer(function(input, output, session) {
   ## Set  values of region
   observe({
     shinyjs::showElement(id = "loading")
-    if (interactive()){
-      start_time <- Sys.time()
-    }
+    start_time <- Sys.time()
     if(is.null(input$geography)){
       shinyjs::hideElement(id = "loading")
       return()
@@ -396,20 +392,18 @@ shinyServer(function(input, output, session) {
       }
     })
     shinyjs::hideElement(id = "loading")
-    if (interactive()){
-      print(
-        paste(
-          "Loading region",
-          region$current,
-          "for",
-          input$geography,
-          input_purpose(),
-          "took",
-          round(difftime(Sys.time(), start_time, "s"), 3),
-          "s"
+    print(
+      paste(
+        "Loading region",
+        region$current,
+        "for",
+        input$geography,
+        input_purpose(),
+        "took",
+        round(difftime(Sys.time(), start_time, "s"), 3),
+        "s"
         )
       )
-    }
   }, priority = 3)
 
 
