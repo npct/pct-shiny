@@ -34,9 +34,13 @@ base_slmmet,Change in mean marginal METs per child per week in School Census 201
 govtarget_simmet,Change in mean marginal METs per child per week in Government Target (equality) versus School Census 2011
 cambridge_simmet,Change in mean marginal METs per child per week in Go Cambridge versus School Census 2011
 dutch_simmet,Change in mean marginal METs per child per week in Go Dutch versus School Census 2011
+base_slcarkm,Change in car driver distance/year (km) in School Census 2011 versus 'no cycling'
 base_slco2,Change in CO2/year (kg) in School Census 2011 versus 'no cycling'
+govtarget_sicarkm,Change in car driver distance/year (km) in Government Target (equality) versus School Census 2011
 govtarget_sico2,Change in CO2/year (kg) in Government Target (equality) versus School Census 2011
+cambridge_sicarkm,Change in car driver distance/year (km) in Go Cambridge versus School Census 2011
 cambridge_sico2,Change in CO2/year (kg) in Go Cambridge versus School Census 2011
+dutch_sicarkm,Change in car driver distance/year (km) in Go Dutch versus School Census 2011
 dutch_sico2,Change in CO2/year (kg) in Go Dutch versus School Census 2011
 perc_rf_dist_u5km,Percent of commuters in zone with fast route commute distance <10km [calculated excluding trips with no fixed work place]
 avslope_perc_u5km,Average fast route gradient (%) of commute trips in zone with fast route distance <10km
