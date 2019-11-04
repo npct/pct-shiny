@@ -8,35 +8,35 @@ bicycle,No. cyclists in School Census 2011
 foot,No. pedestrians in School Census 2011
 car,No. children driven by car in School Census 2011
 govtarget_slc,No. cyclists in Government Target (equality)
-govtarget_sic,Increase in no. cyclists in Government Target (equality) vs. School Census 2011
+govtarget_sic,Increase no. cyclists in Government Target (equality) vs. School Census 2011
 govtarget_slw,No. pedestrians in Government Target (equality)
-govtarget_siw,Increase in no. pedestrians in Government Target (equality) vs. School Census 2011
+govtarget_siw,Increase no. pedestrians in Government Target (equality) vs. School Census 2011
 govtarget_sld,No. children driven by car in Government Target (equality)
-govtarget_sid,Increase in no. children driven by car in Government Target (equality) vs. School Census 2011
+govtarget_sid,Increase no. children driven by car in Government Target (equality) vs. School Census 2011
 cambridge_slc,No. cyclists in Go Cambridge
-cambridge_sic,Increase in no. cyclists in Go Cambridge vs. School Census 2011
+cambridge_sic,Increase no. cyclists in Go Cambridge vs. School Census 2011
 cambridge_slw,No. pedestrians in Go Cambridge
-cambridge_siw,Increase in no. pedestrians in Go Cambridge vs. School Census 2011
+cambridge_siw,Increase no. pedestrians in Go Cambridge vs. School Census 2011
 cambridge_sld,No. children driven by car in Go Cambridge
-cambridge_sid,Increase in no. children driven by car in Go Cambridge vs. School Census 2011
+cambridge_sid,Increase no. children driven by car in Go Cambridge vs. School Census 2011
 dutch_slc,No. cyclists in Go Dutch
-dutch_sic,Increase in no. cyclists in Go Dutch vs. School Census 2011
+dutch_sic,Increase no. cyclists in Go Dutch vs. School Census 2011
 dutch_slw,No. pedestrians in Go Dutch
-dutch_siw,Increase in no. pedestrians in Go Dutch vs. School Census 2011
+dutch_siw,Increase no. pedestrians in Go Dutch vs. School Census 2011
 dutch_sld,No. children driven by car in Go Dutch
-dutch_sid,Increase in no. children driven by car in Go Dutch vs. School Census 2011
+dutch_sid,Increase no. children driven by car in Go Dutch vs. School Census 2011
 baseline_at_mmet,Mean active travel marginal METs per child per week in School Census 2011
-base_slmmet,Change in mean marginal METs per child per week in School Census 2011 versus 'no cycling'
+govtarget_slmmet,Change in mean marginal METs per child per week in Government Target (equality) versus 'no cycling'
 govtarget_simmet,Change in mean marginal METs per child per week in Government Target (equality) versus School Census 2011
+cambridge_slmmet,Change in mean marginal METs per child per week in Go Cambridge versus 'no cycling'
 cambridge_simmet,Change in mean marginal METs per child per week in Go Cambridge versus School Census 2011
+dutch_slmmet,Change in mean marginal METs per child per week in Go Dutch versus 'no cycling'
 dutch_simmet,Change in mean marginal METs per child per week in Go Dutch versus School Census 2011
-base_slcarkm,Change in car driver distance/year (km) in School Census 2011 versus 'no cycling'
-base_slco2,Change in CO2/year (kg) in School Census 2011 versus 'no cycling'
-govtarget_sicarkm,Change in car driver distance/year (km) in Government Target (equality) versus School Census 2011
+govtarget_slco2,Change in CO2/year (kg) in Government Target (equality) versus 'no cycling'
 govtarget_sico2,Change in CO2/year (kg) in Government Target (equality) versus School Census 2011
-cambridge_sicarkm,Change in car driver distance/year (km) in Go Cambridge versus School Census 2011
+cambridge_slco2,Change in CO2/year (kg) in Go Cambridge versus 'no cycling'
 cambridge_sico2,Change in CO2/year (kg) in Go Cambridge versus School Census 2011
-dutch_sicarkm,Change in car driver distance/year (km) in Go Dutch versus School Census 2011
+dutch_slco2,Change in CO2/year (kg) in Go Dutch versus 'no cycling'
 dutch_sico2,Change in CO2/year (kg) in Go Dutch versus School Census 2011
 perc_rf_dist_u5km,Percent of commuters in zone with fast route commute distance <10km [calculated excluding trips with no fixed work place]
 avslope_perc_u5km,Average fast route gradient (%) of commute trips in zone with fast route distance <10km
