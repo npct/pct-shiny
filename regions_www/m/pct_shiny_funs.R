@@ -69,7 +69,7 @@ get_line_colour <- function(line_type){
 }
 # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
 # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
-# sideath/sisickday could be any value...
+# sivalue_heat could be any value...
 scenario_data_missing <- function(data, scenario){
   is.null(data[[data_filter(scenario, "slc")]])
 }
@@ -217,8 +217,7 @@ popup_straight_lines <- function(data, scenario, purpose){
     return()
   }
 
-  font_colour_death <- negative_red(data, scenario, "sivalueyll")
-  font_colour_sick <- negative_red(data, scenario, "sivaluesick")
+  font_colour <- negative_red(data, scenario, "sivalue_heat")
 
   # BASELINE TABLE
   if(scenario == 'olc') {
@@ -276,14 +275,8 @@ popup_straight_lines <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "sideath")]], 3),
-           " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
-      </td>
-    </tr>
-    <tr>
-      <td> Change in days sick leave/yr: &nbsp; </td>
-           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickday")]], 3),
-           " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
+             " (&pound;" , round(data[[data_filter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
     <tr>
@@ -313,9 +306,7 @@ popup_routes <- function(data, scenario, purpose){
 
   if (route_type == 'fast') {
 
-    font_colour_death <- negative_red(data, scenario, "sivalueyll")
-    font_colour_sick <- negative_red(data, scenario, "sivaluesick")
-
+  font_colour <- negative_red(data, scenario, "sivalue_heat")
     if(scenario == 'olc') {
       paste0("
 <table class = 'htab'>
@@ -375,14 +366,8 @@ popup_routes <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "sideath")]], 3),
-             " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
-      </td>
-    </tr>
-    <tr>
-      <td> Change in days sick leave/yr: &nbsp; </td>
-             <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickday")]], 3),
-             " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
+             " (&pound;" , round(data[[data_filter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
     <tr>
@@ -539,10 +524,7 @@ popup_zones <- function(data, scenario, purpose){
   }
 
   if (purpose %in% c("commute", "alltrips")) {
-
-    font_colour_death <- negative_red(data, scenario, "sivalueyll")
-    font_colour_sick <- negative_red(data, scenario, "sivaluesick")
-
+  font_colour <- negative_red(data, scenario, "sivalue_heat")
   if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
@@ -607,14 +589,8 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "sideath")]], 3),
-           " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
-      </td>
-    </tr>
-    <tr>
-      <td> Change in days sick leave/yr: &nbsp; </td>
-           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickday")]], 3),
-           " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
+             " (&pound;" , round(data[[data_filter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
     <tr>
@@ -715,10 +691,8 @@ popup_centroids <- function(data, scenario, purpose){
     return()
   }
 
-  font_colour_death <- negative_red(data, scenario, "sivalueyll")
-  font_colour_sick <- negative_red(data, scenario, "sivaluesick")
-
-  if(scenario == 'olc') {
+  font_colour <- negative_red(data, scenario, "sivalue_heat")
+ if(scenario == 'olc') {
     paste0("
 <table class = 'htab'>
   <thead>
@@ -782,14 +756,8 @@ popup_centroids <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in deaths/yr: &nbsp; </td>
-        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "sideath")]], 3),
-           " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
-      </td>
-    </tr>
-    <tr>
-      <td> Change in days sick leave/yr: &nbsp; </td>
-           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickday")]], 3),
-           " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
+      <td style= 'color:", font_colour , "' >", round(data[[data_filter(scenario, "sideath_heat")]], 3),
+             " (&pound;" ,round(data[[data_filter(scenario, "sivalue_heat")]]), ")
       </td>
     </tr>
     <tr>
