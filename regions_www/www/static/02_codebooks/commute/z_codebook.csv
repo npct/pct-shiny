@@ -13,64 +13,118 @@ train_tube,"No. train, underground and light rail users in Census 2011"
 bus,No. bus users in Census 2011
 taxi_other,No. taxi and other transport users in Census 2011
 govtarget_slc,No. cyclists in Government Target (equality)
-govtarget_sic,Increase no. cyclists in Government Target (equality) vs. Census 2011
+govtarget_sic,Increase in no. cyclists in Government Target (equality) vs. Census 2011
 govtarget_slw,No. pedestrians in Government Target (equality)
-govtarget_siw,Increase no. pedestrians in Government Target (equality) vs. Census 2011
+govtarget_siw,Increase in no. pedestrians in Government Target (equality) vs. Census 2011
 govtarget_sld,No. car drivers in Government Target (equality)
-govtarget_sid,Increase no. car drivers in Government Target (equality) vs. Census 2011
+govtarget_sid,Increase in no. car drivers in Government Target (equality) vs. Census 2011
+govtarget_slp,No. car passengers in Government Target (equality)
+govtarget_sip,Increase in no. car passengers in Government Target (equality) vs. Census 2011
+govtarget_slm,No. motorcyclists in Government Target (equality)
+govtarget_sim,Increase in no. motorcyclists in Government Target (equality) vs. Census 2011
+govtarget_slpt,No. public transport users in Government Target (equality)
+govtarget_sipt,Increase in no. public transport users in Government Target (equality) vs. Census 2011
 govnearmkt_slc,No. cyclists in Government Target (near market)
-govnearmkt_sic,Increase no. cyclists in Government Target (near market) vs. Census 2011
+govnearmkt_sic,Increase in no. cyclists in Government Target (near market) vs. Census 2011
 govnearmkt_slw,No. pedestrians in Government Target (near market)
-govnearmkt_siw,Increase no. pedestrians in Government Target (near market) vs. Census 2011
+govnearmkt_siw,Increase in no. pedestrians in Government Target (near market) vs. Census 2011
 govnearmkt_sld,No. car drivers in Government Target (near market)
-govnearmkt_sid,Increase no. car drivers in Government Target (near market) vs. Census 2011
+govnearmkt_sid,Increase in no. car drivers in Government Target (near market) vs. Census 2011
+govnearmkt_slp,No. car passengers in Government Target (near market)
+govnearmkt_sip,Increase in no. car passengers in Government Target (near market) vs. Census 2011
+govnearmkt_slm,No. motorcyclists in Government Target (near market)
+govnearmkt_sim,Increase in no. motorcyclists in Government Target (near market) vs. Census 2011
+govnearmkt_slpt,No. public transport users in Government Target (near market)
+govnearmkt_sipt,Increase in no. public transport users in Government Target (near market) vs. Census 2011
 gendereq_slc,No. cyclists in Gender Equality
-gendereq_sic,Increase no. cyclists in Gender Equality vs. Census 2011
+gendereq_sic,Increase in no. cyclists in Gender Equality vs. Census 2011
 gendereq_slw,No. pedestrians in Gender Equality
-gendereq_siw,Increase no. pedestrians in Gender Equality vs. Census 2011
+gendereq_siw,Increase in no. pedestrians in Gender Equality vs. Census 2011
 gendereq_sld,No. car drivers in Gender Equality
-gendereq_sid,Increase no. car drivers in Gender Equality vs. Census 2011
+gendereq_sid,Increase in no. car drivers in Gender Equality vs. Census 2011
+gendereq_slp,No. car passengers in Gender Equality
+gendereq_sip,Increase in no. car passengers in Gender Equality vs. Census 2011
+gendereq_slm,No. motorcyclists in Gender Equality
+gendereq_sim,Increase in no. motorcyclists in Gender Equality vs. Census 2011
+gendereq_slpt,No. public transport users in Gender Equality
+gendereq_sipt,Increase in no. public transport users in Gender Equality vs. Census 2011
 dutch_slc,No. cyclists in Go Dutch
-dutch_sic,Increase no. cyclists in Go Dutch vs. Census 2011
+dutch_sic,Increase in no. cyclists in Go Dutch vs. Census 2011
 dutch_slw,No. pedestrians in Go Dutch
-dutch_siw,Increase no. pedestrians in Go Dutch vs. Census 2011
+dutch_siw,Increase in no. pedestrians in Go Dutch vs. Census 2011
 dutch_sld,No. car drivers in Go Dutch
-dutch_sid,Increase no. car drivers in Go Dutch vs. Census 2011
+dutch_sid,Increase in no. car drivers in Go Dutch vs. Census 2011
+dutch_slp,No. car passengers in Go Dutch
+dutch_sip,Increase in no. car passengers in Go Dutch vs. Census 2011
+dutch_slm,No. motorcyclists in Go Dutch
+dutch_sim,Increase in no. motorcyclists in Go Dutch vs. Census 2011
+dutch_slpt,No. public transport users in Go Dutch
+dutch_sipt,Increase in no. public transport users in Go Dutch vs. Census 2011
 ebike_slc,No. cyclists in Ebikes
-ebike_sic,Increase no. cyclists in Ebikes vs. Census 2011
+ebike_sic,Increase in no. cyclists in Ebikes vs. Census 2011
 ebike_slw,No. pedestrians in Ebikes
-ebike_siw,Increase no. pedestrians in Go Dutch vs. Census 2011
+ebike_siw,Increase in no. pedestrians in Go Dutch vs. Census 2011
 ebike_sld,No. car drivers in Ebikes
-ebike_sid,Increase no. car drivers in Ebikes vs. Census 2011
-govtarget_sldeath_heat,Change in deaths/year in Government Target (equality) versus 'no cycling'
-govtarget_slvalue_heat,Value (pounds) of change in deaths in Government Target (equality) versus 'no cycling' 
-govtarget_sideath_heat,Change in deaths/year in Government Target (equality) versus Census 2011
-govtarget_sivalue_heat,Value (pounds) of change in deaths in Government Target (equality) versus Census 2011
-govnearmkt_sldeath_heat,Change in deaths/year in Government Target (near market) versus 'no cycling'
-govnearmkt_slvalue_heat,Value (pounds) of change in deaths in Government Target (near market) versus 'no cycling' 
-govnearmkt_sideath_heat,Change in deaths/year in Government Target (near market) versus Census 2011
-govnearmkt_sivalue_heat,Value (pounds) of change in deaths in Government Target (near market) versus Census 2011
-gendereq_sldeath_heat,Change in deaths/year in Gender Equality versus 'no cycling'
-gendereq_slvalue_heat,Value (pounds) of change in deaths in Gender Equality versus 'no cycling' 
-gendereq_sideath_heat,Change in deaths/year in Gender Equality versus Census 2011
-gendereq_sivalue_heat,Value (pounds) of change in deaths in Gender Equality versus Census 2011
-dutch_sldeath_heat,Change in deaths/year in Go Dutch versus 'no cycling'
-dutch_slvalue_heat,Value (pounds) of change in deaths in Go Dutch versus 'no cycling' 
-dutch_sideath_heat,Change in deaths/year in Go Dutch versus Census 2011
-dutch_sivalue_heat,Value (pounds) of change in deaths in Go Dutch versus Census 2011
-ebike_sldeath_heat,Change in deaths/year in Ebikes versus 'no cycling'
-ebike_slvalue_heat,Value (pounds) of change in deaths in Ebikes versus 'no cycling' 
-ebike_sideath_heat,Change in deaths/year in Ebikes versus Census 2011
-ebike_sivalue_heat,Value (pounds) of change in deaths in Ebikes versus Census 2011
-govtarget_slco2,Change in CO2/year (kg) in Government Target (equality) versus 'no cycling'
+ebike_sid,Increase in no. car drivers in Ebikes vs. Census 2011
+ebike_slp,No. car passengers in Ebikes
+ebike_sip,Increase in no. car passengers in Ebikes vs. Census 2011
+ebike_slm,No. motorcyclists in Ebikes
+ebike_sim,Increase in no. motorcyclists in Ebikes vs. Census 2011
+ebike_slpt,No. public transport users in Ebikes
+ebike_sipt,Increase in no. public transport users in Ebikes vs. Census 2011
+base_slcyclehours,Change in cycling duration/year (hours) in Census 2011 versus 'no cycling'
+govtarget_sicyclehours,Change in cycling duration/year (hours) in Government Target (equality) versus Census 2011
+govnearmkt_sicyclehours,Change in cycling duration/year (hours) in Government Target (near market) versus Census 2011
+gendereq_sicyclehours,Change in cycling duration/year (hours) in Gender Equality versus Census 2011
+dutch_sicyclehours,Change in cycling duration/year (hours) in Go Dutch versus Census 2011
+ebike_sicyclehours,Change in cycling duration/year (hours) in Ebikes versus Census 2011
+base_sldeath,Change in deaths/year in Census 2011 versus 'no cycling'
+base_slyll,Change in Years of Life Lost (YLLs)/year in Census 2011 versus 'no cycling'
+base_slvalueyll,Value (pounds) of change in Years of Life Lost in Census 2011 versus 'no cycling' 
+base_slsickday,Change in annual sick days in Census 2011 versus 'no cycling' 
+base_slvaluesick,Value (pounds) of change in sickness absence in Census 2011 versus 'no cycling' 
+base_slvaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Census 2011 versus 'no cycling' 
+govtarget_sideath,Change in deaths/year in Government Target (equality) versus Census 2011
+govtarget_siyll,Change in Years of Life Lost (YLLs)/year in Government Target (equality) versus Census 2011
+govtarget_sivalueyll,Value (pounds) of change in Years of Life Lost in Government Target (equality) versus Census 2011
+govtarget_sisickday,Change in annual sick days in Government Target (equality) versus Census 2011
+govtarget_sivaluesick,Value (pounds) of change in sickness absence in Government Target (equality) versus Census 2011
+govtarget_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Government Target (equality) versus Census 2011
+govnearmkt_sideath,Change in deaths/year in Government Target (near market) versus Census 2011
+govnearmkt_siyll,Change in Years of Life Lost (YLLs)/year in Government Target (near market) versus Census 2011
+govnearmkt_sivalueyll,Value (pounds) of change in Years of Life Lost in Government Target (near market) versus Census 2011
+govnearmkt_sisickday,Change in annual sick days in Government Target (near market) versus Census 2011
+govnearmkt_sivaluesick,Value (pounds) of change in sickness absence in Government Target (near market) versus Census 2011
+govnearmkt_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Government Target (near market) versus Census 2011
+gendereq_sideath,Change in deaths/year in Gender Equality versus Census 2011
+gendereq_siyll,Change in Years of Life Lost (YLLs)/year in Gender Equality versus Census 2011
+gendereq_sivalueyll,Value (pounds) of change in Years of Life Lost in Gender Equality versus Census 2011
+gendereq_sisickday,Change in annual sick days in Gender Equality versus Census 2011
+gendereq_sivaluesick,Value (pounds) of change in sickness absence in Gender Equality versus Census 2011
+gendereq_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Gender Equality versus Census 2011
+dutch_sideath,Change in deaths/year in Go Dutch versus Census 2011
+dutch_siyll,Change in Years of Life Lost (YLLs)/year in Go Dutch versus Census 2011
+dutch_sivalueyll,Value (pounds) of change in Years of Life Lost in Go Dutch versus Census 2011
+dutch_sisickday,Change in annual sick days in Go Dutch versus Census 2011
+dutch_sivaluesick,Value (pounds) of change in sickness absence in Go Dutch versus Census 2011
+dutch_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Go Dutch versus Census 2011
+ebike_sideath,Change in deaths/year in Ebikes versus Census 2011
+ebike_siyll,Change in Years of Life Lost (YLLs)/year in Ebikes versus Census 2011
+ebike_sivalueyll,Value (pounds) of change in Years of Life Lost in Ebikes versus Census 2011
+ebike_sisickday,Change in annual sick days in Ebikes versus Census 2011
+ebike_sivaluesick,Value (pounds) of change in sickness absence in Ebikes versus Census 2011
+ebike_sivaluecomb,Combined value (pounds) of change in YLLs plus change in sickness absence in Ebikes versus Census 2011
+base_slcarkm,Change in car driver distance/year (km) in Census 2011 versus 'no cycling'
+base_slco2,Change in CO2/year (kg) in Census 2011 versus 'no cycling'
+govtarget_sicarkm,Change in car driver distance/year (km) in Government Target (equality) versus Census 2011
 govtarget_sico2,Change in CO2/year (kg) in Government Target (equality) versus Census 2011
-govnearmkt_slco2,Change in CO2/year (kg) in Government Target (near market) versus 'no cycling'
+govnearmkt_sicarkm,Change in car driver distance/year (km) in Government Target (near market) versus Census 2011
 govnearmkt_sico2,Change in CO2/year (kg) in Government Target (near market) versus Census 2011
-gendereq_slco2,Change in CO2/year (kg) in Gender Equality versus 'no cycling'
+gendereq_sicarkm,Change in car driver distance/year (km) in Gender Equality versus Census 2011
 gendereq_sico2,Change in CO2/year (kg) in Gender Equality versus Census 2011
-dutch_slco2,Change in CO2/year (kg) in Go Dutch versus 'no cycling'
+dutch_sicarkm,Change in car driver distance/year (km) in Go Dutch versus Census 2011
 dutch_sico2,Change in CO2/year (kg) in Go Dutch versus Census 2011
-ebike_slco2,Change in CO2/year (kg) in Ebikes versus 'no cycling'
+ebike_sicarkm,Change in car driver distance/year (km) in Ebikes versus Census 2011
 ebike_sico2,Change in CO2/year (kg) in Ebikes versus Census 2011
 perc_rf_dist_u10km,Percent of commuters in zone with fast route commute distance <10km [calculated excluding trips with no fixed work place]
 avslope_perc_u10km,Average fast route gradient (%) of commute trips in zone with fast route distance <10km
