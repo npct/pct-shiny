@@ -282,7 +282,7 @@ popup_straight_lines <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in days sick leave/yr: &nbsp; </td>
-           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 3),
+           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 1),
            " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
       </td>
     </tr>
@@ -381,7 +381,7 @@ popup_routes <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in days sick leave/yr: &nbsp; </td>
-             <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 3),
+             <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 1),
              " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
       </td>
     </tr>
@@ -613,7 +613,7 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in days sick leave/yr: &nbsp; </td>
-           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 3),
+           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 1),
            " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
       </td>
     </tr>
@@ -788,7 +788,7 @@ popup_centroids <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in days sick leave/yr: &nbsp; </td>
-           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 3),
+           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 1),
            " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
       </td>
     </tr>
