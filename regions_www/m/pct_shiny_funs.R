@@ -69,7 +69,7 @@ get_line_colour <- function(line_type){
 }
 # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
 # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
-# sideath/sisickday could be any value...
+# sideath/sisickdays could be any value...
 scenario_data_missing <- function(data, scenario){
   is.null(data[[data_filter(scenario, "slc")]])
 }
@@ -282,7 +282,7 @@ popup_straight_lines <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in days sick leave/yr: &nbsp; </td>
-           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickday")]], 3),
+           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 3),
            " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
       </td>
     </tr>
@@ -381,7 +381,7 @@ popup_routes <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in days sick leave/yr: &nbsp; </td>
-             <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickday")]], 3),
+             <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 3),
              " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
       </td>
     </tr>
@@ -613,7 +613,7 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in days sick leave/yr: &nbsp; </td>
-           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickday")]], 3),
+           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 3),
            " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
       </td>
     </tr>
@@ -788,7 +788,7 @@ popup_centroids <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in days sick leave/yr: &nbsp; </td>
-           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickday")]], 3),
+           <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 3),
            " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
       </td>
     </tr>
