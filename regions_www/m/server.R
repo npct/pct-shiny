@@ -30,13 +30,13 @@ must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs")
 interface_root <- file.path("..", "..")
 data_regional_root <-  file.path(interface_root, '..', 'pct-outputs-regional-Rsmall')
 
-outputs_regional_sha <- as.character(readLines(file.path(interface_root, "outputs_regional_sha"), warn = F))
+outputs_regional_Rsmall_sha <- as.character(readLines(file.path(interface_root, "outputs_regional_Rsmall_sha"), warn = F))
 
 ## Check if working on server and if not initiate environment (including packages)
 on_server <- grepl("shiny", Sys.info()["user"])
 if (!on_server) {
   source(file.path(interface_root, "scripts", "init.R"))
-  init_dev_env(interface_root, data_regional_root, outputs_regional_sha,c(available_locally_pkgs, must_be_installed_pkgs))
+  init_dev_env(interface_root, data_regional_root, outputs_regional_Rsmall_sha,c(available_locally_pkgs, must_be_installed_pkgs))
 }
 
 repo_sha <-  as.character(readLines(file.path(interface_root, "repo_sha")))
