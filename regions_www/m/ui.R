@@ -48,7 +48,7 @@ line_types <- c(
 line_order <- c(
   "Number of cyclists"   = "slc",
   "Increase in cyclists" = "sic",
-  "Reduction in deaths"  = "sideath",
+  "Health economic benefit"  = "sivaluecomb",
   "Reduction in CO2"     = "sico2"
 )
 

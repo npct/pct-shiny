@@ -154,7 +154,7 @@ shinyServer(function(input, output, session) {
       local_line_order <- c(
         "Number of cyclists"   = "slc",
         "Increase in cyclists" = "sic",
-        "Reduction in deaths"  = "sideath",
+        "Health economic benefit"  = "sivaluecomb",
         "Reduction in CO2"     = "sico2"
       )
     } else if (purpose == "school") {
@@ -190,7 +190,7 @@ shinyServer(function(input, output, session) {
       local_line_order <- c(
         "Number of cycle trips" = "slc",
         "Increase in cycling"   = "sic",
-        "Reduction in deaths"   = "sideath",
+        "Health economic benefit"  = "sivaluecomb",
         "Reduction in CO2"      = "sico2"
       )
 
