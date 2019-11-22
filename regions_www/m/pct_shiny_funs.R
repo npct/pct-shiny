@@ -69,7 +69,7 @@ get_line_colour <- function(line_type){
 }
 # updateSelectInput sends a message to the browser to polite ask it to update the input but it does not actually change the input$id
 # This means when on schools / cambridge when we change to commute then shiny still has input$scenario = "cambridge" which in our data is NULL
-# sideath/sisickdays could be any value...
+# siyll/sisickdays could be any value...
 scenario_data_missing <- function(data, scenario){
   is.null(data[[data_filter(scenario, "slc")]])
 }
@@ -275,8 +275,8 @@ popup_straight_lines <- function(data, scenario, purpose){
       <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
-      <td> Change in deaths/yr: &nbsp; </td>
-        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "sideath")]], 3),
+      <td> Change in YLLs/yr: &nbsp; </td>
+        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 1),
            " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
       </td>
     </tr>
@@ -374,8 +374,8 @@ popup_routes <- function(data, scenario, purpose){
       <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
-      <td> Change in deaths/yr: &nbsp; </td>
-        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "sideath")]], 3),
+      <td> Change in YLLs/yr: &nbsp; </td>
+        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 1),
              " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
       </td>
     </tr>
@@ -606,8 +606,8 @@ popup_zones <- function(data, scenario, purpose){
       <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
-      <td> Change in deaths/yr: &nbsp; </td>
-        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "sideath")]], 3),
+      <td> Change in YLLs/yr: &nbsp; </td>
+        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 1),
            " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
       </td>
     </tr>
@@ -781,8 +781,8 @@ popup_centroids <- function(data, scenario, purpose){
       <td>", round_dp(data[[data_filter(scenario, "sid")]]), "</td>
     </tr>
     <tr>
-      <td> Change in deaths/yr: &nbsp; </td>
-        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "sideath")]], 3),
+      <td> Change in YLLs/yr: &nbsp; </td>
+        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 1),
            " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
       </td>
     </tr>
