@@ -154,8 +154,8 @@ shinyServer(function(input, output, session) {
       local_line_order <- c(
         "Number of cyclists"   = "slc",
         "Increase in cyclists" = "sic",
-        "Health economic benefit"  = "sivaluecomb",
-        "Reduction in CO2"     = "sico2"
+        "Health economic benefit (mortality+sick leave)"  = "sivaluecomb",
+        "Reduction in CO2/car distance"     = "sico2"
       )
     } else if (purpose == "school") {
       local_scenarios <- c(
@@ -190,8 +190,8 @@ shinyServer(function(input, output, session) {
       local_line_order <- c(
         "Number of cycle trips" = "slc",
         "Increase in cycling"   = "sic",
-        "Health economic benefit"  = "sivaluecomb",
-        "Reduction in CO2"      = "sico2"
+        "Health economic benefit (mortality+sick leave)"  = "sivaluecomb",
+        "Reduction in CO2/car distance"      = "sico2"
       )
 
     }

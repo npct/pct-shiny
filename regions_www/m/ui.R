@@ -48,8 +48,8 @@ line_types <- c(
 line_order <- c(
   "Number of cyclists"   = "slc",
   "Increase in cyclists" = "sic",
-  "Health economic benefit"  = "sivaluecomb",
-  "Reduction in CO2"     = "sico2"
+  "Health economic benefit(mortality+sick leave)"  = "sivaluecomb",
+  "Reduction in CO2/car distance"     = "sico2"
 )
 
 map_base_attrs <- c(
