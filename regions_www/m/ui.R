@@ -85,7 +85,7 @@ shinyUI(
           class = "panel panel-default",
           fixed = TRUE,
           right = 20,
-          width = 180,
+          width = 220,
           height = "auto",
           style = "opacity: 0.9; z-index: 1; position: absolute",
           tags$div(title = "Show/Hide Panel",
