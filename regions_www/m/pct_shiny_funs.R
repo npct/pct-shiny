@@ -276,7 +276,7 @@ popup_straight_lines <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in YLLs/yr: &nbsp; </td>
-        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 1),
+        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 2),
            " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
       </td>
     </tr>
@@ -375,7 +375,7 @@ popup_routes <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in YLLs/yr: &nbsp; </td>
-        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 1),
+        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 2),
              " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
       </td>
     </tr>
@@ -607,7 +607,7 @@ popup_zones <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in YLLs/yr: &nbsp; </td>
-        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 1),
+        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 2),
            " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
       </td>
     </tr>
@@ -782,7 +782,7 @@ popup_centroids <- function(data, scenario, purpose){
     </tr>
     <tr>
       <td> Change in YLLs/yr: &nbsp; </td>
-        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 1),
+        <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 2),
            " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
       </td>
     </tr>
