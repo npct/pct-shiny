@@ -20,6 +20,12 @@ get_pretty_region_name <- function(region_name_in, the = T){
   }
 }
 
+# Pretty Numbers using non-scientific notations and commas for big marks
+pretty_num <-  function(val){
+  prettyNum(val, big.mark=",", scientific=FALSE)
+}
+
+
 ## Return a named list with the possible NAs columns and the base column to replace them,
 ## i.e. govtarget_slc NAs should be replaced with 3 + govtarget_sic
 school_na <- function(scenario){
@@ -277,13 +283,13 @@ popup_straight_lines <- function(data, scenario, purpose){
     <tr>
       <td> Change in YLLs/yr: &nbsp; </td>
         <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 2),
-           " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
+           " (&pound;" , pretty_num(round(data[[data_filter(scenario, "sivalueyll")]])), ")
       </td>
     </tr>
     <tr>
       <td> Change in days sick leave/yr: &nbsp; </td>
            <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 1),
-           " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
+           " (&pound;" , pretty_num(round(data[[data_filter(scenario, "sivaluesick")]])), ")
       </td>
     </tr>
     <tr>
@@ -376,13 +382,13 @@ popup_routes <- function(data, scenario, purpose){
     <tr>
       <td> Change in YLLs/yr: &nbsp; </td>
         <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 2),
-             " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
+             " (&pound;" , pretty_num(round(data[[data_filter(scenario, "sivalueyll")]])), ")
       </td>
     </tr>
     <tr>
       <td> Change in days sick leave/yr: &nbsp; </td>
              <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 1),
-             " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
+             " (&pound;" , pretty_num(round(data[[data_filter(scenario, "sivaluesick")]])), ")
       </td>
     </tr>
     <tr>
@@ -608,13 +614,13 @@ popup_zones <- function(data, scenario, purpose){
     <tr>
       <td> Change in YLLs/yr: &nbsp; </td>
         <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 2),
-           " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
+           " (&pound;" , pretty_num(round(data[[data_filter(scenario, "sivalueyll")]])), ")
       </td>
     </tr>
     <tr>
       <td> Change in days sick leave/yr: &nbsp; </td>
            <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 1),
-           " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
+           " (&pound;" , pretty_num(round(data[[data_filter(scenario, "sivaluesick")]])), ")
       </td>
     </tr>
     <tr>
@@ -783,13 +789,13 @@ popup_centroids <- function(data, scenario, purpose){
     <tr>
       <td> Change in YLLs/yr: &nbsp; </td>
         <td style= 'color:", font_colour_death , "' >", round(data[[data_filter(scenario, "siyll")]], 2),
-           " (&pound;" , round(data[[data_filter(scenario, "sivalueyll")]]), ")
+           " (&pound;" , pretty_num(round(data[[data_filter(scenario, "sivalueyll")]])), ")
       </td>
     </tr>
     <tr>
       <td> Change in days sick leave/yr: &nbsp; </td>
            <td style= 'color:", font_colour_sick , "' >", round(data[[data_filter(scenario, "sisickdays")]], 1),
-           " (&pound;" , round(data[[data_filter(scenario, "sivaluesick")]]), ")
+           " (&pound;" , pretty_num(round(data[[data_filter(scenario, "sivaluesick")]])), ")
       </td>
     </tr>
     <tr>
