@@ -141,6 +141,11 @@ shinyUI(
                 condition = "input.line_type !== 'route_network' && input.scenario !== 'olc'",
                 tags$div(
                   title = "Order the top flows by",
+                  tags$span(
+                    class = "glyphicon glyphicon-info-sign pull-right text-info",
+                    style="margin:5px;",
+                    title = "Help text"
+                  ),
                   selectInput(
                     "line_order",
                     "Order lines by",
