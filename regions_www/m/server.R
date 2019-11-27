@@ -30,13 +30,13 @@ must_be_installed_pkgs <- c("rgdal", "rgeos", "shinyjs")
 interface_root <- file.path("..", "..")
 data_regional_root <-  file.path(interface_root, '..', 'pct-outputs-regional-Rsmall')
 
-outputs_regional_sha <- as.character(readLines(file.path(interface_root, "outputs_regional_sha"), warn = F))
+outputs_regional_Rsmall_sha <- as.character(readLines(file.path(interface_root, "outputs_regional_Rsmall_sha"), warn = F))
 
 ## Check if working on server and if not initiate environment (including packages)
 on_server <- grepl("shiny", Sys.info()["user"])
 if (!on_server) {
   source(file.path(interface_root, "scripts", "init.R"))
-  init_dev_env(interface_root, data_regional_root, outputs_regional_sha,c(available_locally_pkgs, must_be_installed_pkgs))
+  init_dev_env(interface_root, data_regional_root, outputs_regional_Rsmall_sha,c(available_locally_pkgs, must_be_installed_pkgs))
 }
 
 repo_sha <-  as.character(readLines(file.path(interface_root, "repo_sha")))
@@ -154,8 +154,8 @@ shinyServer(function(input, output, session) {
       local_line_order <- c(
         "Number of cyclists"   = "slc",
         "Increase in cyclists" = "sic",
-        "Reduction in deaths"  = "sideath_heat",
-        "Reduction in CO2"     = "sico2"
+        "Health economic gain (YLLs + sick leave)"  = "sivaluecomb",
+        "Reduction in CO2/car distance"     = "sico2"
       )
     } else if (purpose == "school") {
       local_scenarios <- c(
@@ -190,8 +190,8 @@ shinyServer(function(input, output, session) {
       local_line_order <- c(
         "Number of cycle trips" = "slc",
         "Increase in cycling"   = "sic",
-        "Reduction in deaths"   = "sideath_heat",
-        "Reduction in CO2"      = "sico2"
+        "Health economic gain (YLLs + sick leave)"  = "sivaluecomb",
+        "Reduction in CO2/car distance"      = "sico2"
       )
 
     }
@@ -502,8 +502,8 @@ shinyServer(function(input, output, session) {
       if (all(!keep))
         return(NULL)
       lines_in_bb <- lines[drop(keep),]
-      # Sort low-to-high for reduction in deaths (can't use absolute values as no. deaths can be a positive number, i.e. health disbenefit)
-      if (grepl(c("sideath_heat"), line_data())) {
+      # Sort low-to-high for reduction in YLLs (can't use absolute values as no. YLLs can be a positive number, i.e. health disbenefit)
+      if (grepl(c("siyll"), line_data())) {
         lines_in_bb[tail(order(lines_in_bb[[line_data()]], decreasing = T), nos),]
       } else {
         # sort by absolute values for remainder of things, which all have zero as higher or lower limit
@@ -604,6 +604,7 @@ shinyServer(function(input, output, session) {
           local_lines <- local_lines[local_lines$dutch_slc>0,] # always >0 for both
         }
       }
+
       if (is.null(region$ldata) || (!is.null(region$ldata) && (!identical(region$ldata, local_lines) || !identical(region$plot$scenario, input$scenario)))) {
         leafletProxy("map")  %>% clearGroup(.,
                                             c("straight_lines",

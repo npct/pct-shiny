@@ -1,4 +1,4 @@
-init_dev_env <- function(interface_root, data_regional_root, outputs_regional_sha, cranPkgs) {
+init_dev_env <- function(interface_root, data_regional_root, outputs_regional_Rsmall_sha, cranPkgs) {
 
   ## Clone the regional data repo if it does not exist
   if(!dir.exists(data_regional_root)) {
@@ -14,7 +14,7 @@ init_dev_env <- function(interface_root, data_regional_root, outputs_regional_sh
   ## Comment the following lines to stop auto checkout
   # warning("Checking out the version of the data saved in the regional sha")
   # sys_message = c("--git-dir", file.path(data_regional_root, ".git"),
-  #                 "--work-tree", data_regional_root, "checkout", outputs_regional_sha)
+  #                 "--work-tree", data_regional_root, "checkout", outputs_regional_Rsmall_sha)
   # system2("git", sys_message, wait=T)
 
   ## Get the current repo sha

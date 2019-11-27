@@ -18,11 +18,11 @@
 
         <div style="padding-top:6px;">
           <h4><a name="manuals"></a>User Manuals</h4>
-          <i>Version 1.3 for English, version 1.2 for Welsh</i>
+          <i>Version 1.4 for English, version 1.2 for Welsh</i>
             <ul style="line-height:2.2;">
               <li>User Manual A: Overview (<a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-eng-user-manual-a.pdf">English</a>) (<a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-wel-user-manual-a.pdf">Welsh</a>)</li>
               <li>User Manual B: Using the PCT interface and data (<a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-eng-user-manual-b.pdf">English</a>) (<a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-wel-user-manual-b.pdf">Welsh</a>)</li>
-              <li>User Manual C1: PCT methods for the commuting layer (<a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-eng-user-manual-c1.pdf">English</a>) (<a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-wel-user-manual-c1.pdf">Welsh</a>)</li>
+              <li>User Manual C1: PCT methods for the commuting layer (<a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-eng-user-manual-c1.pdf">English</a>) (<a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-wel-user-manual-c1.pdf">Welsh</a>) (<a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-eng-user-manual-c1-yll-discounting.xlsx">Supplementary YLL discounting spreadsheet</a>)</li>
               <li>User Manual C2: PCT methods for the schools layer (<a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-eng-user-manual-c2.pdf">English</a>)</li>
               <li>User Manual D: Using the PCT in business cases (<a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-eng-user-manual-d.pdf">English</a>) (<a target="_blank" href = "https://cdn.rawgit.com/npct/pct-shiny/master/regions_www/www/static/03a_manual/pct-bike-wel-user-manual-d.pdf">Welsh</a>)</li>
             </ul>
@@ -157,6 +157,19 @@
                 </table>
               </div>
             </div>
+            <p><a href="javascript:toggleElement(&#39;a4&#39;)">4. What if I'm interested in trips not people? And does PCT account for return trips?</a></p>
+             <div id="a4" style="display:none">
+             <p>The PCT presents results in terms of numbers of people travelling to work or school in different ways – e.g. the number of commuters cycling to work in different scenarios.  This is in line with the input data we are using from the Census (for commuting) and the National School Census (for school travel).</p>
+             <p>We appreciate some users will be more interested in numbers of trips than numbers of people. We recommend estimating numbers of trips affected as: <b>Change in number of people * mean cycling trips per cyclist per week * 52.2 weeks in the year</b></p>
+             <p>The change in the number of people (e.g. an increase in cyclists or a decrease in drivers) is given in the PCT outputs. We estimate mean number of cycling trips per cyclist per week from the National Travel Survey (2010-2016) as:</p>
+             <ul>
+<li>5.1 for commuters who say cycling is their usual mode of travelling to school</li>
+<li>2.3 for primary school children whose parents say cycling is their usual mode of travelling to school</li>
+<li>5.1 for secondary school children whose parents say cycling is their usual mode of travelling to school</li></ul>
+             <p>Note that all these values are much less than 10, i.e. one cannot assume all commuter and schoolchild cyclists make five return trips per week across the year.  This is because of factors including part-time working; holiday periods; and cyclists using other modes for some journeys.</p>
+             <p>We have ourselves used a very similar method for the purposes of calculating physical activity benefits and carbon emission savings - see User Manuals C1 and C2. The only difference is that for the commuting layer we do not use the total population value '5.1' but instead used equivalent values calculated separately by age and gender (range 4.1-5.5).</p>
+             </div>
+
         </div>
       </div>
     </div>

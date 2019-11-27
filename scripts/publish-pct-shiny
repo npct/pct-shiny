@@ -31,7 +31,7 @@ git --git-dir /home/git/pct-shiny rev-parse --short HEAD > ${VAR_DIR}${SHINY_APP
 echo "Git fetch the data"
 git -C /home/git/${DATA_GIT} fetch
 
-DATASHA=`cat ${VAR_DIR}${SHINY_APP_DIR}/outputs_regional_sha`
+DATASHA=`cat ${VAR_DIR}${SHINY_APP_DIR}/outputs_regional_Rsmall_sha`
 
 echo "Checkout ${DATASHA} version of the data"
 git -C /home/git/${DATA_GIT} checkout $DATASHA -f

@@ -48,8 +48,8 @@ line_types <- c(
 line_order <- c(
   "Number of cyclists"   = "slc",
   "Increase in cyclists" = "sic",
-  "Reduction in deaths"  = "sideath_heat",
-  "Reduction in CO2"     = "sico2"
+  "Health economic gain (YLLs + sick leave)"  = "sivaluecomb",
+  "Reduction in CO2/car distance"     = "sico2"
 )
 
 map_base_attrs <- c(
@@ -85,7 +85,7 @@ shinyUI(
           class = "panel panel-default",
           fixed = TRUE,
           right = 20,
-          width = 180,
+          width = 220,
           height = "auto",
           style = "opacity: 0.9; z-index: 1; position: absolute",
           tags$div(title = "Show/Hide Panel",
@@ -141,6 +141,11 @@ shinyUI(
                 condition = "input.line_type !== 'route_network' && input.scenario !== 'olc'",
                 tags$div(
                   title = "Order the top flows by",
+                  tags$span(
+                    class = "glyphicon glyphicon-info-sign pull-right text-info",
+                    style="margin:5px;",
+                    title = "*3) Health economic gain combines impacts of both Years of Life Lost and on sickness absence"
+                  ),
                   selectInput(
                     "line_order",
                     "Order lines by",
