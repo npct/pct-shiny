@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -o pipefail
+set +o nounset
+
 if [[ "${CIRCLE_BRANCH}" == "master" ]] || [[ "${CIRCLE_BRANCH}" == "microsim" ]]
 then
   export DEPLOY_TO="npct0.vs.mythic-beasts.com"
