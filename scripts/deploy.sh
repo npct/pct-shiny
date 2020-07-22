@@ -12,7 +12,12 @@ else
 fi
 
 ssh-keyscan -H "${DEPLOY_TO}" >> ~/.ssh/known_hosts
-git push git@${DEPLOY_TO}:pct-shiny ${CIRCLE_SHA1}:${CIRCLE_BRANCH} -f
+
+while true
+do
+  git push git@${DEPLOY_TO}:pct-shiny "${CIRCLE_SHA1}":"${CIRCLE_BRANCH}" -f && break
+  sleep 10
+done
 
 echo "Deployed ${CIRCLE_SHA1} of branch ${CIRCLE_BRANCH} to ${DEPLOY_TO}"
 exit 0
