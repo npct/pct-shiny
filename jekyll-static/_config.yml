@@ -35,8 +35,10 @@ keep_files:
   - www
   - hs2cn.html
   - la-map.html
-  - *.csv
-  - *.geojson
+  - lacodebook.csv
+  - laresults.csv
+  - nav.html
+  - pct_regions_highres.geojson
 
 # Exclude from processing.
 # The following items will not be processed, by default.

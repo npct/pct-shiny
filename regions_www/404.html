@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="/www/icons/favicon.ico">
+    <link rel="apple-touch-icon" sizes="57x57" href="/www/icons/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="/www/icons/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/www/icons/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="/www/icons/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/www/icons/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="/www/icons/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/www/icons/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/www/icons/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/www/icons/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192"  href="/www/icons/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/www/icons/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="/www/icons/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/www/icons/favicon-16x16.png">
+ <meta name="msapplication-TileColor" content="#ffffff">
+ <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+ <meta name="theme-color" content="#ffffff">
+
+<link rel="manifest" href="/www/icons/manifest.json">
+
+
+    <title></title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" media="screen" rel="stylesheet" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="www/assets/google-analytics.js"></script>
+    <script>
+      $(document).ready(function(){
+        $("#includedNav").load("nav.html");
+        if (!window.location.href.match(/pct.bike/)) {
+          $("body").prepend($("<div>").load("/www/test-banner.html"));
+        }
+        if (typeof(ga) !== "undefined"){
+          $('navbar a').each(function() {
+            ga('send', 'event', 'front-nav', $(this).data('value'));
+          });
+        }
+      });
+    </script>
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-static-top" role="navigation">
+      <div class="container">
+        <a href="/" class="navbar-left">
+          <img src="/www/static/01_logos/pct-logo.png" alt="Propensity to Cycle Tool" style="height:60px"/>
+        </a>
+        <ul class="nav navbar-nav">
+          <li style="margin-left:10px;">
+            <a href="https://blog.pct.bike/" target="_blank">Blog</a>
+          </li>
+          <li style="margin-left:10px;">
+            <a href="/manual.html">Manual</a>
+          </li>
+          <li style="margin-left:10px;">
+            <a href="/about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <style type="text/css" media="screen">
+  .container {
+    margin: 10px auto;
+    max-width: 600px;
+    text-align: center;
+  }
+  h1 {
+    margin: 30px 0;
+    font-size: 4em;
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+</style>
+
+<div class="container">
+  <h1>404</h1>
+
+  <p><strong>Page not found :(</strong></p>
+  <p>The requested page could not be found.</p>
+</div>
+
+  </body>
+</html>
