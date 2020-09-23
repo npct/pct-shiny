@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="shortcut icon" href="/www/icons/favicon.ico">
+    {% include favicon.html %}
+
+    <title>{{ page.title }}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" media="screen" rel="stylesheet" type="text/css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="www/assets/google-analytics.js"></script>
+    <script>
+      $(document).ready(function(){
+        $("#includedNav").load("nav.html");
+        if (!window.location.href.match(/pct.bike/)) {
+          $("body").prepend($("<div>").load("/www/test-banner.html"));
+        }
+        if (typeof(ga) !== "undefined"){
+          $('navbar a').each(function() {
+            ga('send', 'event', 'front-nav', $(this).data('value'));
+          });
+        }
+      });
+    </script>
+{% if page.extra_head %} {% include {{ page.extra_head }} %} {% endif %}
+  </head>
+  <body>
+    {% include navigation.html %}
+    {{ content }}
+  </body>
+</html>
