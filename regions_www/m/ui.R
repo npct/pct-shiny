@@ -204,8 +204,8 @@ shinyUI(
     tabPanel("National data",
              htmlOutput("download_national_current")),
     tabPanel("Manual",
-             includeHTML(file.path("../tabs/manual_body.html"))),
+             includeHTML(file.path("../manual_body.html"))),
     tabPanel("About",
-             includeHTML(file.path("../tabs/about_body.html")))
+             includeHTML(file.path("../about_body.html")))
   )
 )
