@@ -1,0 +1,41 @@
+#!/bin/bash
+
+export web_service='haproxy'
+export DOMAIN='pct.bike'
+export http_01_port='54321'
+export COMBINED="/etc/haproxy/certs/${DOMAIN}.pem"
+
+export le_path='/opt/letsencrypt'
+export exp_limit=28
+
+export cert_file="/etc/letsencrypt/live/${DOMAIN}/fullchain.pem"
+export key_file="/etc/letsencrypt/live/${DOMAIN}/privkey.pem"
+
+if [ ! -f $COMBINED ]; then
+	echo "[ERROR] certificate file not found for domain ${DOMAIN}."
+fi
+
+exp=$(date -d "`openssl x509 -in $COMBINED -text -noout|grep "Not After"|cut -c 25-`" +%s)
+datenow=$(date -d "now" +%s)
+days_exp=$(echo \( $exp - $datenow \) / 86400 |bc)
+
+echo "Checking expiration date for ${DOMAIN} at `date`..."
+
+/usr/sbin/service $web_service reload
+
+if [ "$days_exp" -gt "$exp_limit" ] ; then
+	echo "The certificate is up to date, no need for renewal ($days_exp days left)."
+	exit 0;
+else
+	echo "The certificate for ${DOMAIN} is about to expire soon. Starting Let's Encrypt (HAProxy:$http_01_port) renewal script..."
+	/usr/local/bin/certbot-auto certonly --standalone --agree-tos --renew-by-default --preferred-challenges http-01 --http-01-port $http_01_port -d ${DOMAIN} -d www.${DOMAIN}
+
+	echo "Creating ${COMBINED} with latest certs..."
+	cat $cert_file $key_file > ${COMBINED}
+
+	echo "Reloading $web_service"
+	/usr/sbin/service $web_service reload
+	rsync -a --delete -e "ssh -a -i /root/.ssh/sslcert-rsync" ${COMBINED} root@npt2.vs.mythic-beasts.com:
+	echo "Renewal process finished for domain $domain"
+	exit 0;
+fi
