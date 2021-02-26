@@ -169,6 +169,22 @@ apt remove exim4
 /etc/init.d/exim4 stop
 ```
 
+## SSL
+
+We use lets encrypt, in the crontab of npt1:
+```
+42 3 * * 0,2,4 /usr/local/sbin/le-renew-haproxy >> /var/log/le-renewal.log 2>&1
+```
+where `le-renew-haproxy` is in this repository: `scripts/le-renew-haproxy`.
+On npt2 in `.ssh/authorized_keys` we have the npt1 ha renewal key prefixed with:
+```
+command="/usr/local/sbin/rrsync /etc/haproxy/certs",no-port-forwarding,no-x11-forwarding,no-agent-forwarding
+```
+and we simply need to reload haproxy to pick up the new key so in the crontab we have
+```
+51 3 * * 0,2,4 /usr/sbin/service haproxy reload >> /var/log/le-renewal.log
+```
+
 ## Deployment of Updates
 
 We've scripted deployment of updates by the git user.  In /pct-shiny/hooks/post-update
