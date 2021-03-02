@@ -41,11 +41,11 @@ Install R, use CRAN with the debian repository.
 
 ```
  #Install the maintainers key
- apt-key adv --keyserver keys.gnupg.net --recv-key 381BA480
+apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF'
 
  root@npt1:/etc/apt# tail -2 /etc/apt/sources.list
  # CRAN R statistical packages
- deb http://cran.ma.imperial.ac.uk/bin/linux/debian jessie-cran3/
+ deb http://cran.ma.imperial.ac.uk/bin/linux/debian jessie-cran35/
 ```
 
 Install base R
