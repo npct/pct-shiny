@@ -18,6 +18,8 @@
 # # # # #
 # Setup #
 # # # # #
+library(rollbar)
+rollbar.attach()
 
 ## Functions
 source("pct_shiny_funs.R", local = T)
