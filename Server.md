@@ -159,6 +159,12 @@ the core of the session config is,
 
 ... we've configured this for 32 processes on each host in production so you don't need to reconfigure haproxy unless you exceed 32 shiny servers per VM
 
+## Final test
+ 
+The shiny webserver shows a static page at the home page, to really be interacting with R (and shiny) we need to go to
+
+http://npct0.vs.mythic-beasts.com/m/?r=isle-of-wight on the test server and http://npt1.vs.mythic-beasts.com/m/?r=isle-of-wight http://npt2.vs.mythic-beasts.com/m/?r=isle-of-wight on production 
+ 
 ## Unused services
 
 As mail and NFS RPC services are not needed
