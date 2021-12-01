@@ -37,15 +37,15 @@ New code and data updates are pushed by git into the user git@npt1.vs.mythic-bea
 
 Shiny-server has a bunch of badly packaged dependencies. Start with a based managed Debian Jessie install and,
 
-Install R, use CRAN with the debian repository.
+Install R, use [CRAN](http://cran.rstudio.com/bin/linux/debian/) with the debian repository.
 
 ```
  #Install the maintainers key
-apt-key adv --keyserver keys.gnupg.net --recv-key 'E19F5F87128899B192B1A2C2AD5F960A256A04AF'
+apt-key adv --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7BDC78B2DDEABC47B7'
 
  root@npt1:/etc/apt# tail -2 /etc/apt/sources.list
  # CRAN R statistical packages
- deb http://cran.ma.imperial.ac.uk/bin/linux/debian jessie-cran35/
+ deb http://cloud.r-project.org/bin/linux/debian buster-cran35
 ```
 
 Install base R
@@ -81,8 +81,8 @@ Now shiny server, https://www.rstudio.com/products/shiny/download-server/
 
 ```
  apt-get install gdebi-core
- wget https://download3.rstudio.org/ubuntu-12.04/x86_64/shiny-server-1.5.9.923-amd64.deb
- dpkg -i shiny-server-1.5.9.923-amd64.deb
+ wget https://download3.rstudio.org/ubuntu-14.04/x86_64/shiny-server-1.5.17.973-amd64.deb
+ dpkg -i shiny-server-1.5.17.973-amd64.deb
 ```
 
 This gives you a working shiny server on port 3838
