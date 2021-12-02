@@ -99,7 +99,7 @@ First the dependencies
 Install the R packages,
 
 ```
- R -e "install.packages(c("shiny", "rgdal", "rgeos", "leaflet", "shinyjs"), repos = 'https://cran.rstudio.com/')"
+ R -e "install.packages(c("shiny", "rgdal", "rgeos", "leaflet", "shinyjs", "digest"), repos = 'https://cran.rstudio.com/')"
 ```
 
 Now configure it to serve npt
