@@ -82,7 +82,8 @@ Now shiny server, https://www.rstudio.com/products/shiny/download-server/
 ```
  apt-get install gdebi-core
  wget https://download3.rstudio.org/ubuntu-14.04/x86_64/shiny-server-1.5.17.973-amd64.deb
- dpkg -i shiny-server-1.5.17.973-amd64.deb
+ gdebi shiny-server-1.5.17.973-amd64.deb
+ # systemctl disable shiny-server.service # if updating the server then we will want to disable the shiny service
 ```
 
 This gives you a working shiny server on port 3838
@@ -93,13 +94,14 @@ We need more R packages, these can be installed directly from R with the install
 First the dependencies
 
 ```
- apt-get install libssl libgdal-dev gdal-bin libproj-dev
+ apt-get install libgdal-dev gdal-bin libproj-dev protobuf-compiler libprotobuf-dev libudunits2-dev
 ```
 
 Install the R packages,
 
 ```
- R -e "install.packages(c("shiny", "rgdal", "rgeos", "leaflet", "shinyjs", "digest"), repos = 'https://cran.rstudio.com/')"
+ R -e "install.packages(c('shiny', 'rgdal', 'rgeos', 'leaflet', 'shinyjs', 'digest'), repos = 'https://cran.rstudio.com/')"
+ R -e "update.packages(ask = FALSE, checkBuilt = TRUE)"
 ```
 
 Now configure it to serve npt
