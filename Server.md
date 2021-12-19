@@ -23,7 +23,7 @@ The data is entirely provided by shiny-server, a webserver and framework for the
 
 ## Configuration
 
-It's a Debian Jessie setup, haproxy at the front end with shiny-server at the back end. Systemd runs all the shiny-servers with their configuration in /etc/shiny-server and /etc/systemd/system. The shiny-server-N files are built by script
+It's a Debian Buster setup, haproxy at the front end with shiny-server at the back end. Systemd runs all the shiny-servers with their configuration in /etc/shiny-server and /etc/systemd/system. The shiny-server-N files are built by script
 
 ```
  /usr/local/sbin/deploy-shiny <no-of-shiny-servers>
@@ -35,7 +35,7 @@ New code and data updates are pushed by git into the user git@npt1.vs.mythic-bea
 
 ## Setting up a new host
 
-Shiny-server has a bunch of badly packaged dependencies. Start with a based managed Debian Jessie install and,
+Shiny-server has a bunch of badly packaged dependencies. Start with a based managed Debian Buster install and,
 
 Install R, use [CRAN](http://cran.rstudio.com/bin/linux/debian/) with the debian repository.
 
