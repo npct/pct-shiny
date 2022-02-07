@@ -45,7 +45,7 @@ apt-key adv --keyserver keyserver.ubuntu.com --recv-key '95C0FAF38DB3CCAD0C080A7
 
  root@npt1:/etc/apt# tail -2 /etc/apt/sources.list
  # CRAN R statistical packages
- deb http://cloud.r-project.org/bin/linux/debian buster-cran35
+ deb http://cloud.r-project.org/bin/linux/debian buster-cran35/
 ```
 
 Install base R
@@ -162,11 +162,11 @@ the core of the session config is,
 ... we've configured this for 32 processes on each host in production so you don't need to reconfigure haproxy unless you exceed 32 shiny servers per VM
 
 ## Final test
- 
+
 The shiny webserver shows a static page at the home page, to really be interacting with R (and shiny) we need to go to
 
-http://npct0.vs.mythic-beasts.com/m/?r=isle-of-wight on the test server and http://npt1.vs.mythic-beasts.com/m/?r=isle-of-wight http://npt2.vs.mythic-beasts.com/m/?r=isle-of-wight on production 
- 
+http://npct0.vs.mythic-beasts.com/m/?r=isle-of-wight on the test server and http://npt1.vs.mythic-beasts.com/m/?r=isle-of-wight http://npt2.vs.mythic-beasts.com/m/?r=isle-of-wight on production
+
 ## Unused services
 
 As mail and NFS RPC services are not needed
@@ -184,6 +184,16 @@ We use lets encrypt, in the crontab of npt1:
 42 3 * * 0,2,4 /usr/local/sbin/le-renew-haproxy >> /var/log/le-renewal.log 2>&1
 ```
 where `le-renew-haproxy` is in this repository: `scripts/le-renew-haproxy`.
+
+We need to setup certbot via [their instructions](https://certbot.eff.org/instructions?ws=haproxy&os=debianbuster):
+```sh
+apt install snapd
+snap install core; snap refresh core
+snap install --classic certbot
+ln -s /snap/bin/certbot /usr/bin/certbot
+certbot certonly --standalone -d pct.bike -d www.pct.bike --non-interactive --agree-tos --email EMAIL@example.com --http-01-port=54321
+```
+
 On npt2 in `.ssh/authorized_keys` we have the npt1 ha renewal key prefixed with:
 ```
 command="/usr/local/sbin/rrsync /etc/haproxy/certs",no-port-forwarding,no-x11-forwarding,no-agent-forwarding
