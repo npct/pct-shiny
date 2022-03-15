@@ -1,8 +1,6 @@
 name: Jekyll build site
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -17,7 +15,7 @@ jobs:
       run: |
         docker run \
         -v ${{ github.workspace }}/jekyll-static:/srv/jekyll -v ${{ github.workspace }}/regions_www:/srv/jekyll/regions_www \
-        jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build -d regions_www --future"
+        jekyll/builder:latest /bin/bash -c "jekyll build -d regions_www --future"
     - name: Setup Git config
       run: |
         git config user.name "Jekyll Build Bot"
