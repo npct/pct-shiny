@@ -1,8 +1,10 @@
 name: Jekyll build site
 
 on:
-  pull_request:
-    branches: [ master ]
+  push:
+    branches-ignore:
+      - 'master'
+      - 'production'
 
 jobs:
   build:
@@ -11,19 +13,27 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: vendor/bundle
+        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile') }}
+        restore-keys: |
+          ${{ runner.os }}-gems-
     - name: Build the site in the jekyll/builder container
       run: |
         docker run \
         -v ${{ github.workspace }}/jekyll-static:/srv/jekyll -v ${{ github.workspace }}/regions_www:/srv/jekyll/regions_www \
+        -v ${{ github.workspace }}/vendor/bundle:/usr/local/bundle \
         jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build -d regions_www --future"
-        chmod -R 644 ${{ github.workspace }}/regions_www
     - name: Setup Git config
       run: |
-        git config user.name "Jekyll Build Bot"
-        git config user.email "<>"
-    - name: Commit any Jekyll changes 
+        git config user.name "PCT Build Bot"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config core.filemode false # need as jekyll/builder requires chmod to 777 which alters the file modes
+    - name: Commit any Jekyll changes
       run: |
         # Stage the file, commit and push
         git add regions_www
-        git commit -m "Updating regions_www from jekyll-static\n\nPlease update jekyll-static and run jekyll locally if this is not desired"
-        git push origin ${GITHUB_REF##*/}
+        # Only push if the commit was successful, i.e. files changed
+        # git diff-index from https://stackoverflow.com/a/3879077
+        git diff-index --cached --quiet HEAD || (git commit -m "Updating regions_www from jekyll-static"; git push origin ${GITHUB_REF##*/})
