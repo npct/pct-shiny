@@ -1,4 +1,4 @@
-name: Jekyll site CI
+name: Jekyll build site
 
 on:
   push:
@@ -18,3 +18,13 @@ jobs:
         docker run \
         -v ${{ github.workspace }}/jekyll-static:/srv/jekyll -v ${{ github.workspace }}/regions_www:/srv/jekyll/regions_www \
         jekyll/builder:latest /bin/bash -c "chmod -R 777 /srv/jekyll && jekyll build -d regions_www --future"
+    - name: Setup Git config
+      run: |
+        git config user.name "Jekyll Build Bot"
+        git config user.email "<>"
+    - name: Commit any Jekyll changes 
+      run: |
+        # Stage the file, commit and push
+        git add regions_www
+        git commit -m "Updating regions_www from jekyll-static\n\nPlease update jekyll-static and run jekyll locally if this is not desired"
+        git push origin ${GITHUB_REF##*/}
