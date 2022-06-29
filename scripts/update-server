@@ -6,18 +6,19 @@
 
 export SSH_AUTH_SOCK=''
 echo "Updating $1"
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
 
 if [[ $(hostname -s) = "npct0" ]]; then
-  rsync -a --delete -e "ssh -a  -i /home/git/.ssh/id_rsa_cp" /home/git/var-shiny/ root@$1:
-  ssh -a -l root -i /home/git/.ssh/id_rsa_chown $1
-  ssh -a -l root -i /home/git/.ssh/id_rsa_restart_server $1
+  rsync -a --delete -e "ssh -a  -i /home/git/.ssh/id_rsa_cp" /home/git/var-shiny/ root@"$1":
+  ssh -a -l root -i /home/git/.ssh/id_rsa_chown "$1"
+  ssh -a -l root -i /home/git/.ssh/id_rsa_restart_server "$1"
 else
   echo "Shutting all the shiny servers on $1"
-  ssh -a -l root -i /home/git/.ssh/id_shiny_control $1 stop
+  ssh -a -l root -i /home/git/.ssh/id_shiny_control "$1" stop
 
   echo "Copy the files into place from var-shiny to $1:/var/shiny"
-  rsync -a --delete -e "ssh -a  -i /home/git/.ssh/id_npt_deploy" /home/git/var-shiny/ root@$1:
+  rsync -a --delete -e "ssh -a  -i /home/git/.ssh/id_npt_deploy" /home/git/var-shiny/ root@"$1":
 
   echo "Starting up all the shiny server on $1"
-  ssh -a -l root -i /home/git/.ssh/id_shiny_control $1 start
+  ssh -a -l root -i /home/git/.ssh/id_shiny_control "$1" start
 fi
