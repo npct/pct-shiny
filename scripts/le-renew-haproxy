@@ -32,7 +32,7 @@ else
 
 	echo "Reloading $web_service"
 	/usr/sbin/service $web_service reload
-	rsync -a --delete -e "ssh -a -i /root/.ssh/sslcert-rsync" ${COMBINED} root@npt2.vs.mythic-beasts.com:${COMBINED}
+	rsync -a --delete -e "ssh -a -i /root/.ssh/sslcert-rsync" ${COMBINED} root@npt2.vs.mythic-beasts.com:
 	echo "Renewal process finished for domain $DOMAIN"
 	exit 0;
 fi
