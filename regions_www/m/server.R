@@ -947,7 +947,7 @@ shinyServer(function(input, output, session) {
       input$map_base,
       'roadmap' = list(url = "https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png", zoom = 18),
       'satellite' = list(url = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", zoom = 18),
-      'IMD' = list(url = "https://cdrc-maps.liv.ac.uk/tiles/imd2015_eng/{z}/{x}/{y}.png", zoom = 14),
+      'IMD' = list(url = "https://maps.cdrc.ac.uk/tiles/imd2015_eng/{z}/{x}/{y}.png", zoom = 14),
       'opencyclemap' = list(url = "https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=feae177da543411c9efa64160305212d", zoom = 18),
       'hilliness' = list(url = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Shaded_Relief/MapServer/tile/{z}/{y}/{x}", zoom = 13)
     )
@@ -996,15 +996,15 @@ shinyServer(function(input, output, session) {
     if (input$map_base == 'IMD') {
       leafletProxy("map") %>%
         addTiles(.,
-                 urlTemplate = "https://cdrc-maps.liv.ac.uk/tiles/imd2014_wal/{z}/{x}/{y}.png",
+                 urlTemplate = "https://maps.cdrc.ac.uk/tiles/imd2014_wal/{z}/{x}/{y}.png",
                  group = "imd_extras",
                  options = tileOpts) %>%
         addTiles(.,
-                 urlTemplate = "https://cdrc-maps.liv.ac.uk/tiles/shine_urbanmask_dark/{z}/{x}/{y}.png",
+                 urlTemplate = "https://maps.cdrc.ac.uk/tiles/shine_urbanmask_dark/{z}/{x}/{y}.png",
                  group = "imd_extras",
                  options = tileOpts) %>%
         addTiles(.,
-                 urlTemplate = "https://cdrc-maps.liv.ac.uk/tiles/shine_labels_cdrc/{z}/{x}/{y}.png",
+                 urlTemplate = "https://maps.cdrc.ac.uk/tiles/shine_labels_cdrc/{z}/{x}/{y}.png",
                  group = "imd_extras",
                  options = tileOpts)
 
