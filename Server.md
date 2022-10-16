@@ -58,7 +58,7 @@ Install base R
 Pull the npt stuff from git
 
 ```
- apt-get install git
+ apt-get install git rsync
  su git
  git clone --bare https://github.com/npct/pct-shiny.git pct-shiny
  git clone --bare https://github.com/npct/pct-outputs-regional-Rsmall.git pct-outputs-regional-Rsmall
@@ -70,6 +70,8 @@ Pull the npt stuff from git
  mkdir -p /home/git/var-shiny/pct-outputs-regional-Rsmall/
  exit
 ```
+
+A rsync is used to copy files from the server with the git repo to other production servers on deployment.
 
 Install shiny server
 
