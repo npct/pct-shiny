@@ -4,6 +4,11 @@
 # Written by Pete Stevens of Mythic Beasts Ltd and Nikolai Berkoff
 # to support NPTC production deployment
 
+set -o errexit      # Exit on most errors (see the manual)
+set -o nounset      # Disallow expansion of unset variables
+set -o pipefail     # Use last non-zero exit code in a pipeline
+set -o errtrace     # Ensure the error trap handler is inherited
+
 export SSH_AUTH_SOCK=''
 echo "Updating $1"
 PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"

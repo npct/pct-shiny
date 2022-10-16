@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -o errexit      # Exit on most errors (see the manual)
+set -o nounset      # Disallow expansion of unset variables
+set -o pipefail     # Use last non-zero exit code in a pipeline
+set -o errtrace     # Ensure the error trap handler is inherited
+
 export web_service='haproxy'
 export DOMAIN='pct.bike'
 export http_01_port='54321'
