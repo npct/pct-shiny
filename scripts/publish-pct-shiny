@@ -28,8 +28,12 @@ export PATH=$PATH:/home/git/bin
 echo "Check out the latest version of ${BRANCH} into our temp directory"
 rm -rf ${VAR_DIR}${SHINY_APP_DIR}
 mkdir -p ${VAR_DIR}${SHINY_APP_DIR}
+
 git --git-dir /home/git/pct-shiny --work-tree ${VAR_DIR}${SHINY_APP_DIR} checkout ${BRANCH} -f
 git --git-dir /home/git/pct-shiny rev-parse --short HEAD > ${VAR_DIR}${SHINY_APP_DIR}/repo_sha
+
+echo "Copy secrets"
+cp /home/git/Renviron ${VAR_DIR}${SHINY_APP_DIR}/regions_www/m/.Renviron
 
 echo "Git fetch the data"
 git -C /home/git/${DATA_GIT} fetch
